@@ -1,6 +1,5 @@
 package website.julianrosser.birthdays;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,8 +10,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
-
-import website.julianrosser.birthdays.dummy.DummyContent;
 
 /**
  * A fragment representing a list of Items.
@@ -74,8 +71,9 @@ public class BirthdayListFragment extends Fragment implements AbsListView.OnItem
         }
 
         // TODO: Change Adapter to display your content
-        mAdapter = new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.ITEMS);
+        mAdapter = new ArrayAdapter<Birthday>(getActivity(),
+                android.R.layout.simple_list_item_1, android.R.id.text1, MainActivity.birthdaysList);
+
     }
 
     @Override
@@ -93,16 +91,6 @@ public class BirthdayListFragment extends Fragment implements AbsListView.OnItem
         return view;
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
 
     @Override
     public void onDetach() {
@@ -115,7 +103,7 @@ public class BirthdayListFragment extends Fragment implements AbsListView.OnItem
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-            mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
+            mListener.onFragmentInteraction(MainActivity.birthdaysList.get(position).getName());
         }
     }
 
