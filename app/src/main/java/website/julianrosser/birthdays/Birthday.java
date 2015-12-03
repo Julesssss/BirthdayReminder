@@ -1,96 +1,50 @@
 package website.julianrosser.birthdays;
 
-import android.content.Context;
+import android.text.format.DateFormat;
 import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.text.SimpleDateFormat;
+
 import java.util.Date;
-import java.util.Locale;
 
 // Ignore Date method deprecation, todo : check eventually.
-@SuppressWarnings({"deprecation","unused"})
+@SuppressWarnings({"deprecation", "unused"})
 
 public class Birthday {
 
-    // Context, logging and daysTillBirthday references
-    Context mAlarmContext;
-    String TAG = "Birthday.java";
-    int daysUntil; // todo old note: Have to update this every time
+    // Logging string
+    private final String LOG_TAG = "Birthday.java";
 
     // JSON keys
     private static final String JSON_NAME = "name";
     private static final String JSON_DATE = "date";
     private static final String JSON_REMIND = "remind";
-    private static final String JSON_DAYS_REMIND = "days_remind";
 
-    // References to data todo: rename references
-    String name;
-    Date date;
-    boolean remind;
-    int daysBeforeNotification;
+    // References to data
+    private String name;
+    private Date date;
+    private boolean remind;
 
     /**
      * Constructor for creating new birthday.
      * Todo : Rename parameters in constructor, after ensuring this wont break references!
-     *
-     * @param n : name
-     * @param d : date
-     * @param notifyUserOfBirthday : remind
-     * @param mContext : app context
-     * @param remindDays : days left untill reminder
      */
-    public Birthday(String n, Date d, boolean notifyUserOfBirthday, Context mContext, int remindDays) {
+    public Birthday(String name, Date date, boolean notifyUserOfBirthday) {
 
-        name = n;
-        date = d;
-        daysUntil = getDaysToBirthday(d);
-
-        if (daysUntil > 365) {
-            int iYear = d.getYear();
-            d.setYear(iYear - 1);
-            daysUntil = getDaysToBirthday(d);
-        }
-
-        if (daysUntil < 0) {
-            int iYear = d.getYear();
-            d.setYear(iYear + 1);
-            daysUntil = getDaysToBirthday(d);
-        }
-
-        remind = notifyUserOfBirthday;
-        daysBeforeNotification = remindDays;
-        mAlarmContext = mContext;
+        this.name = name;
+        this.date = date;
+        this.remind = notifyUserOfBirthday;
     }
 
     /**
-     * I think this is for replacing deleted birthday with new, todo: find out.
-     * @param editName : name
-     * @param editDate : date
-     * @param editRemind : remind user boolean
-     * @param editContext : context
-     * @param remindDays : days till reminder
+     * For updating Birthday information without creating new
      */
-    public void edit(String editName, Date editDate, boolean editRemind, Context editContext, int remindDays) {
+    public void edit(String editName, Date editDate, boolean editRemind) {
 
-        name = editName;
-        date = editDate;
-        daysUntil = getDaysToBirthday(editDate);
-
-        if (daysUntil > 365) {
-            int iYear = editDate.getYear();
-            editDate.setYear(iYear - 1);
-            daysUntil = getDaysToBirthday(editDate);
-        }
-        if (daysUntil < 0) {
-            int iYear = editDate.getYear();
-            editDate.setYear(iYear + 1);
-            daysUntil = getDaysToBirthday(editDate);
-        }
-
-        remind = editRemind;
-        mAlarmContext = editContext;
-        daysBeforeNotification = remindDays;
+        this.name = editName;
+        this.date = editDate;
+        this.remind = editRemind;
     }
 
     /**
@@ -109,58 +63,13 @@ public class Birthday {
         } else {
             // Default to true if not found, log message.
             remind = true;
-            Log.e(TAG, "Birthday constructor - ERROR_11: Reminder boolean not found in JSON data.");
-        }
-
-        // Find days till reminder integer
-        if (json.has(JSON_DAYS_REMIND)) {
-            daysBeforeNotification = json.getInt(JSON_DAYS_REMIND);
+            Log.e(LOG_TAG, "Birthday constructor - ERROR_11: Reminder boolean not found in JSON data."); // todo - needed???
         }
 
         // Date of birthday in millis.
         if (json.has(JSON_DATE)) {
             date = new Date();
             date.setTime(json.getLong(JSON_DATE));
-
-            // Update days untill variable
-            daysUntil = getDaysToBirthday(date);
-
-            // If over a year away, reset to this year
-            if (daysUntil > 365) {
-
-                // Get current year and advance by 1.
-                int iYear = date.getYear();
-                date.setYear(iYear - 1);
-
-                // Update countdown with correct days
-                daysUntil = getDaysToBirthday(date);
-
-
-            } else if (daysUntil < 0) {
-
-                while (daysUntil < 0) {
-
-                    // Get current year, advance by 1.
-                    int iiYear = date.getYear();
-                    date.setYear(iiYear + 1);
-
-                    // Update countdown with HOPEFULLY correct days
-                    daysUntil = getDaysToBirthday(date);
-
-                    // TODO - check for infinate loop, add randomness to avoid?
-                }
-            }
-
-            /* Old code, unsure above works before deleting.
-            // Looped to ensure no more than 4 years have passed.
-            for (int i = 0; i < 5; i++) {
-                // If birthday has passed, advance date by a year.
-                if (daysUntil < 0) {
-                    // Get current year, advance by 1.
-                    int iiYear = date.getYear();
-                    date.setYear(iiYear + 1);
-                    daysUntil = getDaysToBirthday(date);
-                }} */
         }
     }
 
@@ -172,17 +81,12 @@ public class Birthday {
         json.put(JSON_NAME, this.getName());
         json.put(JSON_DATE, this.getDate().getTime());
         json.put(JSON_REMIND, this.getRemind());
-        json.put(JSON_DAYS_REMIND, this.getDaysNoti());
         return json;
     }
 
     /**
      * Getters & setters for variables
      */
-
-    public int getDaysNoti() {
-        return daysBeforeNotification;
-    }
 
     public Date getDate() {
         return date;
@@ -196,100 +100,56 @@ public class Birthday {
         return remind;
     }
 
-    public void setRemind(boolean bool) {
-        remind = bool;
+    public void setRemind(boolean newRemindPref) {
+        remind = newRemindPref;
     }
 
-    public int getDaysUntil() {
-        return daysUntil;
+    public String getBirthMonth() {
+        return (String) DateFormat.format("MMM", date);
     }
 
-    /**
-     * Return correct amount of days until birthday. Todo: check while loop works correctly.
-     */
-    private int getDaysToBirthday(Date birthdayDate) {
+    public String getBirthDay() {
+        return "" + date.getDate() + getDateSuffix();
+    }
 
-        // Date variable
-        Date currentDate = new Date();
+    public String getFormattedDaysRemainingString() {
+        int i = getDaysBetween();
 
-        // Format dates
-        String dateBirthday = getFormattedDateString(birthdayDate.getYear());
-        String dateToday = getFormattedDateString(currentDate.getYear() + 1900);
-
-        // Pass date strings to getDayCount() method.
-        int returnedDayCount = (int) getDayCount(dateToday, dateBirthday);
-
-
-        int yearOfBirth = birthdayDate.getYear();
-
-        // Check that days is inside desired range.
-        while (returnedDayCount < 0) {
-
-            yearOfBirth += 1;
-
-            // Update date format
-            dateBirthday = getFormattedDateString(yearOfBirth);
-
-            // Recalculate
-            returnedDayCount = (int) getDayCount(dateToday, dateBirthday);
+        if (i == -1) {
+            return "Yesterday";
+        } else if (i == 0) {
+            return "Today";
+        } else if (i == 1) {
+            return "Tomorrow";
+        } else if (i > 99) {
+            return String.valueOf(i) + " Days";
+        } else if (i > 9) {
+            return " " + String.valueOf(i) + " Days";
+        } else {
+            return "  " + String.valueOf(i) + " Days";
         }
-
-        // Return final day count as an int.
-        return returnedDayCount;
     }
 
-    /**
-     * Helper method which returns the amount of full days remaining between two dates.
-     */
-    public static long getDayCount(String start, String end) {
+    private int getDaysBetween() {
+        Date now = new Date();
+        now.setYear(2015);
+        return (int) ((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
+    }
 
-        // Date format reference
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+    private String getDateSuffix() {
+        // d stands for date of birthday
+        int d = this.getDate().getDate();
 
-        // Local reference for storing difference
-        long difference = 0;
-
-        // Attempt to parse dates, and calculate the difference between dates.
-        try {
-
-            // Calculate difference between dates
-            difference = (simpleDateFormat.parse(end).getTime() - simpleDateFormat.parse(start).getTime());
-
-            // Round difference to nearest full day
-            difference =  Math.round(difference / (double) 86400000);
-
-        } catch (Exception e) {
-            // Log any exception
-            e.printStackTrace();
-            Log.i("Birthday.java", "Exception in getDayCount(), probably while parsing date.");
+        if (d == 11 || d == 12 || d == 13) {
+            return "th";
+        } else if (d % 10 == 1) {
+            return "st";
+        } else if (d % 10 == 2) {
+            return "nd";
+        } else if (d % 10 == 3) {
+            return "rd";
+        } else {
+            return "th";
         }
-
-        return difference;
     }
-
-    /**
-     * Helper method for formatting dat strings
-     */
-    public String getFormattedDateString(int yearOfBirth) {
-
-        return String.valueOf(date.getDate()) + "."
-                + String.valueOf(date.getMonth() + 1) + "." // todo: why '+1' ??
-                + String.valueOf(yearOfBirth);
-    }
-
-    /**
-     * Return context for some unknown method. Todo: find this method in old project.
-     */
-    public Context getmAlarmContext() {
-        return mAlarmContext;
-    }
-
-    /**
-     * Set context for some unknown reason. Todo: find method and reason.
-     */
-    public void setmAlarmContext(Context mContext) {
-        mAlarmContext = mContext;
-
-    }
-
 }

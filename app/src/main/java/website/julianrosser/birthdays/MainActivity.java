@@ -1,7 +1,6 @@
 package website.julianrosser.birthdays;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,8 +12,7 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
 
     public static ArrayList<Birthday> birthdaysList = new ArrayList<Birthday>();
-    FragmentManager fragmentManager;
-    BirthdayListFragment listFragment;
+    final public String TAG = getClass().getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,38 +26,22 @@ public class MainActivity extends AppCompatActivity {
                     .add(R.id.container, new RecyclerListFragment())
                     .commit();
         }
-
-        /*
-
-        // Init FragmentManager
-        fragmentManager = getSupportFragmentManager();
-
-        // Get new ListFragment
-        listFragment = BirthdayListFragment.newInstance();
-
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, listFragment)
-                .commit(); */
-
     }
 
     // Method for adding test birthday
     public void addTestBirthday() {
 
-        for (int x = 0; x < 8; x++) {
+        for (int x = 0; x < 18; x++) {
             Date f = new Date();
             Random r = new Random();
             f.setMonth(r.nextInt(12));
-            f.setDate(r.nextInt(31));
-            f.setYear(2014);
-            String[] name_array = {"Peter", "Piper", "Picked", "Pepper",};
+            f.setDate(r.nextInt(31) + 1);
+            f.setYear(2015);
+            String[] name_array = {"Peter", "Tammy", "Ron", "Liz", "Tom", "Gary", "Rachael", "Marie", "Buzz", "Tyler"};
             String name = name_array[r.nextInt(name_array.length)];
             boolean reminder = r.nextInt(3) != 1;
 
-            int dayRandom = r.nextInt(7);
-            Birthday b = new Birthday(name, f, reminder, this,
-                    dayRandom);
-
+            Birthday b = new Birthday(name, f, reminder);
             birthdaysList.add(b);
         }
 
@@ -81,6 +63,10 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+
+        } else if (id == R.id.action_add) {
+            // TODO - launch fragment
             return true;
         }
 
