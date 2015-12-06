@@ -1,6 +1,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/pink"
     android:layout_height="match_parent"
     tools:context=".MyActivity">
 
@@ -8,5 +9,16 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="32dp"
+        android:textColor="#fff"
+        android:textSize="22sp"
+        android:visibility="gone"
+        android:text="@string/no_birthdays" />
 
 </FrameLayout>

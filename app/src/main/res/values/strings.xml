@@ -1,14 +1,21 @@
 <resources>
+    <!-- Other -->
     <string name="app_name">Birthdays</string>
+    <string name="dialog_add">Add Birthday</string>
+    <string name="dialog_edit">Edit Birthday</string>
+    <string name="no_birthdays">No birthdays found, click \'+\' to begin adding birthdays</string>
 
-    <string name="hello_world">Hello world!</string>
-
-    <!-- Settings -->
+    <!-- Menu -->
     <string name="action_add">Add</string>
+    <string name="action_sort">Sort</string>
     <string name="action_settings">Settings</string>
+    <string name="action_help">Help</string>
 
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- AddEdit DialogFragment -->
+    <string name="hint_name">Name &#8230;</string>
+    <string name="button_positive">Done</string>
+    <string name="button_negative">Cancel</string>
 
+    <!-- Colours -->
     <color name="primary_dark">#055</color>
 </resources>

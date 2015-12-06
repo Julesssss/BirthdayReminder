@@ -10,6 +10,7 @@
 
     <item
         android:id="@+id/action_add"
+        android:icon="@drawable/ic_add_circle_outline_white_18dp"
         android:orderInCategory="200"
         android:title="@string/action_add"
         app:showAsAction="ifRoom" />
