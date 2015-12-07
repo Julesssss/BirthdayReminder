@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- My Random Name List -->
+    <string-array name="name_array">
+        <item>Alan Turing</item>
+        <item>Aunders Holmvic</item>
+        <item>Bill Bryson</item>
+        <item>Bill Burr</item>
+        <item>Brian Bi</item>
+        <item>Brian Cox</item>
+        <item>Carl Sagan</item>
+        <item>Dom Rosser</item>
+        <item>Elon Musk</item>
+        <item>Frank Ocean</item>
+        <item>Frank Underwood</item>
+        <item>George Michael</item>
+        <item>Hari Seldon</item>
+        <item>Ian McKellin</item>
+        <item>James Franco</item>
+        <item>Julian Rosser</item>
+        <item>Joel Zimmerman</item>
+        <item>Karl Pilkington</item>
+        <item>Kanye West</item>
+        <item>Kevin Spacey</item>
+        <item>Larry Page</item>
+        <item>Lee Evans</item>
+        <item>Louis CK</item>
+        <item>Michael Scott</item>
+        <item>Nick Frost</item>
+        <item>Quintin Tarrentino</item>
+        <item>Ricky Gervais</item>
+        <item>Rick Mayol</item>
+        <item>Rob Swire</item>
+        <item>Stephen Merchant</item>
+        <item>Stephen Hawking</item>
+        <item>Simon Pegg</item>
+        <item>Will Ferrel</item>
+        <item>Warrick Davies</item>
+        <item>Walter White</item>
+    </string-array>
+
+</resources>

@@ -2,6 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="16dp">
@@ -12,6 +15,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/editTextName"
         android:hint="@string/hint_name"
+        android:imeOptions="actionDone"
+        android:inputType="textCapSentences"
         android:singleLine="true" />
 
     <DatePicker

@@ -1,8 +1,8 @@
 package website.julianrosser.birthdays;
 
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +17,8 @@ public class RecyclerViewAdapter
     public static ArrayList<Birthday> birthdayArrayList;
 
     String TAG = getClass().getSimpleName();
+
+    static int contextListPos = -1;
 
     // constructor
     public RecyclerViewAdapter(ArrayList<Birthday> birthdayData) { // todo - needed???????????????????????
@@ -36,36 +38,33 @@ public class RecyclerViewAdapter
     }
 
     @Override
-    public void onBindViewHolder(ListItemViewHolder viewHolder, final int position) {
+    public void onBindViewHolder(final ListItemViewHolder viewHolder, final int position) {
         final Birthday birthday = birthdayArrayList.get(position);
         viewHolder.textName.setText(birthday.getName());
         viewHolder.textDaysRemaining.setText(birthday.getFormattedDaysRemainingString());
         viewHolder.textDateDay.setText(birthday.getBirthDay());
         viewHolder.textDateMonth.setText(birthday.getBirthMonth());
 
-        // why---> viewHolder.itemView.setActivated(selectedItems.get(position, false));
-
-        // Click listener
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "onClick - " + birthday.getName());
 
-                // We can get the fragment manager
-                AddEditBirthdayFragment dialog = new AddEditBirthdayFragment();
+                // Pass position to static reference
+                contextListPos = position;
 
-                // Create bundle for MODE_EDIT detection and to use current date, month value.
-                Bundle bundle = new Bundle();
-                bundle.putInt(AddEditBirthdayFragment.MODE_KEY, AddEditBirthdayFragment.MODE_EDIT);
-                bundle.putInt(AddEditBirthdayFragment.DATE_KEY, birthday.getDate().getDate());
-                bundle.putInt(AddEditBirthdayFragment.MONTH_KEY, birthday.getDate().getMonth());
-                bundle.putInt(AddEditBirthdayFragment.POSITION_KEY, position);
-                bundle.putString(AddEditBirthdayFragment.NAME_KEY, birthday.getName());
-                dialog.setArguments(bundle);
+                TextView tv = (TextView) v.findViewById(R.id.name);
 
-                dialog.show(MainActivity.getContext().getSupportFragmentManager(), "AddEditBirthdayFragment");
+                Log.d(TAG, "tv of view:: " + tv.getText().toString());
+
+                MainActivity.getContext().openContextMenu(v);
             }
         });
+    }
+
+    @Override
+    public void onViewRecycled(ListItemViewHolder holder) {
+        holder.itemView.setOnLongClickListener(null);
+        super.onViewRecycled(holder);
     }
 
     @Override
@@ -73,7 +72,7 @@ public class RecyclerViewAdapter
         return birthdayArrayList.size();
     }
 
-    public final static class ListItemViewHolder extends RecyclerView.ViewHolder {
+    public final static class ListItemViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
         TextView textName;
         TextView textDaysRemaining;
         TextView textDateDay;
@@ -81,12 +80,24 @@ public class RecyclerViewAdapter
 
         public ListItemViewHolder(View itemView) {
             super(itemView);
+
             textName = (TextView) itemView.findViewById(R.id.name);
             textDaysRemaining = (TextView) itemView.findViewById(R.id.days_remaining);
             textDateDay = (TextView) itemView.findViewById(R.id.dateDay);
             textDateMonth = (TextView) itemView.findViewById(R.id.dateMonth);
+            itemView.setOnCreateContextMenuListener(this);
+            itemView.setLongClickable(false);
         }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+
+            TextView tv = (TextView) v.findViewById(R.id.name);
+            menu.setHeaderTitle(tv.getText().toString());
+
+            menu.add(0, v.getId(), 0, "Edit"); //groupId, itemId, order, title
+            menu.add(0, v.getId(), 1, "Delete"); //groupId, itemId, order, title
+        }
+
     }
-
-
 }
