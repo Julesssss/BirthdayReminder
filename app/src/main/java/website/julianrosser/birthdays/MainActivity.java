@@ -1,5 +1,7 @@
 package website.julianrosser.birthdays;
 
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -7,7 +9,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import org.apache.commons.lang3.text.WordUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONTokener;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
@@ -16,6 +29,8 @@ public class MainActivity extends AppCompatActivity implements AddEditBirthdayFr
 
     public static ArrayList<Birthday> birthdaysList = new ArrayList<Birthday>();
     final public String TAG = getClass().getSimpleName();
+
+    static final String FILENAME = "birthdayArray.json";
 
     static RecyclerListFragment recyclerListFragment;
 
@@ -63,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements AddEditBirthdayFr
         getSupportFragmentManager().putFragment(outState, "mContent", recyclerListFragment);
     }
 
-        // Method for adding test birthday
+    // Method for adding test birthday
     public void addTestBirthday() {
 
         for (int x = 0; x < 1; x++) {
@@ -106,6 +121,16 @@ public class MainActivity extends AppCompatActivity implements AddEditBirthdayFr
         } else if (id == R.id.action_add) {
             showNoticeDialog();
             return true;
+        } else if (id == R.id.action_save) {
+            try {
+                saveBirthdays(birthdaysList);
+                // Log.d(TAG, "Saving...");
+            } catch (Exception e) {
+                Log.d(TAG, "Error saving JSON data: ", e);
+            }
+        } else if (id == R.id.action_load) {
+            LoadBirthdaysTask lbt = new LoadBirthdaysTask();
+            lbt.execute();
         }
 
         return super.onOptionsItemSelected(item);
@@ -160,4 +185,127 @@ public class MainActivity extends AppCompatActivity implements AddEditBirthdayFr
             }
         });
     }
+
+    /**
+     * OLD SAVE JSON CODE
+     **/
+
+    // write file
+    public void saveBirthdays(ArrayList<Birthday> birthdays)
+            throws JSONException, IOException {
+
+        Log.i(TAG, "SAVING BIRTHDAYS");
+        // Build an array in JSON
+        JSONArray array = new JSONArray();
+        for (Birthday b : birthdays)
+            array.put(b.toJSON());
+        // Write the file to disk
+        Writer writer = null;
+        try {
+            OutputStream out = mContext.openFileOutput(FILENAME,
+                    Context.MODE_PRIVATE);
+            writer = new OutputStreamWriter(out);
+            writer.write(array.toString());
+        } finally {
+            if (writer != null)
+                writer.close();
+        }
+    }
+
+    private class LoadBirthdaysTask extends AsyncTask<Void, Void, ArrayList<Birthday>> {
+
+        ArrayList<Birthday> loadedBirthdays;
+
+        @Override
+        protected ArrayList<Birthday> doInBackground(Void... params) {
+            try {
+                loadedBirthdays = loadBirthdays();
+                // Log.v(TAG, "Loading...");
+            } catch (Exception e) {
+                loadedBirthdays = new ArrayList<Birthday>();
+                Log.v(TAG, "Error loading JSON data: ", e);
+            }
+
+            return loadedBirthdays;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Birthday> loadedBirthdays) {
+            super.onPostExecute(loadedBirthdays);
+
+            Log.d(TAG, "onPost: " + loadedBirthdays.size());
+
+            // Set new data
+            // removem then replace all in array
+
+            for (Birthday b : loadedBirthdays) {
+                birthdaysList.add(b);
+            }
+
+            dataChangedUiThread();
+        }
+    }
+
+    public static ArrayList<Birthday> loadBirthdays() throws IOException,
+            JSONException {
+        ArrayList<Birthday> loadedBirthdays = new ArrayList<Birthday>();
+
+        BufferedReader reader = null;
+        try {
+            // Open and read the file into a StringBuilder
+            InputStream in = mContext.openFileInput(FILENAME);
+            reader = new BufferedReader(new InputStreamReader(in));
+            StringBuilder jsonString = new StringBuilder();
+
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                // Line breaks are omitted and irrelevant
+                jsonString.append(line);
+            }
+            // Parse the JSON using JSONTokener
+            JSONArray array = (JSONArray) new JSONTokener(jsonString.toString())
+                    .nextValue();
+            // Build the array of birthdays from JSONObjects
+            for (int i = 0; i < array.length(); i++) {
+                loadedBirthdays.add(new Birthday(array.getJSONObject(i)));
+            }
+        } catch (FileNotFoundException e) {
+            // Ignore this one; it happens when starting fresh
+        } finally {
+            if (reader != null)
+                reader.close();
+        }
+        return loadedBirthdays;
+    }
+
+    /*
+    private class LoadTask extends AsyncTask<Void, Integer, Integer> {
+
+        BirthdayListViewAdapter listAdapter;
+
+        LoadTask(BirthdayListViewAdapter context) {
+            listAdapter = context;
+        }
+
+        @Override
+        protected Integer doInBackground(Void... unused) {
+            int i = 1;
+
+            try {
+                list = BirthdayListViewAdapter.loadBirthdays();
+                // Log.v(TAG, "Loading...");
+            } catch (Exception e) {
+                list = new ArrayList<Birthday>();
+                Log.v(TAG, "Error loading JSON data: ", e);
+            }
+            return i;
+        }
+
+        protected void onPostExecute(Integer result) {
+            // Log.v(TAG, "Loading Finished");
+            listAdapter.sortByDate();
+            BirthdayListActivity.loadingFinished();
+
+        }
+    }  */
 }

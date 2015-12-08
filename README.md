@@ -4,7 +4,9 @@ App for Android devices which notifies users of upcoming birthdays.
 ![](http://julianrosser.website/images/birthday_screen_1.png)
 
 TODO
+- Check load JSON, format & document methods
 - Read JSON data from prev version
+- ListView UI
 - Find and implement alternative to Date()
 - 'Birthday is soon' bug - Don't use old code, complete re-write, but find prev error
 - SQL database instead of JSON ??? necessary? Will take effort, perhaps as backup
@@ -17,6 +19,7 @@ Formatting & Documentation TODO
 - RecyclerViewAdapter
 
 Log
+- 08/12 - Added JSOn save/load functions.
 - 07/12 - Orientation change functionality. Adapter updates list correctly using UI Thread. Context menu (del, edit). Formatting & Documentation
 - 06/12 - Add birthday (or edit) DialogFragment, layout & funtionality. Fragment callback listener. Icon for menu_add.
 - 04/12 - First real progress to redesign. Re-wrote Birthdays class, RecyclerView & Adapter now working correctly.
