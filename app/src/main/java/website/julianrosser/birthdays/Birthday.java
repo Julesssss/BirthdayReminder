@@ -113,7 +113,7 @@ public class Birthday {
     }
 
     public String getFormattedDaysRemainingString() {
-        int i = getDaysBetween();
+        int i = getDaysBetween(); // todo < 0
 
         if (i == -1) {
             return "Yesterday";

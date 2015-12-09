@@ -1,8 +1,6 @@
 package website.julianrosser.birthdays;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,18 +12,17 @@ public class RecyclerViewAdapter
         extends RecyclerView.Adapter
         <RecyclerViewAdapter.ListItemViewHolder> {
 
-    public static ArrayList<Birthday> birthdayArrayList;
-
     String TAG = getClass().getSimpleName();
 
-    static int contextListPos = -1;
-
-    // constructor
-    public RecyclerViewAdapter(ArrayList<Birthday> birthdayData) { // todo - needed???????????????????????
+    // Constructor
+    public RecyclerViewAdapter(ArrayList<Birthday> birthdayData) { //
         if (birthdayData == null) {
             throw new IllegalArgumentException("modelData must not be null");
         }
-        birthdayArrayList = birthdayData;
+
+        // After Adapter is contructed, start the process of loading data
+        MainActivity.launchLoadBirthdaysTask();
+
     }
 
 
@@ -34,29 +31,28 @@ public class RecyclerViewAdapter
         View itemView = LayoutInflater.
                 from(viewGroup.getContext()).
                 inflate(R.layout.birthday_list_view, viewGroup, false);
+
         return new ListItemViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(final ListItemViewHolder viewHolder, final int position) {
-        final Birthday birthday = birthdayArrayList.get(position);
+        // Get reference to birthday
+        final Birthday birthday = MainActivity.birthdaysList.get(position);
+
+        // Pass data to the TextViews
         viewHolder.textName.setText(birthday.getName());
         viewHolder.textDaysRemaining.setText(birthday.getFormattedDaysRemainingString());
         viewHolder.textDateDay.setText(birthday.getBirthDay());
         viewHolder.textDateMonth.setText(birthday.getBirthMonth());
 
+        // When item is clicked, show context menu for that item
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                // Pass position to static reference
-                contextListPos = position;
-
-                TextView tv = (TextView) v.findViewById(R.id.name);
-
-                Log.d(TAG, "tv of view:: " + tv.getText().toString());
-
-                MainActivity.getContext().openContextMenu(v);
+                // Open ItemOption menu for selected birthday
+                MainActivity.getContext().showItemOptionsFragment(position);
             }
         });
     }
@@ -69,35 +65,28 @@ public class RecyclerViewAdapter
 
     @Override
     public int getItemCount() {
-        return birthdayArrayList.size();
+        return MainActivity.birthdaysList.size();
     }
 
-    public final static class ListItemViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
-        TextView textName;
-        TextView textDaysRemaining;
+    /**
+     * ViewHolder class to hold view references to be used in recyclerview.
+     */
+    public final static class ListItemViewHolder extends RecyclerView.ViewHolder {
+
+        // TextView references
         TextView textDateDay;
         TextView textDateMonth;
+        TextView textName;
+        TextView textDaysRemaining;
 
         public ListItemViewHolder(View itemView) {
             super(itemView);
 
+            // Set up references
             textName = (TextView) itemView.findViewById(R.id.name);
             textDaysRemaining = (TextView) itemView.findViewById(R.id.days_remaining);
             textDateDay = (TextView) itemView.findViewById(R.id.dateDay);
             textDateMonth = (TextView) itemView.findViewById(R.id.dateMonth);
-            itemView.setOnCreateContextMenuListener(this);
-            itemView.setLongClickable(false);
         }
-
-        @Override
-        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-
-            TextView tv = (TextView) v.findViewById(R.id.name);
-            menu.setHeaderTitle(tv.getText().toString());
-
-            menu.add(0, v.getId(), 0, "Edit"); //groupId, itemId, order, title
-            menu.add(0, v.getId(), 1, "Delete"); //groupId, itemId, order, title
-        }
-
     }
 }

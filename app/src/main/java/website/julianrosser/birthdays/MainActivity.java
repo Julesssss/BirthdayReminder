@@ -25,9 +25,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity implements AddEditBirthdayFragment.NoticeDialogListener {
+import website.julianrosser.birthdays.DialogFragments.AddEditFragment;
+import website.julianrosser.birthdays.DialogFragments.ItemOptionsFragment;
 
-    public static ArrayList<Birthday> birthdaysList = new ArrayList<Birthday>();
+public class MainActivity extends AppCompatActivity implements AddEditFragment.NoticeDialogListener, ItemOptionsFragment.ItemOptionsListener {
+
+    public static ArrayList<Birthday> birthdaysList = new ArrayList<>();
     final public String TAG = getClass().getSimpleName();
 
     static final String FILENAME = "birthdayArray.json";
@@ -56,18 +59,38 @@ public class MainActivity extends AppCompatActivity implements AddEditBirthdayFr
             //Restore the fragment's instance
             recyclerListFragment = (RecyclerListFragment) getSupportFragmentManager().getFragment(
                     savedInstanceState, "mContent");
-        }
 
-
-        // Create new RecyclerListFragment
-        if (savedInstanceState == null) {
-
+        } else {
+            // Create new RecyclerListFragment
             recyclerListFragment = RecyclerListFragment.newInstance();
 
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, recyclerListFragment)
                     .commit();
+
         }
+    }
+
+    /**
+     * Ensure birthday array is saved, but not if replacing with empty
+     */
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if (birthdaysList != null && birthdaysList.size() != 0) {
+
+            try {
+                saveBirthdays(birthdaysList);
+            } catch (JSONException | IOException e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            // Not good!
+            Log.e(TAG, "birthday list not saved: Either no birthdays to save or error loading"); // todo remove
+        }
+
     }
 
     @Override
@@ -79,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements AddEditBirthdayFr
     }
 
     // Method for adding test birthday
+
     public void addTestBirthday() {
 
         for (int x = 0; x < 1; x++) {
@@ -119,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements AddEditBirthdayFr
             return true;
 
         } else if (id == R.id.action_add) {
-            showNoticeDialog();
+            showAddEditBirthdayFragment(AddEditFragment.MODE_ADD, -1);
             return true;
         } else if (id == R.id.action_save) {
             try {
@@ -136,21 +160,39 @@ public class MainActivity extends AppCompatActivity implements AddEditBirthdayFr
         return super.onOptionsItemSelected(item);
     }
 
-    public void showNoticeDialog() {
+    public void showAddEditBirthdayFragment(int mode, int birthdayListPosition) {
         // Create an instance of the dialog fragment and show it
-        AddEditBirthdayFragment dialog = AddEditBirthdayFragment.newInstance();
-
+        AddEditFragment dialog = AddEditFragment.newInstance();
 
         // Create bundle for storing mode information
         Bundle bundle = new Bundle();
-        bundle.putInt(AddEditBirthdayFragment.MODE_KEY, AddEditBirthdayFragment.MODE_ADD);
-        dialog.setArguments(bundle);
+        // Pass mode parameter onto Fragment
+        bundle.putInt(AddEditFragment.MODE_KEY, mode);
 
+        // If we are editing an old birthday, pass its information to fragment
+        if (mode == AddEditFragment.MODE_EDIT) {
+            // Reference to birthday we're editing
+            Birthday editBirthday = birthdaysList.get(birthdayListPosition); // todo - checks: don't open fragment if null
+            // Pass birthday's data to Fragment
+            bundle.putInt(AddEditFragment.DATE_KEY, editBirthday.getDate().getDate());
+            bundle.putInt(AddEditFragment.MONTH_KEY, editBirthday.getDate().getMonth());
+            bundle.putInt(AddEditFragment.POS_KEY, birthdayListPosition);
+            bundle.putString(AddEditFragment.NAME_KEY, editBirthday.getName());
+        }
+
+        // Pass bundle to Dialog, get FragmentManager and show
+        dialog.setArguments(bundle);
+        dialog.show(getSupportFragmentManager(), "AddEditBirthdayFragment");
+    }
+
+    public void showItemOptionsFragment(int position) {
+        // Create an instance of the dialog fragment and show it
+        ItemOptionsFragment dialog = ItemOptionsFragment.newInstance(position);
         dialog.show(getSupportFragmentManager(), "AddEditBirthdayFragment");
     }
 
     @Override
-    public void onDialogPositiveClick(AddEditBirthdayFragment dialog, String name, int day, int month) {
+    public void onDialogPositiveClick(AddEditFragment dialog, String name, int day, int month) {
         Log.i(TAG, "pos click: " + name);
 
         Date birthdate = new Date();
@@ -170,17 +212,17 @@ public class MainActivity extends AppCompatActivity implements AddEditBirthdayFr
 
     public static void deleteFromArray(int position) {
         birthdaysList.remove(position);
-
+        Log.d("HUNT", "deleteFromArray()");
         dataChangedUiThread();
     }
 
-    // Force UI thread to ensure adapter updates recyclerview list
+    // Force UI thread to ensure mAdapter updates recyclerview list
     public static void dataChangedUiThread() {
         mContext.runOnUiThread(new Runnable() {
             public void run() {
-                Log.d("UI thread", "Casting magic spell on adapter...");
-                RecyclerListFragment.adapter.notifyDataSetChanged();
-                RecyclerListFragment.emptyListViewVisibility();
+                Log.d("UI thread", "Casting magic spell on mAdapter...");
+                RecyclerListFragment.mAdapter.notifyDataSetChanged();
+                RecyclerListFragment.showEmptyMessageIfRequired();
 
             }
         });
@@ -212,7 +254,32 @@ public class MainActivity extends AppCompatActivity implements AddEditBirthdayFr
         }
     }
 
-    private class LoadBirthdaysTask extends AsyncTask<Void, Void, ArrayList<Birthday>> {
+    public static void launchLoadBirthdaysTask() {
+        LoadBirthdaysTask lbt = new LoadBirthdaysTask();
+        lbt.execute();
+    }
+
+    /**
+     * Interface Methods
+     * - onItemEdit: Launch AddEditFragment to edit current birthday
+     * - onItemDelete: Delete selected birthday from array
+     */
+    @Override
+    public void onItemEdit(ItemOptionsFragment dialog, int position) {
+        Log.d("HUNT", "onItemEdit");
+        showAddEditBirthdayFragment(AddEditFragment.MODE_EDIT, position);
+    }
+
+    @Override
+    public void onItemDelete(ItemOptionsFragment dialog, int position) {
+        Log.d("HUNT", "onItemDelete");
+        deleteFromArray(position);
+    }
+
+
+    private static class LoadBirthdaysTask extends AsyncTask<Void, Void, ArrayList<Birthday>> {
+
+        String TAG_ASYNC = getClass().getSimpleName();
 
         ArrayList<Birthday> loadedBirthdays;
 
@@ -223,7 +290,7 @@ public class MainActivity extends AppCompatActivity implements AddEditBirthdayFr
                 // Log.v(TAG, "Loading...");
             } catch (Exception e) {
                 loadedBirthdays = new ArrayList<Birthday>();
-                Log.v(TAG, "Error loading JSON data: ", e);
+                Log.v(TAG_ASYNC, "Error loading JSON data: ", e);
             }
 
             return loadedBirthdays;
@@ -233,7 +300,7 @@ public class MainActivity extends AppCompatActivity implements AddEditBirthdayFr
         protected void onPostExecute(ArrayList<Birthday> loadedBirthdays) {
             super.onPostExecute(loadedBirthdays);
 
-            Log.d(TAG, "onPost: " + loadedBirthdays.size());
+            Log.d(TAG_ASYNC, "onPost: " + loadedBirthdays.size());
 
             // Set new data
             // removem then replace all in array
@@ -244,38 +311,40 @@ public class MainActivity extends AppCompatActivity implements AddEditBirthdayFr
 
             dataChangedUiThread();
         }
-    }
 
-    public static ArrayList<Birthday> loadBirthdays() throws IOException,
-            JSONException {
-        ArrayList<Birthday> loadedBirthdays = new ArrayList<Birthday>();
 
-        BufferedReader reader = null;
-        try {
-            // Open and read the file into a StringBuilder
-            InputStream in = mContext.openFileInput(FILENAME);
-            reader = new BufferedReader(new InputStreamReader(in));
-            StringBuilder jsonString = new StringBuilder();
+        // THis is done in background by
+        public ArrayList<Birthday> loadBirthdays() throws IOException,
+                JSONException {
+            ArrayList<Birthday> loadedBirthdays = new ArrayList<Birthday>();
 
-            String line = null;
-            while ((line = reader.readLine()) != null) {
-                // Line breaks are omitted and irrelevant
-                jsonString.append(line);
+            BufferedReader reader = null;
+            try {
+                // Open and read the file into a StringBuilder
+                InputStream in = mContext.openFileInput(FILENAME);
+                reader = new BufferedReader(new InputStreamReader(in));
+                StringBuilder jsonString = new StringBuilder();
+
+                String line = null;
+                while ((line = reader.readLine()) != null) {
+                    // Line breaks are omitted and irrelevant
+                    jsonString.append(line);
+                }
+                // Parse the JSON using JSONTokener
+                JSONArray array = (JSONArray) new JSONTokener(jsonString.toString())
+                        .nextValue();
+                // Build the array of birthdays from JSONObjects
+                for (int i = 0; i < array.length(); i++) {
+                    loadedBirthdays.add(new Birthday(array.getJSONObject(i)));
+                }
+            } catch (FileNotFoundException e) {
+                // Ignore this one; it happens when starting fresh
+            } finally {
+                if (reader != null)
+                    reader.close();
             }
-            // Parse the JSON using JSONTokener
-            JSONArray array = (JSONArray) new JSONTokener(jsonString.toString())
-                    .nextValue();
-            // Build the array of birthdays from JSONObjects
-            for (int i = 0; i < array.length(); i++) {
-                loadedBirthdays.add(new Birthday(array.getJSONObject(i)));
-            }
-        } catch (FileNotFoundException e) {
-            // Ignore this one; it happens when starting fresh
-        } finally {
-            if (reader != null)
-                reader.close();
+            return loadedBirthdays;
         }
-        return loadedBirthdays;
     }
 
     /*

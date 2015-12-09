@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string-array name="item_menu_array">
+        <item>@string/item_menu_edit</item>
+        <item>@string/item_menu_delete</item>
+    </string-array>
+
     <!-- My Random Name List -->
     <string-array name="name_array">
         <item>Alan Turing</item>

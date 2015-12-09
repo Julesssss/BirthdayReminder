@@ -1,115 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/pink"
+    android:layout_height="56dp"
+    android:layout_gravity="center_vertical"
     android:baselineAligned="false"
-    android:orientation="horizontal" >
+    android:orientation="horizontal">
 
     <LinearLayout
-        android:id="@+id/allGroups"
-        android:layout_width="match_parent"
+        android:id="@+id/group_1"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:baselineAligned="false" >
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/group_1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight=".7"
-            android:gravity="center"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/dateDay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:background="#555"
-                android:elevation="4dp"
-                android:singleLine="true"
-                android:gravity="center_horizontal"
-                android:paddingLeft="2dp"
-                android:paddingRight="2dp"
-                android:textColor="#eee"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/dateMonth"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:background="#999"
-                android:singleLine="true"
-                android:elevation="4dp"
-                android:gravity="center_horizontal"
-                android:paddingLeft="4dp"
-                android:paddingRight="4dp"
-                android:textColor="#ffffff"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/group_2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2.6"
-            android:layout_gravity="center"
-            android:orientation="vertical"
-            android:padding="0dp" >
-
-            <TextView
-                android:id="@+id/name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="12dp"
-                android:paddingBottom="12dp"
-                android:layout_marginLeft="18dp"
-                android:layout_gravity="center_vertical"
-                android:gravity="center_vertical"
-                android:singleLine="true"
-                android:textColor="#ffffff"
-                android:textSize="22sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/group_3"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1.2"
-            android:gravity="center" >
-
-            <TextView
-                android:id="@+id/days_remaining"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:paddingLeft="0dp"
-                android:paddingRight="0dp"
-                android:singleLine="true"
-                android:textColor="#f3f3f3"
-                android:textSize="16sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/remindToggleArea"
-            android:layout_gravity="center"
+        <TextView
+            android:id="@+id/dateDay"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="#555"
+            android:elevation="4dp"
+            android:gravity="center"
+            android:paddingLeft="1dp"
+            android:paddingRight="1dp"
+            android:singleLine="true"
+            android:textColor="#eee"
+            android:textSize="12sp" />
 
-            <ImageView
-                android:id="@+id/imageButton"
-                android:layout_width="26dp"
-                android:layout_height="26dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="4dp"
-                android:layout_marginTop="8dp"/>
-        </LinearLayout>
+        <TextView
+            android:id="@+id/dateMonth"
+            android:layout_width="36dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="#999"
+            android:elevation="4dp"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textColor="#ffffff"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
     </LinearLayout>
 
-</LinearLayout>
+
+    <TextView
+        android:id="@+id/days_remaining"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="12dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:textColor="#f3f3f3"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_toEndOf="@id/group_1"
+        android:layout_toLeftOf="@id/days_remaining"
+        android:layout_toRightOf="@id/group_1"
+        android:layout_toStartOf="@id/days_remaining"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:textColor="#fff"
+        android:textSize="22sp" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:background="#2cffffff" />
+
+</RelativeLayout>
