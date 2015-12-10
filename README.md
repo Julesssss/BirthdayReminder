@@ -1,9 +1,10 @@
 # Birthday Reminder 2.0
 App for Android devices which notifies users of upcoming birthdays.
 
-![](http://julianrosser.website/images/birthday_screen_1.png)
+![](http://julianrosser.website/images/app_screenshots/birthday15.png) ![](http://julianrosser.website/images/app_screenshots/birthday16.png)
 
 TODO
+- Auto sorting, closest first
 - Service
 - Notification Receiver
 
@@ -18,7 +19,8 @@ Bugs:
 
 Log
 - 11/12 -
-- 10/12 - Prevented context leaks. Built date/day remaining helper methods. RobotoLight font. Custom date bg drawables with elevation. Now editing birthday instead of replacing.
+- 10/12 - Prevented context leaks. Built date/day remaining helper methods. RobotoLight font.
+Custom date bg drawables with elevation. Now editing birthday instead of replacing. Updated screenshots.
 - 09/12 - Saving/loading using lifecycle methods. New ItemMenuFragment to replace context hack. Rewrote BirthdayListView
           to Material-specs. Formatted and documented Adapter & Fragment.
 - 08/12 - Added JSON save/load functions.
