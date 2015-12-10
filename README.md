@@ -4,20 +4,19 @@ App for Android devices which notifies users of upcoming birthdays.
 ![](http://julianrosser.website/images/birthday_screen_1.png)
 
 TODO
-- Replace context option with list dialog, remove junk from adapter class todo 1
-
-- ListView UI - Font, date background drawables
 - Find and implement alternative to Date() What caused bug - Don't use old code, complete re-write, but find prev error
+- Service
+- Settings Fragment
+- Notification Receiver
 
-- Deep linking & Analytics
 - Settings back-compatibility
 - SQL database instead of JSON ??? necessary? Will take effort, perhaps as backup
 
-Formatting & Documentation
-- MainActivity todo 1st
+- Deep linking & Analytics
+- TypeFace-Light for api < 16
 
 Log
-- 10/12 - s
+- 10/12 - RobotoLight font. Custom date bg drawables with elevation.
 - 09/12 - Saving/loading using lifecycle methods. New ItemMenuFragment to replace context hack. Rewrote BirthdayListView
           to Material-specs. Formatted and documented Adapter & Fragment.
 - 08/12 - Added JSON save/load functions.

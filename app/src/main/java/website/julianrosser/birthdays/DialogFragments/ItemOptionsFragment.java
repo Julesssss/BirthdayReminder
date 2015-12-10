@@ -27,7 +27,7 @@ public class ItemOptionsFragment extends DialogFragment {
     }
 
     // New instance is preferable as we have option to initialize here instead of using passed in params.
-    static ItemOptionsFragment newInstance(int position) {
+    public static ItemOptionsFragment newInstance(int position) {
 
         birthdayListPosition = position;
 

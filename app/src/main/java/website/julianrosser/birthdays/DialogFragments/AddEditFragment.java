@@ -28,16 +28,16 @@ import website.julianrosser.birthdays.R;
 public class AddEditFragment extends DialogFragment {
 
     // Keys for passing birthday information to Dialog
-    final static String MODE_KEY = "key_mode";
-    final static String DATE_KEY = "key_date";
-    final static String MONTH_KEY = "key_month";
-    final static String POS_KEY = "key_pos";
-    final static String NAME_KEY = "key_position";
+    public final static String MODE_KEY = "key_mode";
+    public final static String DATE_KEY = "key_date";
+    public final static String MONTH_KEY = "key_month";
+    public final static String POS_KEY = "key_pos";
+    public final static String NAME_KEY = "key_position";
 
     // To check if we are in new birthday mode or editing birthday mode.
     int ADD_OR_EDIT_MODE;
-    final static int MODE_ADD = 0;
-    final static int MODE_EDIT = 1;
+    public final static int MODE_ADD = 0;
+    public final static int MODE_EDIT = 1;
 
     // Reference to passed bundle when in edit mode todo is this global reference necessary?
     Bundle bundle;
@@ -57,7 +57,7 @@ public class AddEditFragment extends DialogFragment {
     }
 
     // New instance is preferable as we have option to initialize here instead of using passed in params.
-    static AddEditFragment newInstance() {
+    public static AddEditFragment newInstance() {
         return new AddEditFragment();
     }
 

@@ -1,5 +1,6 @@
 package website.julianrosser.birthdays;
 
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,15 +43,17 @@ public class RecyclerViewAdapter
 
         // Pass data to the TextViews
         viewHolder.textName.setText(birthday.getName());
+
         viewHolder.textDaysRemaining.setText(birthday.getFormattedDaysRemainingString());
+
         viewHolder.textDateDay.setText(birthday.getBirthDay());
+
         viewHolder.textDateMonth.setText(birthday.getBirthMonth());
 
         // When item is clicked, show context menu for that item
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 // Open ItemOption menu for selected birthday
                 MainActivity.getContext().showItemOptionsFragment(position);
             }
@@ -78,6 +81,7 @@ public class RecyclerViewAdapter
         TextView textDateMonth;
         TextView textName;
         TextView textDaysRemaining;
+        Typeface typeLight;
 
         public ListItemViewHolder(View itemView) {
             super(itemView);
@@ -87,6 +91,7 @@ public class RecyclerViewAdapter
             textDaysRemaining = (TextView) itemView.findViewById(R.id.days_remaining);
             textDateDay = (TextView) itemView.findViewById(R.id.dateDay);
             textDateMonth = (TextView) itemView.findViewById(R.id.dateMonth);
+            typeLight = Typeface.createFromAsset(MainActivity.getContext().getResources().getAssets(), "Roboto-Light.ttf");
         }
     }
 }
