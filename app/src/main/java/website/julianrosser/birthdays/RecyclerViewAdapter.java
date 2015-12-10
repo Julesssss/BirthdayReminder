@@ -2,6 +2,7 @@ package website.julianrosser.birthdays;
 
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,9 @@ public class RecyclerViewAdapter
         }
 
         // After Adapter is contructed, start the process of loading data
-        MainActivity.launchLoadBirthdaysTask();
+        MainActivity.getContext().launchLoadBirthdaysTask();
+
+        Log.d(TAG, "newAdapter");
 
     }
 

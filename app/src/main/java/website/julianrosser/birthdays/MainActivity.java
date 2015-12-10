@@ -33,11 +33,13 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
     public static ArrayList<Birthday> birthdaysList = new ArrayList<>();
     final public String TAG = getClass().getSimpleName();
 
-    static final String FILENAME = "birthdayArray.json";
+    static final String FILENAME = "birthdays.json";
 
     static RecyclerListFragment recyclerListFragment;
 
     static MainActivity mContext;
+
+    LoadBirthdaysTask loadBirthdaysTask;
 
     /**
      * For easy access to MainActivity context from multiple Classes
@@ -56,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
 
         // Find RecyclerListFragment reference
         if (savedInstanceState != null) {
+            Log.d("RecyclerListFragmnent", "RECYCLE newFragment");
             //Restore the fragment's instance
             recyclerListFragment = (RecyclerListFragment) getSupportFragmentManager().getFragment(
                     savedInstanceState, "mContent");
@@ -63,12 +66,28 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         } else {
             // Create new RecyclerListFragment
             recyclerListFragment = RecyclerListFragment.newInstance();
-
+            Log.d("RecyclerListFragmnent", "NEW newFragment");
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, recyclerListFragment)
                     .commit();
-
         }
+
+        recyclerListFragment.setRetainInstance(true);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        // Remove context to prevent memory leaks
+        mContext = null;
+
+        // Cancel the task if it's running
+        if (isTaskRunning()) {
+            loadBirthdaysTask.cancel(true);
+        }
+
+        loadBirthdaysTask = null;
     }
 
     /**
@@ -123,43 +142,6 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            addTestBirthday();
-            return true;
-
-        } else if (id == R.id.action_add) {
-            showAddEditBirthdayFragment(AddEditFragment.MODE_ADD, -1);
-            return true;
-        } else if (id == R.id.action_save) {
-            try {
-                saveBirthdays(birthdaysList);
-                // Log.d(TAG, "Saving...");
-            } catch (Exception e) {
-                Log.d(TAG, "Error saving JSON data: ", e);
-            }
-        } else if (id == R.id.action_load) {
-            LoadBirthdaysTask lbt = new LoadBirthdaysTask();
-            lbt.execute();
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     public void showAddEditBirthdayFragment(int mode, int birthdayListPosition) {
         // Create an instance of the dialog fragment and show it
         AddEditFragment dialog = AddEditFragment.newInstance();
@@ -192,20 +174,23 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
     }
 
     @Override
-    public void onDialogPositiveClick(AddEditFragment dialog, String name, int day, int month) {
+    public void onDialogPositiveClick(AddEditFragment dialog, String name, int day, int month, int addEditMode, int position) {
         Log.i(TAG, "pos click: " + name);
 
         Date birthdate = new Date();
         birthdate.setDate(day);
         birthdate.setMonth(month);
-        birthdate.setYear(2015); // TODO - TEMP TEMP TEMP! use alternative for date, year is unneccesary
+        birthdate.setYear(2014); // TODO - TEMP TEMP TEMP! use alternative for date, year is unneccesary
 
         name = WordUtils.capitalize(name);
 
-        // todo - Temporary workaround. Adapter should update view automatically when array changes
-        Birthday newBirthday = new Birthday(name, birthdate, true);
-        birthdaysList.add(newBirthday);
-        // RecyclerListFragment.newAdapter();
+        if (addEditMode == AddEditFragment.MODE_EDIT) {
+            birthdaysList.get(position).edit(name, birthdate, true);
+        } else {
+            Birthday newBirthday = new Birthday(name, birthdate, true);
+            birthdaysList.add(newBirthday);
+        }
+
 
         dataChangedUiThread();
     }
@@ -226,6 +211,33 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
 
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            addTestBirthday();
+            return true;
+
+        } else if (id == R.id.action_add) {
+            showAddEditBirthdayFragment(AddEditFragment.MODE_ADD, 0);
+            return true;
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -254,9 +266,13 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         }
     }
 
-    public static void launchLoadBirthdaysTask() {
-        LoadBirthdaysTask lbt = new LoadBirthdaysTask();
-        lbt.execute();
+    public void launchLoadBirthdaysTask() {
+        loadBirthdaysTask = new LoadBirthdaysTask();
+        loadBirthdaysTask.execute();
+    }
+
+    private boolean isTaskRunning() {
+        return (loadBirthdaysTask != null) && (loadBirthdaysTask.getStatus() == AsyncTask.Status.RUNNING);
     }
 
     /**
@@ -266,13 +282,11 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
      */
     @Override
     public void onItemEdit(ItemOptionsFragment dialog, int position) {
-        Log.d("HUNT", "onItemEdit");
         showAddEditBirthdayFragment(AddEditFragment.MODE_EDIT, position);
     }
 
     @Override
     public void onItemDelete(ItemOptionsFragment dialog, int position) {
-        Log.d("HUNT", "onItemDelete");
         deleteFromArray(position);
     }
 
@@ -346,35 +360,4 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
             return loadedBirthdays;
         }
     }
-
-    /*
-    private class LoadTask extends AsyncTask<Void, Integer, Integer> {
-
-        BirthdayListViewAdapter listAdapter;
-
-        LoadTask(BirthdayListViewAdapter context) {
-            listAdapter = context;
-        }
-
-        @Override
-        protected Integer doInBackground(Void... unused) {
-            int i = 1;
-
-            try {
-                list = BirthdayListViewAdapter.loadBirthdays();
-                // Log.v(TAG, "Loading...");
-            } catch (Exception e) {
-                list = new ArrayList<Birthday>();
-                Log.v(TAG, "Error loading JSON data: ", e);
-            }
-            return i;
-        }
-
-        protected void onPostExecute(Integer result) {
-            // Log.v(TAG, "Loading Finished");
-            listAdapter.sortByDate();
-            BirthdayListActivity.loadingFinished();
-
-        }
-    }  */
 }

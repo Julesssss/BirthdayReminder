@@ -19,7 +19,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import website.julianrosser.birthdays.MainActivity;
 import website.julianrosser.birthdays.R;
 
 /**
@@ -64,7 +63,7 @@ public class AddEditFragment extends DialogFragment {
     /* MainActivity implements this interface in order to receive event callbacks. Passes the
     DialogFragment in case the host needs to query it. */
     public interface NoticeDialogListener {
-        void onDialogPositiveClick(AddEditFragment dialog, String name, int date, int month);
+        void onDialogPositiveClick(AddEditFragment dialog, String name, int date, int month, int AddEditMode, int position);
     }
 
     // We override the Fragment.onAttach() method to instantiate NoticeDialogListener and read bundle data
@@ -118,7 +117,7 @@ public class AddEditFragment extends DialogFragment {
             // Move cursor to end of text
             editText.setSelection(editText.getText().length());
 
-            datePicker.updateDate(2015, bundle.getInt(MONTH_KEY), bundle.getInt(DATE_KEY)); // TODO!!!! 2015 is irrelevent???  no effect?
+            datePicker.updateDate(2016, bundle.getInt(MONTH_KEY), bundle.getInt(DATE_KEY)); // TODO!!!! 2015 is irrelevent???  no effect?
         }
 
         // Set view, then add buttons and title
@@ -164,14 +163,9 @@ public class AddEditFragment extends DialogFragment {
                         int dateOfMonth = datePicker.getDayOfMonth();
                         int month = datePicker.getMonth();
 
-                        // If we're editing a previous birthday, delete the old to make way for this replacement
-                        if (ADD_OR_EDIT_MODE == MODE_EDIT) {
-                            // Delete old birthday from array (MA.birthday list array) todo - FIX this when reordering occurs
-                            MainActivity.deleteFromArray(bundle.getInt(POS_KEY));
-                        }
-
                         // Send the positive button event back to MainActivity
-                        mListener.onDialogPositiveClick(AddEditFragment.this, editText.getText().toString(), dateOfMonth, month);
+                        mListener.onDialogPositiveClick(AddEditFragment.this, editText.getText().toString(), dateOfMonth, month,
+                                ADD_OR_EDIT_MODE, bundle.getInt(POS_KEY));
 
                         // Finally close the dialog, and breath a sign of relief
                         dialog.dismiss();

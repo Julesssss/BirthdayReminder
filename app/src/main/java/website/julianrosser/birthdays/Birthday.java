@@ -6,29 +6,34 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
-// Ignore Date method deprecation, todo : check eventually.
-@SuppressWarnings({"deprecation", "unused"})
-
+@SuppressWarnings("deprecation")
 public class Birthday {
 
     // Logging string
-    private final String LOG_TAG = "Birthday.java";
+    private final String LOG_TAG = getClass().getSimpleName();
 
     // JSON keys
     private static final String JSON_NAME = "name";
     private static final String JSON_DATE = "date";
     private static final String JSON_REMIND = "remind";
 
+    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+            "dd.MM.yyyy");
+
+    private static final int DAY_IN_MILLIS = 86400000;
+
     // References to data
     private String name;
     private Date date;
     private boolean remind;
+    private String TAG = getClass().getSimpleName();
 
     /**
      * Constructor for creating new birthday.
-     * Todo : Rename parameters in constructor, after ensuring this wont break references!
      */
     public Birthday(String name, Date date, boolean notifyUserOfBirthday) {
 
@@ -113,7 +118,11 @@ public class Birthday {
     }
 
     public String getFormattedDaysRemainingString() {
-        int i = getDaysBetween(); // todo < 0
+        int i = getDaysBetween();
+
+        if (i > 365 || i < 0) {
+            Log.d(getClass().getSimpleName(), "DATE OUT OF BOUNDS: " + i);
+        }
 
         if (i == -1) {
             return "Yesterday";
@@ -130,10 +139,87 @@ public class Birthday {
         }
     }
 
+
+    // Return a formatted int of exact amount of days until the next birthday
     private int getDaysBetween() {
+
+        Date dateBirthday = getDate();
+        String birthday = String.valueOf(dateBirthday.getDate()) + "."
+                + String.valueOf(dateBirthday.getMonth() + 1) + "."
+                + String.valueOf(getYearOfNextBirthday(dateBirthday));
+
+        Date dateNow = new Date();
+        String today = String.valueOf((dateNow.getDate()) + "."
+                + String.valueOf(dateNow.getMonth() + 1) + "."
+                + String.valueOf(dateNow.getYear() + 1900));
+
+        // use below method to calculate days until next birthday occurance
+        int daysBetween = (int) getDayCount(today, birthday);
+
+        // If exactly a year until next, we know the birthday is today
+        if (daysBetween == 366) {
+            daysBetween = 0;
+        }
+        return daysBetween;
+    }
+
+    /**
+     * Helper method, convert dates to millis and use to calculate full days between them
+     */
+    public static long getDayCount(String start, String end) {
+
+        long dayCount = 0;
+        try {
+            Date dateStart = simpleDateFormat.parse(start);
+            Date dateEnd = simpleDateFormat.parse(end);
+            dayCount = Math.round((dateEnd.getTime() - dateStart.getTime())
+                    / (double) DAY_IN_MILLIS);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return dayCount;
+    }
+
+    /**
+     * Helper method which returns the year of next birthday occurrence of passed date
+     */
+    public static int getYearOfNextBirthday(Date date) { // TODO - Prevent serious out of bound infinite loops
+
+        int year = 2014;
+        date.setYear(year);
+
+        boolean nowAhead = dateInFuture(date);
+
+        // While date instance is in the past, increase by a year and check again
+        while (nowAhead) {
+
+            year += 1;
+            date.setYear(year);
+
+            nowAhead = dateInFuture(date);
+        }
+
+        return year;
+    }
+
+    /**
+     * This method returns false when the passed date is in the future or already passed.
+     */
+    private static boolean dateInFuture(Date queryDate) {
+        // Use calender reference to get correct date
+        Calendar nowCal = Calendar.getInstance();
+
+        // Set date to desired time
         Date now = new Date();
-        now.setYear(2015);
-        return (int) ((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
+        now.setYear(nowCal.get(Calendar.YEAR));
+        now.setMonth(nowCal.get(Calendar.MONTH));
+        now.setDate(nowCal.get(Calendar.DATE));
+
+        // Get
+        long millisNow = now.getTime();
+        long millisBDAY = queryDate.getTime();
+
+        return millisNow > millisBDAY;
     }
 
     private String getDateSuffix() {

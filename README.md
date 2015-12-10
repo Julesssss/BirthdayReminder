@@ -4,19 +4,21 @@ App for Android devices which notifies users of upcoming birthdays.
 ![](http://julianrosser.website/images/birthday_screen_1.png)
 
 TODO
-- Find and implement alternative to Date() What caused bug - Don't use old code, complete re-write, but find prev error
 - Service
-- Settings Fragment
 - Notification Receiver
 
-- Settings back-compatibility
+- Settings Fragment
+- Settings back-compatibility - Option for sort
 - SQL database instead of JSON ??? necessary? Will take effort, perhaps as backup
-
 - Deep linking & Analytics
 - TypeFace-Light for api < 16
 
+Bugs:
+- Quickly click to open Fragments twice
+
 Log
-- 10/12 - RobotoLight font. Custom date bg drawables with elevation.
+- 11/12 -
+- 10/12 - Prevented context leaks. Built date/day remaining helper methods. RobotoLight font. Custom date bg drawables with elevation. Now editing birthday instead of replacing.
 - 09/12 - Saving/loading using lifecycle methods. New ItemMenuFragment to replace context hack. Rewrote BirthdayListView
           to Material-specs. Formatted and documented Adapter & Fragment.
 - 08/12 - Added JSON save/load functions.

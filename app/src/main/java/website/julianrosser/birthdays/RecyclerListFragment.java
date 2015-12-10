@@ -4,6 +4,7 @@ package website.julianrosser.birthdays;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
 
     /* Use newInstance in case in the future we want to add construction parameters or initialisation here */
     public static RecyclerListFragment newInstance() {
+        Log.d("RecyclerListFragmnent", "newFragment");
         return new RecyclerListFragment();
     }
 
@@ -62,11 +64,20 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
         // Can use this to optimize performance as RecyclerView will NOT change size.
         recyclerView.setHasFixedSize(true);
 
-        // Get shiny new RecyclerAdapter and pass to RecyclerView
-        mAdapter = new RecyclerViewAdapter(MainActivity.birthdaysList);
+        if (savedInstanceState == null) {
+            // Get shiny new RecyclerAdapter and pass to RecyclerView
+            mAdapter = new RecyclerViewAdapter(MainActivity.birthdaysList);
+        }
         recyclerView.setAdapter(mAdapter);
 
         return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        emptyText = null;
+        recyclerView = null;
     }
 
     // Show or hide the 'no birthdays found' message depending on size of birthday Array

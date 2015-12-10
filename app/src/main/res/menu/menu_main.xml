@@ -16,14 +16,8 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/action_save"
+        android:id="@+id/action_help"
         android:orderInCategory="300"
-        android:title="Save"
-        app:showAsAction="ifRoom" />
+        android:title="@string/action_help" />
 
-    <item
-        android:id="@+id/action_load"
-        android:orderInCategory="400"
-        android:title="Load"
-        app:showAsAction="ifRoom" />
 </menu>
