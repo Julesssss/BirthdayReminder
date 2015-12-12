@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
      * For easy access to MainActivity context from multiple Classes
      */
     public static MainActivity getContext() {
+
         return mContext;
     }
 

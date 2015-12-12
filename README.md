@@ -5,11 +5,13 @@ App for Android devices which notifies users of upcoming birthdays.
 
 TODO
 - Auto sorting, closest first
+- Save activityContext in MainActivity's onCreate reference with getActivity.mCOntext.
+- Combine LoadBirthdays or move to Utility class?
 - Service
 - Notification Receiver
-
 - Settings Fragment
 - Settings back-compatibility - Option for sort
+
 - SQL database instead of JSON ??? necessary? Will take effort, perhaps as backup
 - Deep linking & Analytics
 - TypeFace-Light for api < 16
@@ -18,7 +20,7 @@ Bugs:
 - Quickly click to open Fragments twice
 
 Log
-- 11/12 -
+- 12/12 - Service is launched on boot. Created BootNotificationReceiver and SetAlarmService.
 - 10/12 - Prevented context leaks. Built date/day remaining helper methods. RobotoLight font.
 Custom date bg drawables with elevation. Now editing birthday instead of replacing. Updated screenshots.
 - 09/12 - Saving/loading using lifecycle methods. New ItemMenuFragment to replace context hack. Rewrote BirthdayListView
