@@ -1,11 +1,15 @@
 # Birthday Reminder 2.0
 App for Android devices which notifies users of upcoming birthdays.
 
-![](http://julianrosser.website/images/app_screenshots/birthday15.png) ![](http://julianrosser.website/images/app_screenshots/birthday16.png)
+![](http://julianrosser.website/images/app_screenshots/birthday15.png)![](http://julianrosser.website/images/app_screenshots/birthday16.png)
 
 TODO
+
+- OnSavedInstance - Method needed to save fragment?
+- Yesterdays date
+
 - Auto sorting, closest first
-- Save activityContext in MainActivity's onCreate reference with getActivity.mCOntext.
+- Save activityContext in MainActivity's onCreate reference with getActivity.mContext.
 - Combine LoadBirthdays or move to Utility class?
 - Service
 - Notification Receiver

@@ -34,7 +34,7 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
 
     /* Use newInstance in case in the future we want to add construction parameters or initialisation here */
     public static RecyclerListFragment newInstance() {
-        Log.d("RecyclerListFragmnent", "newFragment");
+        Log.d("RecyclerListFragment", "newFragment");
         return new RecyclerListFragment();
     }
 
@@ -64,10 +64,8 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
         // Can use this to optimize performance as RecyclerView will NOT change size.
         recyclerView.setHasFixedSize(true);
 
-        if (savedInstanceState == null) {
-            // Get shiny new RecyclerAdapter and pass to RecyclerView
-            mAdapter = new RecyclerViewAdapter(MainActivity.birthdaysList);
-        }
+        mAdapter = new RecyclerViewAdapter(MainActivity.birthdaysList);
+
         recyclerView.setAdapter(mAdapter);
 
         return view;
@@ -83,10 +81,10 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
     // Show or hide the 'no birthdays found' message depending on size of birthday Array
     public static void showEmptyMessageIfRequired() {
 
-        if (MainActivity.birthdaysList.isEmpty()) {
-            emptyText.setVisibility(View.VISIBLE);
-        } else {
-            emptyText.setVisibility(View.INVISIBLE);
-        }
+            if (MainActivity.birthdaysList.isEmpty()) {
+                emptyText.setVisibility(View.VISIBLE);
+            } else {
+                emptyText.setVisibility(View.INVISIBLE);
+            }
     }
 }

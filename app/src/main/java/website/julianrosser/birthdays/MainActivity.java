@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Initilize context reference
+        // Initialize context reference
         mContext = this;
 
         // Find RecyclerListFragment reference
@@ -176,34 +176,32 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
 
     @Override
     public void onDialogPositiveClick(AddEditFragment dialog, String name, int day, int month, int addEditMode, int position) {
-        Log.i(TAG, "pos click: " + name);
-
-        Date birthdate = new Date();
-        birthdate.setDate(day);
-        birthdate.setMonth(month);
-        birthdate.setYear(2014); // TODO - TEMP TEMP TEMP! use alternative for date, year is unneccesary
+        Date dateOfBirth = new Date();
+        dateOfBirth.setDate(day);
+        dateOfBirth.setMonth(month);
+        dateOfBirth.setYear(Birthday.getYearOfNextBirthday(dateOfBirth));
 
         name = WordUtils.capitalize(name);
 
         if (addEditMode == AddEditFragment.MODE_EDIT) {
-            birthdaysList.get(position).edit(name, birthdate, true);
+            birthdaysList.get(position).edit(name, dateOfBirth, true);
         } else {
-            Birthday newBirthday = new Birthday(name, birthdate, true);
+            Birthday newBirthday = new Birthday(name, dateOfBirth, true);
             birthdaysList.add(newBirthday);
         }
-
-
         dataChangedUiThread();
     }
 
     public static void deleteFromArray(int position) {
         birthdaysList.remove(position);
-        Log.d("HUNT", "deleteFromArray()");
         dataChangedUiThread();
     }
 
     // Force UI thread to ensure mAdapter updates recyclerview list
     public static void dataChangedUiThread() {
+        // Reorder ArrayList to sort by nearest birthday.
+        RecyclerViewAdapter.sortBirthdaysByDate();
+
         mContext.runOnUiThread(new Runnable() {
             public void run() {
                 Log.d("UI thread", "Casting magic spell on mAdapter...");
@@ -237,6 +235,9 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
             showAddEditBirthdayFragment(AddEditFragment.MODE_ADD, 0);
             return true;
 
+        } else if (id == R.id.action_delete_all) {
+            birthdaysList.clear();
+            MainActivity.dataChangedUiThread();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -316,9 +317,6 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
             super.onPostExecute(loadedBirthdays);
 
             Log.d(TAG_ASYNC, "onPost: " + loadedBirthdays.size());
-
-            // Set new data
-            // removem then replace all in array
 
             for (Birthday b : loadedBirthdays) {
                 birthdaysList.add(b);

@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class RecyclerViewAdapter
         extends RecyclerView.Adapter
@@ -19,14 +21,13 @@ public class RecyclerViewAdapter
     // Constructor
     public RecyclerViewAdapter(ArrayList<Birthday> birthdayData) { //
         if (birthdayData == null) {
-            throw new IllegalArgumentException("modelData must not be null");
+            MainActivity.birthdaysList = new ArrayList<>();
+        } else if (birthdayData.size() == 0) {
+            // After Adapter is constructed, start the process of loading data
+            MainActivity.getContext().launchLoadBirthdaysTask();
         }
 
-        // After Adapter is contructed, start the process of loading data
-        MainActivity.getContext().launchLoadBirthdaysTask();
-
         Log.d(TAG, "newAdapter");
-
     }
 
 
@@ -67,6 +68,23 @@ public class RecyclerViewAdapter
     public void onViewRecycled(ListItemViewHolder holder) {
         holder.itemView.setOnLongClickListener(null);
         super.onViewRecycled(holder);
+    }
+
+    /**
+     * Sort List by time remaining
+     */
+    public static void sortBirthdaysByDate() {
+
+        for (Birthday b : MainActivity.birthdaysList)
+            b.setYearOfDate(Birthday.getYearOfNextBirthday(b.getDate()));
+
+        //Sorting
+        Collections.sort(MainActivity.birthdaysList, new Comparator<Birthday>() {
+            @Override
+            public int compare(Birthday b1, Birthday b2) {
+                return b1.getDate().compareTo(b2.getDate());
+            }
+        });
     }
 
     @Override

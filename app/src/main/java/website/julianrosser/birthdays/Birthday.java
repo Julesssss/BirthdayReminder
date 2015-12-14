@@ -35,11 +35,11 @@ public class Birthday {
     /**
      * Constructor for creating new birthday.
      */
-    public Birthday(String name, Date date, boolean notifyUserOfBirthday) {
+    public Birthday(String name, Date dateOfBirthday, boolean notifyUserOfBirthday) {
 
         this.name = name;
-        this.date = date;
         this.remind = notifyUserOfBirthday;
+        this.date = dateOfBirthday;
     }
 
     /**
@@ -48,8 +48,8 @@ public class Birthday {
     public void edit(String editName, Date editDate, boolean editRemind) {
 
         this.name = editName;
-        this.date = editDate;
         this.remind = editRemind;
+        this.date = editDate;
     }
 
     /**
@@ -100,6 +100,8 @@ public class Birthday {
     public String getName() {
         return name;
     }
+
+    public void setYearOfDate(int year) { this.date.setYear(year);}
 
     public boolean getRemind() {
         return remind;
@@ -215,11 +217,12 @@ public class Birthday {
         now.setMonth(nowCal.get(Calendar.MONTH));
         now.setDate(nowCal.get(Calendar.DATE));
 
-        // Get
+        // Get dates in form of milliseconds
         long millisNow = now.getTime();
         long millisBDAY = queryDate.getTime();
 
-        return millisNow > millisBDAY;
+        // use this to ensure a birthday
+        return millisNow > millisBDAY + DAY_IN_MILLIS;
     }
 
     private String getDateSuffix() {

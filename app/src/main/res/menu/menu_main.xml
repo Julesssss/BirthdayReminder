@@ -16,6 +16,11 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/action_delete_all"
+        android:orderInCategory="270"
+        android:title="Delete All" />
+
+    <item
         android:id="@+id/action_help"
         android:orderInCategory="300"
         android:title="@string/action_help" />
