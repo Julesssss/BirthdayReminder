@@ -11,13 +11,8 @@ import android.view.MenuItem;
 import org.apache.commons.lang3.text.WordUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONTokener;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -45,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
      * For easy access to MainActivity context from multiple Classes
      */
     public static MainActivity getContext() {
-
         return mContext;
     }
 
@@ -59,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
 
         // Find RecyclerListFragment reference
         if (savedInstanceState != null) {
-            Log.d("RecyclerListFragmnent", "RECYCLE newFragment");
+            Log.d("RecyclerListFragment", "RECYCLE newFragment");
             //Restore the fragment's instance
             recyclerListFragment = (RecyclerListFragment) getSupportFragmentManager().getFragment(
                     savedInstanceState, "mContent");
@@ -67,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         } else {
             // Create new RecyclerListFragment
             recyclerListFragment = RecyclerListFragment.newInstance();
-            Log.d("RecyclerListFragmnent", "NEW newFragment");
+            Log.d("RecyclerListFragment", "NEW newFragment");
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, recyclerListFragment)
                     .commit();
@@ -290,73 +284,5 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
     @Override
     public void onItemDelete(ItemOptionsFragment dialog, int position) {
         deleteFromArray(position);
-    }
-
-
-    private static class LoadBirthdaysTask extends AsyncTask<Void, Void, ArrayList<Birthday>> {
-
-        String TAG_ASYNC = getClass().getSimpleName();
-
-        ArrayList<Birthday> loadedBirthdays;
-
-        @Override
-        protected ArrayList<Birthday> doInBackground(Void... params) {
-            try {
-                loadedBirthdays = loadBirthdays();
-                // Log.v(TAG, "Loading...");
-            } catch (Exception e) {
-                loadedBirthdays = new ArrayList<Birthday>();
-                Log.v(TAG_ASYNC, "Error loading JSON data: ", e);
-            }
-
-            return loadedBirthdays;
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<Birthday> loadedBirthdays) {
-            super.onPostExecute(loadedBirthdays);
-
-            Log.d(TAG_ASYNC, "onPost: " + loadedBirthdays.size());
-
-            for (Birthday b : loadedBirthdays) {
-                birthdaysList.add(b);
-            }
-
-            dataChangedUiThread();
-        }
-
-
-        // THis is done in background by
-        public ArrayList<Birthday> loadBirthdays() throws IOException,
-                JSONException {
-            ArrayList<Birthday> loadedBirthdays = new ArrayList<Birthday>();
-
-            BufferedReader reader = null;
-            try {
-                // Open and read the file into a StringBuilder
-                InputStream in = mContext.openFileInput(FILENAME);
-                reader = new BufferedReader(new InputStreamReader(in));
-                StringBuilder jsonString = new StringBuilder();
-
-                String line = null;
-                while ((line = reader.readLine()) != null) {
-                    // Line breaks are omitted and irrelevant
-                    jsonString.append(line);
-                }
-                // Parse the JSON using JSONTokener
-                JSONArray array = (JSONArray) new JSONTokener(jsonString.toString())
-                        .nextValue();
-                // Build the array of birthdays from JSONObjects
-                for (int i = 0; i < array.length(); i++) {
-                    loadedBirthdays.add(new Birthday(array.getJSONObject(i)));
-                }
-            } catch (FileNotFoundException e) {
-                // Ignore this one; it happens when starting fresh
-            } finally {
-                if (reader != null)
-                    reader.close();
-            }
-            return loadedBirthdays;
-        }
     }
 }

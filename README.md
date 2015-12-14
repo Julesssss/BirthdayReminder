@@ -6,21 +6,17 @@ App for Android devices which notifies users of upcoming birthdays.
 TODO
 
 - OnSavedInstance - Method needed to save fragment?
-- Yesterdays date
-
-- Auto sorting, closest first
 - Save activityContext in MainActivity's onCreate reference with getActivity.mContext.
 - Combine LoadBirthdays or move to Utility class?
-- Service
 - Notification Receiver
-- Settings Fragment
-- Settings back-compatibility - Option for sort
+- Settings Fragment: sorting, notification settings, test notification
+- Deep linking & Analytics
 
 - SQL database instead of JSON ??? necessary? Will take effort, perhaps as backup
-- Deep linking & Analytics
 - TypeFace-Light for api < 16
 
 Bugs:
+- Yesterdays date
 - Quickly click to open Fragments twice
 
 Log
