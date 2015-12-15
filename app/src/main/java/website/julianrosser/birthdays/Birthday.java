@@ -24,7 +24,7 @@ public class Birthday {
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
             "dd.MM.yyyy");
 
-    private static final int DAY_IN_MILLIS = 86400000;
+    public static final int DAY_IN_MILLIS = 86400000;
 
     // References to data
     private String name;
@@ -132,6 +132,8 @@ public class Birthday {
             return "Today";
         } else if (i == 1) {
             return "Tomorrow";
+        } else if (i > 1 && i <= 6) {
+            return Birthday.getWeekdayName(getDate());
         } else if (i > 99) {
             return String.valueOf(i) + " Days";
         } else if (i > 9) {
@@ -143,7 +145,7 @@ public class Birthday {
 
 
     // Return a formatted int of exact amount of days until the next birthday
-    private int getDaysBetween() {
+    public int getDaysBetween() {
 
         Date dateBirthday = getDate();
         String birthday = String.valueOf(dateBirthday.getDate()) + "."
@@ -239,6 +241,55 @@ public class Birthday {
             return "rd";
         } else {
             return "th";
+        }
+    }
+
+    /** Returns a formatted day string built for notification display. */
+    public static String getFormattedStringDay(Birthday b) {
+
+        String dayFormatted = "";
+
+        int daysFromNotiUntilDay = 0; // todo - delay from noti to reminder
+        // Log.i("Birthday-FormatDay", "Days till: " + daysFromNotiUntilDay);
+
+        if (daysFromNotiUntilDay == 0) {
+            dayFormatted += "today";
+        } else if (daysFromNotiUntilDay == 1) {
+            dayFormatted += "tomorrow";
+        } else {
+            dayFormatted += "this " + (getWeekdayName(b.getDate()));
+        }
+        dayFormatted += "!";
+
+        return dayFormatted;
+    }
+
+    /** Used by aabove method and RecyclerAdapter to name day if within a week */
+    public static String getWeekdayName(Date date) {
+
+        // TODO - modifier --> How far ahead is the notification?
+
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(date.getTime());
+
+        switch (c.get(Calendar.DAY_OF_WEEK)) {
+
+            case 1:
+                return "Saturday";
+            case 2:
+                return "Sunday";
+            case 3:
+                return "Monday";
+            case 4:
+                return "Tuesday";
+            case 5:
+                return "Wednesday";
+            case 6:
+                return "Thursday";
+            case 7:
+                return "Friday";
+            default:
+                return "soon";
         }
     }
 }

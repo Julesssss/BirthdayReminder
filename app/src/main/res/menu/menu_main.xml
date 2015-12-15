@@ -10,7 +10,7 @@
 
     <item
         android:id="@+id/action_add"
-        android:icon="@drawable/ic_add_circle_outline_white_18dp"
+        android:icon="@drawable/ic_cake_white_24dp"
         android:orderInCategory="200"
         android:title="@string/action_add"
         app:showAsAction="ifRoom" />
@@ -19,6 +19,11 @@
         android:id="@+id/action_delete_all"
         android:orderInCategory="270"
         android:title="Delete All" />
+
+    <item
+        android:id="@+id/action_test_noti"
+        android:orderInCategory="250"
+        android:title="Test noti" />
 
     <item
         android:id="@+id/action_help"

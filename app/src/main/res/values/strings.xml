@@ -1,9 +1,9 @@
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- Other -->
     <string name="app_name">Birthdays</string>
     <string name="dialog_add">Add Birthday</string>
     <string name="dialog_edit">Edit Birthday</string>
-    <string name="no_birthdays">No birthdays found, click \'+\' to begin adding birthdays</string>
+    <string name="no_birthdays">No birthdays found. Find the Birthday cake Icon below to add birthdays.</string>
 
     <!-- Menu -->
     <string name="action_add">Add</string>
@@ -17,6 +17,15 @@
     <string name="button_positive">Done</string>
     <string name="button_negative">Cancel</string>
 
+    <!-- Notification -->
+    <string name="notification_title">Birthday Reminder</string>
+
     <!-- Colours -->
     <color name="primary_dark">#055</color>
-</resources>
+
+    <string name="format_full_friendly_date"><xliff:g id="month">%1$s</xliff:g>, <xliff:g id="day">%2$s</xliff:g></string>
+    <!-- Language-specific constants -->
+    <string name="today">Today</string>
+
+    <!-- For labelling tomorrow's forecast [CHAR LIMIT=15] -->
+    <string name="tomorrow">Tomorrow</string></resources>

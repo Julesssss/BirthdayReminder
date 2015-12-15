@@ -3,15 +3,19 @@
     package="website.julianrosser.birthdays">
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_cake_white_48dp"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
+
+        <!-- Main Activity -->
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,12 +23,15 @@
             </intent-filter>
         </activity>
 
+        <!-- Boot BroadcastReceiver -->
         <receiver android:name=".BootBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
             </intent-filter>
         </receiver>
+
+        <receiver android:name=".AlarmNotificationBuilder" />
 
         <service android:name=".SetAlarmsService"/>
 

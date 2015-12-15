@@ -1,6 +1,7 @@
 package website.julianrosser.birthdays;
 
 import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -19,17 +20,24 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Date;
 
-/** This service sets notifications alarms for each birthday. */
+/**
+ * This service sets notifications alarms for each birthday.
+ */
 public class SetAlarmsService extends Service {
 
     ArrayList<Birthday> mBirthdayList = new ArrayList<>();
 
-    long dayInMillis = 24 * 60 * 60 * 1000l; // / 86,400,000 milli's per day
+    long dayInMillis = 86400000; // / 86,400,000 milli's per day
+
+    long fullDaysBetweenInMillis, millisExtraAlarmHour, millisRemainingInDay,
+            dayOfReminderMillis, alarmDelayInMillis;
 
     private AlarmManager mAlarmManager;
 
     static Context mContext;
+    private String TAG = getClass().getSimpleName();
 
     @Nullable
     @Override
@@ -56,14 +64,16 @@ public class SetAlarmsService extends Service {
             Toast.makeText(getApplicationContext(), "Birthdays - JSON Exception",
                     Toast.LENGTH_LONG).show();
         }
+
         for (int i = 0; i < mBirthdayList.size(); i++) {
             Birthday b = mBirthdayList.get(i);
             setAlarm(b);
         }
-        // Service has to control its own lifecycles, so stop here
+        // Service has to control its own life cycles, so call stopSelf here
         stopSelf();
     }
 
+    // Function which loads Birthdays from JSON
     public static ArrayList<Birthday> loadBirthdays() throws IOException,
             JSONException {
         ArrayList<Birthday> birthdays = new ArrayList<Birthday>();
@@ -81,6 +91,7 @@ public class SetAlarmsService extends Service {
             // Parse the JSON using JSONTokener
             JSONArray array = (JSONArray) new JSONTokener(jsonString.toString())
                     .nextValue();
+
             // Build the array of birthdays from JSONObjects
             for (int i = 0; i < array.length(); i++) {
                 birthdays.add(new Birthday(array.getJSONObject(i)));
@@ -95,37 +106,60 @@ public class SetAlarmsService extends Service {
     }
 
     private void setAlarm(Birthday b) {
+        // Get milliseconds remaining in current day
+        Date currentTimeDate = new Date();
+        int remHour = 23 - currentTimeDate.getHours(); // extra hour
+        int remMinute = 60 - currentTimeDate.getMinutes();
 
-        // Get desired time in millis until notification fires.
+        millisRemainingInDay = (remHour * 60 * 60 * 1000)
+                + (remMinute * 60 * 1000);
+
+        // Get days between in milliseconds
+        fullDaysBetweenInMillis = ((b.getDaysBetween() - 1) * dayInMillis);
+
+        // Alarm time in milliseconds
+        millisExtraAlarmHour = 12 * 60 * 60 * 1000l; // Set alarm to 12th hour of day
+
+        // //////// millisTotalAlarmDelay
+        alarmDelayInMillis = fullDaysBetweenInMillis + millisExtraAlarmHour
+                + millisRemainingInDay - dayOfReminderMillis; // + days
 
         // Get alarm manager if needed
         if (null == mAlarmManager) {
             mAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         }
 
-        /**
-         * PREVIOUS SET ALARM CODE, NEED TO CHECK
-         *
-        // Create PendingIntent to start the
-        // AlarmNotificationReceiver
-        mNotificationReceiverIntent = new Intent(mContext,
-                AlarmNotificationReceiver.class);
+        /** If notification time is in the future, build receiver */
+        if (alarmDelayInMillis > dayInMillis) {
 
-        // Pass name & day data
-        mNotificationReceiverIntent.putExtra("name", b.getName());
-        mNotificationReceiverIntent.putExtra("days",
-                b.getDaysNoti());
+            // get unique id for each notification from name
+            int id = b.getName().hashCode();
 
-        mNotificationReceiverPendingIntent = PendingIntent
-                .getBroadcast(mContext, id,
-                        mNotificationReceiverIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT);
+            // CreateIntent to start the AlarmNotificationReceiver
+            Intent mNotificationReceiverIntent = new Intent(mContext,
+                    AlarmNotificationBuilder.class);
 
-        // start alarm
-        mAlarmManager.set(AlarmManager.RTC_WAKEUP,
-                System.currentTimeMillis() + alarmDelayInMillis,
-                mNotificationReceiverPendingIntent);
-         */
+            // Build message String
+            String messageString = "" + b.getName() + "'s birthday is " + Birthday.getFormattedStringDay(b);
 
+
+            mNotificationReceiverIntent.putExtra(AlarmNotificationBuilder.STRING_MESSAGE_KEY, messageString); //
+
+            // Create pending Intent using Intent we just built
+            PendingIntent mNotificationReceiverPendingIntent = PendingIntent
+                    .getBroadcast(mContext, id,
+                            mNotificationReceiverIntent,
+                            PendingIntent.FLAG_ONE_SHOT);
+
+
+
+            // Finish by passing PendingIntent and delay time to AlarmManager
+            mAlarmManager.set(AlarmManager.RTC_WAKEUP,
+                    System.currentTimeMillis() + 1200, // todo - alarmDelayInMillis,
+                    mNotificationReceiverPendingIntent);
+
+        } else {
+            Log.i(TAG, "Alarm time in past: " + alarmDelayInMillis);
+        }
     }
 }

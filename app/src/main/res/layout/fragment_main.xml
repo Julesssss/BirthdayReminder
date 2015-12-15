@@ -1,8 +1,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/pink"
     android:layout_height="match_parent"
+    android:background="@color/pink"
     tools:context=".MyActivity">
 
     <android.support.v7.widget.RecyclerView
@@ -10,15 +10,34 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <TextView
+
+    <LinearLayout
         android:id="@+id/empty_view"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="32dp"
-        android:textColor="#fff"
-        android:textSize="22sp"
-        android:visibility="gone"
-        android:text="@string/no_birthdays" />
+        android:layout_marginTop="16dp"
+        android:padding="16dp"
+        android:visibility="gone">
+
+        <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/no_birthdays"
+            android:textColor="#fff"
+            android:textSize="22sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_marginTop="16dp"
+            android:padding="8dp"
+            android:background="@drawable/rect_round_bg_icon"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_cake_white_48dp"/>
+
+    </LinearLayout>
 
 </FrameLayout>

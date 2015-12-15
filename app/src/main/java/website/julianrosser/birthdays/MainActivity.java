@@ -1,6 +1,7 @@
 package website.julianrosser.birthdays;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -99,12 +100,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
             } catch (JSONException | IOException e) {
                 e.printStackTrace();
             }
-
-        } else {
-            // Not good!
-            Log.e(TAG, "birthday list not saved: Either no birthdays to save or error loading"); // todo remove
         }
-
     }
 
     @Override
@@ -162,12 +158,14 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         dialog.show(getSupportFragmentManager(), "AddEditBirthdayFragment");
     }
 
+    // This method creates and shows a new ItemOptionsFragment, this replaces ContextMenu
     public void showItemOptionsFragment(int position) {
         // Create an instance of the dialog fragment and show it
         ItemOptionsFragment dialog = ItemOptionsFragment.newInstance(position);
         dialog.show(getSupportFragmentManager(), "AddEditBirthdayFragment");
     }
 
+    // Callback from AddEditFragment, create new Birthday object and add to array
     @Override
     public void onDialogPositiveClick(AddEditFragment dialog, String name, int day, int month, int addEditMode, int position) {
         Date dateOfBirth = new Date();
@@ -186,12 +184,13 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         dataChangedUiThread();
     }
 
+    // We only use this method to delete data from Birthday array
     public static void deleteFromArray(int position) {
         birthdaysList.remove(position);
         dataChangedUiThread();
     }
 
-    // Force UI thread to ensure mAdapter updates recyclerview list
+    // Force UI thread to ensure mAdapter updates RecyclerView list
     public static void dataChangedUiThread() {
         // Reorder ArrayList to sort by nearest birthday.
         RecyclerViewAdapter.sortBirthdaysByDate();
@@ -232,23 +231,27 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         } else if (id == R.id.action_delete_all) {
             birthdaysList.clear();
             MainActivity.dataChangedUiThread();
+
+        } else if (id == R.id.action_test_noti) {
+            Intent serviceIntent = new Intent(getApplicationContext(), SetAlarmsService.class);
+            getApplicationContext().startService(serviceIntent);
         }
         return super.onOptionsItemSelected(item);
     }
 
     /**
-     * OLD SAVE JSON CODE
+     * Save Birthdays to JSON file
      **/
-
-    // write file
     public void saveBirthdays(ArrayList<Birthday> birthdays)
             throws JSONException, IOException {
 
         Log.i(TAG, "SAVING BIRTHDAYS");
+
         // Build an array in JSON
         JSONArray array = new JSONArray();
         for (Birthday b : birthdays)
             array.put(b.toJSON());
+
         // Write the file to disk
         Writer writer = null;
         try {
@@ -262,11 +265,13 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         }
     }
 
+    // Call this method from Adapter so reference can be kept here in MainActivity
     public void launchLoadBirthdaysTask() {
         loadBirthdaysTask = new LoadBirthdaysTask();
         loadBirthdaysTask.execute();
     }
 
+    // Check if Async task is currently running, to prevent errors when exiting
     private boolean isTaskRunning() {
         return (loadBirthdaysTask != null) && (loadBirthdaysTask.getStatus() == AsyncTask.Status.RUNNING);
     }

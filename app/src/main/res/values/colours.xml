@@ -2,5 +2,6 @@
 <resources>
 
     <color name="pink">#d37</color>
+    <color name="pink_light">#de5da4</color>
 
 </resources>

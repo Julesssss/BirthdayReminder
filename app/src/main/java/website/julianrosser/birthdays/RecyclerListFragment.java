@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 /**
  * Main view. Fragment which holds the RecyclerView.
@@ -25,7 +24,7 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
     static RecyclerView recyclerView;
 
     // Reference to view which shows when list empty. todo - needed globally?
-    static TextView emptyText;
+    static View emptyView;
 
     // Required empty constructor
     public RecyclerListFragment() {
@@ -50,7 +49,7 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
 
 
         // Reference empty TextView
-        emptyText = (TextView) view.findViewById(R.id.empty_view);
+        emptyView = view.findViewById(R.id.empty_view);
 
         /* Detect whether the 'no birthdays found' message should be displayed instead of Rec.view.
          Using empty and recycler references. */
@@ -74,17 +73,17 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        emptyText = null;
+        emptyView = null;
         recyclerView = null;
     }
 
     // Show or hide the 'no birthdays found' message depending on size of birthday Array
-    public static void showEmptyMessageIfRequired() {
+    public static void showEmptyMessageIfRequired() { // todo - remove then replace to prevent redraw?
 
             if (MainActivity.birthdaysList.isEmpty()) {
-                emptyText.setVisibility(View.VISIBLE);
+                emptyView.setVisibility(View.VISIBLE);
             } else {
-                emptyText.setVisibility(View.INVISIBLE);
+                emptyView.setVisibility(View.INVISIBLE);
             }
     }
 }
