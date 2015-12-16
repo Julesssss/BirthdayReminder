@@ -5,15 +5,19 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.view.ContextThemeWrapper;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -38,6 +42,8 @@ public class AddEditFragment extends DialogFragment {
     int ADD_OR_EDIT_MODE;
     public final static int MODE_ADD = 0;
     public final static int MODE_EDIT = 1;
+
+    final int DIALOG_WIDTH_SIZE = 280;
 
     // Reference to passed bundle when in edit mode todo is this global reference necessary?
     Bundle bundle;
@@ -100,7 +106,7 @@ public class AddEditFragment extends DialogFragment {
 
         // Build the dialog and get LayoutInflater
         AlertDialog.Builder builder = new AlertDialog.Builder(
-                new ContextThemeWrapper(getActivity(), R.style.AppTheme)); // todo - did this change anything?
+                new ContextThemeWrapper(getActivity(), R.style.DialogFragmentTheme));
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         // Inflate the brilliantly designed layout, passing null as the parent view because its
@@ -110,7 +116,6 @@ public class AddEditFragment extends DialogFragment {
         // Get DatePicker reference and hide year spinner
         final DatePicker datePicker = (DatePicker) view.findViewById(R.id.datePicker);
         datePicker.findViewById(Resources.getSystem().getIdentifier("year", "id", "android")).setVisibility(View.GONE); // todo - why id & android?
-        //datePicker.setPadding(0,0,0,0);
 
         // Set Birthday name and birth date if in Edit mode
         if (ADD_OR_EDIT_MODE == MODE_EDIT) {
@@ -134,6 +139,31 @@ public class AddEditFragment extends DialogFragment {
         return builder.create();
     }
 
+    // Set background colour and dialog width
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        getDialog().getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.dialog_background));
+        getDialog().getWindow().setLayout(getPixelsFromDP(DIALOG_WIDTH_SIZE), ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        setRetainInstance(true);
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    // This is needed as bug in Compat library destroys Fragment on Activity rotation
+    @Override
+    public void onDestroyView() {
+        if (getDialog() != null && getRetainInstance())
+            getDialog().setDismissMessage(null);
+        super.onDestroyView();
+    }
+
+    // Helper method for getting exact pixel size for device from density independent pixels
+    public int getPixelsFromDP(int px) {
+        Resources r = getResources();
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, px, r.getDisplayMetrics());
+    }
+
     /**
      * Use onStart to set Button clickListener, which enables us to override the 'Done' button. Then we can
      * stop dialog from being dismissed and the new birthday from being created until the name String is to our liking.
@@ -150,6 +180,13 @@ public class AddEditFragment extends DialogFragment {
         // Use my custom onFocusChange function. // todo - use view.OnFocus... ? Not View
         View.OnFocusChangeListener onFocusChangeListener = new MyFocusChangeListener();
         editText.setOnFocusChangeListener(onFocusChangeListener);
+
+        // Set buttons Text color
+        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.WHITE);
+        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.WHITE);
+
+        // Set background drawable
+        getDialog().getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.dialog_background));
 
         // Null check
         if (dialog != null) {

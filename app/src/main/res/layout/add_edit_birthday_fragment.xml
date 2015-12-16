@@ -7,17 +7,23 @@
     android:focusableInTouchMode="true"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:paddingTop="16dp">
+    android:paddingTop="8dp">
 
     <EditText
         android:id="@+id/editTextName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/editTextName"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:fontFamily="sans-serif-light"
         android:hint="@string/hint_name"
         android:imeOptions="actionDone"
         android:inputType="textCapSentences"
-        android:singleLine="true" />
+        android:singleLine="true"
+        android:textColor="#fff"
+        android:textColorHint="#fff" />
 
     <DatePicker
         android:id="@+id/datePicker"

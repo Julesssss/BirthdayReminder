@@ -32,9 +32,19 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
 
     static final String FILENAME = "birthdays.json";
 
+    // Keys for orientation change reference
+    final String ADD_EDIT_INSTANCE_KEY = "fragment_add_edit";
+    final String ITEM_OPTIONS_INSTANCE_KEY = "fragment_item_options";
+    final String RECYCLER_LIST_INSTANCE_KEY = "fragment_recycler_list";
+
     static RecyclerListFragment recyclerListFragment;
 
+    // Fragment references
+    AddEditFragment addEditFragment;
+    ItemOptionsFragment itemOptionsFragment;
+
     static MainActivity mContext;
+    static Context mAppContext;
 
     LoadBirthdaysTask loadBirthdaysTask;
 
@@ -45,6 +55,10 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         return mContext;
     }
 
+    public static Context getAppContext() {
+        return mContext;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,21 +66,33 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
 
         // Initialize context reference
         mContext = this;
+        mAppContext = getApplicationContext();
 
         // Find RecyclerListFragment reference
         if (savedInstanceState != null) {
             Log.d("RecyclerListFragment", "RECYCLE newFragment");
             //Restore the fragment's instance
             recyclerListFragment = (RecyclerListFragment) getSupportFragmentManager().getFragment(
-                    savedInstanceState, "mContent");
+                    savedInstanceState, RECYCLER_LIST_INSTANCE_KEY);
+
+
+            itemOptionsFragment = (ItemOptionsFragment) getSupportFragmentManager().getFragment(
+                    savedInstanceState, ITEM_OPTIONS_INSTANCE_KEY);
+
+            addEditFragment = (AddEditFragment) getSupportFragmentManager().getFragment(
+                    savedInstanceState, ADD_EDIT_INSTANCE_KEY
+            );
+
+
 
         } else {
             // Create new RecyclerListFragment
             recyclerListFragment = RecyclerListFragment.newInstance();
-            Log.d("RecyclerListFragment", "NEW newFragment");
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, recyclerListFragment)
                     .commit();
+
+
         }
         // Set default preferences
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
@@ -110,12 +136,18 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        //Save the fragment's instance
-        getSupportFragmentManager().putFragment(outState, "mContent", recyclerListFragment);
+        //Save the fragment's instance (IF THEY EXIST!)
+        getSupportFragmentManager().putFragment(outState, RECYCLER_LIST_INSTANCE_KEY, recyclerListFragment);
+
+        if (itemOptionsFragment != null && itemOptionsFragment.isAdded()) {
+            getSupportFragmentManager().putFragment(outState, ITEM_OPTIONS_INSTANCE_KEY, itemOptionsFragment);
+        }
+        if (addEditFragment != null && addEditFragment.isAdded()) {
+            getSupportFragmentManager().putFragment(outState, ADD_EDIT_INSTANCE_KEY, addEditFragment);
+        }
     }
 
     // Method for adding test birthday
-
     public void addTestBirthday() {
 
         for (int x = 0; x < 1; x++) {
@@ -138,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
 
     public void showAddEditBirthdayFragment(int mode, int birthdayListPosition) {
         // Create an instance of the dialog fragment and show it
-        AddEditFragment dialog = AddEditFragment.newInstance();
+        addEditFragment = AddEditFragment.newInstance();
 
         // Create bundle for storing mode information
         Bundle bundle = new Bundle();
@@ -157,15 +189,16 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         }
 
         // Pass bundle to Dialog, get FragmentManager and show
-        dialog.setArguments(bundle);
-        dialog.show(getSupportFragmentManager(), "AddEditBirthdayFragment");
+        addEditFragment.setArguments(bundle);
+        addEditFragment.show(getSupportFragmentManager(), "AddEditBirthdayFragment");
     }
 
     // This method creates and shows a new ItemOptionsFragment, this replaces ContextMenu
     public void showItemOptionsFragment(int position) {
         // Create an instance of the dialog fragment and show it
-        ItemOptionsFragment dialog = ItemOptionsFragment.newInstance(position);
-        dialog.show(getSupportFragmentManager(), "AddEditBirthdayFragment");
+        itemOptionsFragment = ItemOptionsFragment.newInstance(position);
+        itemOptionsFragment.setRetainInstance(true);
+        itemOptionsFragment.show(getSupportFragmentManager(), "AddEditBirthdayFragment");
     }
 
     // Callback from AddEditFragment, create new Birthday object and add to array
@@ -262,7 +295,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         // Write the file to disk
         Writer writer = null;
         try {
-            OutputStream out = mContext.openFileOutput(FILENAME,
+            OutputStream out = mAppContext.openFileOutput(FILENAME,
                     Context.MODE_PRIVATE);
             writer = new OutputStreamWriter(out);
             writer.write(array.toString());
@@ -290,11 +323,13 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
      */
     @Override
     public void onItemEdit(ItemOptionsFragment dialog, int position) {
+        itemOptionsFragment.dismiss();
         showAddEditBirthdayFragment(AddEditFragment.MODE_EDIT, position);
     }
 
     @Override
     public void onItemDelete(ItemOptionsFragment dialog, int position) {
+        itemOptionsFragment.dismiss();
         deleteFromArray(position);
     }
 }

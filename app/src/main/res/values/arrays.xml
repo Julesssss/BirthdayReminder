@@ -6,6 +6,28 @@
         <item>@string/item_menu_delete</item>
     </string-array>
 
+    <string-array name="dayRemindEntries">
+        <item>On the day</item>
+        <item>1 day before</item>
+        <item>2 days before</item>
+        <item>3 days before</item>
+        <item>4 days before</item>
+        <item>5 days before</item>
+        <item>6 days before</item>
+        <item>A week before</item>
+    </string-array>
+
+    <string-array name="dayRemindValues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+    </string-array>
+
     <!-- My Random Name List -->
     <string-array name="name_array">
         <item>Alan Turing</item>

@@ -123,14 +123,8 @@ public class SetAlarmsService extends Service {
         // Alarm time in milliseconds
         millisExtraAlarmHour = 12 * 60 * 60 * 1000l; // Set alarm to 12th hour of day
 
-        //
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        String dayBeforeReminderPref = sharedPref.getString(getString(R.string.pref_days_before_key), "1");
-
-        int daysBeforeReminder = Integer.valueOf(dayBeforeReminderPref); //todo - surround with try catch
-        Log.i(TAG, "Day Remind: " + daysBeforeReminder);
-
-        dayOfReminderMillis = dayInMillis * daysBeforeReminder;
+        // For each extra day before notification, add the amount of millis in day
+        dayOfReminderMillis = dayInMillis * getDaysBeforeReminderPref();
 
         // //////// millisTotalAlarmDelay
         alarmDelayInMillis = fullDaysBetweenInMillis + millisExtraAlarmHour
@@ -177,5 +171,14 @@ public class SetAlarmsService extends Service {
         } else {
             Log.i(TAG, "Alarm time in past: " + alarmDelayInMillis); // todo - toast to let user know birthday wont be shown
         }
+    }
+
+    private int getDaysBeforeReminderPref() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        String dayBeforeReminderPref = sharedPref.getString(getString(R.string.pref_days_before_key), "1");
+
+        Log.i(TAG, "Day Remind: " + Integer.valueOf(dayBeforeReminderPref));
+
+        return Integer.valueOf(dayBeforeReminderPref); //todo - surround with try catch
     }
 }

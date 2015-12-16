@@ -112,7 +112,7 @@ public class RecyclerViewAdapter
             textDaysRemaining = (TextView) itemView.findViewById(R.id.days_remaining);
             textDateDay = (TextView) itemView.findViewById(R.id.dateDay);
             textDateMonth = (TextView) itemView.findViewById(R.id.dateMonth);
-            typeLight = Typeface.createFromAsset(MainActivity.getContext().getResources().getAssets(), "Roboto-Light.ttf");
+            typeLight = Typeface.createFromAsset(MainActivity.getAppContext().getResources().getAssets(), "Roboto-Light.ttf");
         }
     }
 }

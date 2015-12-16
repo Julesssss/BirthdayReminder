@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Custom ListView for ItemOptionsFragment (Alternative to context menu) -->
+<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/options_frag_listview"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:divider="@null"
+    android:dividerHeight="0dp"
+    android:paddingBottom="8dp"
+    android:paddingTop="8dp" />

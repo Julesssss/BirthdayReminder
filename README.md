@@ -4,31 +4,35 @@ App for Android devices which notifies users of upcoming birthdays.
 ![](http://julianrosser.website/images/app_screenshots/birthday15.png)![](http://julianrosser.website/images/app_screenshots/birthday16.png)
 
 TODO
-- 1dp to bottom of date rectangle background
-- Settings Fragment: sorting, notification settings, test notification
-- Add icons to ItemOptionsMenu
-- Tablet Layouts
-- Deep linking
-- Analytics
+- Setting for Time of notification.
+- FloatingActionButton
+- Reminder on??? bool needed? NO
+- if AlarmNOT SET, alert user
 - Call service when Activity is stopped, save data when we add, edit or delete! (Delay service so Data is ALWAYS saved first)
+- If settings changed, reset ALL alarms
+- Tablet Layouts
 
-- Animation
-- Save activityContext in MainActivity's onCreate reference with getActivity.mContext.
-- OnSavedInstance - Method needed to save fragment?
-- SQL database instead of JSON ??? necessary? Will take effort, perhaps as backup
+- Deep linking
+- Old APIs button highlight
+- Analytics
 - TypeFace-Light for api < 16
 - 2 birthdays on same day?
 - App launcher icon name
+- Icon, screenshots, video
 
-Next Update
+Next Update?
 - Widget
 - Custom Notification
+- Animation
+- SQL database instead of JSON ??? necessary? Will take effort, perhaps as backup
 
 Bugs:
-- Yesterdays date stays at top sometimes?
 - Quickly click to open Fragments twice
+- End of month bug?
 
 Log
+- 16/12 - Built custom Adapter so ItemOptionFrag shows Icons. Save/recall Fragment references onRotate.
+          DialogFragment custom theme & size. Replaced unnecessary Activity context refs with AppContext. Refactored Arrays.
 - 15/12 - Created NotificationBuilder class and added personalised notifications. Cake app icon. Vibrate pattern.
         - SettingActivity & Fragment. Works with days before remind setting. Reduced DatePicker padding.
 - 14/12 - Auto sorting. Refactored LoadBirthdaysTask.

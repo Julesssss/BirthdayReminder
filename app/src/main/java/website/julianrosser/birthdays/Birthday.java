@@ -1,5 +1,8 @@
 package website.julianrosser.birthdays;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.text.format.DateFormat;
 import android.util.Log;
 
@@ -103,7 +106,9 @@ public class Birthday {
         return name;
     }
 
-    public void setYearOfDate(int year) { this.date.setYear(year);}
+    public void setYearOfDate(int year) {
+        this.date.setYear(year);
+    }
 
     public boolean getRemind() {
         return remind;
@@ -246,27 +251,34 @@ public class Birthday {
         }
     }
 
-    /** Returns a formatted day string built for notification display. */
+    /**
+     * Returns a formatted day string built for notification display.
+     */
     public static String getFormattedStringDay(Birthday b) {
 
         String dayFormatted = "";
 
-        int daysFromNotiUntilDay = 0; // todo - delay from noti to reminder
-        // Log.i("Birthday-FormatDay", "Days till: " + daysFromNotiUntilDay);
+        int daysFromNotiUntilDay = getDaysBeforeReminderPref(); // todo - delay from noti to reminder
 
         if (daysFromNotiUntilDay == 0) {
             dayFormatted += "today";
         } else if (daysFromNotiUntilDay == 1) {
             dayFormatted += "tomorrow";
+        } else if (daysFromNotiUntilDay == 7) {
+            dayFormatted += "next week";
         } else {
-            dayFormatted += "this " + (getWeekdayName(b.getDate()));
+            Date newDate = new Date();
+            newDate.setTime(b.getDate().getTime() + DAY_IN_MILLIS);
+            dayFormatted += "this " + (getWeekdayName(newDate));
         }
         dayFormatted += "!";
 
         return dayFormatted;
     }
 
-    /** Used by aabove method and RecyclerAdapter to name day if within a week */
+    /**
+     * Used by aabove method and RecyclerAdapter to name day if within a week
+     */
     public static String getWeekdayName(Date date) {
 
         // TODO - modifier --> How far ahead is the notification?
@@ -293,5 +305,18 @@ public class Birthday {
             default:
                 return "soon";
         }
+    }
+
+    private static int getDaysBeforeReminderPref() {
+        Context mAppContext = MainActivity.getAppContext();
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(mAppContext);
+        String dayBeforeReminderPref = sharedPref.getString(mAppContext.getString(R.string.pref_days_before_key), "1");
+
+        Log.i("Birthday", "Day Remind: " + Integer.valueOf(dayBeforeReminderPref));
+
+        return Integer.valueOf(dayBeforeReminderPref); //todo - surround with try catch
+
+
     }
 }

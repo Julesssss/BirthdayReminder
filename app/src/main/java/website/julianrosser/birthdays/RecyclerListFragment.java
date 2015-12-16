@@ -56,7 +56,7 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
         showEmptyMessageIfRequired();
 
         // Set layout properties
-        LinearLayoutManager llm = new LinearLayoutManager(MainActivity.getContext());
+        LinearLayoutManager llm = new LinearLayoutManager(MainActivity.getAppContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
 

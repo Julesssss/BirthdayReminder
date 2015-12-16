@@ -55,7 +55,7 @@ public class LoadBirthdaysTask extends AsyncTask<Void, Void, ArrayList<Birthday>
         BufferedReader reader = null;
         try {
             // Open and read the file into a StringBuilder
-            InputStream in = MainActivity.getContext().openFileInput(MainActivity.FILENAME);
+            InputStream in = MainActivity.getAppContext().openFileInput(MainActivity.FILENAME);
             reader = new BufferedReader(new InputStreamReader(in));
             StringBuilder jsonString = new StringBuilder();
 
