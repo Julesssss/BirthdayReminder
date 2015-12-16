@@ -5,7 +5,9 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
@@ -19,6 +21,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -120,6 +123,15 @@ public class SetAlarmsService extends Service {
         // Alarm time in milliseconds
         millisExtraAlarmHour = 12 * 60 * 60 * 1000l; // Set alarm to 12th hour of day
 
+        //
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        String dayBeforeReminderPref = sharedPref.getString(getString(R.string.pref_days_before_key), "1");
+
+        int daysBeforeReminder = Integer.valueOf(dayBeforeReminderPref); //todo - surround with try catch
+        Log.i(TAG, "Day Remind: " + daysBeforeReminder);
+
+        dayOfReminderMillis = dayInMillis * daysBeforeReminder;
+
         // //////// millisTotalAlarmDelay
         alarmDelayInMillis = fullDaysBetweenInMillis + millisExtraAlarmHour
                 + millisRemainingInDay - dayOfReminderMillis; // + days
@@ -151,15 +163,19 @@ public class SetAlarmsService extends Service {
                             mNotificationReceiverIntent,
                             PendingIntent.FLAG_ONE_SHOT);
 
-
-
             // Finish by passing PendingIntent and delay time to AlarmManager
             mAlarmManager.set(AlarmManager.RTC_WAKEUP,
                     System.currentTimeMillis() + 1200, // todo - alarmDelayInMillis,
                     mNotificationReceiverPendingIntent);
 
+            Date dateOfAlarm = new Date();
+            dateOfAlarm.setTime(dateOfAlarm.getTime() + alarmDelayInMillis);
+            Log.i(TAG, "Alarm time: " + DateFormat.getDateTimeInstance().format(dateOfAlarm));
+            Toast.makeText(SetAlarmsService.this, "Time of Alarm: " + DateFormat.getDateTimeInstance().format(dateOfAlarm), Toast.LENGTH_SHORT).show();
+
+
         } else {
-            Log.i(TAG, "Alarm time in past: " + alarmDelayInMillis);
+            Log.i(TAG, "Alarm time in past: " + alarmDelayInMillis); // todo - toast to let user know birthday wont be shown
         }
     }
 }

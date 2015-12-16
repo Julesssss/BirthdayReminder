@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -67,6 +68,8 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
                     .add(R.id.container, recyclerListFragment)
                     .commit();
         }
+        // Set default preferences
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         recyclerListFragment.setRetainInstance(true);
     }
@@ -220,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_help) {
             addTestBirthday();
             return true;
 
@@ -235,6 +238,10 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         } else if (id == R.id.action_test_noti) {
             Intent serviceIntent = new Intent(getApplicationContext(), SetAlarmsService.class);
             getApplicationContext().startService(serviceIntent);
+
+        } else if (id == R.id.action_settings) {
+            Intent i = new Intent(this, SettingsActivity.class);
+            startActivity(i);
         }
         return super.onOptionsItemSelected(item);
     }

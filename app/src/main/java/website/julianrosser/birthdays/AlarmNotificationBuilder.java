@@ -41,7 +41,7 @@ public class AlarmNotificationBuilder extends BroadcastReceiver {
         // Build notification
         Notification.Builder notificationBuilder = new Notification.Builder(
                 context).setTicker(mMessageString)
-                .setSmallIcon(R.drawable.ic_cake_white_18dp)
+                .setSmallIcon(R.drawable.ic_cake_white_24dp)
                 .setAutoCancel(true)
                 .setContentTitle(context.getString(R.string.notification_title))
                 .setContentText(mMessageString)

@@ -30,6 +30,8 @@ public class Birthday {
     private String name;
     private Date date;
     private boolean remind;
+
+    // logging tag
     private String TAG = getClass().getSimpleName();
 
     /**

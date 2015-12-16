@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.view.ContextThemeWrapper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -96,8 +97,10 @@ public class AddEditFragment extends DialogFragment {
     @NonNull // todo - why?
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+
         // Build the dialog and get LayoutInflater
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(
+                new ContextThemeWrapper(getActivity(), R.style.AppTheme)); // todo - did this change anything?
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         // Inflate the brilliantly designed layout, passing null as the parent view because its
@@ -107,6 +110,7 @@ public class AddEditFragment extends DialogFragment {
         // Get DatePicker reference and hide year spinner
         final DatePicker datePicker = (DatePicker) view.findViewById(R.id.datePicker);
         datePicker.findViewById(Resources.getSystem().getIdentifier("year", "id", "android")).setVisibility(View.GONE); // todo - why id & android?
+        //datePicker.setPadding(0,0,0,0);
 
         // Set Birthday name and birth date if in Edit mode
         if (ADD_OR_EDIT_MODE == MODE_EDIT) {

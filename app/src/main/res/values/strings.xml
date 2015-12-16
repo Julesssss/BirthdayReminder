@@ -12,6 +12,34 @@
     <string name="item_menu_edit">Edit</string>
     <string name="item_menu_delete">Delete</string>
 
+    <!-- Preferences -->
+    <string name="pref_days_before_key">day_before_key</string>
+    <string name="choice_1_day">1 day before</string>
+    <string name="pref_remind_day_title">Remind me</string>
+    <string name="pref_remind_day_title_dialog">Day of reminder</string>
+
+    <string-array name="dayRemindEntries">
+        <item>On the day</item>
+        <item>1 day before</item>
+        <item>2 days before</item>
+        <item>3 days before</item>
+        <item>4 days before</item>
+        <item>5 days before</item>
+        <item>6 days before</item>
+        <item>A week before</item>
+    </string-array>
+
+    <string-array name="dayRemindValues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+    </string-array>
+
     <!-- AddEdit DialogFragment -->
     <string name="hint_name">Name&#8230;</string>
     <string name="button_positive">Done</string>
@@ -28,4 +56,10 @@
     <string name="today">Today</string>
 
     <!-- For labelling tomorrow's forecast [CHAR LIMIT=15] -->
-    <string name="tomorrow">Tomorrow</string></resources>
+    <string name="tomorrow">Tomorrow</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_preference">Settings</string>
+    <string name="title_activity_settings">Settings</string>
+</resources>
