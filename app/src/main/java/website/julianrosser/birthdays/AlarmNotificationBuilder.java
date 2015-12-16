@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 
@@ -20,6 +21,10 @@ public class AlarmNotificationBuilder extends BroadcastReceiver {
     // Use same ID's, so that only 1 notification can be shown at any time.
     int PENDING_INTENT_ID = 0;
     int MY_NOTIFICATION_ID = 100;
+
+    // get sound from context
+    Uri notificationSound = Uri.parse("android.resource://"
+            + MainActivity.mAppContext.getPackageName() + "/" + R.raw.birthday_notification);
 
     // Vibration pattern used on notification
     int delay = 100;
@@ -46,6 +51,7 @@ public class AlarmNotificationBuilder extends BroadcastReceiver {
                 .setContentTitle(context.getString(R.string.notification_title))
                 .setContentText(mMessageString)
                 .setContentIntent(mContentIntent)
+                .setSound(notificationSound)
                 .setVibrate(mVibratePattern);
 
         // Get NotificationManager

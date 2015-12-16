@@ -19,6 +19,14 @@
     <string name="pref_remind_day_title">Remind me</string>
     <string name="pref_remind_day_title_dialog">Day of reminder</string>
 
+    <string name="pref_time_before_key">time_before_key</string>
+    <string name="pref_remind_time_title_dialog">Time of reminder</string>
+    <string name="pref_remind_time_title">Time of reminder</string>
+
+    <string name="pref_time_8">8</string>
+    <string name="pref_time_12">12</string>
+    <string name="pref_time_17">17</string>
+
     <!-- AddEdit DialogFragment -->
     <string name="hint_name">Name&#8230;</string>
     <string name="button_positive">Done</string>

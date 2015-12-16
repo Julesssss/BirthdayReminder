@@ -1,5 +1,6 @@
 package website.julianrosser.birthdays;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -15,9 +16,15 @@ public class SettingsActivity extends AppCompatActivity {
         getFragmentManager().beginTransaction()
                 .replace(android.R.id.content, new SettingsFragment())
                 .commit();
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.pink_dark)));
+        }
     }
 
-    /** Use seperate fragment so we can keep the ActionBar */
+    /**
+     * Use seperate fragment so we can keep the ActionBar
+     */
     public static class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceChangeListener {
 
         @Override
@@ -26,6 +33,7 @@ public class SettingsActivity extends AppCompatActivity {
             addPreferencesFromResource(R.xml.preferences);
 
             bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_days_before_key)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_time_before_key)));
         }
 
         /**

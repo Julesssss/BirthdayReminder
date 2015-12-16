@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <resources>
+<resources>
 
-        <!-- Base application theme. -->
-        <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-            <!-- Customize your theme here. -->
-            <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
-            <item name="android:buttonStyle">@style/RobotoButtonStyle</item>
-            <item name="android:editTextStyle">@style/EditTextTheme</item>
-        </style>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
+        <item name="android:buttonStyle">@style/RobotoButtonStyle</item>
+        <item name="android:editTextStyle">@style/EditTextTheme</item>
+        <item name="actionBarStyle">@style/MyActionBar</item>
+        <item name="android:panelFullBackground">@color/pink_light</item>
+        <item name="android:textAppearanceLarge">@style/MyTextAppearance</item>
+        <item name="android:preferenceStyle">@style/PreferenceTheme</item>
+    </style>
 
     <style name="DialogFragmentTheme" parent="android:Theme.Dialog">
         <item name="android:textColor">#fff</item>
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowFullscreen">false</item>
         <item name="android:windowBackground">@android:color/transparent</item>
-       </style>
+    </style>
 
     <style name="RobotoTextViewStyle" parent="android:Widget.TextView">
         <item name="android:fontFamily">sans-serif-light</item>
@@ -26,11 +30,34 @@
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
+    <!-- EditText Themes -->
     <style name="EditTextTheme" parent="@android:style/Widget.Holo.EditText">
         <item name="android:textColor">#fff</item>
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textColorHint">#fff</item>
     </style>
 
+    <style name="MyTextAppearance" parent="@android:style/TextAppearance.Large">
+        <item name="android:textColor">#fff</item>
+    </style>
 
-    </resources>
+    <!-- Preference Themes -->
+    <style name="PreferenceTheme" parent="Theme.AppCompat">
+        <!-- Pref category title & pref dialog highlight & button text color-->
+        <item name="colorAccent">#fff</item>
+        <item name="colorPrimary">#fff</item>
+        <item name="android:background">@color/pink</item>
+
+    </style>
+
+    <!-- ActionBar styles -->
+    <style name="MyActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/pink_dark</item>
+        <!-- Support library compatibility -->
+        <item name="background">@color/pink_dark</item>
+
+        <item name="android:panelFullBackground">@color/pink_light</item>
+
+    </style>
+
+</resources>

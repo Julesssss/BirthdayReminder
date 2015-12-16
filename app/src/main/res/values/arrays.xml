@@ -7,15 +7,15 @@
     </string-array>
 
     <string-array name="dayRemindEntries">
-        <item>On the day</item>
-        <item>1 day before</item>
-        <item>2 days before</item>
-        <item>3 days before</item>
-        <item>4 days before</item>
-        <item>5 days before</item>
-        <item>6 days before</item>
-        <item>A week before</item>
-    </string-array>
+    <item>On the day</item>
+    <item>1 day before</item>
+    <item>2 days before</item>
+    <item>3 days before</item>
+    <item>4 days before</item>
+    <item>5 days before</item>
+    <item>6 days before</item>
+    <item>A week before</item>
+</string-array>
 
     <string-array name="dayRemindValues">
         <item>0</item>
@@ -26,6 +26,18 @@
         <item>5</item>
         <item>6</item>
         <item>7</item>
+    </string-array>
+
+    <string-array name="timeRemindEntries">
+        <item>8am</item>
+        <item>12am</item>
+        <item>5pm</item>
+    </string-array>
+
+    <string-array name="timeRemindValues">
+        <item>@string/pref_time_8</item>
+        <item>@string/pref_time_12</item>
+        <item>@string/pref_time_17</item>
     </string-array>
 
     <!-- My Random Name List -->

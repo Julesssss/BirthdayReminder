@@ -32,7 +32,9 @@ public class SetAlarmsService extends Service {
 
     ArrayList<Birthday> mBirthdayList = new ArrayList<>();
 
-    long dayInMillis = 86400000; // / 86,400,000 milli's per day
+    long dayInMillis = 86400000l; // / 86,400,000 milliseconds in a day
+
+    long hourInMillis = 3600000l; // Amount of milliseconds in an hour
 
     long fullDaysBetweenInMillis, millisExtraAlarmHour, millisRemainingInDay,
             dayOfReminderMillis, alarmDelayInMillis;
@@ -72,6 +74,7 @@ public class SetAlarmsService extends Service {
             Birthday b = mBirthdayList.get(i);
             setAlarm(b);
         }
+
         // Service has to control its own life cycles, so call stopSelf here
         stopSelf();
     }
@@ -114,14 +117,15 @@ public class SetAlarmsService extends Service {
         int remHour = 23 - currentTimeDate.getHours(); // extra hour
         int remMinute = 60 - currentTimeDate.getMinutes();
 
-        millisRemainingInDay = (remHour * 60 * 60 * 1000)
+        millisRemainingInDay = (remHour * hourInMillis)
                 + (remMinute * 60 * 1000);
 
         // Get days between in milliseconds
         fullDaysBetweenInMillis = ((b.getDaysBetween() - 1) * dayInMillis);
 
         // Alarm time in milliseconds
-        millisExtraAlarmHour = 12 * 60 * 60 * 1000l; // Set alarm to 12th hour of day
+        int hourOfAlarm = getTimeOfReminderPref();
+        millisExtraAlarmHour = hourOfAlarm * hourInMillis; // Set alarm to 12th hour of day
 
         // For each extra day before notification, add the amount of millis in day
         dayOfReminderMillis = dayInMillis * getDaysBeforeReminderPref();
@@ -167,9 +171,9 @@ public class SetAlarmsService extends Service {
             Log.i(TAG, "Alarm time: " + DateFormat.getDateTimeInstance().format(dateOfAlarm));
             Toast.makeText(SetAlarmsService.this, "Time of Alarm: " + DateFormat.getDateTimeInstance().format(dateOfAlarm), Toast.LENGTH_SHORT).show();
 
-
         } else {
             Log.i(TAG, "Alarm time in past: " + alarmDelayInMillis); // todo - toast to let user know birthday wont be shown
+            Toast.makeText(mContext, "", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -180,5 +184,14 @@ public class SetAlarmsService extends Service {
         Log.i(TAG, "Day Remind: " + Integer.valueOf(dayBeforeReminderPref));
 
         return Integer.valueOf(dayBeforeReminderPref); //todo - surround with try catch
+    }
+
+    private int getTimeOfReminderPref() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        String timeOfReminderPref = sharedPref.getString(getString(R.string.pref_time_before_key), getString(R.string.pref_time_12));
+
+        Log.i(TAG, "Day Remind: " + Integer.valueOf(timeOfReminderPref));
+
+        return Integer.valueOf(timeOfReminderPref); //todo - surround with try catch
     }
 }

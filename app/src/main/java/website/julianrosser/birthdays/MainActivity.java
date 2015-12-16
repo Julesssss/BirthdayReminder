@@ -91,9 +91,8 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, recyclerListFragment)
                     .commit();
-
-
         }
+
         // Set default preferences
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 

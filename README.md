@@ -4,17 +4,18 @@ App for Android devices which notifies users of upcoming birthdays.
 ![](http://julianrosser.website/images/app_screenshots/birthday15.png)![](http://julianrosser.website/images/app_screenshots/birthday16.png)
 
 TODO
-- Setting for Time of notification.
 - FloatingActionButton
-- Reminder on??? bool needed? NO
 - if AlarmNOT SET, alert user
 - Call service when Activity is stopped, save data when we add, edit or delete! (Delay service so Data is ALWAYS saved first)
 - If settings changed, reset ALL alarms
 - Tablet Layouts
+- Sorting option
+- notification options
 
 - Deep linking
 - Old APIs button highlight
 - Analytics
+- Reminder on??? bool needed? NO
 - TypeFace-Light for api < 16
 - 2 birthdays on same day?
 - App launcher icon name
@@ -32,7 +33,8 @@ Bugs:
 
 Log
 - 16/12 - Built custom Adapter so ItemOptionFrag shows Icons. Save/recall Fragment references onRotate.
-          DialogFragment custom theme & size. Replaced unnecessary Activity context refs with AppContext. Refactored Arrays.
+          Dialogs theme & size. Replaced unnecessary Activity context refs with AppContext. Refactored Arrays.
+          Created birthday_notification.mp3 & added to notification. Settings theme & Time preference
 - 15/12 - Created NotificationBuilder class and added personalised notifications. Cake app icon. Vibrate pattern.
         - SettingActivity & Fragment. Works with days before remind setting. Reduced DatePicker padding.
 - 14/12 - Auto sorting. Refactored LoadBirthdaysTask.
