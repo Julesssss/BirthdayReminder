@@ -3,9 +3,16 @@
 
     <PreferenceCategory android:title="Reminder Settings">
 
+        <CheckBoxPreference
+            android:defaultValue="@string/pref_enable_notifications_default"
+            android:key="@string/pref_enable_notifications_key"
+            android:summaryOff="@string/pref_enable_notifications_false"
+            android:summaryOn="@string/pref_enable_notifications_true"
+            android:title="@string/pref_enable_notifications_label" />
+
         <ListPreference
             android:defaultValue="1"
-            android:dialogTitle="@string/pref_remind_day_title"
+            android:dialogTitle="@string/pref_remind_day_title_dialog"
             android:entries="@array/dayRemindEntries"
             android:entryValues="@array/dayRemindValues"
             android:key="@string/pref_days_before_key"
@@ -18,6 +25,39 @@
             android:entryValues="@array/timeRemindValues"
             android:key="@string/pref_time_before_key"
             android:title="@string/pref_remind_time_title_dialog" />
+
+        <CheckBoxPreference
+            android:defaultValue="@string/pref_vibrate_default"
+            android:key="@string/pref_vibrate_key"
+            android:summaryOff="@string/pref_vibrate_false"
+            android:summaryOn="@string/pref_vibrate_true"
+            android:title="@string/pref_vibrate_label" />
+
+        <CheckBoxPreference
+            android:defaultValue="@string/pref_sound_default"
+            android:key="@string/pref_sound_key"
+            android:summaryOff="@string/pref_sound_false"
+            android:summaryOn="@string/pref_sound_true"
+            android:title="@string/pref_sound_label" />
+
+        <Preference
+            android:key="@string/pref_test_notification_key"
+            android:summary="@string/pref_test_notification_summary"
+            android:title="@string/pref_test_notification_title">
+
+        </Preference>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Birthday List Settings">
+        <ListPreference
+
+            android:defaultValue="0"
+            android:dialogTitle="@string/pref_sort_by_title"
+            android:entries="@array/pref_sort_entries"
+            android:entryValues="@array/pref_sort_values"
+            android:key="@string/pref_sort_by_key"
+            android:title="@string/pref_sort_by_title" />
 
     </PreferenceCategory>
 

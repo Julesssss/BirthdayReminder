@@ -62,17 +62,24 @@ public class SetAlarmsService extends Service {
             mBirthdayList = loadBirthdays();
         } catch (IOException e) {
             e.printStackTrace();
-            Toast.makeText(getApplicationContext(), "Birthdays - IO Exception",
+            Toast.makeText(getApplicationContext(), "Birthdays - IO Error",
                     Toast.LENGTH_LONG).show();
         } catch (JSONException e) {
             e.printStackTrace();
-            Toast.makeText(getApplicationContext(), "Birthdays - JSON Exception",
+            Toast.makeText(getApplicationContext(), "Birthdays - JSON Error",
                     Toast.LENGTH_LONG).show();
         }
 
-        for (int i = 0; i < mBirthdayList.size(); i++) {
-            Birthday b = mBirthdayList.get(i);
-            setAlarm(b);
+        // If user wants notifications, set alarms
+        if (getNotificationAllowedPref()) {
+            for (int i = 0; i < mBirthdayList.size(); i++) {
+                Birthday b = mBirthdayList.get(i);
+                setAlarm(b);
+            }
+
+        } else {
+            // User does not want a notification, so don't set alarms. //todo - will old alarms still fire?
+            Log.i(TAG, "Notification not wanted by user");
         }
 
         // Service has to control its own life cycles, so call stopSelf here
@@ -140,7 +147,7 @@ public class SetAlarmsService extends Service {
         }
 
         /** If notification time is in the future, build receiver */
-        if (alarmDelayInMillis > dayInMillis) {
+        if (alarmDelayInMillis > 0) { // TODO - check outliers here
 
             // get unique id for each notification from name
             int id = b.getName().hashCode();
@@ -159,11 +166,11 @@ public class SetAlarmsService extends Service {
             PendingIntent mNotificationReceiverPendingIntent = PendingIntent
                     .getBroadcast(mContext, id,
                             mNotificationReceiverIntent,
-                            PendingIntent.FLAG_ONE_SHOT);
+                            PendingIntent.FLAG_UPDATE_CURRENT);
 
             // Finish by passing PendingIntent and delay time to AlarmManager
             mAlarmManager.set(AlarmManager.RTC_WAKEUP,
-                    System.currentTimeMillis() + 1200, // todo - alarmDelayInMillis,
+                    System.currentTimeMillis() + 5000, // todo - alarmDelayInMillis,
                     mNotificationReceiverPendingIntent);
 
             Date dateOfAlarm = new Date();
@@ -179,19 +186,16 @@ public class SetAlarmsService extends Service {
 
     private int getDaysBeforeReminderPref() {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        String dayBeforeReminderPref = sharedPref.getString(getString(R.string.pref_days_before_key), "1");
-
-        Log.i(TAG, "Day Remind: " + Integer.valueOf(dayBeforeReminderPref));
-
-        return Integer.valueOf(dayBeforeReminderPref); //todo - surround with try catch
+        return Integer.valueOf(sharedPref.getString(getString(R.string.pref_days_before_key), "1"));
     }
 
     private int getTimeOfReminderPref() {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        String timeOfReminderPref = sharedPref.getString(getString(R.string.pref_time_before_key), getString(R.string.pref_time_12));
+        return Integer.valueOf(sharedPref.getString(getString(R.string.pref_time_before_key), getString(R.string.pref_time_12)));
+    }
 
-        Log.i(TAG, "Day Remind: " + Integer.valueOf(timeOfReminderPref));
-
-        return Integer.valueOf(timeOfReminderPref); //todo - surround with try catch
+    private boolean getNotificationAllowedPref() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        return sharedPref.getBoolean(getString(R.string.pref_enable_notifications_key), true);
     }
 }

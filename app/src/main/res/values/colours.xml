@@ -5,5 +5,6 @@
     <color name="pink_dark">#c2185b</color>
     <color name="pink_darker">#880e4f</color>
     <color name="pink_light">#de5da4</color>
+    <color name="primary_dark">#055</color>
 
 </resources>

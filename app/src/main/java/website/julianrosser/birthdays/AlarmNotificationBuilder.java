@@ -6,8 +6,10 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.text.DateFormat;
@@ -22,13 +24,11 @@ public class AlarmNotificationBuilder extends BroadcastReceiver {
     int PENDING_INTENT_ID = 0;
     int MY_NOTIFICATION_ID = 100;
 
-    // get sound from context
-    Uri notificationSound = Uri.parse("android.resource://"
-            + MainActivity.mAppContext.getPackageName() + "/" + R.raw.birthday_notification);
+    // Hard coded reference to sound file, also used for test notification
+    public static Uri notificationSound = Uri.parse("android.resource://website.julianrosser.birthdays/" + R.raw.birthday_notification);
 
     // Vibration pattern used on notification
-    int delay = 100;
-    private long[] mVibratePattern = {0, delay, delay, delay, delay, delay};
+    public static long[] mVibratePattern = {0, 100, 100, 100, 100, 100};
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -50,9 +50,14 @@ public class AlarmNotificationBuilder extends BroadcastReceiver {
                 .setAutoCancel(true)
                 .setContentTitle(context.getString(R.string.notification_title))
                 .setContentText(mMessageString)
-                .setContentIntent(mContentIntent)
-                .setSound(notificationSound)
-                .setVibrate(mVibratePattern);
+                .setContentIntent(mContentIntent);
+
+        // These notification parameters depend on users preferences
+        if (getVibrationAllowedPref(context)) {
+            notificationBuilder.setVibrate(mVibratePattern);
+        } if (getSoundAllowedPref(context)) {
+            notificationBuilder.setSound(notificationSound);
+        }
 
         // Get NotificationManager
         NotificationManager mNotificationManager = (NotificationManager) context
@@ -71,4 +76,17 @@ public class AlarmNotificationBuilder extends BroadcastReceiver {
         // Output
         Log.i(getClass().getSimpleName(), "" + mMessageString + " - notification at: " + DateFormat.getDateTimeInstance().format(new Date()));
     }
+
+    public static boolean getVibrationAllowedPref(Context c) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(c);
+
+        return sharedPref.getBoolean(c.getString(R.string.pref_vibrate_key), true);
+    }
+
+    public static boolean getSoundAllowedPref(Context c) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(c);
+
+        return sharedPref.getBoolean(c.getString(R.string.pref_sound_key), true);
+    }
+
 }

@@ -45,6 +45,7 @@
     <style name="PreferenceTheme" parent="Theme.AppCompat">
         <!-- Pref category title & pref dialog highlight & button text color-->
         <item name="colorAccent">#fff</item>
+        <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
         <item name="colorPrimary">#fff</item>
         <item name="android:background">@color/pink</item>
 

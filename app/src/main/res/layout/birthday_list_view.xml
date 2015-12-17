@@ -44,7 +44,7 @@
             android:elevation="8dp"
             android:gravity="center"
             android:singleLine="true"
-            android:textColor="#ffffff"
+            android:textColor="#fff"
             android:textSize="17sp" />
 
     </LinearLayout>

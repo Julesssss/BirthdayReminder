@@ -1,7 +1,10 @@
 package website.julianrosser.birthdays;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -68,6 +71,9 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         mContext = this;
         mAppContext = getApplicationContext();
 
+        // Set default preference values
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+
         // Find RecyclerListFragment reference
         if (savedInstanceState != null) {
             Log.d("RecyclerListFragment", "RECYCLE newFragment");
@@ -83,8 +89,6 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
                     savedInstanceState, ADD_EDIT_INSTANCE_KEY
             );
 
-
-
         } else {
             // Create new RecyclerListFragment
             recyclerListFragment = RecyclerListFragment.newInstance();
@@ -92,10 +96,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
                     .add(R.id.container, recyclerListFragment)
                     .commit();
         }
-
-        // Set default preferences
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-
+        // This is to help the fragment keep it;s state on rotation
         recyclerListFragment.setRetainInstance(true);
     }
 
@@ -112,6 +113,21 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         }
 
         loadBirthdaysTask = null;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (mContext == null) {
+            mContext = this;
+        }
+        if (mAppContext == null) {
+            mAppContext = getApplicationContext();
+        }
+
+        MainActivity.dataChangedUiThread();
+
     }
 
     /**
@@ -219,16 +235,43 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         dataChangedUiThread();
     }
 
-    // We only use this method to delete data from Birthday array
+    // We only use this method to delete data from Birthday array and pass a reference to the cancel alarm method.
     public static void deleteFromArray(int position) {
+        cancelAlarm(birthdaysList.get(position));
+
         birthdaysList.remove(position);
         dataChangedUiThread();
     }
 
+    // This builds an identical PendingIntent to the alarm and cancels when
+    private static void cancelAlarm(Birthday deletedBirthday) {
+
+        // CreateIntent to start the AlarmNotificationReceiver
+        Intent mNotificationReceiverIntent = new Intent(MainActivity.getAppContext(),
+                AlarmNotificationBuilder.class);
+
+        // Create pending Intent using Intent we just built
+        PendingIntent mNotificationReceiverPendingIntent = PendingIntent
+                .getBroadcast(getAppContext(), deletedBirthday.getName().hashCode(),
+                        mNotificationReceiverIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // Finish by passing PendingIntent and delay time to AlarmManager
+        AlarmManager mAlarmManager = (AlarmManager) getAppContext().getSystemService(ALARM_SERVICE);
+        mAlarmManager.cancel(mNotificationReceiverPendingIntent);
+    }
+
     // Force UI thread to ensure mAdapter updates RecyclerView list
     public static void dataChangedUiThread() {
-        // Reorder ArrayList to sort by nearest birthday.
-        RecyclerViewAdapter.sortBirthdaysByDate();
+        // Reorder ArrayList to sort by desired method
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getAppContext());
+
+        // Get users sort preference
+        if (Integer.valueOf(sharedPref.getString(getAppContext().getString(R.string.pref_sort_by_key), "0")) == 1) {
+            RecyclerViewAdapter.sortBirthdaysByName();
+        } else {
+            RecyclerViewAdapter.sortBirthdaysByDate();
+        }
 
         mContext.runOnUiThread(new Runnable() {
             public void run() {
@@ -266,10 +309,6 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         } else if (id == R.id.action_delete_all) {
             birthdaysList.clear();
             MainActivity.dataChangedUiThread();
-
-        } else if (id == R.id.action_test_noti) {
-            Intent serviceIntent = new Intent(getApplicationContext(), SetAlarmsService.class);
-            getApplicationContext().startService(serviceIntent);
 
         } else if (id == R.id.action_settings) {
             Intent i = new Intent(this, SettingsActivity.class);

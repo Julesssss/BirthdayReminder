@@ -70,9 +70,7 @@ public class RecyclerViewAdapter
         super.onViewRecycled(holder);
     }
 
-    /**
-     * Sort List by time remaining
-     */
+    // Sort Birthday array by closest date
     public static void sortBirthdaysByDate() {
 
         for (Birthday b : MainActivity.birthdaysList)
@@ -83,6 +81,16 @@ public class RecyclerViewAdapter
             @Override
             public int compare(Birthday b1, Birthday b2) {
                 return b1.getDate().compareTo(b2.getDate());
+            }
+        });
+    }
+
+    // Sort Birthday array by first name
+    public static void sortBirthdaysByName() {
+        Collections.sort(MainActivity.birthdaysList, new Comparator<Birthday>() {
+            @Override
+            public int compare(Birthday b1, Birthday b2) {
+                return b1.getName().compareTo(b2.getName());
             }
         });
     }

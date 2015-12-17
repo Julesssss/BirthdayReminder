@@ -4,34 +4,41 @@ App for Android devices which notifies users of upcoming birthdays.
 ![](http://julianrosser.website/images/app_screenshots/birthday15.png)![](http://julianrosser.website/images/app_screenshots/birthday16.png)
 
 TODO
-- FloatingActionButton
-- if AlarmNOT SET, alert user
-- Call service when Activity is stopped, save data when we add, edit or delete! (Delay service so Data is ALWAYS saved first)
-- If settings changed, reset ALL alarms
-- Tablet Layouts
-- Sorting option
-- notification options
+- FloatingActionButton to replace ActionButton on ?API? +
+- Save data when changed
+- Call service when Activity is stopped,  (Delay service so Data is ALWAYS saved first)
+- If (DAY/TIME) settings changed, reset ALL alarms
+- Alarm on?
 
+- Tablet Layouts
+- Localization
 - Deep linking
 - Old APIs button highlight
 - Analytics
-- Reminder on??? bool needed? NO
+- Reminder on??? bool needed? YES, as option
 - TypeFace-Light for api < 16
 - 2 birthdays on same day?
 - App launcher icon name
 - Icon, screenshots, video
+- Remove Logs
+- Refactor testing code to text file
+- Prepare to launch - https://developer.android.com/tools/publishing/preparing.html
+- final checks - https://developer.android.com/distribute/tools/launch-checklist.html
 
 Next Update?
 - Widget
+- Fragments as bottom cards?
 - Custom Notification
 - Animation
 - SQL database instead of JSON ??? necessary? Will take effort, perhaps as backup
 
 Bugs:
+- Crash when click noti while on settings activity and go back to 1st (Unlikely to happen to user)
 - Quickly click to open Fragments twice
 - End of month bug?
 
 Log
+- 17/12 - Cancel notification when deleted. Added preferences (Reminder time, vibrate?, sound?, test noti, sorting)
 - 16/12 - Built custom Adapter so ItemOptionFrag shows Icons. Save/recall Fragment references onRotate.
           Dialogs theme & size. Replaced unnecessary Activity context refs with AppContext. Refactored Arrays.
           Created birthday_notification.mp3 & added to notification. Settings theme & Time preference
