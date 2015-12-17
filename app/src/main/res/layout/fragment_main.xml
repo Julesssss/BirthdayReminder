@@ -1,4 +1,5 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,13 +11,25 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="32dp"
+        android:layout_marginRight="32dp"
+        android:src="@drawable/ic_cake_white_24dp"
+        app:elevation="4dp"
+        app:rippleColor="@color/pink_darker" />
 
     <LinearLayout
         android:id="@+id/empty_view"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="16dp"
+        android:orientation="vertical"
         android:padding="16dp"
         android:visibility="gone">
 
@@ -31,13 +44,13 @@
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_marginTop="16dp"
-            android:padding="8dp"
-            android:background="@drawable/rect_round_bg_icon"
-            android:layout_gravity="center_horizontal"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_cake_white_48dp"/>
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/rect_round_bg_icon"
+            android:padding="8dp"
+            android:src="@drawable/ic_cake_white_48dp" />
 
     </LinearLayout>
 
-</FrameLayout>
+</RelativeLayout>

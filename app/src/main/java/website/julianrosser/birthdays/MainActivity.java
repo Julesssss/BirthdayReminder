@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
     }
 
     public static Context getAppContext() {
-        return mContext;
+        return mAppContext;
     }
 
     @Override
@@ -137,14 +137,6 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
     protected void onStop() {
         super.onStop();
 
-        if (birthdaysList != null && birthdaysList.size() != 0) {
-
-            try {
-                saveBirthdays(birthdaysList);
-            } catch (JSONException | IOException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     @Override
@@ -179,6 +171,12 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
             birthdaysList.add(b);
 
             dataChangedUiThread();
+
+            try {
+                saveBirthdays();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
     }
@@ -219,13 +217,16 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
     // Callback from AddEditFragment, create new Birthday object and add to array
     @Override
     public void onDialogPositiveClick(AddEditFragment dialog, String name, int day, int month, int addEditMode, int position) {
+        // Build date object which will be used by new Birthday
         Date dateOfBirth = new Date();
         dateOfBirth.setDate(day);
         dateOfBirth.setMonth(month);
         dateOfBirth.setYear(Birthday.getYearOfNextBirthday(dateOfBirth));
 
+        // Format name by capitalizing name
         name = WordUtils.capitalize(name);
 
+        // Decide whether to create new or edit old birthday
         if (addEditMode == AddEditFragment.MODE_EDIT) {
             birthdaysList.get(position).edit(name, dateOfBirth, true);
         } else {
@@ -233,14 +234,33 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
             birthdaysList.add(newBirthday);
         }
         dataChangedUiThread();
+
+        // Attempt to save updated Birthday data
+        try {
+            saveBirthdays();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // We only use this method to delete data from Birthday array and pass a reference to the cancel alarm method.
     public static void deleteFromArray(int position) {
+
+        // Cancel the notification PendingIntent
         cancelAlarm(birthdaysList.get(position));
 
+        // Remove from Array
         birthdaysList.remove(position);
+
+        // Use UI Thread to notify adapter to data change
         dataChangedUiThread();
+
+        // Attempt to save updated Birthday data
+        try {
+            saveBirthdays();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // This builds an identical PendingIntent to the alarm and cancels when
@@ -303,7 +323,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
             return true;
 
         } else if (id == R.id.action_add) {
-            showAddEditBirthdayFragment(AddEditFragment.MODE_ADD, 0);
+            showAddEditBirthdayFragment(AddEditFragment.MODE_ADD, 0); // todo why 0?
             return true;
 
         } else if (id == R.id.action_delete_all) {
@@ -318,29 +338,42 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
     }
 
     /**
-     * Save Birthdays to JSON file
+     * Save Birthdays to JSON file, then Update alarms by starting Service
      **/
-    public void saveBirthdays(ArrayList<Birthday> birthdays)
+    public static void saveBirthdays()
             throws JSONException, IOException {
 
-        Log.i(TAG, "SAVING BIRTHDAYS");
+        Log.i("SaveBirthdays", "SAVING BIRTHDAYS");
 
-        // Build an array in JSON
-        JSONArray array = new JSONArray();
-        for (Birthday b : birthdays)
-            array.put(b.toJSON());
+        if (birthdaysList != null && birthdaysList.size() != 0) {
 
-        // Write the file to disk
-        Writer writer = null;
-        try {
-            OutputStream out = mAppContext.openFileOutput(FILENAME,
-                    Context.MODE_PRIVATE);
-            writer = new OutputStreamWriter(out);
-            writer.write(array.toString());
-        } finally {
-            if (writer != null)
-                writer.close();
+            try {
+                // Build an array in JSON
+                JSONArray array = new JSONArray();
+                for (Birthday b : birthdaysList)
+                    array.put(b.toJSON());
+
+                // Write the file to disk
+                Writer writer = null;
+                try {
+                    OutputStream out = mAppContext.openFileOutput(FILENAME,
+                            Context.MODE_PRIVATE);
+                    writer = new OutputStreamWriter(out);
+                    writer.write(array.toString());
+
+                } finally {
+                    if (writer != null)
+                        writer.close();
+                }
+
+            } catch (JSONException | IOException e) {
+                e.printStackTrace();
+            }
         }
+
+        // Launch service to update alarms when data changed
+        Intent serviceIntent = new Intent(MainActivity.getAppContext(), SetAlarmsService.class);
+        MainActivity.getAppContext().startService(serviceIntent);
     }
 
     // Call this method from Adapter so reference can be kept here in MainActivity
@@ -369,5 +402,10 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
     public void onItemDelete(ItemOptionsFragment dialog, int position) {
         itemOptionsFragment.dismiss();
         deleteFromArray(position);
+    }
+
+    public static int getDaysBeforeReminderPref() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(mAppContext);
+        return Integer.valueOf(sharedPref.getString(getAppContext().getString(R.string.pref_days_before_key), "1"));
     }
 }

@@ -28,6 +28,13 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Intent serviceIntent = new Intent(this, SetAlarmsService.class);
+        startService(serviceIntent);
+    }
+
     /**
      * Use separate fragment so we can keep the ActionBar
      */

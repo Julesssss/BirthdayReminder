@@ -3,42 +3,49 @@ App for Android devices which notifies users of upcoming birthdays.
 
 ![](http://julianrosser.website/images/app_screenshots/birthday15.png)![](http://julianrosser.website/images/app_screenshots/birthday16.png)
 
-TODO
-- FloatingActionButton to replace ActionButton on ?API? +
-- Save data when changed
-- Call service when Activity is stopped,  (Delay service so Data is ALWAYS saved first)
-- If (DAY/TIME) settings changed, reset ALL alarms
-- Alarm on?
-
-- Tablet Layouts
-- Localization
-- Deep linking
-- Old APIs button highlight
-- Analytics
+TODO - Main:
+- FloatingActionButton to replace ActionButton on which ?API?+
 - Reminder on??? bool needed? YES, as option
+
+View:
+- Tablet Layouts
+- Old APIs button highlight color
 - TypeFace-Light for api < 16
-- 2 birthdays on same day?
+- Animation
+
+Resources:
 - App launcher icon name
 - Icon, screenshots, video
-- Remove Logs
-- Refactor testing code to text file
+
+Marketing:
+- Localization
+- Deep linking
+- Analytics
+
+Final:
+- Remove then set alarm?
+- Refactor Logs, testing code to text file
 - Prepare to launch - https://developer.android.com/tools/publishing/preparing.html
 - final checks - https://developer.android.com/distribute/tools/launch-checklist.html
-
-Next Update?
-- Widget
-- Fragments as bottom cards?
-- Custom Notification
-- Animation
-- SQL database instead of JSON ??? necessary? Will take effort, perhaps as backup
 
 Bugs:
 - Crash when click noti while on settings activity and go back to 1st (Unlikely to happen to user)
 - Quickly click to open Fragments twice
 - End of month bug?
+- SettingsActivity keeps calling Service. callback or some solution to ToManyCalls problem
+
+Next Update?
+- Widget
+- 2 birthdays on same day?
+- Fragments as bottom cards?
+- Custom Notification
+- Animation
+- SQL database instead of JSON ??? necessary? Will take effort, perhaps as backup
+
 
 Log
 - 17/12 - Cancel notification when deleted. Added preferences (Reminder time, vibrate?, sound?, test noti, sorting)
+          Birthdays now saved and notification alarms set when data changes.
 - 16/12 - Built custom Adapter so ItemOptionFrag shows Icons. Save/recall Fragment references onRotate.
           Dialogs theme & size. Replaced unnecessary Activity context refs with AppContext. Refactored Arrays.
           Created birthday_notification.mp3 & added to notification. Settings theme & Time preference

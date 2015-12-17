@@ -11,6 +11,7 @@
         <item name="android:panelFullBackground">@color/pink_light</item>
         <item name="android:textAppearanceLarge">@style/MyTextAppearance</item>
         <item name="android:preferenceStyle">@style/PreferenceTheme</item>
+        <item name="colorAccent">@color/pink_light</item>
     </style>
 
     <style name="DialogFragmentTheme" parent="android:Theme.Dialog">

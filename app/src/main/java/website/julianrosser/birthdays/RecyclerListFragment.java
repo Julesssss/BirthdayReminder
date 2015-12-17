@@ -2,12 +2,15 @@ package website.julianrosser.birthdays;
 
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import website.julianrosser.birthdays.DialogFragments.AddEditFragment;
 
 /**
  * Main view. Fragment which holds the RecyclerView.
@@ -47,6 +50,13 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
         // Initialise important reference to the main view: RecyclerView
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 
+        // Floating Action Button
+        FloatingActionButton floatingActionButton = (FloatingActionButton)  view.findViewById(R.id.floatingActionButton);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                MainActivity.getContext().showAddEditBirthdayFragment(AddEditFragment.MODE_ADD, 0);
+            }
+        });
 
         // Reference empty TextView
         emptyView = view.findViewById(R.id.empty_view);

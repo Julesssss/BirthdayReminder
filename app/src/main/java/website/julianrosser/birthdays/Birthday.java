@@ -1,8 +1,5 @@
 package website.julianrosser.birthdays;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.text.format.DateFormat;
 import android.util.Log;
 
@@ -258,7 +255,7 @@ public class Birthday {
 
         String dayFormatted = "";
 
-        int daysFromNotiUntilDay = getDaysBeforeReminderPref(); // todo - delay from noti to reminder
+        int daysFromNotiUntilDay = MainActivity.getDaysBeforeReminderPref(); // todo - delay from noti to reminder
 
         if (daysFromNotiUntilDay == 0) {
             dayFormatted += "today";
@@ -277,7 +274,7 @@ public class Birthday {
     }
 
     /**
-     * Used by aabove method and RecyclerAdapter to name day if within a week
+     * Used by above method and RecyclerAdapter to name day if within a week
      */
     public static String getWeekdayName(Date date) {
 
@@ -305,18 +302,5 @@ public class Birthday {
             default:
                 return "soon";
         }
-    }
-
-    private static int getDaysBeforeReminderPref() {
-        Context mAppContext = MainActivity.getAppContext();
-
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(mAppContext);
-        String dayBeforeReminderPref = sharedPref.getString(mAppContext.getString(R.string.pref_days_before_key), "1");
-
-        Log.i("Birthday", "Day Remind: " + Integer.valueOf(dayBeforeReminderPref));
-
-        return Integer.valueOf(dayBeforeReminderPref); //todo - surround with try catch
-
-
     }
 }
