@@ -19,9 +19,10 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="32dp"
-        android:layout_marginRight="32dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
         android:src="@drawable/ic_cake_white_24dp"
-        app:elevation="4dp"
+        app:elevation="6dp"
         app:rippleColor="@color/pink_darker" />
 
     <LinearLayout
@@ -40,7 +41,7 @@
             android:gravity="center_horizontal"
             android:text="@string/no_birthdays"
             android:textColor="#fff"
-            android:textSize="22sp" />
+            android:textSize="24sp" />
 
         <ImageView
             android:layout_width="wrap_content"

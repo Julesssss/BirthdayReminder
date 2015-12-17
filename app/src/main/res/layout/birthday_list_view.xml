@@ -32,7 +32,7 @@
             android:paddingLeft="1dp"
             android:paddingRight="1dp"
             android:singleLine="true"
-            android:textColor="#eee"
+            android:textColor="#80d8ff"
             android:textSize="12sp" />
 
         <TextView
@@ -41,10 +41,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@drawable/rect_round_bg_light"
-            android:elevation="8dp"
+            android:elevation="6dp"
             android:gravity="center"
             android:singleLine="true"
-            android:textColor="#fff"
+            android:textColor="#ffffff"
             android:textSize="17sp" />
 
     </LinearLayout>

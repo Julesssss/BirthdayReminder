@@ -11,7 +11,7 @@
         <item name="android:panelFullBackground">@color/pink_light</item>
         <item name="android:textAppearanceLarge">@style/MyTextAppearance</item>
         <item name="android:preferenceStyle">@style/PreferenceTheme</item>
-        <item name="colorAccent">@color/pink_light</item>
+        <item name="colorAccent">@color/primary_accent</item>
     </style>
 
     <style name="DialogFragmentTheme" parent="android:Theme.Dialog">
@@ -45,7 +45,7 @@
     <!-- Preference Themes -->
     <style name="PreferenceTheme" parent="Theme.AppCompat">
         <!-- Pref category title & pref dialog highlight & button text color-->
-        <item name="colorAccent">#fff</item>
+        <item name="colorAccent">@color/primary_accent</item>
         <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
         <item name="colorPrimary">#fff</item>
         <item name="android:background">@color/pink</item>

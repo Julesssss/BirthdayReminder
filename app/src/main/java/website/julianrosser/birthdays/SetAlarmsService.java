@@ -176,7 +176,6 @@ public class SetAlarmsService extends Service {
             Date dateOfAlarm = new Date();
             dateOfAlarm.setTime(dateOfAlarm.getTime() + alarmDelayInMillis);
             Log.i(TAG, "Alarm time: " + DateFormat.getDateTimeInstance().format(dateOfAlarm));
-            Toast.makeText(SetAlarmsService.this, "Time of Alarm: " + DateFormat.getDateTimeInstance().format(dateOfAlarm), Toast.LENGTH_SHORT).show();
 
         } else {
             Log.i(TAG, "Alarm time in past: " + alarmDelayInMillis); // todo - toast to let user know birthday wont be shown

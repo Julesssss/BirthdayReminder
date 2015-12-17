@@ -1,10 +1,10 @@
 # Birthday Reminder 2.0
 App for Android devices which notifies users of upcoming birthdays.
 
-![](http://julianrosser.website/images/app_screenshots/birthday15.png)![](http://julianrosser.website/images/app_screenshots/birthday16.png)
+![](http://julianrosser.website/images/app_screenshots/birthday180.png)![](http://julianrosser.website/images/app_screenshots/birthday181.png)
+![](http://julianrosser.website/images/app_screenshots/birthday182.png)![](http://julianrosser.website/images/app_screenshots/birthday183.png)
 
 TODO - Main:
-- FloatingActionButton to replace ActionButton on which ?API?+
 - Reminder on??? bool needed? YES, as option
 
 View:
@@ -18,12 +18,13 @@ Resources:
 - Icon, screenshots, video
 
 Marketing:
-- Localization
-- Deep linking
+- Localization strings
+- Deep links
 - Analytics
 
 Final:
 - Remove then set alarm?
+- Update Version to 2.0
 - Refactor Logs, testing code to text file
 - Prepare to launch - https://developer.android.com/tools/publishing/preparing.html
 - final checks - https://developer.android.com/distribute/tools/launch-checklist.html
@@ -44,8 +45,8 @@ Next Update?
 
 
 Log
-- 17/12 - Cancel notification when deleted. Added preferences (Reminder time, vibrate?, sound?, test noti, sorting)
-          Birthdays now saved and notification alarms set when data changes.
+- 17/12 - Birthdays now saved and notification alarms set when data changes. FloatingActionButton, Material icon & colours.
+          Cancel notification when deleted. Added preferences (Reminder time, vibrate?, sound?, test noti, sorting). New screenshots.
 - 16/12 - Built custom Adapter so ItemOptionFrag shows Icons. Save/recall Fragment references onRotate.
           Dialogs theme & size. Replaced unnecessary Activity context refs with AppContext. Refactored Arrays.
           Created birthday_notification.mp3 & added to notification. Settings theme & Time preference

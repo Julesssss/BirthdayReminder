@@ -6,5 +6,6 @@
     <color name="pink_darker">#880e4f</color>
     <color name="pink_light">#de5da4</color>
     <color name="primary_dark">#055</color>
+    <color name="primary_accent">#89bec6</color>
 
 </resources>

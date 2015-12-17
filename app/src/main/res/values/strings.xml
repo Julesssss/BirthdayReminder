@@ -21,7 +21,7 @@
     <string name="button_negative">Cancel</string>
 
     <!-- Information Text -->
-    <string name="no_birthdays">No birthdays found. Find the Birthday cake Icon below to add birthdays.</string>
+    <string name="no_birthdays">Use the Birthday cake icon to start adding birthdays!</string>
 
     <!-- Preferences -->
     <!-- Days before Preference -->
