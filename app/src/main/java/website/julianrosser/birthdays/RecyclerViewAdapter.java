@@ -55,7 +55,14 @@ public class RecyclerViewAdapter
 
         viewHolder.textDateMonth.setText(birthday.getBirthMonth());
 
+        // Set correct icon depending on Alarm on or off
         viewHolder.imageAlarm.setImageDrawable(birthday.getRemindAlarmDrawable());
+        viewHolder.imageAlarm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.getContext().alarmToggled(position);
+            }
+        });
 
         // When item is clicked, show context menu for that item
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {

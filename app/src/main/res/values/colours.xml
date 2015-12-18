@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="pink">#d37</color>
-    <color name="pink_dark">#c2185b</color>
-    <color name="pink_darker">#880e4f</color>
-    <color name="pink_light">#de5da4</color>
-    <color name="primary_dark">#055</color>
-    <color name="primary_accent">#89bec6</color>
+    <color name="primary_300">#F06292</color>
+    <color name="primary_400">#ec407a</color>
+    <color name="primary_500">#E91E63</color>
+    <color name="primary_600">#d81b6d</color>
+    <color name="primary_700">#c2185b</color>
+    <color name="primary_800">#ad1457</color>
+    <color name="primary_900">#880e4f</color>
+    <color name="secondary_100">#80d8ff</color>
+    <color name="secondary_200">#40c4ff</color>
+    <color name="secondary_400">#00b0ff</color>
+    <color name="secondary_700">#0091ea</color>
+
+    <color name="colorPrimary">@color/primary_500</color>
+    <color name="colorPrimaryDark">@color/primary_700</color>
+    <color name="textColorPrimary">#FFFFFF</color>
+    <color name="windowBackground">@color/primary_500</color>
+    <color name="navigationBarColor">@color/primary_800</color>
+    <color name="colorAccent">@color/secondary_400</color>
 
 </resources>

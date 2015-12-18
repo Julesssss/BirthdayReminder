@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/pink"
+    android:background="@color/colorPrimary"
     tools:context=".MyActivity">
 
     <android.support.v7.widget.RecyclerView
@@ -23,7 +23,7 @@
         android:layout_marginEnd="16dp"
         android:src="@drawable/ic_cake_white_24dp"
         app:elevation="6dp"
-        app:rippleColor="@color/pink_darker" />
+        app:rippleColor="@color/colorPrimaryDark" />
 
     <LinearLayout
         android:id="@+id/empty_view"

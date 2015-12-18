@@ -16,10 +16,10 @@
         android:clipToPadding="false"
         android:gravity="center_vertical"
         android:orientation="vertical"
-        android:paddingEnd="12dp"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
-        android:paddingStart="12dp">
+        android:paddingEnd="24dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="24dp"
+        android:paddingStart="16dp">
 
         <TextView
             android:id="@+id/dateDay"
@@ -32,7 +32,7 @@
             android:paddingLeft="1dp"
             android:paddingRight="1dp"
             android:singleLine="true"
-            android:textColor="#cccccc"
+            android:textColor="#fff"
             android:textSize="12sp" />
 
         <TextView
@@ -44,6 +44,7 @@
             android:elevation="6dp"
             android:gravity="center"
             android:singleLine="true"
+            android:fontFamily="sans-serif"
             android:textColor="#ffffff"
             android:textSize="17sp" />
 
@@ -56,7 +57,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:paddingRight="12dp"
+        android:paddingRight="16dp"
         android:scaleX=".85"
         android:scaleY=".85"
         android:src="@drawable/ic_alarm_on_white_24dp" />
@@ -66,14 +67,15 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginStart="8dp"
         android:layout_toLeftOf="@id/alarmImage"
         android:layout_toStartOf="@id/alarmImage"
         android:gravity="center_vertical"
         android:singleLine="true"
         android:textColor="#fff"
-        android:textSize="14sp" />
+        android:textSize="15sp" />
 
     <TextView
         android:id="@+id/name"
@@ -93,6 +95,6 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_alignParentBottom="true"
-        android:background="#2cffffff" />
+        android:background="#1effffff" />
 
 </RelativeLayout>

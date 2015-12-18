@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -68,6 +69,10 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Pass toolbar as ActionBar for functionality
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(mToolbar);
+
         // Initialize context reference
         mContext = this;
         mAppContext = getApplicationContext();
@@ -97,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
                     .add(R.id.container, recyclerListFragment)
                     .commit();
         }
+
         // This is to help the fragment keep it;s state on rotation
         recyclerListFragment.setRetainInstance(true);
     }
@@ -408,6 +414,12 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
     @Override
     public void onItemToggleAlarm(ItemOptionsFragment dialog, int position) {
         itemOptionsFragment.dismiss();
+        alarmToggled(position);
+    }
+
+    // This is in a separate method so it can be called from different classes
+    public void alarmToggled(int position) {
+
         Birthday b = birthdaysList.get(position);
 
         b.toggleReminder();

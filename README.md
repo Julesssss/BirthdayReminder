@@ -5,7 +5,8 @@ App for Android devices which notifies users of upcoming birthdays.
 
 TODO - Main:
 - Tablet & small Layouts
-- Theme, material theme
+- Menu popup colour & Preference colours
+- Theme, material theme backport?
 - TypeFace-Light for api < 16
 - Animation
 
@@ -40,7 +41,7 @@ Next Update?
 
 
 Log
-- 18/12 - Added reminder toggle option, icon & functionality.
+- 18/12 - Replaced ActionBar with Toolbar. Material theme, styles & colours. Added reminder toggle option, icon & functionality.
           Somehow managed to delete build.gradle. CHAOS. Noticed the file was removed from last commit.
 - 17/12 - Birthdays now saved and notification alarms set when data changes. FloatingActionButton, Material icon & colours.
           Cancel notification when deleted. Added preferences (Reminder time, vibrate?, sound?, test noti, sorting). New screenshots.
