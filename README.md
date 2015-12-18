@@ -4,11 +4,8 @@ App for Android devices which notifies users of upcoming birthdays.
 ![](http://julianrosser.website/images/app_screenshots/birthday180.png)![](http://julianrosser.website/images/app_screenshots/birthday184.png)
 
 TODO - Main:
-- Reminder on??? bool needed? YES, as option
-- Works with OLD version?
-
-View:
-- Tablet Layouts
+- Tablet & small Layouts
+- Theme, material theme
 - TypeFace-Light for api < 16
 - Animation
 
@@ -28,7 +25,6 @@ Final:
 - final checks - https://developer.android.com/distribute/tools/launch-checklist.html
 
 Bugs:
-- Remove then set alarm?
 - Crash when click noti while on settings activity and go back to 1st (Unlikely to happen to user)
 - Quickly click to open Fragments twice
 - End of month bug?
@@ -44,7 +40,8 @@ Next Update?
 
 
 Log
-- 18/12 - Somehow managed to delete build.gradle. CHAOS. Notices the file was removed from last commit.
+- 18/12 - Added reminder toggle option, icon & functionality.
+          Somehow managed to delete build.gradle. CHAOS. Noticed the file was removed from last commit.
 - 17/12 - Birthdays now saved and notification alarms set when data changes. FloatingActionButton, Material icon & colours.
           Cancel notification when deleted. Added preferences (Reminder time, vibrate?, sound?, test noti, sorting). New screenshots.
 - 16/12 - Built custom Adapter so ItemOptionFrag shows Icons. Save/recall Fragment references onRotate.

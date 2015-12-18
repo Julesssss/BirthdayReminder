@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -53,6 +54,8 @@ public class RecyclerViewAdapter
         viewHolder.textDateDay.setText(birthday.getBirthDay());
 
         viewHolder.textDateMonth.setText(birthday.getBirthMonth());
+
+        viewHolder.imageAlarm.setImageDrawable(birthday.getRemindAlarmDrawable());
 
         // When item is clicked, show context menu for that item
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -110,6 +113,7 @@ public class RecyclerViewAdapter
         TextView textDateMonth;
         TextView textName;
         TextView textDaysRemaining;
+        ImageView imageAlarm;
         Typeface typeLight;
 
         public ListItemViewHolder(View itemView) {
@@ -120,6 +124,7 @@ public class RecyclerViewAdapter
             textDaysRemaining = (TextView) itemView.findViewById(R.id.days_remaining);
             textDateDay = (TextView) itemView.findViewById(R.id.dateDay);
             textDateMonth = (TextView) itemView.findViewById(R.id.dateMonth);
+            imageAlarm = (ImageView) itemView.findViewById(R.id.alarmImage);
             typeLight = Typeface.createFromAsset(MainActivity.getAppContext().getResources().getAssets(), "Roboto-Light.ttf");
         }
     }

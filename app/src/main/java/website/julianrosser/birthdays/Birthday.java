@@ -1,5 +1,6 @@
 package website.julianrosser.birthdays;
 
+import android.graphics.drawable.Drawable;
 import android.text.format.DateFormat;
 import android.util.Log;
 
@@ -50,7 +51,6 @@ public class Birthday {
     public void edit(String editName, Date editDate, boolean editRemind) {
 
         this.name = editName;
-        this.remind = editRemind;
         this.date = editDate;
     }
 
@@ -111,8 +111,26 @@ public class Birthday {
         return remind;
     }
 
-    public void setRemind(boolean newRemindPref) {
-        remind = newRemindPref;
+    public String getReminderString() {
+        if (remind) {
+            return " set";
+        } else {
+            return " canceled";
+        }
+    }
+
+    public Drawable getRemindAlarmDrawable() {
+        if (remind) {
+            return MainActivity.getAppContext().getResources().getDrawable(R.drawable.ic_alarm_on_white_24dp);
+        } else {
+            return MainActivity.getAppContext().getResources().getDrawable(R.drawable.ic_alarm_off_white_24dp);
+        }
+
+    }
+
+    public boolean toggleReminder() {
+        remind = !remind;
+        return remind;
     }
 
     public String getBirthMonth() {

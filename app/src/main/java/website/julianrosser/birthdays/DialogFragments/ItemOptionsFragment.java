@@ -65,6 +65,8 @@ public class ItemOptionsFragment extends DialogFragment {
         void onItemEdit(ItemOptionsFragment dialog, int position);
 
         void onItemDelete(ItemOptionsFragment dialog, int position);
+
+        void onItemToggleAlarm(ItemOptionsFragment dialog, int position);
     }
 
 
@@ -135,6 +137,9 @@ public class ItemOptionsFragment extends DialogFragment {
                     case 1:
                         mListener.onItemDelete(ItemOptionsFragment.this, birthdayListPosition);
                         break;
+                    case 2:
+                        mListener.onItemToggleAlarm(ItemOptionsFragment.this, birthdayListPosition);
+                        break;
                 }
             }
         });
@@ -148,12 +153,13 @@ public class ItemOptionsFragment extends DialogFragment {
         return builder.create();
     }
 
+    // Custom Adapter for displaying custom context menu and icons
     public class OptionListAdapter extends BaseAdapter {
 
         String[] result;
         Context context;
         int[] imageIcons = {R.drawable.ic_edit_white_24dp,
-                R.drawable.ic_delete_white_24dp};
+                R.drawable.ic_delete_white_24dp, R.drawable.ic_alarm_on_white_24dp, R.drawable.ic_alarm_off_white_24dp};
 
         private LayoutInflater inflater = null;
 
@@ -186,7 +192,7 @@ public class ItemOptionsFragment extends DialogFragment {
         }
 
         @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, ViewGroup parent) {
             Holder holder = new Holder();
 
             View rowView = inflater.inflate(R.layout.item_edit_fragment_list, null);
@@ -194,8 +200,14 @@ public class ItemOptionsFragment extends DialogFragment {
             holder.textView = (TextView) rowView.findViewById(R.id.option_list_textview);
             holder.textView.setText(result[position]);
 
+            // Get references
             holder.imageIcon = (ImageView) rowView.findViewById(R.id.imageView);
-            holder.imageIcon.setImageDrawable(getResources().getDrawable(imageIcons[position]));
+
+            if (position == 2) {
+                holder.imageIcon.setImageDrawable(MainActivity.birthdaysList.get(birthdayListPosition).getRemindAlarmDrawable());
+            } else {
+                    holder.imageIcon.setImageDrawable(getResources().getDrawable(imageIcons[position]));
+            }
 
             return rowView;
         }

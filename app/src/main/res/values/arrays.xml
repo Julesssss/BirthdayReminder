@@ -5,6 +5,7 @@
     <string-array name="item_menu_array">
         <item>@string/item_menu_edit</item>
         <item>@string/item_menu_delete</item>
+        <item>@string/item_menu_alarm</item>
     </string-array>
 
     <!-- Prefs -->

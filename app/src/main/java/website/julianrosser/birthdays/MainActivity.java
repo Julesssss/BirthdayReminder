@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import org.apache.commons.lang3.text.WordUtils;
 import org.json.JSONArray;
@@ -402,6 +403,25 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
     public void onItemDelete(ItemOptionsFragment dialog, int position) {
         itemOptionsFragment.dismiss();
         deleteFromArray(position);
+    }
+
+    @Override
+    public void onItemToggleAlarm(ItemOptionsFragment dialog, int position) {
+        itemOptionsFragment.dismiss();
+        Birthday b = birthdaysList.get(position);
+
+        b.toggleReminder();
+
+        Toast.makeText(this, "Reminder for " + b.getName() + b.getReminderString(), Toast.LENGTH_SHORT).show();
+
+        dataChangedUiThread();
+
+        // Attempt to save updated Birthday data
+        try {
+            saveBirthdays();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static int getDaysBeforeReminderPref() {

@@ -74,7 +74,11 @@ public class SetAlarmsService extends Service {
         if (getNotificationAllowedPref()) {
             for (int i = 0; i < mBirthdayList.size(); i++) {
                 Birthday b = mBirthdayList.get(i);
-                setAlarm(b);
+
+                // If reminder not toggled off, set alarm
+                if (b.getRemind()) {
+                    setAlarm(b);
+                }
             }
 
         } else {
@@ -170,7 +174,7 @@ public class SetAlarmsService extends Service {
 
             // Finish by passing PendingIntent and delay time to AlarmManager
             mAlarmManager.set(AlarmManager.RTC_WAKEUP,
-                    System.currentTimeMillis() + 5000, // todo - alarmDelayInMillis,
+                    System.currentTimeMillis() + alarmDelayInMillis,
                     mNotificationReceiverPendingIntent);
 
             Date dateOfAlarm = new Date();
@@ -178,7 +182,7 @@ public class SetAlarmsService extends Service {
             Log.i(TAG, "Alarm time: " + DateFormat.getDateTimeInstance().format(dateOfAlarm));
 
         } else {
-            Log.i(TAG, "Alarm time in past: " + alarmDelayInMillis); // todo - toast to let user know birthday wont be shown
+            Log.i(TAG, "Alarm time in past: " + alarmDelayInMillis);
             Toast.makeText(mContext, "", Toast.LENGTH_SHORT).show();
         }
     }
