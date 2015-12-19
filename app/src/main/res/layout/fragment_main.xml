@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,22 +9,22 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:paddingTop="8dp"
+        android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:layout_height="match_parent" />
+        android:paddingTop="8dp" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
+        android:layout_gravity="end|bottom"
         android:layout_marginBottom="32dp"
-        android:layout_marginRight="16dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:background="?attr/selectableItemBackground"
         android:src="@drawable/ic_cake_white_24dp"
         app:elevation="6dp"
+        app:layout_behavior="website.julianrosser.birthdays.ScrollAwareFABBehavior"
         app:rippleColor="@color/colorPrimaryDark" />
 
     <LinearLayout
@@ -56,4 +56,10 @@
 
     </LinearLayout>
 
-</RelativeLayout>
+    <View
+        android:id="@+id/drop_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        android:background="@drawable/toolbar_dropshadow" />
+
+</android.support.design.widget.CoordinatorLayout>

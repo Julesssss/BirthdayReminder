@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         setContentView(R.layout.activity_main);
 
         // Pass toolbar as ActionBar for functionality
-        Toolbar mToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
         // Initialize context reference

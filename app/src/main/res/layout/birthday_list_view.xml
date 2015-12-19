@@ -2,11 +2,11 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="56dp"
+    android:layout_height="60dp"
     android:layout_gravity="center_vertical"
     android:background="?android:attr/selectableItemBackground"
     android:baselineAligned="false"
-    android:orientation="horizontal"  >
+    android:orientation="horizontal">
 
     <LinearLayout
         android:id="@+id/group_1"
@@ -17,10 +17,10 @@
         android:clipToPadding="false"
         android:gravity="center_vertical"
         android:orientation="vertical"
-        android:paddingLeft="16dp"
-        android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:paddingRight="16dp">
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingStart="16dp">
 
         <TextView
             android:id="@+id/dateDay"
@@ -58,8 +58,8 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:paddingRight="16dp"
         android:paddingEnd="16dp"
+        android:paddingRight="16dp"
         android:scaleX=".85"
         android:scaleY=".85"
         android:src="@drawable/ic_alarm_on_white_24dp" />

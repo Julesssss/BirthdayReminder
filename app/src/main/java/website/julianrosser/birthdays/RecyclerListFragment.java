@@ -1,6 +1,7 @@
 package website.julianrosser.birthdays;
 
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,8 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import website.julianrosser.birthdays.DialogFragments.AddEditFragment;
 
 /**
  * Main view. Fragment which holds the RecyclerView.
@@ -54,7 +53,7 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
         FloatingActionButton floatingActionButton = (FloatingActionButton)  view.findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                MainActivity.getContext().showAddEditBirthdayFragment(AddEditFragment.MODE_ADD, 0);
+                //MainActivity.getContext().showAddEditBirthdayFragment(AddEditFragment.MODE_ADD, 0);
             }
         });
 
@@ -64,6 +63,11 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
         /* Detect whether the 'no birthdays found' message should be displayed instead of Rec.view.
          Using empty and recycler references. */
         showEmptyMessageIfRequired();
+
+        // hide drop shadow if running lollipop or higher
+        if (Build.VERSION.SDK_INT >= 21 ) {
+            view.findViewById(R.id.drop_shadow).setVisibility(View.GONE);
+        }
 
         // Set layout properties
         LinearLayoutManager llm = new LinearLayoutManager(MainActivity.getAppContext());

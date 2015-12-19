@@ -24,6 +24,11 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+        // hide drop shadow if running lollipop or higher
+        if (Build.VERSION.SDK_INT >= 21) {
+            findViewById(R.id.drop_shadow_settings).setVisibility(View.GONE);
+        }
+
         // Pass Toolbar so it can be used like ActionBar
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);

@@ -5,11 +5,11 @@
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/my_toolbar"
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimaryDark"
-        android:elevation="8dp"
+        android:elevation="6dp"
         android:minHeight="?attr/actionBarSize"
         app:popupTheme="@style/PopUpTheme"
         app:theme="@style/MyActionBar" />
