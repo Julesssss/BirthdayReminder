@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="Reminder Settings">
+    <PreferenceCategory
+        android:layout="@layout/preference_layout"
+        android:title="Reminder Settings">>
 
         <CheckBoxPreference
+            android:background="@color/colorPrimary"
             android:defaultValue="@string/pref_enable_notifications_default"
             android:key="@string/pref_enable_notifications_key"
             android:summaryOff="@string/pref_enable_notifications_false"
@@ -49,7 +52,9 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="Birthday List Settings">
+    <PreferenceCategory
+        android:layout="@layout/preference_layout"
+        android:title="Birthday List Settings">
         <ListPreference
 
             android:defaultValue="0"

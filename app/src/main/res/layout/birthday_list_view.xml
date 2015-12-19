@@ -4,8 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="56dp"
     android:layout_gravity="center_vertical"
+    android:background="?android:attr/selectableItemBackground"
     android:baselineAligned="false"
-    android:orientation="horizontal">
+    android:orientation="horizontal"  >
 
     <LinearLayout
         android:id="@+id/group_1"
@@ -16,10 +17,10 @@
         android:clipToPadding="false"
         android:gravity="center_vertical"
         android:orientation="vertical"
-        android:paddingEnd="24dp"
         android:paddingLeft="16dp"
-        android:paddingRight="24dp"
-        android:paddingStart="16dp">
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingRight="16dp">
 
         <TextView
             android:id="@+id/dateDay"
@@ -27,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@drawable/rect_round_bg_dark"
-            android:elevation="4dp"
+            android:elevation="2dp"
             android:gravity="center"
             android:paddingLeft="1dp"
             android:paddingRight="1dp"
@@ -41,10 +42,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@drawable/rect_round_bg_light"
-            android:elevation="6dp"
+            android:elevation="2dp"
+            android:fontFamily="sans-serif"
             android:gravity="center"
             android:singleLine="true"
-            android:fontFamily="sans-serif"
             android:textColor="#ffffff"
             android:textSize="17sp" />
 
@@ -58,6 +59,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:paddingRight="16dp"
+        android:paddingEnd="16dp"
         android:scaleX=".85"
         android:scaleY=".85"
         android:src="@drawable/ic_alarm_on_white_24dp" />
@@ -66,9 +68,9 @@
         android:id="@+id/days_remaining"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:layout_marginEnd="16dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="16dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginStart="8dp"
         android:layout_toLeftOf="@id/alarmImage"
         android:layout_toStartOf="@id/alarmImage"
@@ -86,6 +88,8 @@
         android:layout_toRightOf="@id/group_1"
         android:layout_toStartOf="@id/days_remaining"
         android:gravity="center_vertical"
+        android:paddingLeft="8dp"
+        android:paddingStart="8dp"
         android:singleLine="true"
         android:textColor="#fff"
         android:textSize="20sp" />

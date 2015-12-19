@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -181,9 +180,9 @@ public class AddEditFragment extends DialogFragment {
         View.OnFocusChangeListener onFocusChangeListener = new MyFocusChangeListener();
         editText.setOnFocusChangeListener(onFocusChangeListener);
 
-        // Set buttons Text color
-        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.WHITE);
-        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.WHITE);
+        // Set buttons accent colour
+        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorAccent));
+        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorAccent));
 
         // Set background drawable
         getDialog().getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.dialog_background));

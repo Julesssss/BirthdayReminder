@@ -13,6 +13,9 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -56,6 +59,17 @@ public class SettingsActivity extends AppCompatActivity {
 
             Preference sortByPref = findPreference(getString(R.string.pref_sort_by_key));
             sortByPref.setOnPreferenceChangeListener(this);
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+            View view = super.onCreateView(inflater, container, savedInstanceState);
+            if (view != null) {
+                view.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            }
+
+            return view;
         }
 
         /**

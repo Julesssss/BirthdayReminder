@@ -9,8 +9,10 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:minHeight="?attr/actionBarSize"
-        app:navigationIcon="?attr/homeAsUpIndicator"
-        android:background="?attr/colorPrimary" />
+        app:theme="@style/MyActionBar"
+        android:background="@color/colorPrimaryDark"
+        android:elevation="8dp"
+        app:navigationIcon="?attr/homeAsUpIndicator"/>
 
 
     <FrameLayout

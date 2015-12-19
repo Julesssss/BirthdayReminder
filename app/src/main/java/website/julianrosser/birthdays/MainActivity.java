@@ -172,9 +172,8 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
             f.setYear(2015);
             String[] nameArray = getResources().getStringArray(R.array.name_array);
             String name = nameArray[r.nextInt(nameArray.length)];
-            boolean reminder = r.nextInt(3) != 1;
 
-            Birthday b = new Birthday(name, f, reminder);
+            Birthday b = new Birthday(name, f, true);
             birthdaysList.add(b);
 
             dataChangedUiThread();

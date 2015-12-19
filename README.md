@@ -41,6 +41,7 @@ Next Update?
 
 
 Log
+- 19/12 - Finished Material styling. Toolbar & menu bg, preference bg & category styles.
 - 18/12 - Replaced ActionBar with Toolbar. Material theme, styles & colours. Added reminder toggle option, icon & functionality.
           Somehow managed to delete build.gradle. CHAOS. Noticed the file was removed from last commit.
 - 17/12 - Birthdays now saved and notification alarms set when data changes. FloatingActionButton, Material icon & colours.
