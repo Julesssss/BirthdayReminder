@@ -1,6 +1,9 @@
 package website.julianrosser.birthdays;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.preference.PreferenceManager;
 import android.text.format.DateFormat;
 import android.util.Log;
 
@@ -269,11 +272,11 @@ public class Birthday {
     /**
      * Returns a formatted day string built for notification display.
      */
-    public static String getFormattedStringDay(Birthday b) {
+    public static String getFormattedStringDay(Birthday b, Context c) {
 
         String dayFormatted = "";
 
-        int daysFromNotiUntilDay = MainActivity.getDaysBeforeReminderPref(); // todo - delay from noti to reminder
+        int daysFromNotiUntilDay = getDaysBeforeReminderPref(c); // todo - delay from noti to reminder
 
         if (daysFromNotiUntilDay == 0) {
             dayFormatted += "today";
@@ -289,6 +292,11 @@ public class Birthday {
         dayFormatted += "!";
 
         return dayFormatted;
+    }
+
+    public static int getDaysBeforeReminderPref(Context c) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(c);
+        return Integer.valueOf(sharedPref.getString(c.getString(R.string.pref_days_before_key), "1"));
     }
 
     /**

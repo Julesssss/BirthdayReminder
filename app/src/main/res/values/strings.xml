@@ -22,7 +22,7 @@
     <string name="button_negative">Cancel</string>
 
     <!-- Information Text -->
-    <string name="no_birthdays">Use the Birthday cake icon to start adding birthdays!</string>
+    <string name="no_birthdays">Tap the Birthday cake icon to start adding birthdays!</string>
 
     <!-- Preferences -->
     <!-- Days before Preference -->

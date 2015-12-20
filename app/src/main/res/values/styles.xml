@@ -51,8 +51,8 @@
     <!-- Preference Themes -->
     <style name="PreferenceTheme" parent="Theme.AppCompat">
         <!-- Pref category title & pref dialog highlight & button text color-->
-        <item name="android:background">@color/colorPrimary</item>
-        <item name="android:textColor">@color/textColorPrimary</item>
+        <!--<item name="android:background">@color/colorPrimary</item>-->
+        <!--<item name="android:textColor">@color/textColorPrimary</item>-->
 
 
     </style>

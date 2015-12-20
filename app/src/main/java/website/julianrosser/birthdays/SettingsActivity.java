@@ -13,9 +13,7 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -66,15 +64,11 @@ public class SettingsActivity extends AppCompatActivity {
             sortByPref.setOnPreferenceChangeListener(this);
         }
 
+        // Set list background to override theme dark
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-            View view = super.onCreateView(inflater, container, savedInstanceState);
-            if (view != null) {
-                view.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-            }
-
-            return view;
+        public void onViewCreated(View view, Bundle savedInstanceState) {
+            super.onViewCreated(view, savedInstanceState);
+            view.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         }
 
         /**

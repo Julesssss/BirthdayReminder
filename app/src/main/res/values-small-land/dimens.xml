@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="list_item_padding">32dp</dimen>
+    <dimen name="list_item_name_padding">16dp</dimen>
+
+    <!-- Floating Action Button position -->
+    <dimen name="fa_button_margin_right">32dp</dimen>
+</resources>

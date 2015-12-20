@@ -4,14 +4,17 @@ App for Android devices which notifies users of upcoming birthdays.
 ![](http://julianrosser.website/images/app_screenshots/birthday180.png)![](http://julianrosser.website/images/app_screenshots/birthday184.png)
 
 TODO - Main:
-- Tablet & small Layouts
-- Theme on lower API's
-- TypeFace-Light for api < 16, override textviews if version < 16?
 - Add/delete Animation?
+- Layout for XLARGE test
+- Empty view clicklistener????
+- Alarm icon padding for toggle
+- Test nx7 alarms in future
+- Test update to new app, loose birthdays?
+- reminder category bold api 19
+- Multiple installs using Gradle
 
 Resources:
-- App launcher
-- Icon, screenshots, video
+- App launcher icon, screenshots, video
 
 Marketing:
 - Localization strings
@@ -19,7 +22,7 @@ Marketing:
 - Analytics
 
 Final:
-- Update Version to 2.0
+- Update Version no. to 2.0
 - Refactor Logs, testing code to text file
 - Prepare to launch - https://developer.android.com/tools/publishing/preparing.html
 - final checks - https://developer.android.com/distribute/tools/launch-checklist.html
@@ -32,14 +35,16 @@ Bugs:
 
 Next Update?
 - Widget
+- Roboto font < api 16
 - 2 birthdays on same day?
 - Fragments as bottom cards?
 - Custom Notification
-- Animation
+- Button Merge to alertDialog?
 - SQL database instead of JSON ??? necessary? Will take effort, perhaps as backup
 
 
 Log
+- 20/12 - Small, normal and tablet layouts. Fixed bug where alarm wouldn't cancel when toggled.
 - 19/12 - Toolbar shadow, FAButton hide/show when scrolling. Finished Material styling. Toolbar & menu bg, preference bg & category styles.
 - 18/12 - Replaced ActionBar with Toolbar. Material theme, styles & colours. Added reminder toggle option, icon & functionality.
           Somehow managed to delete build.gradle. CHAOS. Noticed the file was removed from last commit.

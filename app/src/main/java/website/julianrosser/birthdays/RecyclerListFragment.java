@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import website.julianrosser.birthdays.DialogFragments.AddEditFragment;
+
 /**
  * Main view. Fragment which holds the RecyclerView.
  */
@@ -50,10 +52,10 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 
         // Floating Action Button
-        FloatingActionButton floatingActionButton = (FloatingActionButton)  view.findViewById(R.id.floatingActionButton);
+        FloatingActionButton floatingActionButton = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //MainActivity.getContext().showAddEditBirthdayFragment(AddEditFragment.MODE_ADD, 0);
+                MainActivity.getContext().showAddEditBirthdayFragment(AddEditFragment.MODE_ADD, 0);
             }
         });
 
@@ -65,7 +67,7 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
         showEmptyMessageIfRequired();
 
         // hide drop shadow if running lollipop or higher
-        if (Build.VERSION.SDK_INT >= 21 ) {
+        if (Build.VERSION.SDK_INT >= 21) {
             view.findViewById(R.id.drop_shadow).setVisibility(View.GONE);
         }
 
@@ -94,10 +96,10 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
     // Show or hide the 'no birthdays found' message depending on size of birthday Array
     public static void showEmptyMessageIfRequired() { // todo - remove then replace to prevent redraw?
 
-            if (MainActivity.birthdaysList.isEmpty()) {
-                emptyView.setVisibility(View.VISIBLE);
-            } else {
-                emptyView.setVisibility(View.INVISIBLE);
-            }
+        if (MainActivity.birthdaysList.isEmpty()) {
+            emptyView.setVisibility(View.VISIBLE);
+        } else {
+            emptyView.setVisibility(View.INVISIBLE);
+        }
     }
 }

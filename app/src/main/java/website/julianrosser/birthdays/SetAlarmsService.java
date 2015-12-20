@@ -150,8 +150,8 @@ public class SetAlarmsService extends Service {
             mAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         }
 
-        /** If notification time is in the future, build receiver */
-        if (alarmDelayInMillis > 0) { // TODO - check outliers here
+        /** If notification time is in the future, build receiver. Else, don't set alarm */
+        if (alarmDelayInMillis > 0) {
 
             // get unique id for each notification from name
             int id = b.getName().hashCode();
@@ -161,8 +161,7 @@ public class SetAlarmsService extends Service {
                     AlarmNotificationBuilder.class);
 
             // Build message String
-            String messageString = "" + b.getName() + "'s birthday is " + Birthday.getFormattedStringDay(b);
-
+            String messageString = "" + b.getName() + "'s birthday is " + Birthday.getFormattedStringDay(b, mContext);
 
             mNotificationReceiverIntent.putExtra(AlarmNotificationBuilder.STRING_MESSAGE_KEY, messageString); //
 
@@ -181,9 +180,6 @@ public class SetAlarmsService extends Service {
             dateOfAlarm.setTime(dateOfAlarm.getTime() + alarmDelayInMillis);
             Log.i(TAG, "Alarm time: " + DateFormat.getDateTimeInstance().format(dateOfAlarm));
 
-        } else {
-            Log.i(TAG, "Alarm time in past: " + alarmDelayInMillis);
-            Toast.makeText(mContext, "", Toast.LENGTH_SHORT).show();
         }
     }
 

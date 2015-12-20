@@ -375,11 +375,12 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
             } catch (JSONException | IOException e) {
                 e.printStackTrace();
             }
-        }
 
-        // Launch service to update alarms when data changed
-        Intent serviceIntent = new Intent(MainActivity.getAppContext(), SetAlarmsService.class);
-        MainActivity.getAppContext().startService(serviceIntent);
+            // Launch service to update alarms when data changed
+            Intent serviceIntent = new Intent(MainActivity.getAppContext(), SetAlarmsService.class);
+            MainActivity.getAppContext().startService(serviceIntent);
+
+        }
     }
 
     // Call this method from Adapter so reference can be kept here in MainActivity
@@ -418,13 +419,19 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
 
     // This is in a separate method so it can be called from different classes
     public void alarmToggled(int position) {
-
+        // Use position parameter to get Birthday reference
         Birthday b = birthdaysList.get(position);
 
+        // Cancel the previously set alarm, without re-calling service
+        cancelAlarm(b);
+
+        // Change birthdays remind bool
         b.toggleReminder();
 
+        // notify user of change
         Toast.makeText(this, "Reminder for " + b.getName() + b.getReminderString(), Toast.LENGTH_SHORT).show();
 
+        // Notify adapter of change, so that UI is updated
         dataChangedUiThread();
 
         // Attempt to save updated Birthday data
@@ -433,10 +440,5 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public static int getDaysBeforeReminderPref() {
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(mAppContext);
-        return Integer.valueOf(sharedPref.getString(getAppContext().getString(R.string.pref_days_before_key), "1"));
     }
 }

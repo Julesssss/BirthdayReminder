@@ -6,7 +6,6 @@
         android:title="Reminder Settings">>
 
         <CheckBoxPreference
-            android:background="@color/colorPrimary"
             android:defaultValue="@string/pref_enable_notifications_default"
             android:key="@string/pref_enable_notifications_key"
             android:summaryOff="@string/pref_enable_notifications_false"
