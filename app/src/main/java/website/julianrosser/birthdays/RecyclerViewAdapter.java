@@ -3,7 +3,6 @@ package website.julianrosser.birthdays;
 import android.graphics.Typeface;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +17,6 @@ public class RecyclerViewAdapter
         extends RecyclerView.Adapter
         <RecyclerViewAdapter.ListItemViewHolder> {
 
-    String TAG = getClass().getSimpleName();
-
     // Constructor
     public RecyclerViewAdapter(ArrayList<Birthday> birthdayData) { //
         if (birthdayData == null) {
@@ -28,8 +25,6 @@ public class RecyclerViewAdapter
             // After Adapter is constructed, start the process of loading data
             MainActivity.getContext().launchLoadBirthdaysTask();
         }
-
-        Log.d(TAG, "newAdapter");
     }
 
 

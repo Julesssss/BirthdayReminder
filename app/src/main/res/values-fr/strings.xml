@@ -6,7 +6,7 @@
     <string name="dialog_add">Nouvel anniversaire</string>
     <string name="dialog_edit">Modifier anniversaire</string>
     <string name="title_activity_settings">Paramètres</string>
-    <string name="notification_title">Rappel d'anniversaire</string>
+    <string name="notification_title">Rappel d\'anniversaire</string>
     <string name="title_activity_help">Aidez-moi</string>
 
     <!-- Menu -->
@@ -22,6 +22,6 @@
     <string name="button_negative">Annuler</string>
 
     <!-- Information & help Text -->
-    <string name="empty_list_message">Appuyez sur le gâteau d'anniversaire icône pour commencer à ajouter les anniversaires!</string>
+    <string name="empty_list_message">Appuyez sur le gâteau d\'anniversaire icône pour commencer à ajouter les anniversaires!</string>
 
 </resources>

@@ -7,20 +7,17 @@ App for Android devices which notifies users of upcoming birthdays.
 
 TODO - Main:
 - Add/delete Animations?
-- Languages
+- Languages localisation preference strings
+- Launcher icon
+- Video screen cast
+- 512x512 icon
+- 180w x 120h promo
 
-Resources:
-- App launcher icon, screenshots, video
-
-Marketing:
-- Localization strings
 - Deep links
 - Analytics
 
 Final:
-- Update Version no. to 2.0
-- remove add + delete all options
-- Refactor Logs, testing code to text file
+- Remove logs
 - Prepare to launch - https://developer.android.com/tools/publishing/preparing.html
 - final checks - https://developer.android.com/distribute/tools/launch-checklist.html
 
@@ -43,7 +40,8 @@ Next Update?
 
 
 Log
-- 21/12 - Translated strings to 7 most used languages. Created HelpActivity. Finishing touches to layout. Replaced Toast with SnackBar.
+- 21/12 - Removed logs and testing methods.
+          Translated strings to 7 most used languages. Created HelpActivity. Finishing touches to layout. Replaced Toast with SnackBar.
 - 20/12 - Small, normal and tablet layouts. Fixed bug where alarm wouldn't cancel when toggled. XLarge layout, final changes to list layout.
 - 19/12 - Toolbar shadow, FAButton hide/show when scrolling. Finished Material styling. Toolbar & menu bg, preference bg & category styles.
 - 18/12 - Replaced ActionBar with Toolbar. Material theme, styles & colours. Added reminder toggle option, icon & functionality.

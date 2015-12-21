@@ -30,8 +30,8 @@
     <string name="pref_remind_day_title">Remind me</string>
     <string name="pref_remind_day_title_dialog">Day of reminder</string>
     <string name="pref_time_before_key">time_before_key</string>
-    <string name="pref_remind_time_title_dialog">Time of reminder</string>
-    <string name="pref_remind_time_title">Time of reminder</string>
+    <string name="pref_remind_time_title_dialog">Reminder time</string>
+    <string name="pref_remind_time_title">Reminder time</string>
 
     <!-- Time of reminder preference -->
     <string name="pref_time_8" translatable="false">8</string>

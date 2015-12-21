@@ -3,18 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
 
-    <item
-        android:id="@+id/action_add"
-        android:icon="@drawable/ic_cake_white_24dp"
-        android:orderInCategory="200"
-        android:title="@string/action_add" />
-
-    <item
-        android:id="@+id/action_delete_all"
-        android:orderInCategory="270"
-        android:title="Delete All" />
-
-    <item
+<item
         android:id="@+id/action_settings"
         android:orderInCategory="280"
         android:title="@string/action_settings"

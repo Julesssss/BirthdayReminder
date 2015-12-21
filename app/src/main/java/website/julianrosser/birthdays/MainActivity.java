@@ -24,7 +24,6 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Random;
 
 import website.julianrosser.birthdays.DialogFragments.AddEditFragment;
 import website.julianrosser.birthdays.DialogFragments.ItemOptionsFragment;
@@ -155,32 +154,6 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         if (addEditFragment != null && addEditFragment.isAdded()) {
             getSupportFragmentManager().putFragment(outState, ADD_EDIT_INSTANCE_KEY, addEditFragment);
         }
-    }
-
-    // Method for adding test birthday
-    public void addTestBirthday() {
-
-        for (int x = 0; x < 1; x++) {
-            Date f = new Date();
-            Random r = new Random();
-            f.setMonth(r.nextInt(12));
-            f.setDate(r.nextInt(31) + 1);
-            f.setYear(2015);
-            String[] nameArray = getResources().getStringArray(R.array.name_array);
-            String name = nameArray[r.nextInt(nameArray.length)];
-
-            Birthday b = new Birthday(name, f, true);
-            birthdaysList.add(b);
-
-            dataChangedUiThread();
-
-            try {
-                saveBirthdays();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
     }
 
     public void showAddEditBirthdayFragment(int mode, int birthdayListPosition) {
@@ -320,24 +293,15 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_help) {
-
-            Intent intentHelp = new Intent(this, Help.class);
-            startActivity(intentHelp);
-
-            return true;
-
-        } else if (id == R.id.action_add) {
-            showAddEditBirthdayFragment(AddEditFragment.MODE_ADD, 0); // todo why 0?
-            return true;
-
-        } else if (id == R.id.action_delete_all) {
-            birthdaysList.clear();
-            MainActivity.dataChangedUiThread();
-
-        } else if (id == R.id.action_settings) {
+        if (id == R.id.action_settings) {
             Intent i = new Intent(this, SettingsActivity.class);
             startActivity(i);
+
+        } else if (id == R.id.action_help) {
+            Intent intentHelp = new Intent(this, Help.class);
+            startActivity(intentHelp);
+            return true;
+
         }
         return super.onOptionsItemSelected(item);
     }

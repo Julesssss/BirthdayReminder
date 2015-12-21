@@ -1,7 +1,6 @@
 package website.julianrosser.birthdays;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,20 +15,15 @@ import java.util.ArrayList;
 
 public class LoadBirthdaysTask extends AsyncTask<Void, Void, ArrayList<Birthday>> {
 
-    String TAG_ASYNC = getClass().getSimpleName();
-
     ArrayList<Birthday> loadedBirthdays;
 
     @Override
     protected ArrayList<Birthday> doInBackground(Void... params) {
         try {
             loadedBirthdays = loadBirthdays();
-            // Log.v(TAG, "Loading...");
         } catch (Exception e) {
             loadedBirthdays = new ArrayList<Birthday>();
-            Log.v(TAG_ASYNC, "Error loading JSON data: ", e);
         }
-
         return loadedBirthdays;
     }
 
@@ -37,12 +31,9 @@ public class LoadBirthdaysTask extends AsyncTask<Void, Void, ArrayList<Birthday>
     protected void onPostExecute(ArrayList<Birthday> loadedBirthdays) {
         super.onPostExecute(loadedBirthdays);
 
-        Log.d(TAG_ASYNC, "onPost: " + loadedBirthdays.size());
-
         for (Birthday b : loadedBirthdays) {
             MainActivity.birthdaysList.add(b);
         }
-
         MainActivity.dataChangedUiThread();
     }
 

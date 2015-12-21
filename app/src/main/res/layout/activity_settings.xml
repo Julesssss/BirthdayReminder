@@ -11,8 +11,8 @@
         android:background="@color/colorPrimaryDark"
         android:elevation="6dp"
         android:minHeight="?attr/actionBarSize"
-        app:navigationIcon="?attr/homeAsUpIndicator"
-        android:theme="@style/MyActionBar" />
+        android:theme="@style/MyActionBar"
+        app:navigationIcon="?attr/homeAsUpIndicator" />
 
     <FrameLayout
         android:id="@+id/content"

@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -21,7 +20,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -42,7 +40,6 @@ public class SetAlarmsService extends Service {
     private AlarmManager mAlarmManager;
 
     static Context mContext;
-    private String TAG = getClass().getSimpleName();
 
     @Nullable
     @Override
@@ -53,8 +50,6 @@ public class SetAlarmsService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        Log.i(getClass().getSimpleName(), "Service Started");
 
         mContext = getApplicationContext();
 
@@ -80,12 +75,7 @@ public class SetAlarmsService extends Service {
                     setAlarm(b);
                 }
             }
-
-        } else {
-            // User does not want a notification, so don't set alarms. //todo - will old alarms still fire?
-            Log.i(TAG, "Notification not wanted by user");
         }
-
         // Service has to control its own life cycles, so call stopSelf here
         stopSelf();
     }
@@ -178,8 +168,6 @@ public class SetAlarmsService extends Service {
 
             Date dateOfAlarm = new Date();
             dateOfAlarm.setTime(dateOfAlarm.getTime() + alarmDelayInMillis);
-            Log.i(TAG, "Alarm time: " + DateFormat.getDateTimeInstance().format(dateOfAlarm));
-
         }
     }
 

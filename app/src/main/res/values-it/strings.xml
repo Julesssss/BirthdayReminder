@@ -22,6 +22,6 @@
     <string name="button_negative">Cancellare</string>
 
     <!-- Information & help Text -->
-    <string name="empty_list_message">Toccare l'icona della torta di compleanno per iniziare ad aggiungere i compleanni!</string>
+    <string name="empty_list_message">Toccare l\'icona della torta di compleanno per iniziare ad aggiungere i compleanni!</string>
 
 </resources>

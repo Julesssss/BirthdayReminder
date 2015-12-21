@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +16,6 @@ import website.julianrosser.birthdays.DialogFragments.AddEditFragment;
  * Main view. Fragment which holds the RecyclerView.
  */
 public class RecyclerListFragment extends android.support.v4.app.Fragment {
-
-    // String for easy recognition of class while logging
-    String TAG = getClass().getSimpleName();
 
     // Reference to mAdapter
     public static RecyclerViewAdapter mAdapter;
@@ -37,7 +33,6 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
 
     /* Use newInstance in case in the future we want to add construction parameters or initialisation here */
     public static RecyclerListFragment newInstance() {
-        Log.d("RecyclerListFragment", "newFragment");
         return new RecyclerListFragment();
     }
 
