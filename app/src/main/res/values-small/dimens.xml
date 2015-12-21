@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="list_item_padding_small">6dp</dimen>
-    <dimen name="list_item_name_padding">8dp</dimen>
+    <dimen name="list_item_padding_small">8dp</dimen>
+    <dimen name="list_item_name_padding">16dp</dimen>
+
+    <dimen name="list_item_padding_alternative">0dp</dimen>
 
 </resources>

@@ -12,7 +12,7 @@
         android:elevation="6dp"
         android:minHeight="?attr/actionBarSize"
         app:popupTheme="@style/PopUpTheme"
-        app:theme="@style/MyActionBar" />
+        android:theme="@style/MyActionBar" />
 
     <FrameLayout
         android:id="@+id/container"

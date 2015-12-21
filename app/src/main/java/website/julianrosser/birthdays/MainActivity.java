@@ -82,11 +82,9 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
 
         // Find RecyclerListFragment reference
         if (savedInstanceState != null) {
-            Log.d("RecyclerListFragment", "RECYCLE newFragment");
             //Restore the fragment's instance
             recyclerListFragment = (RecyclerListFragment) getSupportFragmentManager().getFragment(
                     savedInstanceState, RECYCLER_LIST_INSTANCE_KEY);
-
 
             itemOptionsFragment = (ItemOptionsFragment) getSupportFragmentManager().getFragment(
                     savedInstanceState, ITEM_OPTIONS_INSTANCE_KEY);
@@ -134,7 +132,6 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         }
 
         MainActivity.dataChangedUiThread();
-
     }
 
     /**

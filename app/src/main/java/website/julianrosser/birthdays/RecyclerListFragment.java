@@ -55,6 +55,7 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
         FloatingActionButton floatingActionButton = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                // Open New Birthday Fragment
                 MainActivity.getContext().showAddEditBirthdayFragment(AddEditFragment.MODE_ADD, 0);
             }
         });
@@ -98,6 +99,14 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
 
         if (MainActivity.birthdaysList.isEmpty()) {
             emptyView.setVisibility(View.VISIBLE);
+            emptyView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Open New Birthday Fragment
+                    MainActivity.getContext().showAddEditBirthdayFragment(AddEditFragment.MODE_ADD, 0);
+                }
+            });
+
         } else {
             emptyView.setVisibility(View.INVISIBLE);
         }

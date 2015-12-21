@@ -8,8 +8,8 @@ android {
         applicationId "website.julianrosser.birthdays"
         minSdkVersion 11
         targetSdkVersion 23
-        versionCode 15
-        versionName "1.5"
+        versionCode 20
+        versionName "2.0"
     }
     buildTypes {
         release {

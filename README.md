@@ -4,14 +4,10 @@ App for Android devices which notifies users of upcoming birthdays.
 ![](http://julianrosser.website/images/app_screenshots/birthday180.png)![](http://julianrosser.website/images/app_screenshots/birthday184.png)
 
 TODO - Main:
-- Add/delete Animation?
-- Layout for XLARGE test
-- Empty view clicklistener????
-- Alarm icon padding for toggle
+- Add/delete Animations?
+- Tablet fragment layout & window sizes!
 - Test nx7 alarms in future
-- Test update to new app, loose birthdays?
-- reminder category bold api 19
-- Multiple installs using Gradle
+- Pref category not bold -api19
 
 Resources:
 - App launcher icon, screenshots, video
@@ -44,7 +40,7 @@ Next Update?
 
 
 Log
-- 20/12 - Small, normal and tablet layouts. Fixed bug where alarm wouldn't cancel when toggled.
+- 20/12 - Small, normal and tablet layouts. Fixed bug where alarm wouldn't cancel when toggled. XLarge layout, final changes to list layout.
 - 19/12 - Toolbar shadow, FAButton hide/show when scrolling. Finished Material styling. Toolbar & menu bg, preference bg & category styles.
 - 18/12 - Replaced ActionBar with Toolbar. Material theme, styles & colours. Added reminder toggle option, icon & functionality.
           Somehow managed to delete build.gradle. CHAOS. Noticed the file was removed from last commit.
