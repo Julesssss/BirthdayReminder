@@ -3,11 +3,11 @@ App for Android devices which notifies users of upcoming birthdays.
 
 ![](http://julianrosser.website/images/app_screenshots/birthday180.png)![](http://julianrosser.website/images/app_screenshots/birthday184.png)
 
+<a href="https://play.google.com/store/apps/details?id=website.julianrosser.birthdays&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-AC-global-none-all-co-pr-py-PartBadges-Oct1515-1"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png" /></a>
+
 TODO - Main:
 - Add/delete Animations?
-- Tablet fragment layout & window sizes!
-- Test nx7 alarms in future
-- Pref category not bold -api19
+- Language (Indian)
 
 Resources:
 - App launcher icon, screenshots, video
@@ -19,6 +19,7 @@ Marketing:
 
 Final:
 - Update Version no. to 2.0
+- remove add + delete all options
 - Refactor Logs, testing code to text file
 - Prepare to launch - https://developer.android.com/tools/publishing/preparing.html
 - final checks - https://developer.android.com/distribute/tools/launch-checklist.html
@@ -31,6 +32,8 @@ Bugs:
 
 Next Update?
 - Widget
+- Pref category not bold -api19
+- Tablet fragment layout & window sizes!
 - Roboto font < api 16
 - 2 birthdays on same day?
 - Fragments as bottom cards?
@@ -40,6 +43,7 @@ Next Update?
 
 
 Log
+- 21/12 - Created HelpActivity. Finishing touches to layout. Replaced Toast with SnackBar.
 - 20/12 - Small, normal and tablet layouts. Fixed bug where alarm wouldn't cancel when toggled. XLarge layout, final changes to list layout.
 - 19/12 - Toolbar shadow, FAButton hide/show when scrolling. Finished Material styling. Toolbar & menu bg, preference bg & category styles.
 - 18/12 - Replaced ActionBar with Toolbar. Material theme, styles & colours. Added reminder toggle option, icon & functionality.

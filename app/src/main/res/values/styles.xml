@@ -13,7 +13,9 @@
         <item name="android:editTextStyle">@style/EditTextTheme</item>
 
         <item name="android:listSeparatorTextViewStyle">@style/ListSeparator</item>
-        <!--item name="android:preferenceCategoryStyle">@style/PreferenceCategory</item>-->
+        <!--<item name="android:preferenceCategoryStyle">@style/PreferenceCategory</item>-->
+
+        <!--<item name="android:preferenceStyle">@style/PreferenceTheme</item>-->
 
         <item name="android:textAppearanceLarge">@style/MyTextAppearance</item>
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -48,13 +50,9 @@
         <item name="android:textColor">#fff</item>
     </style>
 
-    <!-- Preference Themes -->
-    <style name="PreferenceTheme" parent="Theme.AppCompat">
-        <!-- Pref category title & pref dialog highlight & button text color-->
-        <!--<item name="android:background">@color/colorPrimary</item>-->
-        <!--<item name="android:textColor">@color/textColorPrimary</item>-->
-
-
+    <!-- Preference Theme - This sets all PrefDialogs background colours -->
+    <style name="PreferenceTheme" parent="AppTheme">
+        <item name="android:background">@color/colorPrimary</item>
     </style>
 
     <style name="PreferenceCategory" parent="@style/Theme.AppCompat.Light.DarkActionBar">
@@ -90,5 +88,9 @@
     <style name="OldStyles">
 
     </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

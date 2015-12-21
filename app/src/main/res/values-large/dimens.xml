@@ -11,6 +11,12 @@
 
     <dimen name="list_date_end_padding">16dp</dimen>
 
+    <dimen name="alarm_toggle_padding_width">32dp</dimen>
+    <dimen name="alarm_toggle_padding_height">16dp</dimen>
+
+
+
+
     <!-- Margins -->
     <dimen name="list_item_padding">16dp</dimen>
     <dimen name="list_item_padding_small">16dp</dimen>

@@ -68,5 +68,6 @@
     <!-- Sorting Preference -->
     <string name="pref_sort_by_key">sort_by_key</string>
     <string name="pref_sort_by_title">Order by</string>
+    <string name="title_activity_help">Help</string>
 
 </resources>

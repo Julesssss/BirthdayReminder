@@ -13,7 +13,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import org.apache.commons.lang3.text.WordUtils;
 import org.json.JSONArray;
@@ -322,7 +321,10 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_help) {
-            addTestBirthday();
+
+            Intent intentHelp = new Intent(this, Help.class);
+            startActivity(intentHelp);
+
             return true;
 
         } else if (id == R.id.action_add) {
@@ -411,6 +413,8 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
     @Override
     public void onItemToggleAlarm(ItemOptionsFragment dialog, int position) {
         itemOptionsFragment.dismiss();
+        // Change birthdays remind bool
+        birthdaysList.get(position).toggleReminder();
         alarmToggled(position);
     }
 
@@ -421,12 +425,6 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
 
         // Cancel the previously set alarm, without re-calling service
         cancelAlarm(b);
-
-        // Change birthdays remind bool
-        b.toggleReminder();
-
-        // notify user of change
-        Toast.makeText(this, "Reminder for " + b.getName() + b.getReminderString(), Toast.LENGTH_SHORT).show();
 
         // Notify adapter of change, so that UI is updated
         dataChangedUiThread();

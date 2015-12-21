@@ -31,6 +31,8 @@ public class SettingsActivity extends AppCompatActivity {
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
+        setTheme(R.style.PreferenceTheme);
+
         getFragmentManager().beginTransaction()
                 .replace(R.id.content, new SettingsFragment())
                 .commit();
@@ -52,6 +54,8 @@ public class SettingsActivity extends AppCompatActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.preferences);
+
+
 
             bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_days_before_key)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_time_before_key)));

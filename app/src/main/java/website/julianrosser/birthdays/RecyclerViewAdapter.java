@@ -1,6 +1,7 @@
 package website.julianrosser.birthdays;
 
 import android.graphics.Typeface;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -60,6 +61,20 @@ public class RecyclerViewAdapter
         viewHolder.imageAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                // Change birthdays remind bool
+                birthday.toggleReminder();
+
+                // Notify user of change. If birthday is today, let user know alarm is set for next year
+                if (birthday.getDaysBetween() == 0 && birthday.getRemind()) {
+                    Snackbar.make(viewHolder.imageAlarm, "Reminder for " + birthday.getName() +
+                            birthday.getReminderString() + " for next year", Snackbar.LENGTH_LONG).show();
+
+                } else {
+                    Snackbar.make(viewHolder.imageAlarm, "Reminder for " + birthday.getName() +
+                            birthday.getReminderString(), Snackbar.LENGTH_LONG).show();
+                }
+                // Callback to MainActivity.
                 MainActivity.getContext().alarmToggled(position);
             }
         });
