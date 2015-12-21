@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Titles -->
+    <string name="app_name">Cumpleaños</string>
+    <string name="dialog_add">Nuevo Cumpleaños</string>
+    <string name="dialog_edit">Editar Cumpleaños</string>
+    <string name="title_activity_settings">Ajustes</string>
+    <string name="notification_title">Recordatorio De Cumpleaños</string>
+    <string name="title_activity_help">Ayuda</string>
+
+    <!-- Menu -->
+    <string name="action_help">Ayuda</string>
+    <string name="action_settings">Ajustes</string>
+    <string name="item_menu_edit">Editar</string>
+    <string name="item_menu_delete">Borrar</string>
+    <string name="item_menu_alarm">Recordatorio De Palanca</string>
+
+    <!-- AddEdit DialogFragment -->
+    <string name="hint_name">Nombre&#8230;</string>
+    <string name="button_positive">Hecho</string>
+    <string name="button_negative">Cancelar</string>
+
+    <!-- Information & help Text -->
+    <string name="empty_list_message">Toque el icono de pastel de cumpleaños para añadir nuevas cumpleaños!</string>
+
+</resources>

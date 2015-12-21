@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Titles -->
+    <string name="app_name">Дни рождения</string>
+    <string name="dialog_add">Добавить рождения</string>
+    <string name="dialog_edit">редактировать рождения</string>
+    <string name="title_activity_settings">настройки</string>
+    <string name="notification_title">напоминание о дне рождения</string>
+    <string name="title_activity_help">Помогите</string>
+
+    <!-- Menu -->
+    <string name="action_help">Помогите</string>
+    <string name="action_settings">настройки</string>
+    <string name="item_menu_edit">отредактировать</string>
+    <string name="item_menu_delete">Удалить</string>
+    <string name="item_menu_alarm">переключатель напоминание</string>
+
+    <!-- AddEdit DialogFragment -->
+    <string name="hint_name">имя&#8230;</string>
+    <string name="button_positive">сделанный</string>
+    <string name="button_negative">Отмена</string>
+
+    <!-- Information & help Text -->
+    <string name="empty_list_message">Нажмите на значок день рождения торт, чтобы добавить новые дни рождения!</string>
+
+</resources>

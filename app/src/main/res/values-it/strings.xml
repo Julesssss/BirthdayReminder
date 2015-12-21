@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Titles -->
+    <string name="app_name">Compleanni</string>
+    <string name="dialog_add">Nuovo Compleanno</string>
+    <string name="dialog_edit">Modifica Compleanno</string>
+    <string name="title_activity_settings">Impostazioni</string>
+    <string name="notification_title">Compleanno Promemoria</string>
+    <string name="title_activity_help">Aiuto</string>
+
+    <!-- Menu -->
+    <string name="action_help">Aiuto</string>
+    <string name="action_settings">Impostazioni</string>
+    <string name="item_menu_edit">Modifica</string>
+    <string name="item_menu_delete">Cancellare</string>
+    <string name="item_menu_alarm">Promemoria Ginocchiera</string>
+
+    <!-- AddEdit DialogFragment -->
+    <string name="hint_name">Nome&#8230;</string>
+    <string name="button_positive">Fatto</string>
+    <string name="button_negative">Cancellare</string>
+
+    <!-- Information & help Text -->
+    <string name="empty_list_message">Toccare l'icona della torta di compleanno per iniziare ad aggiungere i compleanni!</string>
+
+</resources>

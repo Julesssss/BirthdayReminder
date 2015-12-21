@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Titles -->
+    <string name="app_name">Aniversários</string>
+    <string name="dialog_add">Novo aniversário</string>
+    <string name="dialog_edit">Edição de aniversário</string>
+    <string name="title_activity_settings">Configurações</string>
+    <string name="notification_title">Lembrete de aniversário</string>
+    <string name="title_activity_help">Socorro</string>
+
+    <!-- Menu -->
+    <string name="action_help">Socorro</string>
+    <string name="action_settings">Configurações</string>
+    <string name="item_menu_edit">Editar</string>
+    <string name="item_menu_delete">Excluir</string>
+    <string name="item_menu_alarm">Lembrete de alternância</string>
+
+    <!-- AddEdit DialogFragment -->
+    <string name="hint_name">Nome&#8230;</string>
+    <string name="button_positive">Feito</string>
+    <string name="button_negative">Cancelar</string>
+
+    <!-- Information & help Text -->
+    <string name="empty_list_message">Toque no ícone do bolo de aniversário para começar a adicionar aniversários!</string>
+
+</resources>

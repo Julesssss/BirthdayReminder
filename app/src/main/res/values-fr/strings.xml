@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Titles -->
+    <string name="app_name">Anniversaires</string>
+    <string name="dialog_add">Nouvel anniversaire</string>
+    <string name="dialog_edit">Modifier anniversaire</string>
+    <string name="title_activity_settings">Paramètres</string>
+    <string name="notification_title">Rappel d'anniversaire</string>
+    <string name="title_activity_help">Aidez-moi</string>
+
+    <!-- Menu -->
+    <string name="action_help">Aidez-moi</string>
+    <string name="action_settings">Paramètres</string>
+    <string name="item_menu_edit">Modifier</string>
+    <string name="item_menu_delete">Effacer</string>
+    <string name="item_menu_alarm">Rappel bascule</string>
+
+    <!-- AddEdit DialogFragment -->
+    <string name="hint_name">Prénom&#8230;</string>
+    <string name="button_positive">Terminé</string>
+    <string name="button_negative">Annuler</string>
+
+    <!-- Information & help Text -->
+    <string name="empty_list_message">Appuyez sur le gâteau d'anniversaire icône pour commencer à ajouter les anniversaires!</string>
+
+</resources>

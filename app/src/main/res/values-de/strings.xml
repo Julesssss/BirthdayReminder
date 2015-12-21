@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Titles -->
+    <string name="app_name">Geburtstage</string>
+    <string name="dialog_add">Neue Geburtstag</string>
+    <string name="dialog_edit">Bearbeiten</string>
+    <string name="title_activity_settings">Einstellungen</string>
+    <string name="notification_title">Geburtstagserinnerung</string>
+    <string name="title_activity_help">Hilfe</string>
+
+    <!-- Menu -->
+    <string name="action_help">Hilfe</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="item_menu_edit">Bearbeiten</string>
+    <string name="item_menu_delete">Löschen</string>
+    <string name="item_menu_alarm">Umschalten Mahnung</string>
+
+    <!-- AddEdit DialogFragment -->
+    <string name="hint_name">Name&#8230;</string>
+    <string name="button_positive">Fertig</string>
+    <string name="button_negative">Absagen</string>
+
+    <!-- Information & help Text -->
+    <string name="empty_list_message">Tippen Sie auf die Geburtstagstorte Symbol, um neue Geburtstage!</string>
+
+</resources>

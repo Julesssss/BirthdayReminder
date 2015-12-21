@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Titles -->
+    <string name="app_name">Zile de nastere</string>
+    <string name="dialog_add">Nou ziua de nastere</string>
+    <string name="dialog_edit">Edita ziua de nastere</string>
+    <string name="title_activity_settings">Setări</string>
+    <string name="notification_title">Memento zi de naștere</string>
+    <string name="title_activity_help">Ajutor</string>
+
+    <!-- Menu -->
+    <string name="action_help">Ajutor</string>
+    <string name="action_settings">Setări</string>
+    <string name="item_menu_edit">Edita</string>
+    <string name="item_menu_delete">șterge</string>
+    <string name="item_menu_alarm">Memento Toggle</string>
+
+    <!-- AddEdit DialogFragment -->
+    <string name="hint_name">Nume&#8230;</string>
+    <string name="button_positive">Terminat</string>
+    <string name="button_negative">Anula</string>
+
+    <!-- Information & help Text -->
+    <string name="empty_list_message">Atingeți pictograma tort pentru a adăuga aniversari!</string>
+
+</resources>
