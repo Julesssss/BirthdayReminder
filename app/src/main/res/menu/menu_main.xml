@@ -14,4 +14,9 @@
         android:orderInCategory="300"
         android:title="@string/action_help" />
 
+    <item
+        android:id="@+id/action_add"
+        android:orderInCategory="300"
+        android:title="Add (Testing)" />
+
 </menu>

@@ -1,5 +1,6 @@
 package website.julianrosser.birthdays;
 
+import android.content.Context;
 import android.graphics.Typeface;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
@@ -17,8 +18,15 @@ public class RecyclerViewAdapter
         extends RecyclerView.Adapter
         <RecyclerViewAdapter.ListItemViewHolder> {
 
+    private int lastPosition = -1;
+
+    Context appContext;
+
     // Constructor
-    public RecyclerViewAdapter(ArrayList<Birthday> birthdayData) { //
+    public RecyclerViewAdapter(ArrayList<Birthday> birthdayData, Context c) { //
+
+        appContext = c;
+
         if (birthdayData == null) {
             MainActivity.birthdaysList = new ArrayList<>();
         } else if (birthdayData.size() == 0) {
@@ -41,6 +49,8 @@ public class RecyclerViewAdapter
     public void onBindViewHolder(final ListItemViewHolder viewHolder, final int position) {
         // Get reference to birthday
         final Birthday birthday = MainActivity.birthdaysList.get(position);
+
+        viewHolder.container.setVisibility(View.VISIBLE);
 
         // Pass data to the TextViews
         viewHolder.textName.setText(birthday.getName());
@@ -69,8 +79,12 @@ public class RecyclerViewAdapter
                     Snackbar.make(viewHolder.imageAlarm, "Reminder for " + birthday.getName() +
                             birthday.getReminderString(), Snackbar.LENGTH_LONG).show();
                 }
+
+                // Get correct position, as deleted views may have altered pos int
+                int currentPosition = RecyclerListFragment.recyclerView.getChildAdapterPosition(viewHolder.itemView);
+
                 // Callback to MainActivity.
-                MainActivity.getContext().alarmToggled(position);
+                MainActivity.getContext().alarmToggled(currentPosition);
             }
         });
 
@@ -78,8 +92,12 @@ public class RecyclerViewAdapter
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                // Get actual position, accounting for deletion
+                int currentPosition = RecyclerListFragment.recyclerView.getChildAdapterPosition(viewHolder.itemView);
+
                 // Open ItemOption menu for selected birthday
-                MainActivity.getContext().showItemOptionsFragment(position);
+                MainActivity.getContext().showItemOptionsFragment(currentPosition);
             }
         });
     }
@@ -131,12 +149,14 @@ public class RecyclerViewAdapter
         TextView textName;
         TextView textDaysRemaining;
         ImageView imageAlarm;
+        View container;
         Typeface typeLight;
 
         public ListItemViewHolder(View itemView) {
             super(itemView);
 
             // Set up references
+            container = itemView.findViewById(R.id.list_container);
             textName = (TextView) itemView.findViewById(R.id.name);
             textDaysRemaining = (TextView) itemView.findViewById(R.id.days_remaining);
             textDateDay = (TextView) itemView.findViewById(R.id.dateDay);

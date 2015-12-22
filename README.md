@@ -3,12 +3,11 @@ App for Android devices which notifies users of upcoming birthdays.
 
 ![](http://julianrosser.website/images/app_screenshots/birthday180.png)![](http://julianrosser.website/images/app_screenshots/birthday184.png)
 
-<a href="https://play.google.com/store/apps/details?id=website.julianrosser.birthdays&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-AC-global-none-all-co-pr-py-PartBadges-Oct1515-1"><img alt="Get it on Google Play" height="35%" src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png" /></a>
+![https://play.google.com/store/apps/details?id=website.julianrosser.birthdays](http://i.imgur.com/aL8bBy5.png?1)
 
 TODO - Main:
-- Add/delete Animations?
 - Languages localisation preference strings
-
+- Undo birthday delete?
 - Video screen cast
 
 - Deep links
@@ -35,11 +34,12 @@ Next Update?
 - Custom Notification
 - Button Merge to alertDialog?
 - SQL database instead of JSON ??? necessary? Will take effort, perhaps as backup
+- FAB (+ toolbar?) hide on scroll, but show on data changed
 
 
 Log
-- 21/12 - Removed logs and testing methods.
-          Translated strings to 7 most used languages. Created HelpActivity. Finishing touches to layout. Replaced Toast with SnackBar.
+- 22/12 - RecycleView animations. debugging array position exceptions.
+- 21/12 - Translated strings to 7 most used languages. Created HelpActivity. Finishing touches to layout. Replaced Toast with SnackBar.
 - 20/12 - Small, normal and tablet layouts. Fixed bug where alarm wouldn't cancel when toggled. XLarge layout, final changes to list layout.
 - 19/12 - Toolbar shadow, FAButton hide/show when scrolling. Finished Material styling. Toolbar & menu bg, preference bg & category styles.
 - 18/12 - Replaced ActionBar with Toolbar. Material theme, styles & colours. Added reminder toggle option, icon & functionality.

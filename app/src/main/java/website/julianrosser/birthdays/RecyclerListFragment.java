@@ -21,10 +21,13 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
     public static RecyclerViewAdapter mAdapter;
 
     // Reference to recyclerView
-    static RecyclerView recyclerView;
+    public static RecyclerView recyclerView;
 
     // Reference to view which shows when list empty. todo - needed globally?
     static View emptyView;
+
+    // Need this reference to show onResume
+    public static FloatingActionButton floatingActionButton;
 
     // Required empty constructor
     public RecyclerListFragment() {
@@ -72,10 +75,17 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
 
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
+
         // Can use this to optimize performance as RecyclerView will NOT change size.
         recyclerView.setHasFixedSize(true);
 
-        mAdapter = new RecyclerViewAdapter(MainActivity.birthdaysList);
+        mAdapter = new RecyclerViewAdapter(MainActivity.birthdaysList, getActivity().getApplicationContext());
 
         recyclerView.setAdapter(mAdapter);
 

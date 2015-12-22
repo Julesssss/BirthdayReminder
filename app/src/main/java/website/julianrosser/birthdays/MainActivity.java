@@ -10,9 +10,9 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import org.apache.commons.lang3.text.WordUtils;
 import org.json.JSONArray;
@@ -24,6 +24,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 
 import website.julianrosser.birthdays.DialogFragments.AddEditFragment;
 import website.julianrosser.birthdays.DialogFragments.ItemOptionsFragment;
@@ -191,7 +192,8 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
 
     // Callback from AddEditFragment, create new Birthday object and add to array
     @Override
-    public void onDialogPositiveClick(AddEditFragment dialog, String name, int day, int month, int addEditMode, int position) {
+    public void onDialogPositiveClick(AddEditFragment dialog, String name, int day, int month, int addEditMode, final int position) {
+
         // Build date object which will be used by new Birthday
         Date dateOfBirth = new Date();
         dateOfBirth.setDate(day);
@@ -201,41 +203,66 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         // Format name by capitalizing name
         name = WordUtils.capitalize(name);
 
+        final Birthday birthday;
+
         // Decide whether to create new or edit old birthday
         if (addEditMode == AddEditFragment.MODE_EDIT) {
-            birthdaysList.get(position).edit(name, dateOfBirth, true);
-        } else {
-            Birthday newBirthday = new Birthday(name, dateOfBirth, true);
-            birthdaysList.add(newBirthday);
-        }
-        dataChangedUiThread();
+            // Edit text
+            birthday = birthdaysList.get(position);
+            birthday.edit(name, dateOfBirth, true);
 
-        // Attempt to save updated Birthday data
-        try {
-            saveBirthdays();
-        } catch (Exception e) {
-            e.printStackTrace();
+            mContext.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    RecyclerListFragment.mAdapter.notifyItemChanged(position);
+                }
+            });
+
+        } else {
+            // Create birthday, add to array and notify adapter
+            birthday = new Birthday(name, dateOfBirth, true);
+            birthdaysList.add(birthday);
+
+            // Notify adapter
+            mContext.runOnUiThread(new Runnable() {
+                public void run() {
+
+                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getAppContext());
+
+                    // Get users sort preference
+                    if (Integer.valueOf(sharedPref.getString(getAppContext().getString(R.string.pref_sort_by_key), "0")) == 1) {
+                        RecyclerViewAdapter.sortBirthdaysByName();
+                    } else {
+                        RecyclerViewAdapter.sortBirthdaysByDate();
+                    }
+
+                    RecyclerListFragment.mAdapter.notifyItemInserted(birthdaysList.indexOf(birthday));
+                    RecyclerListFragment.showEmptyMessageIfRequired();
+                }
+            });
         }
     }
 
     // We only use this method to delete data from Birthday array and pass a reference to the cancel alarm method.
-    public static void deleteFromArray(int position) {
+    public static void deleteFromArray(final int position) {
 
         // Cancel the notification PendingIntent
         cancelAlarm(birthdaysList.get(position));
 
-        // Remove from Array
-        birthdaysList.remove(position);
+        // Notify adapter
+        mContext.runOnUiThread(new Runnable() {
+            public void run() {
 
-        // Use UI Thread to notify adapter to data change
-        dataChangedUiThread();
+                birthdaysList.remove(position);
 
-        // Attempt to save updated Birthday data
-        try {
-            saveBirthdays();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                RecyclerListFragment.mAdapter.notifyItemRemoved(position);
+                RecyclerListFragment.showEmptyMessageIfRequired();
+
+                if (RecyclerListFragment.floatingActionButton != null && RecyclerListFragment.floatingActionButton.getVisibility() == View.INVISIBLE) {
+                    RecyclerListFragment.floatingActionButton.show();
+                }
+            }
+        });
     }
 
     // This builds an identical PendingIntent to the alarm and cancels when
@@ -270,10 +297,12 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
 
         mContext.runOnUiThread(new Runnable() {
             public void run() {
-                Log.d("UI thread", "Casting magic spell on mAdapter...");
+                if (RecyclerListFragment.floatingActionButton != null && RecyclerListFragment.floatingActionButton.getVisibility() == View.INVISIBLE) {
+                    RecyclerListFragment.floatingActionButton.show();
+                }
+
                 RecyclerListFragment.mAdapter.notifyDataSetChanged();
                 RecyclerListFragment.showEmptyMessageIfRequired();
-
             }
         });
     }
@@ -302,6 +331,24 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
             startActivity(intentHelp);
             return true;
 
+        } else if (id == R.id.action_add) {
+
+            String[] nameArray = getResources().getStringArray(R.array.name_array);
+            Date d = new Date();
+            d.setMonth(new Random().nextInt(12));
+            d.setDate(new Random().nextInt(28));
+
+            birthdaysList.add(new Birthday(nameArray[new Random().nextInt(nameArray.length)], d, true));
+            dataChangedUiThread();
+
+            try {
+                saveBirthdays();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return true;
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -312,9 +359,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
     public static void saveBirthdays()
             throws JSONException, IOException {
 
-        Log.i("SaveBirthdays", "SAVING BIRTHDAYS");
-
-        if (birthdaysList != null && birthdaysList.size() != 0) {
+        if (birthdaysList != null) {
 
             try {
                 // Build an array in JSON
@@ -342,7 +387,6 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
             // Launch service to update alarms when data changed
             Intent serviceIntent = new Intent(MainActivity.getAppContext(), SetAlarmsService.class);
             MainActivity.getAppContext().startService(serviceIntent);
-
         }
     }
 
@@ -384,6 +428,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
 
     // This is in a separate method so it can be called from different classes
     public void alarmToggled(int position) {
+
         // Use position parameter to get Birthday reference
         Birthday b = birthdaysList.get(position);
 
