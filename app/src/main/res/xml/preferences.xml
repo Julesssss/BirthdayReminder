@@ -14,7 +14,7 @@
 
         <ListPreference
             android:defaultValue="1"
-            android:dialogTitle="@string/pref_remind_day_title_dialog"
+            android:dialogTitle="@string/pref_remind_day_title"
             android:entries="@array/dayRemindEntries"
             android:entryValues="@array/dayRemindValues"
             android:key="@string/pref_days_before_key"
@@ -22,11 +22,11 @@
 
         <ListPreference
             android:defaultValue="@string/pref_time_12"
-            android:dialogTitle="@string/pref_remind_time_title"
+            android:dialogTitle="@string/pref_remind_day_title"
             android:entries="@array/timeRemindEntries"
             android:entryValues="@array/timeRemindValues"
             android:key="@string/pref_time_before_key"
-            android:title="@string/pref_remind_time_title_dialog" />
+            android:title="@string/pref_remind_time_title" />
 
         <CheckBoxPreference
             android:defaultValue="@string/pref_vibrate_default"

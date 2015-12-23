@@ -23,7 +23,7 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
     // Reference to recyclerView
     public static RecyclerView recyclerView;
 
-    // Reference to view which shows when list empty. todo - needed globally?
+    // Reference to view which shows when list empty.
     static View emptyView;
 
     // Need this reference to show onResume
@@ -100,7 +100,7 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
     }
 
     // Show or hide the 'no birthdays found' message depending on size of birthday Array
-    public static void showEmptyMessageIfRequired() { // todo - remove then replace to prevent redraw?
+    public static void showEmptyMessageIfRequired() {
 
         if (MainActivity.birthdaysList.isEmpty()) {
             emptyView.setVisibility(View.VISIBLE);

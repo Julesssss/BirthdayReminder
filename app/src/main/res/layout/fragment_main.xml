@@ -24,8 +24,6 @@
         android:src="@drawable/ic_cake_white_24dp"
         app:elevation="6dp"
         app:rippleColor="@color/colorPrimaryDark" />
-        <!--app:layout_behavior="website.julianrosser.birthdays.ScrollAwareFABBehavior"-->
-
 
     <LinearLayout
         android:id="@+id/empty_view"

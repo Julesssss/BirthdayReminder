@@ -12,14 +12,14 @@
 
     <!-- Day of reminder  -->
     <string-array name="dayRemindEntries">
-        <item>On the day</item>
-        <item>1 day before</item>
-        <item>2 days before</item>
-        <item>3 days before</item>
-        <item>4 days before</item>
-        <item>5 days before</item>
-        <item>6 days before</item>
-        <item>A week before</item>
+        <item>@string/day0</item>
+        <item>@string/day1</item>
+        <item>@string/day2</item>
+        <item>@string/day3</item>
+        <item>@string/day4</item>
+        <item>@string/day5</item>
+        <item>@string/day6</item>
+        <item>@string/day7</item>
     </string-array>
 
     <string-array name="dayRemindValues">
@@ -35,9 +35,9 @@
 
     <!-- Time off reminder  -->
     <string-array name="timeRemindEntries">
-        <item>Morning</item>
-        <item>Midday</item>
-        <item>Evening</item>
+        <item>8am</item>
+        <item>12am</item>
+        <item>5pm</item>
     </string-array>
 
     <string-array name="timeRemindValues">
@@ -48,8 +48,8 @@
 
     <!-- Sorting preference  -->
     <string-array name="pref_sort_entries">
-        <item>Date</item>
-        <item>Name</item>
+        <item>@string/date</item>
+        <item>@string/name</item>
     </string-array>
 
     <string-array name="pref_sort_values">

@@ -12,7 +12,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.view.ContextThemeWrapper;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -93,13 +92,12 @@ public class AddEditFragment extends DialogFragment {
         if (bundle != null) {
             ADD_OR_EDIT_MODE = bundle.getInt(MODE_KEY, MODE_ADD);
 
-        } else { // Fallback to default Mode todo - is this even possible?
+        } else { // Fallback to default mode
             ADD_OR_EDIT_MODE = MODE_ADD;
-            Log.e(TAG, "Bundle is null!");
         }
     }
 
-    @NonNull // todo - why?
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
@@ -109,12 +107,12 @@ public class AddEditFragment extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         // Inflate the brilliantly designed layout, passing null as the parent view because its
-        // going in the dialog layout // todo - what does this mean?
+        // going in the dialog layout
         view = inflater.inflate(R.layout.add_edit_birthday_fragment, null);
 
         // Get DatePicker reference and hide year spinner
         final DatePicker datePicker = (DatePicker) view.findViewById(R.id.datePicker);
-        datePicker.findViewById(Resources.getSystem().getIdentifier("year", "id", "android")).setVisibility(View.GONE); // todo - why id & android?
+        datePicker.findViewById(Resources.getSystem().getIdentifier("year", "id", "android")).setVisibility(View.GONE);
 
         // Set Birthday name and birth date if in Edit mode
         if (ADD_OR_EDIT_MODE == MODE_EDIT) {
@@ -125,7 +123,7 @@ public class AddEditFragment extends DialogFragment {
             // Move cursor to end of text
             editText.setSelection(editText.getText().length());
 
-            datePicker.updateDate(2016, bundle.getInt(MONTH_KEY), bundle.getInt(DATE_KEY)); // TODO!!!! 2015 is irrelevent???  no effect?
+            datePicker.updateDate(2016, bundle.getInt(MONTH_KEY), bundle.getInt(DATE_KEY));
         }
 
         // Set view, then add buttons and title
@@ -176,7 +174,7 @@ public class AddEditFragment extends DialogFragment {
         final EditText editText = (EditText) view.findViewById(R.id.editTextName);
         final DatePicker datePicker = (DatePicker) view.findViewById(R.id.datePicker);
 
-        // Use my custom onFocusChange function. // todo - use view.OnFocus... ? Not View
+        // Use my custom onFocusChange function.
         View.OnFocusChangeListener onFocusChangeListener = new MyFocusChangeListener();
         editText.setOnFocusChangeListener(onFocusChangeListener);
 
@@ -220,7 +218,7 @@ public class AddEditFragment extends DialogFragment {
 
     /**
      * Custom OnFocusChangeListener which enables focus to be taken away from EditText, so that the
-     * soft keyboard can be hidden. // todo - Test use of DATEPICKER, CLICK ON DATE, THEN EDIT
+     * soft keyboard can be hidden.
      */
     private class MyFocusChangeListener implements View.OnFocusChangeListener {
 

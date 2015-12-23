@@ -72,11 +72,11 @@ public class RecyclerViewAdapter
 
                 // Notify user of change. If birthday is today, let user know alarm is set for next year
                 if (birthday.getDaysBetween() == 0 && birthday.getRemind()) {
-                    Snackbar.make(viewHolder.imageAlarm, "Reminder for " + birthday.getName() +
+                    Snackbar.make(viewHolder.imageAlarm, "Reminder for " + birthday.getName() + " " +
                             birthday.getReminderString() + " for next year", Snackbar.LENGTH_LONG).show();
 
                 } else {
-                    Snackbar.make(viewHolder.imageAlarm, "Reminder for " + birthday.getName() +
+                    Snackbar.make(viewHolder.imageAlarm, "Reminder for " + birthday.getName() + " " +
                             birthday.getReminderString(), Snackbar.LENGTH_LONG).show();
                 }
 

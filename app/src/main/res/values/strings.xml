@@ -7,6 +7,8 @@
     <string name="title_activity_settings">Settings</string>
     <string name="notification_title">Birthday Reminder</string>
     <string name="title_activity_help">Help</string>
+    <string name="pref_category_reminder">Reminder Settings</string>
+    <string name="pref_category_list">List Settings</string>
 
     <!-- Menu -->
     <string name="action_help">Help</string>
@@ -23,50 +25,76 @@
     <!-- Information & help Text -->
     <string name="empty_list_message">Tap the Birthday cake icon to start adding birthdays!</string>
 
-    <!-- Preferences -->
-    <!-- Days before Preference -->
-    <string name="pref_days_before_key" translatable="false">day_before_key</string>
-    <string name="choice_1_day">1 day before</string>
+    <string name="date_today">Today</string>
+    <string name="date_tomorrow">Tomorrow</string>
+    <string name="date_week">next week</string>
+    <string name="date_monday">Monday</string>
+    <string name="date_tuesday">Tuesday</string>
+    <string name="date_wednesday">Wednesday</string>
+    <string name="date_thursday">Thursday</string>
+    <string name="date_friday">Friday</string>
+    <string name="date_saturday">Saturday</string>
+    <string name="date_sunday">Sunday</string>
+    <string name="date_this">this </string>
+    <string name="date_days">Days</string>
+    <string name="reminder_set">set</string>
+    <string name="reminder_canceled">canceled</string>
+
+    <!-- Preference Strings -->
+    <string name="enabled">Enabled</string>
+    <string name="disabled">Disabled</string>
+    <string name="date">Date</string>
+    <string name="name">Name</string>
+    <string name="day0">On the day</string>
+    <string name="day1">1 day before</string>
+    <string name="day2">2 days before</string>
+    <string name="day3">3 days before</string>
+    <string name="day4">4 days before</string>
+    <string name="day5">5 days before</string>
+    <string name="day6">6 days before</string>
+    <string name="day7">7 days before</string>
     <string name="pref_remind_day_title">Remind me</string>
     <string name="pref_remind_day_title_dialog">Day of reminder</string>
+    <string name="pref_remind_time_title">Time of reminder</string>
+    <string name="pref_enable_notifications_label">Show reminders?</string>
+    <string name="pref_vibrate_label">Allow vibration?</string>
+    <string name="pref_sound_label">Allow sound?</string>
+    <string name="pref_test_notification_summary">Show an example notification using current settings</string>
+    <string name="pref_test_notification_title">Show example reminder</string>
+    <string name="pref_sort_by_title">Sort birthdays</string>
+    <string name="pref_sort_by_title_dialog">Sort birthdays by</string>
+
+    <!-- Preferences keys -->
+    <string name="pref_days_before_key" translatable="false">day_before_key</string>
+    <string name="choice_1_day">@string/day3</string>
     <string name="pref_time_before_key">time_before_key</string>
-    <string name="pref_remind_time_title_dialog">Reminder time</string>
-    <string name="pref_remind_time_title">Reminder time</string>
+    <string name="pref_enable_notifications_key" translatable="false">enable_notification</string>
+    <string name="pref_enable_notifications_true">@string/enabled</string>
+    <string name="pref_enable_notifications_false">@string/disabled</string>
+    <string name="pref_enable_notifications_default" translatable="false">true</string>
+
+    <!-- Strings related to Vibration preference -->
+    <string name="pref_vibrate_key" translatable="false">enable_vibration</string>
+    <string name="pref_vibrate_true">@string/enabled</string>
+    <string name="pref_vibrate_false">@string/disabled</string>
+    <string name="pref_vibrate_default" translatable="false">true</string>
+
+    <!-- Strings related to Sound preference -->
+    <string name="pref_sound_key" translatable="false">enable_sound</string>
+    <string name="pref_sound_true">@string/enabled</string>
+    <string name="pref_sound_false">@string/disabled</string>
+    <string name="pref_sound_default" translatable="false">true</string>
+
+    <!-- Strings related to test notification preference -->
+    <string name="pref_test_notification_key" translatable="false">test_notification</string>
+
+    <!-- Sorting Preference -->
+    <string name="pref_sort_by_key" translatable="false">sort_by_key</string>
 
     <!-- Time of reminder preference -->
     <string name="pref_time_8" translatable="false">8</string>
     <string name="pref_time_12" translatable="false">12</string>
     <string name="pref_time_17" translatable="false">17</string>
-
-    <!-- Strings related to Notification Enabled preference -->
-    <string name="pref_enable_notifications_key" translatable="false">enable_notification</string>
-    <string name="pref_enable_notifications_label">Allow reminder notification?</string>
-    <string name="pref_enable_notifications_true">Enabled</string>
-    <string name="pref_enable_notifications_false">Not Enabled</string>
-    <string name="pref_enable_notifications_default" translatable="false">true</string>
-
-    <!-- Strings related to Vibration preference -->
-    <string name="pref_vibrate_key" translatable="false">enable_vibration</string>
-    <string name="pref_vibrate_label">Vibrate phone?</string>
-    <string name="pref_vibrate_true">Enabled</string>
-    <string name="pref_vibrate_false">Not Enabled</string>
-    <string name="pref_vibrate_default" translatable="false">true</string>
-
-    <!-- Strings related to Sound preference -->
-    <string name="pref_sound_key" translatable="false">enable_sound</string>
-    <string name="pref_sound_label">Play sound?</string>
-    <string name="pref_sound_true">Enabled</string>
-    <string name="pref_sound_false">Not Enabled</string>
-    <string name="pref_sound_default" translatable="false">true</string>
-
-    <!-- Strings related to test notification preference -->
-    <string name="pref_test_notification_key" translatable="false">test_notification</string>
-    <string name="pref_test_notification_summary">Show example notification using current settings</string>
-    <string name="pref_test_notification_title">Test reminder</string>
-
-    <!-- Sorting Preference -->
-    <string name="pref_sort_by_key" translatable="false">sort_by_key</string>
-    <string name="pref_sort_by_title">Order by</string>
 
 
 </resources>

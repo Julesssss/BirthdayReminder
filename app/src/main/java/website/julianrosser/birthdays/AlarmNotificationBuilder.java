@@ -75,6 +75,7 @@ public class AlarmNotificationBuilder extends BroadcastReceiver {
 
         // Output
         Log.i(getClass().getSimpleName(), "" + mMessageString + " - notification at: " + DateFormat.getDateTimeInstance().format(new Date()));
+
     }
 
     public static boolean getVibrationAllowedPref(Context c) {

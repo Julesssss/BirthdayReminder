@@ -7,8 +7,12 @@ App for Android devices which notifies users of upcoming birthdays.
 
 TODO - Main:
 - Languages localisation preference strings
-- Undo birthday delete?
-- Video screen cast
+- Date formatting string
+
+- Example text
+- Small layout port, name margin
+
+- Record screen-cast (Add, rotate, edit, delete, reminder)
 
 - Deep links
 - Analytics
@@ -26,6 +30,7 @@ Bugs:
 
 Next Update?
 - Widget
+- Undo birthday delete?
 - Pref category not bold -api19
 - Tablet fragment layout & window sizes!
 - Roboto font < api 16
@@ -38,6 +43,7 @@ Next Update?
 
 
 Log
+- 23/12 - Finished list animation. Refactored all text to Strings, sorted references.
 - 22/12 - RecycleView animations. debugging array position exceptions.
 - 21/12 - Translated strings to 7 most used languages. Created HelpActivity. Finishing touches to layout. Replaced Toast with SnackBar.
 - 20/12 - Small, normal and tablet layouts. Fixed bug where alarm wouldn't cancel when toggled. XLarge layout, final changes to list layout.

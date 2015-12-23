@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
 import android.text.format.DateFormat;
-import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,9 +15,6 @@ import java.util.Date;
 
 @SuppressWarnings("deprecation")
 public class Birthday {
-
-    // Logging string
-    private final String LOG_TAG = getClass().getSimpleName();
 
     // JSON keys
     private static final String JSON_NAME = "name";
@@ -35,26 +31,30 @@ public class Birthday {
     private Date date;
     private boolean remind;
 
+    Context mAppContext;
+
     // logging tag
     private String TAG = getClass().getSimpleName();
 
     /**
      * Constructor for creating new birthday.
      */
-    public Birthday(String name, Date dateOfBirthday, boolean notifyUserOfBirthday) {
+    public Birthday(String name, Date dateOfBirthday, boolean notifyUserOfBirthday, Context c) {
 
         this.name = name;
         this.remind = notifyUserOfBirthday;
         this.date = dateOfBirthday;
+        this.mAppContext = c;
     }
 
     /**
      * For updating Birthday information without creating new
      */
-    public void edit(String editName, Date editDate, boolean editRemind) {
+    public void edit(String editName, Date editDate, boolean editRemind, Context c) {
 
         this.name = editName;
         this.date = editDate;
+        this.mAppContext = c;
     }
 
     /**
@@ -73,7 +73,6 @@ public class Birthday {
         } else {
             // Default to true if not found, log message.
             remind = true;
-            Log.e(LOG_TAG, "Birthday constructor - ERROR_11: Reminder boolean not found in JSON data."); // todo - needed???
         }
 
         // Date of birthday in millis.
@@ -116,9 +115,9 @@ public class Birthday {
 
     public String getReminderString() {
         if (remind) {
-            return " set";
+            return  MainActivity.getAppContext().getString(R.string.reminder_set);
         } else {
-            return " canceled";
+            return MainActivity.getAppContext().getString(R.string.reminder_canceled);
         }
     }
 
@@ -147,27 +146,22 @@ public class Birthday {
     public String getFormattedDaysRemainingString() {
         int i = getDaysBetween();
 
-        if (i > 365 || i < 0) {
-            Log.d(getClass().getSimpleName(), "DATE OUT OF BOUNDS: " + i);
-        }
-
-        if (i == -1) {
-            return "Yesterday";
-        } else if (i == 0) {
-            return "Today";
+        if (i == 0) {
+            return mAppContext.getString(R.string.date_today) + "!";
         } else if (i == 1) {
-            return "Tomorrow";
+            return mAppContext.getString(R.string.date_tomorrow) + "!";
         } else if (i > 1 && i <= 6) {
-            return Birthday.getWeekdayName(getDate());
+            Date newDate = new Date();
+            newDate.setTime(getDate().getTime() - DAY_IN_MILLIS);
+            return (String) DateFormat.format("EEEE", newDate);
         } else if (i > 99) {
-            return String.valueOf(i) + " Days";
+            return String.valueOf(i) + " " + MainActivity.getAppContext().getString(R.string.date_days);
         } else if (i > 9) {
-            return " " + String.valueOf(i) + " Days";
+            return String.valueOf(i) + " " + MainActivity.getAppContext().getString(R.string.date_days);
         } else {
-            return "  " + String.valueOf(i) + " Days";
+            return "  " + mAppContext.getString(R.string.date_days);
         }
     }
-
 
     // Return a formatted int of exact amount of days until the next birthday
     public int getDaysBetween() {
@@ -212,7 +206,7 @@ public class Birthday {
     /**
      * Helper method which returns the year of next birthday occurrence of passed date
      */
-    public static int getYearOfNextBirthday(Date date) { // TODO - Prevent serious out of bound infinite loops
+    public static int getYearOfNextBirthday(Date date) {
 
         int year = 2014;
         date.setYear(year);
@@ -227,7 +221,6 @@ public class Birthday {
 
             nowAhead = dateInFuture(date);
         }
-
         return year;
     }
 
@@ -276,18 +269,18 @@ public class Birthday {
 
         String dayFormatted = "";
 
-        int daysFromNotiUntilDay = getDaysBeforeReminderPref(c); // todo - delay from noti to reminder
+        int daysFromNotiUntilDay = getDaysBeforeReminderPref(c);
 
         if (daysFromNotiUntilDay == 0) {
-            dayFormatted += "today";
+            dayFormatted += c.getResources().getString(R.string.date_today);
         } else if (daysFromNotiUntilDay == 1) {
-            dayFormatted += "tomorrow";
+            dayFormatted += c.getResources().getString(R.string.date_tomorrow);
         } else if (daysFromNotiUntilDay == 7) {
-            dayFormatted += "next week";
+            dayFormatted += c.getResources().getString(R.string.date_week);
         } else {
             Date newDate = new Date();
-            newDate.setTime(b.getDate().getTime() + DAY_IN_MILLIS);
-            dayFormatted += "this " + (getWeekdayName(newDate));
+            newDate.setTime(b.getDate().getTime() - DAY_IN_MILLIS);
+            return c.getResources().getString(R.string.date_this) + DateFormat.format("EEEE", newDate);
         }
         dayFormatted += "!";
 
@@ -297,36 +290,5 @@ public class Birthday {
     public static int getDaysBeforeReminderPref(Context c) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(c);
         return Integer.valueOf(sharedPref.getString(c.getString(R.string.pref_days_before_key), "1"));
-    }
-
-    /**
-     * Used by above method and RecyclerAdapter to name day if within a week
-     */
-    public static String getWeekdayName(Date date) {
-
-        // TODO - modifier --> How far ahead is the notification?
-
-        Calendar c = Calendar.getInstance();
-        c.setTimeInMillis(date.getTime());
-
-        switch (c.get(Calendar.DAY_OF_WEEK)) {
-
-            case 1:
-                return "Saturday";
-            case 2:
-                return "Sunday";
-            case 3:
-                return "Monday";
-            case 4:
-                return "Tuesday";
-            case 5:
-                return "Wednesday";
-            case 6:
-                return "Thursday";
-            case 7:
-                return "Friday";
-            default:
-                return "soon";
-        }
     }
 }

@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         // If we are editing an old birthday, pass its information to fragment
         if (mode == AddEditFragment.MODE_EDIT) {
             // Reference to birthday we're editing
-            Birthday editBirthday = birthdaysList.get(birthdayListPosition); // todo - checks: don't open fragment if null
+            Birthday editBirthday = birthdaysList.get(birthdayListPosition);
             // Pass birthday's data to Fragment
             bundle.putInt(AddEditFragment.DATE_KEY, editBirthday.getDate().getDate());
             bundle.putInt(AddEditFragment.MONTH_KEY, editBirthday.getDate().getMonth());
@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         if (addEditMode == AddEditFragment.MODE_EDIT) {
             // Edit text
             birthday = birthdaysList.get(position);
-            birthday.edit(name, dateOfBirth, true);
+            birthday.edit(name, dateOfBirth, true, getApplicationContext());
 
             mContext.runOnUiThread(new Runnable() {
                 @Override
@@ -220,7 +220,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
 
         } else {
             // Create birthday, add to array and notify adapter
-            birthday = new Birthday(name, dateOfBirth, true);
+            birthday = new Birthday(name, dateOfBirth, true, getApplicationContext());
             birthdaysList.add(birthday);
 
             // Notify adapter
@@ -338,7 +338,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
             d.setMonth(new Random().nextInt(12));
             d.setDate(new Random().nextInt(28));
 
-            birthdaysList.add(new Birthday(nameArray[new Random().nextInt(nameArray.length)], d, true));
+            birthdaysList.add(new Birthday(nameArray[new Random().nextInt(nameArray.length)], d, true, getApplicationContext()));
             dataChangedUiThread();
 
             try {

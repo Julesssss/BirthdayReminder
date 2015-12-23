@@ -142,11 +142,11 @@ public class SettingsActivity extends AppCompatActivity {
 
         // Build notification
         Notification.Builder notificationBuilder = new Notification.Builder(
-                context).setTicker("(Test!) Julian's birthday is tomorrow!")
+                context).setTicker("(EXAMPLE!) Julian's birthday is tomorrow!")
                 .setSmallIcon(R.drawable.ic_cake_white_24dp)
                 .setAutoCancel(true)
                 .setContentTitle(context.getString(R.string.notification_title))
-                .setContentText("(Test!) Julian's birthday is tomorrow!")
+                .setContentText("(EXAMPLE) Julian's " + "birthday is tomorrow!")
                 .setContentIntent(mContentIntent);
 
         if (AlarmNotificationBuilder.getVibrationAllowedPref(context)) {
