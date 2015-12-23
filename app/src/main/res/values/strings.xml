@@ -60,6 +60,17 @@
     <string name="pref_sort_by_title">Sort birthdays</string>
     <string name="pref_sort_by_title_dialog">Sort birthdays by</string>
 
+    <string name="help_add_title">Add Birthday</string>
+    <string name="help_add_content">To add a new birthday reminder, tap the birthday cake icon. Then enter the name and date.</string>
+    <string name="help_edit_title">Edit Birthday</string>
+    <string name="help_edit_content">Tap the name of the birthday you would like to change. Then click the edit button.</string>
+    <string name="help_delete_title">Delete Birthday</string>
+    <string name="help_delete_content">Tap the birthday you would like to change from the list. Then tap delete.</string>
+    <string name="help_alarm_single_title">Turn reminder off</string>
+    <string name="help_alarm_single_content">Tap the alarm icon to toggle the alarm reminder.</string>
+    <string name="help_alarm_all_title">Turn all reminders off</string>
+    <string name="help_alarm_all_content">Open the settings menu, and tap the \'Allow reminder notifications\' option.</string>
+
     <!-- Preferences keys -->
     <string name="pref_days_before_key" translatable="false">day_before_key</string>
     <string name="choice_1_day">@string/day3</string>

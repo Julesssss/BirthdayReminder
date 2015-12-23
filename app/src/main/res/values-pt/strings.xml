@@ -58,6 +58,17 @@
     <string name="pref_sort_by_title">Ordenar aniversários</string>
     <string name="pref_sort_by_title_dialog">Ordenar por aniversários</string>
 
+    <string name="help_add_title">Adicionar Aniversário</string>
+    <string name="help_add_content">Para adicionar um novo lembrete de aniversário, toque no ícone do bolo de aniversário. Em seguida, digite o nome ea data.</string>
+    <string name="help_edit_title">Editar Aniversário</string>
+    <string name="help_edit_content">Toque no nome do aniversário que você gostaria de mudar. Em seguida, clique no botão de edição.</string>
+    <string name="help_delete_title">Excluir Aniversário</string>
+    <string name="help_delete_content">Toque no aniversário que você gostaria de mudar a partir da lista . Em seguida, toque em Excluir.</string>
+    <string name="help_alarm_single_title">Cancelar Lembrete</string>
+    <string name="help_alarm_single_content">Tap the alarm icon to toggle the alarm reminder.</string>
+    <string name="help_alarm_all_title">Cancelar todos os lembretes</string>
+    <string name="help_alarm_all_content">Abra o menu de configurações e toque na opção Permitir notificações de lembrete.</string>
+
     <!-- Information & help Text -->
     <string name="empty_list_message">Toque no ícone do bolo de aniversário para começar a adicionar aniversários!</string>
 

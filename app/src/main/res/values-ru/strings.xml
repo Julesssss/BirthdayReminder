@@ -58,6 +58,17 @@
     <string name="pref_sort_by_title">cортировать рождения</string>
     <string name="pref_sort_by_title_dialog">Сортировать по рождения</string>
 
+    <string name="help_add_title">Добавить рождения</string>
+    <string name="help_add_content">Чтобы добавить новое напоминание на день рождения, нажмите на значок рождения торт. Затем введите имя и дату.</string>
+    <string name="help_edit_title">Редактировать День рождения</string>
+    <string name="help_edit_content">Нажмите на имя рождения вы хотели бы изменить. Затем нажмите кнопку Изменить.</string>
+    <string name="help_delete_title">Удалить рождения</string>
+    <string name="help_delete_content">Нажмите рождения вы хотели бы изменить в списке. Затем нажмите удалить.</string>
+    <string name="help_alarm_single_title">Oтменить напоминание</string>
+    <string name="help_alarm_single_content">Нажмите на значок будильника , чтобы переключить сигнал напоминания.</string>
+    <string name="help_alarm_all_title">Включите все напоминания от</string>
+    <string name="help_alarm_all_content">Откройте меню настроек, и нажмите опцию уведомлений напоминания Разрешить.</string>
+
     <!-- Information & help Text -->
     <string name="empty_list_message">Нажмите на значок день рождения торт, чтобы добавить новые дни рождения!</string>
 

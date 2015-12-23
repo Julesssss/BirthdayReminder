@@ -6,7 +6,6 @@ App for Android devices which notifies users of upcoming birthdays.
 ![https://play.google.com/store/apps/details?id=website.julianrosser.birthdays](http://i.imgur.com/aL8bBy5.png?1)
 
 TODO - Main:
-- Translate help text
 - Record screen-cast (Add, rotate, edit, delete, reminder)
 - Deep links
 - Analytics
@@ -37,7 +36,7 @@ Next Update?
 
 
 Log
-- 23/12 - Added edit animation logic. Refactored all text to Strings, sorted references. Translated pref & date strings.
+- 23/12 - Added edit animation logic. Refactored all text to Strings, sorted references. Translated pref & date strings. Translated help springs.
 - 22/12 - RecycleView animations. debugging array position exceptions.
 - 21/12 - Translated strings to 7 most used languages. Created HelpActivity. Finishing touches to layout. Replaced Toast with SnackBar.
 - 20/12 - Small, normal and tablet layouts. Fixed bug where alarm wouldn't cancel when toggled. XLarge layout, final changes to list layout.

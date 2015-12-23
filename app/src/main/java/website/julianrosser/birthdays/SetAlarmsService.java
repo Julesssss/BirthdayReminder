@@ -165,7 +165,7 @@ public class SetAlarmsService extends Service {
 
             // Finish by passing PendingIntent and delay time to AlarmManager
             mAlarmManager.set(AlarmManager.RTC_WAKEUP,
-                    System.currentTimeMillis() + alarmDelayInMillis, // todo REMOVE!!!!!!!!
+                    System.currentTimeMillis() + alarmDelayInMillis,
                     mNotificationReceiverPendingIntent);
         }
     }

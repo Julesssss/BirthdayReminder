@@ -58,6 +58,17 @@
     <string name="pref_sort_by_title">Sortare aniversari</string>
     <string name="pref_sort_by_title_dialog">Sortare aniversari de</string>
 
+    <string name="help_add_title">Adaugă naștere</string>
+    <string name="help_add_content">Pentru a adăuga un nou memento zi de naștere, atingeți pictograma tort. Apoi introduceți numele și data.</string>
+    <string name="help_edit_title">Informații edita ziua de nastere</string>
+    <string name="help_edit_content">Apăsați numele de naștere pe care doriți să schimbați. Apoi faceți clic pe butonul de editare.</string>
+    <string name="help_delete_title">Ștergeți naștere</string>
+    <string name="help_delete_content">Apăsați ziua de naștere pe care doriți să schimbați din lista. Apoi apăsați Ștergere.</string>
+    <string name="help_alarm_single_title">Anula memento</string>
+    <string name="help_alarm_single_content">Atingeți pictograma alarmei pentru a comuta memento alarmă.</string>
+    <string name="help_alarm_all_title">Rândul său, toate memento-uri de pe</string>
+    <string name="help_alarm_all_content">Deschide meniul de setări, apoi apăsați opțiunea notificări de reamintire Permite.</string>
+
     <!-- Information & help Text -->
     <string name="empty_list_message">Atingeți pictograma tort pentru a adăuga aniversari!</string>
 

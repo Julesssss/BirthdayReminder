@@ -58,6 +58,17 @@
     <string name="pref_sort_by_title">Ordina compleanni</string>
     <string name="pref_sort_by_title_dialog">Ordina per compleanni</string>
 
+    <string name="help_add_title">Nuovo Compleanno</string>
+    <string name="help_add_content">Per aggiungere un nuovo promemoria compleanno, toccare l\'icona torta di compleanno. Quindi, immettere il nome e la data.</string>
+    <string name="help_edit_title">Modifica Compleanno</string>
+    <string name="help_edit_content">Toccare il nome del compleanno che si desidera modificare. Quindi fare clic sul pulsante Modifica.</string>
+    <string name="help_delete_title">Eliminare Compleanno</string>
+    <string name="help_delete_content">Toccare il compleanno che si desidera modificare dall\'elenco. Quindi toccare Elimina.</string>
+    <string name="help_alarm_single_title">Annullare Promemoria</string>
+    <string name="help_alarm_single_content">Toccare l\'icona di allarme per attivare il promemoria di allarme.</string>
+    <string name="help_alarm_all_title">Girare tutti i promemoria via</string>
+    <string name="help_alarm_all_content">Aprire il menu delle impostazioni, e toccare l\'opzione Consenti notifiche promemoria.</string>
+
     <!-- Information & help Text -->
     <string name="empty_list_message">Toccare l\'icona della torta di compleanno per iniziare ad aggiungere i compleanni!</string>
 

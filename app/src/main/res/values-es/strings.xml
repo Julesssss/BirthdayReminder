@@ -58,6 +58,17 @@
     <string name="pref_sort_by_title">Cumpleaños ordenar</string>
     <string name="pref_sort_by_title_dialog">Ordenar los cumpleaños de</string>
 
+    <string name="help_add_title">Añadir cumpleaños</string>
+    <string name="help_add_content">Para agregar un nuevo recordatorio de cumpleaños, pulse el icono de pastel de cumpleaños. A continuación, introduzca el nombre y la fecha.</string>
+    <string name="help_edit_title">Editar cumpleaños</string>
+    <string name="help_edit_content">Toque en el nombre del cumpleaños que le gustaría cambiar. Luego haga clic en el botón de edición.</string>
+    <string name="help_delete_title">eliminar cumpleaños</string>
+    <string name="help_delete_content">Toque en el cumpleaños que le gustaría cambiar de la lista. A continuación, puntee Eliminar.</string>
+    <string name="help_alarm_single_title">Gire recordatorio fuera</string>
+    <string name="help_alarm_single_content">Toque el icono de alarma para cambiar la alarma de recordatorio.</string>
+    <string name="help_alarm_all_title">Apague todos los recordatorios de</string>
+    <string name="help_alarm_all_content">Abra el menú de ajustes y toque la opción de notificaciones de recordatorio Permitir.</string>
+
     <!-- Information & help Text -->
     <string name="empty_list_message">Toque el icono de pastel de cumpleaños para añadir nuevas cumpleaños!</string>
 

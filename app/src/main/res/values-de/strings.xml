@@ -61,4 +61,15 @@
     <string name="pref_sort_by_title">Sort Geburtstage</string>
     <string name="pref_sort_by_title_dialog">Sort Geburtstage von</string>
 
+    <string name="help_add_title">Neu</string>
+    <string name="help_add_content">Um eine neue Geburtstagserinnerung hinzuzufügen, tippen Sie auf die Geburtstagstorte Symbol. Geben Sie dann den Namen und das Datum .</string>
+    <string name="help_edit_title">Bearbeiten</string>
+    <string name="help_edit_content">Tippen Sie auf den Namen des Geburtstags Sie möchten, um zu ändern. Klicken Sie dann auf die Schaltfläche Bearbeiten.</string>
+    <string name="help_delete_title">Löschen</string>
+    <string name="help_delete_content">Tippen Sie auf die Geburtstags Sie möchten, um von der Liste zu ändern. Tippen Sie dann auf Löschen .</string>
+    <string name="help_alarm_single_title">Schalten Erinnerung off</string>
+    <string name="help_alarm_single_content">Tippen Sie auf das Alarmsymbol, um den Alarm Erinnerung umzuschalten.</string>
+    <string name="help_alarm_all_title">Schalten Sie alle Erinnerungen off</string>
+    <string name="help_alarm_all_content">Öffnen Sie das Menü Einstellungen, und tippen Sie auf die Option Erinnerung Meldungen zulassen.</string>
+
 </resources>

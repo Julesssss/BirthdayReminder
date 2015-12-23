@@ -58,6 +58,17 @@
     <string name="pref_sort_by_title">Anniversaires de tri</string>
     <string name="pref_sort_by_title_dialog">Trier par anniversaires</string>
 
+    <string name="help_add_title">Ajouter anniversaire</string>
+    <string name="help_add_content">Pour ajouter un nouveau rappel d\'anniversaire, appuyez sur l\'icône de gâteau d\'anniversaire. Puis entrez le nom et la date.</string>
+    <string name="help_edit_title">Modifier anniversaire</string>
+    <string name="help_edit_content">Tapez le nom de l\' anniversaire que vous souhaitez modifier. Puis cliquez sur le bouton Modifier.</string>
+    <string name="help_delete_title">Supprimer anniversaire</string>
+    <string name="help_delete_content">Appuyez sur l\' anniversaire que vous souhaitez modifier dans la liste. Puis appuyez sur Supprimer.</string>
+    <string name="help_alarm_single_title">Tournez rappel off</string>
+    <string name="help_alarm_single_content">Appuyez sur l\'icône d\'alarme pour activer le rappel d\'alarme.</string>
+    <string name="help_alarm_all_title">Mettez tous les rappels off</string>
+    <string name="help_alarm_all_content">Ouvrez le menu des paramètres, et appuyez sur lz\'option de notifications de rappel sur Autoriser.</string>
+
     <!-- Information & help Text -->
     <string name="empty_list_message">Appuyez sur le gâteau d\'anniversaire icône pour commencer à ajouter les anniversaires!</string>
 
