@@ -108,6 +108,40 @@ public class RecyclerViewAdapter
         super.onViewRecycled(holder);
     }
 
+    // use this method to find out whether edit will change order of birthdays
+    public static boolean willChangeDateOrder(Birthday b) {
+        ArrayList<Birthday> originalOrder = MainActivity.birthdaysList;
+
+        int originalPos = originalOrder.indexOf(b);
+
+        //Sorting
+        Collections.sort(originalOrder, new Comparator<Birthday>() {
+            @Override
+            public int compare(Birthday b1, Birthday b2) {
+                return b1.getDate().compareTo(b2.getDate());
+            }
+        });
+
+        return originalPos != originalOrder.indexOf(b);
+    }
+
+    // use this method to find out whether edit will change order of birthdays
+    public static boolean willChangeNameOrder(Birthday b) {
+        ArrayList<Birthday> originalOrder = MainActivity.birthdaysList;
+
+        int originalPos = originalOrder.indexOf(b);
+
+        //Sorting
+        Collections.sort(originalOrder, new Comparator<Birthday>() {
+            @Override
+            public int compare(Birthday b1, Birthday b2) {
+                return b1.getName().compareTo(b2.getName());
+            }
+        });
+
+        return originalPos != originalOrder.indexOf(b);
+    }
+
     // Sort Birthday array by closest date
     public static void sortBirthdaysByDate() {
 

@@ -21,6 +21,43 @@
     <string name="button_positive">сделанный</string>
     <string name="button_negative">Отмена</string>
 
+    <string name="birthday">день рождения</string>
+    <string name="date_is"> </string>
+    <string name="date_today">Cегодня</string>
+    <string name="date_tomorrow">завтра</string>
+    <string name="date_week">Следующая неделя</string>
+    <string name="date_this">это</string>
+    <string name="date_days">дней</string>
+    <string name="reminder_set">включить</string>
+    <string name="reminder_canceled">отменен</string>
+    <string name="pref_category_reminder">настройки напоминаний</string>
+    <string name="pref_category_list">настройки списка</string>
+
+    <!-- Preference Strings -->
+    <string name="enabled">включен</string>
+    <string name="disabled">отключен</string>
+    <string name="date">Дата</string>
+    <string name="name">имя</string>
+    <string name="day0">в день</string>
+    <string name="day1">за день до</string>
+    <string name="day2">2 дней до</string>
+    <string name="day3">3 дней до</string>
+    <string name="day4">4 дней до</string>
+    <string name="day5">5 дней до</string>
+    <string name="day6">6 дней до</string>
+    <string name="day7">за неделю до</string>
+
+    <string name="pref_remind_day_title">Напомни мне</string>
+    <string name="pref_remind_day_title_dialog">День напоминания</string>
+    <string name="pref_remind_time_title">Время напоминания</string>
+    <string name="pref_enable_notifications_label">Показать напоминания?</string>
+    <string name="pref_vibrate_label">Разрешить вибрацию?</string>
+    <string name="pref_sound_label">Разрешить звук?</string>
+    <string name="pref_test_notification_summary">Показать пример уведомления с использованием текущих настроек</string>
+    <string name="pref_test_notification_title">Показать пример напоминание</string>
+    <string name="pref_sort_by_title">cортировать рождения</string>
+    <string name="pref_sort_by_title_dialog">Сортировать по рождения</string>
+
     <!-- Information & help Text -->
     <string name="empty_list_message">Нажмите на значок день рождения торт, чтобы добавить новые дни рождения!</string>
 

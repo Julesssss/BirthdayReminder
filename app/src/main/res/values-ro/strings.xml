@@ -21,6 +21,43 @@
     <string name="button_positive">Terminat</string>
     <string name="button_negative">Anula</string>
 
+    <string name="birthday">aniversare</string>
+    <string name="date_is">este</string>
+    <string name="date_today">astăzi</string>
+    <string name="date_tomorrow">Mâine</string>
+    <string name="date_week">saptamana viitoare</string>
+    <string name="date_this">acest</string>
+    <string name="date_days">zile</string>
+    <string name="reminder_set">activat</string>
+    <string name="reminder_canceled">anulat</string>
+    <string name="pref_category_reminder">Setările Memento</string>
+    <string name="pref_category_list">Setări Listă</string>
+
+    <!-- Preference Strings -->
+    <string name="enabled">Activat</string>
+    <string name="disabled">Dezactivat</string>
+    <string name="date">Data</string>
+    <string name="name">Nume</string>
+    <string name="day0">În ziua</string>
+    <string name="day1">cu o zi înainte</string>
+    <string name="day2">2 zile înainte</string>
+    <string name="day3">3 zile înainte</string>
+    <string name="day4">4 zile înainte</string>
+    <string name="day5">5 zile înainte</string>
+    <string name="day6">6 zile înainte</string>
+    <string name="day7">o săptămână înainte</string>
+
+    <string name="pref_remind_day_title">Aminteste-mi</string>
+    <string name="pref_remind_day_title_dialog">Ziua memento</string>
+    <string name="pref_remind_time_title">Ora memento</string>
+    <string name="pref_enable_notifications_label">Arată memento-uri?</string>
+    <string name="pref_vibrate_label">Permiteți vibrațiilor?</string>
+    <string name="pref_sound_label">Permiteți sunet?</string>
+    <string name="pref_test_notification_summary">Arata o notificare exemplu utilizând setările curente</string>
+    <string name="pref_test_notification_title">Arată exemplu memento</string>
+    <string name="pref_sort_by_title">Sortare aniversari</string>
+    <string name="pref_sort_by_title_dialog">Sortare aniversari de</string>
+
     <!-- Information & help Text -->
     <string name="empty_list_message">Atingeți pictograma tort pentru a adăuga aniversari!</string>
 

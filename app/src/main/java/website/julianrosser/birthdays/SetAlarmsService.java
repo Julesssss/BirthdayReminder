@@ -151,7 +151,9 @@ public class SetAlarmsService extends Service {
                     AlarmNotificationBuilder.class);
 
             // Build message String
-            String messageString = "" + b.getName() + "'s birthday is " + Birthday.getFormattedStringDay(b, mContext);
+            String messageString = "" + b.getName() + "'s " + mContext.getResources().getString(R.string.birthday)
+                    + " " + mContext.getResources().getString(R.string.date_is) + " " +
+                    Birthday.getFormattedStringDay(b, mContext);
 
             mNotificationReceiverIntent.putExtra(AlarmNotificationBuilder.STRING_MESSAGE_KEY, messageString);
 
@@ -163,7 +165,7 @@ public class SetAlarmsService extends Service {
 
             // Finish by passing PendingIntent and delay time to AlarmManager
             mAlarmManager.set(AlarmManager.RTC_WAKEUP,
-                    System.currentTimeMillis() + alarmDelayInMillis,
+                    System.currentTimeMillis() + alarmDelayInMillis, // todo REMOVE!!!!!!!!
                     mNotificationReceiverPendingIntent);
         }
     }

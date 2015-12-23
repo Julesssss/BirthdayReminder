@@ -21,6 +21,43 @@
     <string name="button_positive">Feito</string>
     <string name="button_negative">Cancelar</string>
 
+    <string name="birthday">aniversário</string>
+    <string name="date_is">é</string>
+    <string name="date_today">hoje</string>
+    <string name="date_tomorrow">amanhã</string>
+    <string name="date_week">próxima semana</string>
+    <string name="date_this">esta</string>
+    <string name="date_days">dias</string>
+    <string name="reminder_set">conjunto</string>
+    <string name="reminder_canceled">cancelado</string>
+    <string name="pref_category_reminder">Configurações De Lembrete</string>
+    <string name="pref_category_list">Configurações da lista</string>
+
+    <!-- Preference Strings -->
+    <string name="enabled">Ativado</string>
+    <string name="disabled">Desativado</string>
+    <string name="date">Encontro</string>
+    <string name="name">Nome</string>
+    <string name="day0">No dia</string>
+    <string name="day1">o dia anterior</string>
+    <string name="day2">2 dias antes</string>
+    <string name="day3">3 dias antes</string>
+    <string name="day4">4 dias antes</string>
+    <string name="day5">5 dias antes</string>
+    <string name="day6">6 dias antes</string>
+    <string name="day7">uma semana antes</string>
+
+    <string name="pref_remind_day_title">Lembre-me</string>
+    <string name="pref_remind_day_title_dialog">Dia da lembrança</string>
+    <string name="pref_remind_time_title">Hora do lembrete</string>
+    <string name="pref_enable_notifications_label">Mostrar os lembretes?</string>
+    <string name="pref_vibrate_label">Permitir vibração?</string>
+    <string name="pref_sound_label">Permitir tom de alarme?</string>
+    <string name="pref_test_notification_summary">Mostrar uma notificação por exemplo, usando as configurações atuais</string>
+    <string name="pref_test_notification_title">Mostrar exemplo lembrete</string>
+    <string name="pref_sort_by_title">Ordenar aniversários</string>
+    <string name="pref_sort_by_title_dialog">Ordenar por aniversários</string>
+
     <!-- Information & help Text -->
     <string name="empty_list_message">Toque no ícone do bolo de aniversário para começar a adicionar aniversários!</string>
 

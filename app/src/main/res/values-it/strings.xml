@@ -21,6 +21,43 @@
     <string name="button_positive">Fatto</string>
     <string name="button_negative">Cancellare</string>
 
+    <string name="birthday">il compleanno</string>
+    <string name="date_is">è</string>
+    <string name="date_today">oggi</string>
+    <string name="date_tomorrow">domani</string>
+    <string name="date_week">la prossima settimana</string>
+    <string name="date_this">Questo </string>
+    <string name="date_days">giorni</string>
+    <string name="reminder_set">accendere</string>
+    <string name="reminder_canceled">annullato</string>
+    <string name="pref_category_reminder">Impostazioni Promemoria</string>
+    <string name="pref_category_list">Impostazioni Elenco</string>
+
+    <!-- Preference Strings -->
+    <string name="enabled">Permettere</string>
+    <string name="disabled">Invalido</string>
+    <string name="date">Data</string>
+    <string name="name">Nome</string>
+    <string name="day0">nel giorno</string>
+    <string name="day1">il giorno prima</string>
+    <string name="day2">2 giorni prima</string>
+    <string name="day3">3 giorni prima</string>
+    <string name="day4">4 giorni prima</string>
+    <string name="day5">5 giorni prima</string>
+    <string name="day6">6 giorni prima</string>
+    <string name="day7">una settimana prima</string>
+
+    <string name="pref_remind_day_title">Ricordami</string>
+    <string name="pref_remind_day_title_dialog">Giorno del ricordo</string>
+    <string name="pref_remind_time_title">Tempo di promemoria</string>
+    <string name="pref_enable_notifications_label">Mostra avvisi?</string>
+    <string name="pref_vibrate_label">Consenti vibrazioni/</string>
+    <string name="pref_sound_label">Consenti tono di allarme?</string>
+    <string name="pref_test_notification_summary">Mostra una notifica di esempio utilizzando le impostazioni correnti</string>
+    <string name="pref_test_notification_title">Visualizza l\'esempio promemoria</string>
+    <string name="pref_sort_by_title">Ordina compleanni</string>
+    <string name="pref_sort_by_title_dialog">Ordina per compleanni</string>
+
     <!-- Information & help Text -->
     <string name="empty_list_message">Toccare l\'icona della torta di compleanno per iniziare ad aggiungere i compleanni!</string>
 

@@ -24,4 +24,41 @@
     <!-- Information & help Text -->
     <string name="empty_list_message">Tippen Sie auf die Geburtstagstorte Symbol, um neue Geburtstage!</string>
 
+    <string name="date_today">heute</string>
+    <string name="date_tomorrow">morgen</string>
+    <string name="date_week">nächste Woche</string>
+    <string name="date_this">diesen </string>
+    <string name="date_days">Tage</string>
+    <string name="reminder_set">set</string>
+    <string name="reminder_canceled">storniert</string>
+    <string name="pref_category_reminder">Erinnerungseinstellungen</string>
+    <string name="pref_category_list">Listeneinstellungen</string>
+
+    <!-- Preference Strings -->
+    <string name="birthday">geburtstag</string>
+    <string name="date_is">ist</string>
+    <string name="enabled">Aktiviert</string>
+    <string name="disabled">Behindert</string>
+    <string name="date">Datum</string>
+    <string name="name">Name</string>
+    <string name="day0">am Tag</string>
+    <string name="day1">der Tag zuvor</string>
+    <string name="day2">2 Tage vor</string>
+    <string name="day3">3 Tage vor</string>
+    <string name="day4">4 Tage vor</string>
+    <string name="day5">5 Tage vor</string>
+    <string name="day6">6 Tage vor</string>
+    <string name="day7">eine Woche vor</string>
+
+    <string name="pref_remind_day_title">Rerinnere mich</string>
+    <string name="pref_remind_day_title_dialog">Tag der Erinnerung</string>
+    <string name="pref_remind_time_title">Zeit der Erinnerung</string>
+    <string name="pref_enable_notifications_label">Show Erinnerungen?</string>
+    <string name="pref_vibrate_label">Ermöglichen Vibrations?</string>
+    <string name="pref_sound_label">Ermöglichen Alarmton?</string>
+    <string name="pref_test_notification_summary">Zeigen ein Beispiel Benachrichtigung mit den aktuellen Einstellungen</string>
+    <string name="pref_test_notification_title">Zeigen beispielsweise Erinnerungs</string>
+    <string name="pref_sort_by_title">Sort Geburtstage</string>
+    <string name="pref_sort_by_title_dialog">Sort Geburtstage von</string>
+
 </resources>

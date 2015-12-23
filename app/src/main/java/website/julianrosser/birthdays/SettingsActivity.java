@@ -17,6 +17,8 @@ import android.view.View;
 
 public class SettingsActivity extends AppCompatActivity {
 
+    static Context mContext;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +38,8 @@ public class SettingsActivity extends AppCompatActivity {
         getFragmentManager().beginTransaction()
                 .replace(R.id.content, new SettingsFragment())
                 .commit();
+
+        mContext = getApplicationContext();
     }
 
     @Override
@@ -54,8 +58,6 @@ public class SettingsActivity extends AppCompatActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.preferences);
-
-
 
             bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_days_before_key)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_time_before_key)));
@@ -131,22 +133,26 @@ public class SettingsActivity extends AppCompatActivity {
 
         Context context = MainActivity.getAppContext();
 
-        int MY_NOTIFICATION_ID = 155;
+        int PENDING_INTENT_ID = 0;
+        int MY_NOTIFICATION_ID = 100;
 
         // Intent which opens App when notification is clicked
         Intent mNotificationIntent = new Intent(); //(context, MainActivity.class);
 
         // Use Intent and other information to build PendingIntent
-        PendingIntent mContentIntent = PendingIntent.getActivity(context, 1, // test noti, diff number
+        PendingIntent mContentIntent = PendingIntent.getActivity(context, PENDING_INTENT_ID, // test noti, diff number
                 mNotificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        String messageText = "Julian's " + mContext.getString(R.string.birthday) + " " + mContext.getResources().getString(R.string.date_is)
+                + " " + mContext.getResources().getString(R.string.date_tomorrow);
 
         // Build notification
         Notification.Builder notificationBuilder = new Notification.Builder(
-                context).setTicker("(EXAMPLE!) Julian's birthday is tomorrow!")
+                context).setTicker(messageText)
                 .setSmallIcon(R.drawable.ic_cake_white_24dp)
                 .setAutoCancel(true)
                 .setContentTitle(context.getString(R.string.notification_title))
-                .setContentText("(EXAMPLE) Julian's " + "birthday is tomorrow!")
+                .setContentText(messageText)
                 .setContentIntent(mContentIntent);
 
         if (AlarmNotificationBuilder.getVibrationAllowedPref(context)) {

@@ -5,7 +5,7 @@
     <dimen name="list_item_padding_small">16dp</dimen>
     <dimen name="list_item_name_padding">16dp</dimen>
 
-    <dimen name="alarm_toggle_padding">16dp</dimen>
+    <dimen name="alarm_toggle_padding_width">16dp</dimen>
     <dimen name="alarm_toggle_padding_height">8dp</dimen>
 
     <!-- Floating Action Button position -->

@@ -7,9 +7,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -214,8 +216,53 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
             mContext.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    RecyclerListFragment.mAdapter.notifyItemChanged(position);
+
+                    /** Logic for edit animation. Depending first on sorting preference, check whether the sorting will change.
+                     * if so, used adapter moved animation, else just refresh information */
+                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getAppContext());
+
+                    // Get users sorting preference
+                    if (Integer.valueOf(sharedPref.getString(getAppContext().getString(R.string.pref_sort_by_key), "0")) != 1) {
+
+                        // PREF SORT: DATE
+                        if (RecyclerViewAdapter.willChangeDateOrder(birthday)) {
+
+                            // Order will change, sort, then notify adapter of move
+                            RecyclerViewAdapter.sortBirthdaysByDate();
+                            RecyclerListFragment.mAdapter.notifyItemMoved(position, birthdaysList.indexOf(birthday));
+
+                        } else {
+                            // No order change, so just notify item changed
+                            RecyclerListFragment.mAdapter.notifyItemChanged(birthdaysList.indexOf(birthday));
+                        }
+
+                    } else {
+
+                        // PREF SORT: NAME. If order changes, sort the notify adapter
+                        if (RecyclerViewAdapter.willChangeNameOrder(birthday)) {
+
+                            // Order will change, sort, then notify adapter of move
+                            RecyclerViewAdapter.sortBirthdaysByName();
+                            RecyclerListFragment.mAdapter.notifyItemMoved(position, birthdaysList.indexOf(birthday));
+
+                        } else {
+                            // order not changes, so forget sot, and just notify item changed
+                            RecyclerListFragment.mAdapter.notifyItemChanged(birthdaysList.indexOf(birthday));
+                        }
+                    }
+
+                    Runnable r = new Runnable() {
+                        public void run() {
+                            Log.i(TAG, "RUNNABLE");
+                            RecyclerListFragment.mAdapter.notifyDataSetChanged();
+                        }
+                    };
+                    new Handler().postDelayed(r, 500);
+
+
                 }
+
+
             });
 
         } else {
@@ -240,6 +287,12 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
                     RecyclerListFragment.showEmptyMessageIfRequired();
                 }
             });
+        }
+
+        try {
+            saveBirthdays();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

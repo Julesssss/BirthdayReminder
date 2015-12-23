@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
 import android.text.format.DateFormat;
 
+import org.apache.commons.lang3.text.WordUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,9 +33,6 @@ public class Birthday {
     private boolean remind;
 
     Context mAppContext;
-
-    // logging tag
-    private String TAG = getClass().getSimpleName();
 
     /**
      * Constructor for creating new birthday.
@@ -147,19 +145,21 @@ public class Birthday {
         int i = getDaysBetween();
 
         if (i == 0) {
-            return mAppContext.getString(R.string.date_today) + "!";
+            return WordUtils.capitalize(MainActivity.getAppContext().getString(R.string.date_today) + "!");
         } else if (i == 1) {
-            return mAppContext.getString(R.string.date_tomorrow) + "!";
+            return WordUtils.capitalize(MainActivity.getAppContext().getString(R.string.date_tomorrow) + "!");
         } else if (i > 1 && i <= 6) {
             Date newDate = new Date();
             newDate.setTime(getDate().getTime() - DAY_IN_MILLIS);
             return (String) DateFormat.format("EEEE", newDate);
+        } else if (i == 7) {
+            return WordUtils.capitalize(MainActivity.getAppContext().getString(R.string.date_week));
+        } else if (i < 9) {
+            return " " + String.valueOf(i) + " " + MainActivity.getAppContext().getString(R.string.date_days);
         } else if (i > 99) {
-            return String.valueOf(i) + " " + MainActivity.getAppContext().getString(R.string.date_days);
-        } else if (i > 9) {
-            return String.valueOf(i) + " " + MainActivity.getAppContext().getString(R.string.date_days);
+            return "  " + String.valueOf(i) + " " + MainActivity.getAppContext().getString(R.string.date_days);
         } else {
-            return "  " + mAppContext.getString(R.string.date_days);
+            return "" + i + " " + MainActivity.getAppContext().getString(R.string.date_days);
         }
     }
 
@@ -280,7 +280,7 @@ public class Birthday {
         } else {
             Date newDate = new Date();
             newDate.setTime(b.getDate().getTime() - DAY_IN_MILLIS);
-            return c.getResources().getString(R.string.date_this) + DateFormat.format("EEEE", newDate);
+            return c.getResources().getString(R.string.date_this) + " " + DateFormat.format("EEEE", newDate);
         }
         dayFormatted += "!";
 
