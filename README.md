@@ -7,8 +7,6 @@ App for Android devices which notifies users of upcoming birthdays.
 
 TODO - Main:
 - Record screen-cast (Add, rotate, edit, delete, reminder)
-
-- Deep links
 - Analytics
 
 Final:
@@ -38,7 +36,7 @@ Next Update?
 
 
 Log
-- 24/12 - >API16 Removed preference dialog background.
+- 24/12 - App Indexing. >API16 Removed preference dialog background.
 - 23/12 - Added edit animation logic. Refactored all text to Strings, sorted references. Translated pref & date strings. Translated help springs.
 - 22/12 - RecycleView animations. debugging array position exceptions.
 - 21/12 - Translated strings to 7 most used languages. Created HelpActivity. Finishing touches to layout. Replaced Toast with SnackBar.

@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,6 +16,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.apache.commons.lang3.text.WordUtils;
 import org.json.JSONArray;
@@ -51,6 +57,13 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
 
     static MainActivity mContext;
     static Context mAppContext;
+
+    // App indexing
+    private GoogleApiClient mClient;
+    private String mUrl;
+    private String mTitle;
+    private String mDescription;
+    private String mSchemaType;
 
     LoadBirthdaysTask loadBirthdaysTask;
 
@@ -104,6 +117,32 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
 
         // This is to help the fragment keep it;s state on rotation
         recyclerListFragment.setRetainInstance(true);
+
+        mClient = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+        mUrl = "http://julianrosser.website";
+        mTitle = "Birthday Reminders";
+        mDescription = "Simple birthday reminders for loved-ones";
+        mSchemaType = "http://schema.org/Article";
+    }
+
+    public Action getAction() {
+        Thing object = new Thing.Builder()
+                .setName(mTitle)
+                .setDescription(mDescription)
+                .setUrl(Uri.parse(mUrl))
+                .build();
+
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mClient.connect();
+        AppIndex.AppIndexApi.start(mClient, getAction());
     }
 
     @Override
@@ -135,11 +174,11 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         MainActivity.dataChangedUiThread();
     }
 
-    /**
-     * Ensure birthday array is saved, but not if replacing with empty
-     */
+
     @Override
     protected void onStop() {
+        AppIndex.AppIndexApi.end(mClient, getAction());
+        mClient.disconnect();
         super.onStop();
 
     }

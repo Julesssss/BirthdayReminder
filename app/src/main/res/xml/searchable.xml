@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<searchable xmlns:android="http://schemas.android.com/apk/res/android"
+    android:hint="string resource"
+    android:includeInGlobalSearch="true"
+    android:label="string resource"
+    android:searchMode="queryRewriteFromData"
+    android:searchSettingsDescription="@string/app_name"
+    android:searchSuggestAuthority="string"
+    android:searchSuggestIntentAction="string"
+    android:searchSuggestIntentData="string"
+    android:searchSuggestPath="string"
+    android:searchSuggestSelection="string"
+    android:voiceLanguageModel="web_search">
+    <actionkey
+        android:keycode="KEYCODE_0"
+        android:queryActionMsg="string"
+        android:suggestActionMsg="string"
+        android:suggestActionMsgColumn="string"/>
+</searchable>

@@ -2,7 +2,7 @@
 <resources>
 
     <!-- ItemOptions Fragment options-->
-    <string-array name="item_menu_array">
+    <string-array translatable="false" name="item_menu_array" >
         <item>@string/item_menu_edit</item>
         <item>@string/item_menu_delete</item>
         <item>@string/item_menu_alarm</item>
@@ -11,7 +11,7 @@
     <!-- Prefs -->
 
     <!-- Day of reminder  -->
-    <string-array name="dayRemindEntries">
+    <string-array translatable="false" name="dayRemindEntries">
         <item>@string/day0</item>
         <item>@string/day1</item>
         <item>@string/day2</item>
@@ -22,7 +22,7 @@
         <item>@string/day7</item>
     </string-array>
 
-    <string-array name="dayRemindValues">
+    <string-array translatable="false" name="dayRemindValues">
         <item>0</item>
         <item>1</item>
         <item>2</item>
@@ -34,31 +34,31 @@
     </string-array>
 
     <!-- Time off reminder  -->
-    <string-array name="timeRemindEntries">
+    <string-array translatable="false" name="timeRemindEntries">
         <item>8am</item>
         <item>12am</item>
         <item>5pm</item>
     </string-array>
 
-    <string-array name="timeRemindValues">
+    <string-array translatable="false" name="timeRemindValues">
         <item>@string/pref_time_8</item>
         <item>@string/pref_time_12</item>
         <item>@string/pref_time_17</item>
     </string-array>
 
     <!-- Sorting preference  -->
-    <string-array name="pref_sort_entries">
+    <string-array  translatable="false" name="pref_sort_entries">
         <item>@string/date</item>
         <item>@string/name</item>
     </string-array>
 
-    <string-array name="pref_sort_values">
+    <string-array translatable="false" name="pref_sort_values">
         <item>0</item>
         <item>1</item>
     </string-array>
 
     <!-- My Random Name List -->
-    <string-array name="name_array">
+    <string-array  translatable="false" name="name_array">
         <item>Alan Turing</item>
         <item>Aunders Holmvic</item>
         <item>Bill Bryson</item>

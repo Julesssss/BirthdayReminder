@@ -73,23 +73,23 @@
 
     <!-- Preferences keys -->
     <string name="pref_days_before_key" translatable="false">day_before_key</string>
-    <string name="choice_1_day">@string/day3</string>
-    <string name="pref_time_before_key">time_before_key</string>
+    <string name="choice_1_day"  translatable="false">@string/day3</string>
+    <string name="pref_time_before_key"  translatable="false">time_before_key</string>
     <string name="pref_enable_notifications_key" translatable="false">enable_notification</string>
-    <string name="pref_enable_notifications_true">@string/enabled</string>
-    <string name="pref_enable_notifications_false">@string/disabled</string>
+    <string name="pref_enable_notifications_true"  translatable="false">@string/enabled</string>
+    <string name="pref_enable_notifications_false"  translatable="false">@string/disabled</string>
     <string name="pref_enable_notifications_default" translatable="false">true</string>
 
     <!-- Strings related to Vibration preference -->
     <string name="pref_vibrate_key" translatable="false">enable_vibration</string>
-    <string name="pref_vibrate_true">@string/enabled</string>
-    <string name="pref_vibrate_false">@string/disabled</string>
+    <string name="pref_vibrate_true"  translatable="false">@string/enabled</string>
+    <string name="pref_vibrate_false"  translatable="false">@string/disabled</string>
     <string name="pref_vibrate_default" translatable="false">true</string>
 
     <!-- Strings related to Sound preference -->
     <string name="pref_sound_key" translatable="false">enable_sound</string>
-    <string name="pref_sound_true">@string/enabled</string>
-    <string name="pref_sound_false">@string/disabled</string>
+    <string name="pref_sound_true"  translatable="false">@string/enabled</string>
+    <string name="pref_sound_false"  translatable="false" >@string/disabled</string>
     <string name="pref_sound_default" translatable="false">true</string>
 
     <!-- Strings related to test notification preference -->
