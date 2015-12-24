@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 @SuppressWarnings("deprecation")
 public class Birthday {
@@ -23,7 +24,7 @@ public class Birthday {
     private static final String JSON_REMIND = "remind";
 
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-            "dd.MM.yyyy");
+            "dd.MM.yyyy", Locale.getDefault());
 
     public static final int DAY_IN_MILLIS = 86400000;
 

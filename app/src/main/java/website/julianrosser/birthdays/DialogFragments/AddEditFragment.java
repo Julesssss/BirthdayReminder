@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.view.ContextThemeWrapper;
 import android.util.TypedValue;
@@ -43,7 +44,7 @@ public class AddEditFragment extends DialogFragment {
 
     final int DIALOG_WIDTH_SIZE = 280;
 
-    // Reference to passed bundle when in edit mode todo is this global reference necessary?
+    // Reference to passed bundle when in edit mode
     Bundle bundle;
 
     // Needed as we inflate in onCreate, but access in onStart. Due to Overriding dialog button, onStart is needed.
@@ -51,10 +52,6 @@ public class AddEditFragment extends DialogFragment {
 
     // Use this instance of the interface to deliver action events
     NoticeDialogListener mListener;
-
-    // Logging tag which displays class name in readable form
-    private String TAG = getClass().getSimpleName();
-
 
     public AddEditFragment() {
         // Required empty public constructor
@@ -140,7 +137,8 @@ public class AddEditFragment extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.dialog_background));
+
+        getDialog().getWindow().setBackgroundDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.dialog_background));
         getDialog().getWindow().setLayout(getPixelsFromDP(DIALOG_WIDTH_SIZE), ViewGroup.LayoutParams.WRAP_CONTENT);
 
         setRetainInstance(true);
@@ -179,11 +177,12 @@ public class AddEditFragment extends DialogFragment {
         editText.setOnFocusChangeListener(onFocusChangeListener);
 
         // Set buttons accent colour
-        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorAccent));
-        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorAccent));
+
+        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.colorAccent));
+        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.colorAccent));
 
         // Set background drawable
-        getDialog().getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.dialog_background));
+        getDialog().getWindow().setBackgroundDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.dialog_background));
 
         // Null check
         if (dialog != null) {

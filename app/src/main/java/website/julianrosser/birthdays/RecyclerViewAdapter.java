@@ -20,8 +20,6 @@ public class RecyclerViewAdapter
         extends RecyclerView.Adapter
         <RecyclerViewAdapter.ListItemViewHolder> {
 
-    private int lastPosition = -1;
-
     Context appContext;
 
     // Constructor

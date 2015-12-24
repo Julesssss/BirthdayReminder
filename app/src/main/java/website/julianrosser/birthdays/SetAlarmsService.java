@@ -83,14 +83,14 @@ public class SetAlarmsService extends Service {
     // Function which loads Birthdays from JSON
     public static ArrayList<Birthday> loadBirthdays() throws IOException,
             JSONException {
-        ArrayList<Birthday> birthdays = new ArrayList<Birthday>();
+        ArrayList<Birthday> birthdays = new ArrayList<>();
         BufferedReader reader = null;
         try {
             // Open and read the file into a StringBuilder
             InputStream in = mContext.openFileInput(MainActivity.FILENAME); // Causes crash if no MainActivity??????
             reader = new BufferedReader(new InputStreamReader(in));
             StringBuilder jsonString = new StringBuilder();
-            String line = null;
+            String line;
             while ((line = reader.readLine()) != null) {
                 // Line breaks are omitted and irrelevant
                 jsonString.append(line);
@@ -112,6 +112,7 @@ public class SetAlarmsService extends Service {
         return birthdays;
     }
 
+    @SuppressWarnings("deprecation")
     private void setAlarm(Birthday b) {
         // Get milliseconds remaining in current day
         Date currentTimeDate = new Date();

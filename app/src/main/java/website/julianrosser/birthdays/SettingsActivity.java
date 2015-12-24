@@ -11,6 +11,7 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -89,7 +90,7 @@ public class SettingsActivity extends AppCompatActivity {
         @Override
         public void onViewCreated(View view, Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
-            view.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            view.setBackgroundColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.colorPrimary));
         }
 
         /**
@@ -194,6 +195,7 @@ public class SettingsActivity extends AppCompatActivity {
             mNotificationManager.notify(MY_NOTIFICATION_ID,
                     notificationBuilder.build());
         } else {
+            //noinspection deprecation
             mNotificationManager.notify(MY_NOTIFICATION_ID,
                     notificationBuilder.getNotification());
         }
@@ -202,7 +204,7 @@ public class SettingsActivity extends AppCompatActivity {
     synchronized public Tracker getDefaultTracker() {
         if (mTracker == null) {
             GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
-            // To enable debug logging use: adb shell setprop log.tag.GAv4 DEBUG
+            // To enable debug logging use: adb shell set prop log.tag.GAv4 DEBUG
             mTracker = analytics.newTracker(R.xml.global_tracker);
         }
         return mTracker;

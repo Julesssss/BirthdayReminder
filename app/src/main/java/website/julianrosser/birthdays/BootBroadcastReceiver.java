@@ -12,7 +12,7 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent i) {
 
-        // Launch service to set alarms if ACTION_BOOT_COMPLETE is recieved
+        // Launch service to set alarms if ACTION_BOOT_COMPLETE is received
         if (Intent.ACTION_BOOT_COMPLETED.equals(i.getAction())) {
 
             Intent serviceIntent = new Intent(context, SetAlarmsService.class);

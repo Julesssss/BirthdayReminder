@@ -22,7 +22,7 @@ public class LoadBirthdaysTask extends AsyncTask<Void, Void, ArrayList<Birthday>
         try {
             loadedBirthdays = loadBirthdays();
         } catch (Exception e) {
-            loadedBirthdays = new ArrayList<Birthday>();
+            loadedBirthdays = new ArrayList<>();
         }
         return loadedBirthdays;
     }
@@ -41,7 +41,7 @@ public class LoadBirthdaysTask extends AsyncTask<Void, Void, ArrayList<Birthday>
     // THis is done in background by
     public ArrayList<Birthday> loadBirthdays() throws IOException,
             JSONException {
-        ArrayList<Birthday> loadedBirthdays = new ArrayList<Birthday>();
+        ArrayList<Birthday> loadedBirthdays = new ArrayList<>();
 
         BufferedReader reader = null;
         try {
@@ -50,7 +50,7 @@ public class LoadBirthdaysTask extends AsyncTask<Void, Void, ArrayList<Birthday>
             reader = new BufferedReader(new InputStreamReader(in));
             StringBuilder jsonString = new StringBuilder();
 
-            String line = null;
+            String line;
             while ((line = reader.readLine()) != null) {
                 // Line breaks are omitted and irrelevant
                 jsonString.append(line);

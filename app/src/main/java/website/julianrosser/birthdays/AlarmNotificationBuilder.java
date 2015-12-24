@@ -65,6 +65,7 @@ public class AlarmNotificationBuilder extends BroadcastReceiver {
             mNotificationManager.notify(MY_NOTIFICATION_ID,
                     notificationBuilder.build());
         } else {
+            //noinspection deprecation
             mNotificationManager.notify(MY_NOTIFICATION_ID,
                     notificationBuilder.getNotification());
         }

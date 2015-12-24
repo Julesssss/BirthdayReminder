@@ -38,6 +38,7 @@ import java.util.Date;
 import website.julianrosser.birthdays.DialogFragments.AddEditFragment;
 import website.julianrosser.birthdays.DialogFragments.ItemOptionsFragment;
 
+@SuppressWarnings("deprecation")
 public class MainActivity extends AppCompatActivity implements AddEditFragment.NoticeDialogListener, ItemOptionsFragment.ItemOptionsListener {
 
     public static ArrayList<Birthday> birthdaysList = new ArrayList<>();
