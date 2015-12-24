@@ -26,10 +26,8 @@ import website.julianrosser.birthdays.R;
 
 public class ItemOptionsFragment extends DialogFragment {
 
-    // Logging tag which displays class name in readable form
-    private String TAG = getClass().getSimpleName();
 
-    final int DIALOG_WIDTH_SIZE = 200;
+    final int DIALOG_WIDTH_SIZE = 220;
 
     // Use this instance of the interface to deliver action events
     static ItemOptionsListener mListener;

@@ -12,11 +12,13 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
@@ -32,7 +34,6 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Random;
 
 import website.julianrosser.birthdays.DialogFragments.AddEditFragment;
 import website.julianrosser.birthdays.DialogFragments.ItemOptionsFragment;
@@ -40,7 +41,6 @@ import website.julianrosser.birthdays.DialogFragments.ItemOptionsFragment;
 public class MainActivity extends AppCompatActivity implements AddEditFragment.NoticeDialogListener, ItemOptionsFragment.ItemOptionsListener {
 
     public static ArrayList<Birthday> birthdaysList = new ArrayList<>();
-    final public String TAG = getClass().getSimpleName();
 
     static final String FILENAME = "birthdays.json";
 
@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
     private String mSchemaType;
 
     LoadBirthdaysTask loadBirthdaysTask;
+    public static Tracker mTracker;
 
     /**
      * For easy access to MainActivity context from multiple Classes
@@ -117,6 +118,9 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
 
         // This is to help the fragment keep it;s state on rotation
         recyclerListFragment.setRetainInstance(true);
+
+        // Obtain the shared Tracker instance.
+        mTracker = getDefaultTracker();
 
         mClient = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
         mUrl = "http://julianrosser.website";
@@ -172,15 +176,38 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         }
 
         MainActivity.dataChangedUiThread();
-    }
 
+        // Tracker
+        mTracker.setScreenName("MainActivity");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+    }
 
     @Override
     protected void onStop() {
+        try {
+            saveBirthdays();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Data")
+                .setAction("Birthdays count")
+                .setLabel("" + birthdaysList.size())
+                .build());
+
         AppIndex.AppIndexApi.end(mClient, getAction());
         mClient.disconnect();
         super.onStop();
+    }
 
+    synchronized public Tracker getDefaultTracker() {
+        if (mTracker == null) {
+            GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
+            // To enable debug logging use: adb shell setprop log.tag.GAv4 DEBUG
+            mTracker = analytics.newTracker(R.xml.global_tracker);
+        }
+        return mTracker;
     }
 
     @Override
@@ -290,9 +317,9 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
                         }
                     }
 
+                    // Delay update until after animation has finished
                     Runnable r = new Runnable() {
                         public void run() {
-                            Log.i(TAG, "RUNNABLE");
                             RecyclerListFragment.mAdapter.notifyDataSetChanged();
                         }
                     };
@@ -326,6 +353,23 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
                     RecyclerListFragment.showEmptyMessageIfRequired();
                 }
             });
+
+            mTracker.send(new HitBuilders.EventBuilder()
+                    .setCategory("Action")
+                    .setAction("New Birthday")
+                    .build());
+
+            mTracker.send(new HitBuilders.EventBuilder()
+                    .setCategory("Data")
+                    .setAction("Name")
+                    .setLabel(name)
+                    .build());
+
+            mTracker.send(new HitBuilders.EventBuilder()
+                    .setCategory("Data")
+                    .setAction("Date")
+                    .setLabel(dateOfBirth.getDate() + " / " + dateOfBirth.getMonth())
+                    .build());
         }
 
         try {
@@ -425,28 +469,9 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
             startActivity(i);
 
         } else if (id == R.id.action_help) {
-            Intent intentHelp = new Intent(this, Help.class);
+            Intent intentHelp = new Intent(this, HelpActivity.class);
             startActivity(intentHelp);
             return true;
-
-        } else if (id == R.id.action_add) {
-
-            String[] nameArray = getResources().getStringArray(R.array.name_array);
-            Date d = new Date();
-            d.setMonth(new Random().nextInt(12));
-            d.setDate(new Random().nextInt(28));
-
-            birthdaysList.add(new Birthday(nameArray[new Random().nextInt(nameArray.length)], d, true, getApplicationContext()));
-            dataChangedUiThread();
-
-            try {
-                saveBirthdays();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return true;
-
         }
         return super.onOptionsItemSelected(item);
     }
@@ -508,12 +533,22 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
     public void onItemEdit(ItemOptionsFragment dialog, int position) {
         itemOptionsFragment.dismiss();
         showAddEditBirthdayFragment(AddEditFragment.MODE_EDIT, position);
+
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Action")
+                .setAction("Edit")
+                .build());
     }
 
     @Override
     public void onItemDelete(ItemOptionsFragment dialog, int position) {
         itemOptionsFragment.dismiss();
         deleteFromArray(position);
+
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Action")
+                .setAction("Delete")
+                .build());
     }
 
     @Override
@@ -522,6 +557,11 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         // Change birthdays remind bool
         birthdaysList.get(position).toggleReminder();
         alarmToggled(position);
+
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Action")
+                .setAction("Toggle Alarm OPTION")
+                .build());
     }
 
     // This is in a separate method so it can be called from different classes
@@ -542,5 +582,10 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Action")
+                .setAction("Toggle Alarm")
+                .build());
     }
 }

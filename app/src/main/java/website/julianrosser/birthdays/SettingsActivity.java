@@ -15,9 +15,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
 public class SettingsActivity extends AppCompatActivity {
 
     static Context mContext;
+    private static Tracker mTracker;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,16 @@ public class SettingsActivity extends AppCompatActivity {
                 .commit();
 
         mContext = getApplicationContext();
+
+        // Obtain the shared Tracker instance.
+        mTracker = getDefaultTracker();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mTracker.setScreenName("Settings");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     @Override
@@ -122,6 +137,13 @@ public class SettingsActivity extends AppCompatActivity {
             if (preference.getKey().equals(getString(R.string.pref_test_notification_key))) {
                 launchTestNotification();
             }
+
+            mTracker.send(new HitBuilders.EventBuilder()
+                    .setCategory("Preference")
+                    .setAction("Pref click")
+                    .setLabel(preference.getKey())
+                    .build());
+
             return false;
         }
     }
@@ -175,5 +197,14 @@ public class SettingsActivity extends AppCompatActivity {
             mNotificationManager.notify(MY_NOTIFICATION_ID,
                     notificationBuilder.getNotification());
         }
+    }
+
+    synchronized public Tracker getDefaultTracker() {
+        if (mTracker == null) {
+            GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
+            // To enable debug logging use: adb shell setprop log.tag.GAv4 DEBUG
+            mTracker = analytics.newTracker(R.xml.global_tracker);
+        }
+        return mTracker;
     }
 }

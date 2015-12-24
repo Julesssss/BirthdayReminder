@@ -10,10 +10,6 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.util.Log;
-
-import java.text.DateFormat;
-import java.util.Date;
 
 public class AlarmNotificationBuilder extends BroadcastReceiver {
 
@@ -73,8 +69,8 @@ public class AlarmNotificationBuilder extends BroadcastReceiver {
                     notificationBuilder.getNotification());
         }
 
-        // Output
-        Log.i(getClass().getSimpleName(), "" + mMessageString + " - notification at: " + DateFormat.getDateTimeInstance().format(new Date()));
+//        // Output
+//        Log.i(getClass().getSimpleName(), "" + mMessageString + " - notification at: " + DateFormat.getDateTimeInstance().format(new Date()));
 
     }
 

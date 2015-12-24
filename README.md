@@ -6,13 +6,8 @@ App for Android devices which notifies users of upcoming birthdays.
 ![https://play.google.com/store/apps/details?id=website.julianrosser.birthdays](http://i.imgur.com/aL8bBy5.png?1)
 
 TODO - Main:
-- Record screen-cast (Add, rotate, edit, delete, reminder)
-- Analytics
 
-Final:
-- Remove logs
-- Prepare to launch - https://developer.android.com/tools/publishing/preparing.html
-- final checks - https://developer.android.com/distribute/tools/launch-checklist.html
+- Record screen-cast (Add, rotate, edit, delete, reminder)
 
 Bugs:
 - Crash when click noti while on settings activity and go back to 1st (Unlikely to happen to user)
@@ -22,6 +17,7 @@ Bugs:
 
 Next Update?
 - Widget
+- Data Backup
 - RecyclerFragment onSavedInstance (array, adapter)
 - Undo birthday delete?
 - Pref category not bold -api19
@@ -36,7 +32,7 @@ Next Update?
 
 
 Log
-- 24/12 - App Indexing. >API16 Removed preference dialog background.
+- 24/12 - Analytics. App Indexing. >API16 Removed preference dialog background.
 - 23/12 - Added edit animation logic. Refactored all text to Strings, sorted references. Translated pref & date strings. Translated help springs.
 - 22/12 - RecycleView animations. debugging array position exceptions.
 - 21/12 - Translated strings to 7 most used languages. Created HelpActivity. Finishing touches to layout. Replaced Toast with SnackBar.

@@ -69,7 +69,7 @@
     <string name="help_alarm_single_title">Turn reminder off</string>
     <string name="help_alarm_single_content">Tap the alarm icon to toggle the alarm reminder.</string>
     <string name="help_alarm_all_title">Turn all reminders off</string>
-    <string name="help_alarm_all_content">Open the settings menu, and tap the \'Allow reminder notifications\' option.</string>
+    <string name="help_alarm_all_content">Open the settings menu, and tap the \'Allow reminder notifications\' option.\n\n\nFor more help, to send feedback or suggest a new feature, please send me an email at julianrosser91@gmail.com or tap the mail button!\n\n\n</string>
 
     <!-- Preferences keys -->
     <string name="pref_days_before_key" translatable="false">day_before_key</string>

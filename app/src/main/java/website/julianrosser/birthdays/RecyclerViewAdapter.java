@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.analytics.HitBuilders;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -78,10 +80,17 @@ public class RecyclerViewAdapter
                 } else {
                     Snackbar.make(viewHolder.imageAlarm, "Reminder for " + birthday.getName() + " " +
                             birthday.getReminderString(), Snackbar.LENGTH_LONG).show();
+
+
                 }
 
                 // Get correct position, as deleted views may have altered pos int
                 int currentPosition = RecyclerListFragment.recyclerView.getChildAdapterPosition(viewHolder.itemView);
+
+                MainActivity.mTracker.send(new HitBuilders.EventBuilder()
+                        .setCategory("Action")
+                        .setAction("Toggle Alarm ICON")
+                        .build());
 
                 // Callback to MainActivity.
                 MainActivity.getContext().alarmToggled(currentPosition);
