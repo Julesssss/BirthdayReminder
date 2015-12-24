@@ -16,7 +16,11 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
         // Launch service to set alarms if ACTION_BOOT_COMPLETE is recieved
         if (Intent.ACTION_BOOT_COMPLETED.equals(i.getAction())) {
 
-            Toast.makeText(context, "Action = BOOT_COMPLETED...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Action = BOOT_COMPLETED...", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Action = BOOT_COMPLETED...", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Action = BOOT_COMPLETED...", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Action = BOOT_COMPLETED...", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Action = BOOT_COMPLETED...", Toast.LENGTH_LONG).show();
 
             Intent serviceIntent = new Intent(context, SetAlarmsService.class);
             context.startService(serviceIntent);

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Preference Theme - This sets all PrefDialogs background colours -->
+    <style name="PreferenceTheme" parent="AppTheme">
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+</resources>

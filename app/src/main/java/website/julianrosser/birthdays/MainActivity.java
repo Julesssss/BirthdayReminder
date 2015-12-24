@@ -314,6 +314,12 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
                 if (RecyclerListFragment.floatingActionButton != null && RecyclerListFragment.floatingActionButton.getVisibility() == View.INVISIBLE) {
                     RecyclerListFragment.floatingActionButton.show();
                 }
+
+                try {
+                    saveBirthdays();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

@@ -50,11 +50,6 @@
         <item name="android:textColor">#fff</item>
     </style>
 
-    <!-- Preference Theme - This sets all PrefDialogs background colours -->
-    <style name="PreferenceTheme" parent="AppTheme">
-        <item name="android:background">@color/colorPrimary</item>
-    </style>
-
     <style name="PreferenceCategory" parent="@style/Theme.AppCompat.Light.DarkActionBar">
         <item name="android:textStyle">bold</item>
         <!--item name="android:layout">@layout/category_layout</item-->

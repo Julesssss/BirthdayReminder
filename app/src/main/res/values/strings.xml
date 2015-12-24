@@ -17,7 +17,7 @@
 
     <!-- AddEdit DialogFragment -->
     <string name="hint_name">Name&#8230;</string>
-    <string name="button_positive">Done</string>
+    <string name="button_positive">Save</string>
     <string name="button_negative">Cancel</string>
 
     <!-- Information & help Text -->
@@ -36,8 +36,8 @@
     <string name="pref_category_list">List Settings</string>
 
     <!-- Preference Strings -->
-    <string name="enabled">Enabled</string>
-    <string name="disabled">Disabled</string>
+    <string name="enabled">Yes</string>
+    <string name="disabled">No</string>
     <string name="date">Date</string>
     <string name="name">Name</string>
     <string name="day0">On the day</string>
