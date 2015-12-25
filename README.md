@@ -7,6 +7,7 @@ App for Android devices which notifies users of upcoming birthdays.
 
 TODO - Main:
 
+- Translated play store description and images
 - Record screen-cast (Add, rotate, edit, delete, reminder)
 
 Bugs:
@@ -32,6 +33,7 @@ Next Update?
 
 
 Log
+- 25/12 - 2.0.1 update: Removed styled PrefDialog from >API19
 - 24/12 - Analytics. App Indexing. >API16 Removed preference dialog background.
 - 23/12 - Added edit animation logic. Refactored all text to Strings, sorted references. Translated pref & date strings. Translated help springs.
 - 22/12 - RecycleView animations. debugging array position exceptions.

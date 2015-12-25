@@ -67,12 +67,8 @@ public class Birthday {
         }
 
         // Check whether user wants to be reminded for this birthday.
-        if (json.has(JSON_REMIND)) {
-            remind = json.getBoolean(JSON_REMIND);
-        } else {
-            // Default to true if not found, log message.
-            remind = true;
-        }
+        remind = !json.has(JSON_REMIND) || json.getBoolean(JSON_REMIND);
+        // Default to true if not found, log message.
 
         // Date of birthday in millis.
         if (json.has(JSON_DATE)) {
@@ -114,7 +110,7 @@ public class Birthday {
 
     public String getReminderString() {
         if (remind) {
-            return  MainActivity.getAppContext().getString(R.string.reminder_set);
+            return MainActivity.getAppContext().getString(R.string.reminder_set);
         } else {
             return MainActivity.getAppContext().getString(R.string.reminder_canceled);
         }
