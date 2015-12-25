@@ -3,7 +3,7 @@ App for Android devices which notifies users of upcoming birthdays.
 
 ![](http://julianrosser.website/images/app_screenshots/birthday180.png)![](http://julianrosser.website/images/app_screenshots/birthday184.png)
 
-![https://play.google.com/store/apps/details?id=website.julianrosser.birthdays](http://i.imgur.com/aL8bBy5.png?1)
+[<img src="http://i.imgur.com/aL8bBy5.png?1">](https://play.google.com/store/apps/details?id=website.julianrosser.birthdays)
 
 TODO - Main:
 
