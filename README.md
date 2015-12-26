@@ -33,6 +33,7 @@ Next Update?
 
 
 Log
+- 26/12 - Translated screenshots
 - 25/12 - 2.0.1 update: Removed styled PrefDialog from >API19
 - 24/12 - Analytics. App Indexing. >API16 Removed preference dialog background.
 - 23/12 - Added edit animation logic. Refactored all text to Strings, sorted references. Translated pref & date strings. Translated help springs.
