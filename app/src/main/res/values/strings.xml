@@ -47,7 +47,8 @@
     <string name="day4">4 days before</string>
     <string name="day5">5 days before</string>
     <string name="day6">6 days before</string>
-    <string name="day7">7 days before</string>
+    <string name="day7">A week before</string>
+    <string name="day14">2 weeks before</string>
 
     <string name="pref_remind_day_title">Remind me</string>
     <string name="pref_remind_day_title_dialog">Day of reminder</string>

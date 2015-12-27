@@ -20,6 +20,7 @@
         <item>@string/day5</item>
         <item>@string/day6</item>
         <item>@string/day7</item>
+        <item>@string/day14</item>
     </string-array>
 
     <string-array translatable="false" name="dayRemindValues">
@@ -31,6 +32,7 @@
         <item>5</item>
         <item>6</item>
         <item>7</item>
+        <item>14</item>
     </string-array>
 
     <!-- Time off reminder  -->

@@ -3,7 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
 
-<item
+    <item
+        android:id="@+id/action_contacts"
+        android:orderInCategory="200"
+        android:title="Add from contacts" />
+
+
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="280"
         android:title="@string/action_settings"

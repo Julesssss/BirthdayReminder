@@ -2,16 +2,20 @@ package website.julianrosser.birthdays;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +38,8 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import website.julianrosser.birthdays.DialogFragments.AddEditFragment;
 import website.julianrosser.birthdays.DialogFragments.ItemOptionsFragment;
@@ -473,8 +479,59 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
             Intent intentHelp = new Intent(this, HelpActivity.class);
             startActivity(intentHelp);
             return true;
+        } else if (id == R.id.action_contacts) {
+            getContacts();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void getContacts() {
+
+        ContentResolver cr = getContentResolver();
+        String[] projection = new String[]{ContactsContract.Contacts._ID, ContactsContract.Contacts.DISPLAY_NAME};
+
+        Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI, projection, null, null,
+                ContactsContract.Contacts.DISPLAY_NAME + " COLLATE LOCALIZED ASC");
+
+        if (cur != null) {
+            while (cur.moveToNext()) {
+
+                Map<String, String> contactInfoMap = new HashMap<String, String>();
+                String contactID = cur.getString(cur.getColumnIndex(ContactsContract.Data._ID));
+                String displayName = cur.getString(cur.getColumnIndex(ContactsContract.Data.DISPLAY_NAME));
+
+                String columns[] = {
+                        ContactsContract.CommonDataKinds.Event.START_DATE,
+                        ContactsContract.CommonDataKinds.Event.TYPE,
+                        ContactsContract.CommonDataKinds.Event.MIMETYPE,
+                };
+
+                String where = ContactsContract.CommonDataKinds.Event.TYPE + "=" + ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY + " and " + ContactsContract.CommonDataKinds.Event.MIMETYPE
+                        + "=" + ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE + " and " + ContactsContract.Data.CONTACT_ID + " = " + contactID;
+
+                String[] selectionArgs = null;
+                String sortOrder = ContactsContract.Contacts.DISPLAY_NAME;
+
+                Cursor birthdayCur = cr.query(ContactsContract.Data.CONTENT_URI, columns, where, selectionArgs, sortOrder);
+
+                if (birthdayCur != null) {
+                    if (birthdayCur.getCount() > 0) {
+                        while (birthdayCur.moveToNext()) {
+                            String birthday = birthdayCur.getString(birthdayCur.getColumnIndex(ContactsContract.CommonDataKinds.Event.START_DATE));
+                            Log.i("DATA", "B: " + birthday);
+                        }
+                    }
+                }
+
+                if (birthdayCur != null) {
+                    birthdayCur.close();
+                }
+            }
+        }
+        if (cur != null) {
+            cur.close();
+        }
+
     }
 
     /**

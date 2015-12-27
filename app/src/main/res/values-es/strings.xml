@@ -46,6 +46,7 @@
     <string name="day5">5 días antes</string>
     <string name="day6">6 días antes</string>
     <string name="day7">una semana antes</string>
+    <string name="day14">2 semanas antes</string>
 
     <string name="pref_remind_day_title">Me recuerda</string>
     <string name="pref_remind_day_title_dialog">Día de recordatorio</string>

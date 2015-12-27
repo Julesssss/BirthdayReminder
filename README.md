@@ -7,17 +7,22 @@ App for Android devices which notifies users of upcoming birthdays.
 
 TODO - Main:
 
-- Translated play store description and images
+- Translate last strings (Need Internet)
+- Include Year
+- Translated play store description and images  (Need Internet)
 - Record screen-cast (Add, rotate, edit, delete, reminder)
 
 Bugs:
 - Crash when click noti while on settings activity and go back to 1st (Unlikely to happen to user)
 - Quickly click to open Fragments twice
-- End of month bug?
 - SettingsActivity keeps calling Service. callback or some solution to ToManyCalls problem
 
 Next Update?
 - Widget
+- Alternative Colour
+- Import Birthdays from contacts
+- Change Name to Simple Birthday reminder?
+- Pref Item Background//////////////////////////////////////
 - Data Backup
 - RecyclerFragment onSavedInstance (array, adapter)
 - Undo birthday delete?
@@ -33,6 +38,7 @@ Next Update?
 
 
 Log
+- 27/12 - Added 2 weeks before option.
 - 26/12 - Translated screenshots
 - 25/12 - 2.0.1 update: Removed styled PrefDialog from >API19
 - 24/12 - Analytics. App Indexing. >API16 Removed preference dialog background.
