@@ -13,7 +13,7 @@ TODO - Main:
 - Record screen-cast (Add, rotate, edit, delete, reminder)
 
 Bugs:
-- Crash when click noti while on settings activity and go back to 1st (Unlikely to happen to user)
+- Crash when click noti while on settings activity and go back to 1st (Unlikely to happ`en to user)
 - Quickly click to open Fragments twice
 - SettingsActivity keeps calling Service. callback or some solution to ToManyCalls problem
 
