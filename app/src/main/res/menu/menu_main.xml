@@ -4,12 +4,6 @@
     tools:context=".MainActivity">
 
     <item
-        android:id="@+id/action_contacts"
-        android:orderInCategory="200"
-        android:title="Add from contacts" />
-
-
-    <item
         android:id="@+id/action_settings"
         android:orderInCategory="280"
         android:title="@string/action_settings"
