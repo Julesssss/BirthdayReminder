@@ -274,6 +274,8 @@ public class Birthday {
             dayFormatted += c.getResources().getString(R.string.date_tomorrow);
         } else if (daysFromNotiUntilDay == 7) {
             dayFormatted += c.getResources().getString(R.string.date_week);
+        } else if (daysFromNotiUntilDay == 14) {
+            dayFormatted += c.getResources().getString(R.string.date_2_week);
         } else {
             Date newDate = new Date();
             newDate.setTime(b.getDate().getTime() - DAY_IN_MILLIS);

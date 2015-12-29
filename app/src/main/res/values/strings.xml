@@ -28,6 +28,7 @@
     <string name="date_today">today</string>
     <string name="date_tomorrow">tomorrow</string>
     <string name="date_week">next week</string>
+    <string name="date_2_week">in 2 weeks</string>
     <string name="date_this">this </string>
     <string name="date_days">Days</string>
     <string name="reminder_set">set</string>

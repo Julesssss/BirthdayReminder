@@ -7,13 +7,15 @@ App for Android devices which notifies users of upcoming birthdays.
 
 TODO - Main:
 
+- Pref dialogfrag background
+- Translate 2 weeks before string
 - Translate last strings (Need Internet)
 - Include Year
 - Translated play store description and images  (Need Internet)
 - Record screen-cast (Add, rotate, edit, delete, reminder)
 
 Bugs:
-- Crash when click noti while on settings activity and go back to 1st (Unlikely to happ`en to user)
+- Crash when click noti while on settings activity and go back to 1st (Unlikely to happen to user)
 - Quickly click to open Fragments twice
 - SettingsActivity keeps calling Service. callback or some solution to ToManyCalls problem
 
@@ -38,6 +40,7 @@ Next Update?
 
 
 Log
+- 29/12 - Fixed Pref List Style & background for styles & 21+. Removed AddFromContact(), added Material blue colours.
 - 27/12 - Added 2 weeks before option.
 - 26/12 - Translated screenshots
 - 25/12 - 2.0.1 update: Removed styled PrefDialog from >API19

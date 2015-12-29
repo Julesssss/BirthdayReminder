@@ -15,7 +15,7 @@
         <item name="android:listSeparatorTextViewStyle">@style/ListSeparator</item>
         <!--<item name="android:preferenceCategoryStyle">@style/PreferenceCategory</item>-->
 
-        <!--<item name="android:preferenceStyle">@style/PreferenceTheme</item>-->
+        <item name="android:preferenceStyle">@style/PreferenceTheme</item>
 
         <item name="android:textAppearanceLarge">@style/MyTextAppearance</item>
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -23,10 +23,31 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="DialogFragmentTheme" parent="android:Theme.Dialog">
+    <!-- Preference Theme - This sets all PrefDialogs background colours -->
+    <style name="PreferenceTheme" parent="AppTheme" >
+        <item name="android:listViewStyle">@style/ListViewPrefs</item>
+        <item name="android:alertDialogTheme">@style/DialogTheme</item>
+    </style>
+
+    <style name="DialogTheme" parent="AlertDialog.AppCompat">
+        <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowFullscreen">false</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:listViewStyle">@style/Widget.AppCompat.ListView</item>
+        <!--<item name="android:background">@color/ColorPrimary</item>-->
+    </style>
+
+    <style name="ListViewPrefs" parent="@style/Widget.AppCompat.ListView">
+        <!--<item name="android:background">@color/colorPrimary</item>-->
+        <item name="android:background">@color/colorPrimary</item>
+            <item name="android:windowBackground">@color/colorPrimary</item>
+    </style>
+
+    <style name="DialogFragmentTheme" parent="AppTheme">
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:background">@color/colorPrimary</item>
+        <!--<item name="android:windowBackground">@android:color/transparent</item>-->
     </style>
 
     <style name="RobotoTextViewStyle" parent="android:Widget.TextView">
@@ -34,8 +55,9 @@
     </style>
 
     <!-- Not used by DialogFrags? -->
-    <style name="RobotoButtonStyle" parent="android:Widget.Holo.Button">
+    <style name="RobotoButtonStyle" parent="TextAppearance.AppCompat.Button">
         <item name="android:textColor">#fff</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
@@ -48,11 +70,6 @@
 
     <style name="MyTextAppearance" parent="@android:style/TextAppearance.Large">
         <item name="android:textColor">#fff</item>
-    </style>
-
-    <style name="PreferenceCategory" parent="@style/Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:textStyle">bold</item>
-        <!--item name="android:layout">@layout/category_layout</item-->
     </style>
 
     <!-- ActionBar styles -->

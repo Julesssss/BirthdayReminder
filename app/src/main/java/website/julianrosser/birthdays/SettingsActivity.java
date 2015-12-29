@@ -89,6 +89,9 @@ public class SettingsActivity extends AppCompatActivity {
         @Override
         public void onViewCreated(View view, Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
+
+
+
             //view.setBackgroundColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.colorPrimary));
         }
 
