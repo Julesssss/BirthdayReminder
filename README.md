@@ -7,8 +7,6 @@ App for Android devices which notifies users of upcoming birthdays.
 
 TODO - Main:
 
-- Pref dialogfrag background
-- Translate 2 weeks before string
 - Translate last strings (Need Internet)
 - Include Year
 - Translated play store description and images  (Need Internet)
@@ -22,9 +20,7 @@ Bugs:
 Next Update?
 - Widget
 - Alternative Colour
-- Import Birthdays from contacts
 - Change Name to Simple Birthday reminder?
-- Pref Item Background//////////////////////////////////////
 - Data Backup
 - RecyclerFragment onSavedInstance (array, adapter)
 - Undo birthday delete?

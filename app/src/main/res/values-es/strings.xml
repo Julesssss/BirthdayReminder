@@ -26,6 +26,7 @@
     <string name="date_today">este dia</string>
     <string name="date_tomorrow">mañana</string>
     <string name="date_week">la próxima semana</string>
+    <string name="date_2_week">en dos semanas</string>
     <string name="date_this">esta </string>
     <string name="date_days">día</string>
     <string name="reminder_set">conjunto</string>

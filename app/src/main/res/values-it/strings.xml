@@ -26,6 +26,7 @@
     <string name="date_today">oggi</string>
     <string name="date_tomorrow">domani</string>
     <string name="date_week">la prossima settimana</string>
+    <string name="date_2_week">in due settimane</string>
     <string name="date_this">Questo </string>
     <string name="date_days">giorni</string>
     <string name="reminder_set">accendere</string>

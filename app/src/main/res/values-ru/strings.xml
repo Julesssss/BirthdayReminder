@@ -26,6 +26,7 @@
     <string name="date_today">Cегодня</string>
     <string name="date_tomorrow">завтра</string>
     <string name="date_week">Следующая неделя</string>
+    <string name="date_2_week">В течение двух недель</string>
     <string name="date_this">это</string>
     <string name="date_days">дней</string>
     <string name="reminder_set">включить</string>

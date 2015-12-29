@@ -46,7 +46,7 @@
     <style name="DialogFragmentTheme" parent="AppTheme">
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowFullscreen">false</item>
-        <item name="android:background">@color/colorPrimary</item>
+        <!--<item name="android:background">@color/colorPrimary</item>-->
         <!--<item name="android:windowBackground">@android:color/transparent</item>-->
     </style>
 

@@ -2,7 +2,7 @@
 <resources>
 
     <!-- Material Pink Colours -->
-    <color name="primary_accent">#c0ca33</color>
+    <color name="primary_accent">#cddc39</color>
     <!--<color name="primary_accent">#80cbc4</color>-->
     <color name="primary_300">#F06292</color>
     <color name="primary_400">#ec407a</color>
