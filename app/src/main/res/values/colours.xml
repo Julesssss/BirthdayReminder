@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="textColorPrimary">#FFFFFF</color>
+
     <!-- Material Pink Colours -->
-    <color name="primary_accent">#cddc39</color>
-    <!--<color name="primary_accent">#80cbc4</color>-->
-    <color name="primary_300">#F06292</color>
-    <color name="primary_400">#ec407a</color>
-    <color name="primary_500">#E91E63</color>
-    <color name="primary_600">#d81b6d</color>
-    <color name="primary_700">#c2185b</color>
-    <color name="primary_800">#ad1457</color>
-    <color name="primary_900">#880e4f</color>
-    <color name="secondary_100">#80d8ff</color>
-    <color name="secondary_200">#40c4ff</color>
-    <color name="secondary_400">#00b0ff</color>
-    <color name="secondary_700">#0091ea</color>
+    <color name="primary_pink_300">#F06292</color>
+    <color name="primary_pink_400">#ec407a</color>
+    <color name="primary_pink_500">#E91E63</color>
+    <color name="primary_pink_600">#d81b6d</color>
+    <color name="primary_pink_700">#c2185b</color>
+    <color name="primary_pink_800">#ad1457</color>
+    <color name="primary_pink_900">#880e4f</color>
+    <color name="primary_pink_1000">#880e4f</color>
+    <color name="blue_accent_100">#80d8ff</color>
+    <color name="blue_accent_200">#40c4ff</color>
+    <color name="blue_accent_400">#00b0ff</color>
+    <color name="blue_accent_700">#0091ea</color>
 
     <!-- Material Blue Colours -->
     <color name="primary_blue_300">#64b5f6</color>
@@ -23,21 +24,15 @@
     <color name="primary_blue_600">#1e88e5</color>
     <color name="primary_blue_700">#1976d2</color>
     <color name="primary_blue_800">#1565c0</color>
+    <color name="primary_blue_900">#0d47a1</color>
+    <color name="pink_accent_400">#F50057</color>
 
-    <!-- Material Blue  -->
-    <color name="colorPrimary">@color/primary_blue_600</color>
-    <color name="colorPrimaryDark">@color/primary_blue_700</color>
-    <color name="textColorPrimary">#FFFFFF</color>
-    <color name="windowBackground">@color/primary_blue_600</color>
-    <color name="navigationBarColor">@color/primary_blue_800</color>
-    <color name="colorAccent">@color/primary_accent</color>
-
-    <!-- Material Pink -->
-    <!-- <color name="colorPrimary">@color/primary_500</color>
-    <color name="colorPrimaryDark">@color/primary_700</color>
-    <color name="textColorPrimary">#FFFFFF</color>
-    <color name="windowBackground">@color/primary_500</color>
-    <color name="navigationBarColor">@color/primary_800</color>
-    <color name="colorAccent">@color/secondary_400</color -->
+    <!-- Material Green Colours -->
+    <color name="material_green_400">#66BB6A</color>
+    <color name="material_green_500">#4CAF50</color>
+    <color name="material_green_600">#43A047</color>
+    <color name="material_green_700">#388E3C</color>
+    <color name="material_green_800">#2E7D32</color>
+    <color name="material_green_900">#1B5E20</color>
 
 </resources>

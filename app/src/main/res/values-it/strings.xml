@@ -32,7 +32,6 @@
     <string name="reminder_set">accendere</string>
     <string name="reminder_canceled">annullato</string>
     <string name="pref_category_reminder">Impostazioni Promemoria</string>
-    <string name="pref_category_list">Impostazioni Elenco</string>
 
     <!-- Preference Strings -->
     <string name="enabled">Permettere</string>
@@ -73,5 +72,19 @@
 
     <!-- Information & help Text -->
     <string name="empty_list_message">Toccare l\'icona della torta di compleanno per iniziare ad aggiungere i compleanni!</string>
+
+    <!-- New Strings -->
+    <string name="date_yesterday">Ieri</string>
+    <string name="pref_theme_dialog_title">tema Colore</string>
+    <string name="pref_theme_title">Scegli Colore</string>
+    <string name="theme0">Blu</string>
+    <string name="theme1">Rosa</string>
+    <string name="theme2">Verde</string>
+    <string name="pref_category_list">Impostazioni di visualizzazione</string>
+    <string name="preffered_email">Scegli la tua applicazione preferita</string>
+    <string name="send_email">Invia una email</string>
+    <string name="email_me_text">Ricevere aiuto, inviare commenti o suggerire una nuova funzione</string>
+    <string name="reminder_for">"promemoria per "</string>
+    <string name="for_next_year">" per il prossimo anno"</string>
 
 </resources>

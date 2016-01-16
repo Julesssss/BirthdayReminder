@@ -8,11 +8,10 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark"
+        android:background="?attr/colorPrimaryDark"
         android:elevation="6dp"
         android:minHeight="?attr/actionBarSize"
-        app:popupTheme="@style/PopUpTheme"
-        android:theme="@style/MyActionBar" />
+        app:popupTheme="@style/PopUpTheme" />
 
     <FrameLayout
         android:id="@+id/container"

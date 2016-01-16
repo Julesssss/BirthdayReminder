@@ -32,7 +32,6 @@
     <string name="reminder_set">conjunto</string>
     <string name="reminder_canceled">cancelado</string>
     <string name="pref_category_reminder">Configurações De Lembrete</string>
-    <string name="pref_category_list">Configurações da lista</string>
 
     <!-- Preference Strings -->
     <string name="enabled">Ativado</string>
@@ -73,5 +72,19 @@
 
     <!-- Information & help Text -->
     <string name="empty_list_message">Toque no ícone do bolo de aniversário para começar a adicionar aniversários!</string>
+
+    <!-- New Strings -->
+    <string name="date_yesterday">Ontem</string>
+    <string name="pref_theme_dialog_title">tema Cor</string>
+    <string name="pref_theme_title">Escolha Cor</string>
+    <string name="theme0">Azul</string>
+    <string name="theme1">Rosa</string>
+    <string name="theme2">Verde</string>
+    <string name="pref_category_list">Configurações de exibição</string>
+    <string name="preffered_email">Escolha o seu aplicativo preferido</string>
+    <string name="send_email">Enviar mensagem</string>
+    <string name="email_me_text">Receber ajuda, enviar comentários ou sugerir um novo recurso</string>
+    <string name="reminder_for">lembrete para</string>
+    <string name="for_next_year">para o próximo ano</string>
 
 </resources>

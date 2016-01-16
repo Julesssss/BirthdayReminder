@@ -34,7 +34,6 @@
     <string name="reminder_set">set</string>
     <string name="reminder_canceled">canceled</string>
     <string name="pref_category_reminder">Reminder Settings</string>
-    <string name="pref_category_list">List Settings</string>
 
     <!-- Preference Strings -->
     <string name="enabled">Yes</string>
@@ -75,6 +74,7 @@
 
     <!-- Preferences keys -->
     <string name="pref_days_before_key" translatable="false">day_before_key</string>
+    <string name="pref_theme_key" translatable="false">theme_key</string>
     <string name="choice_1_day"  translatable="false">@string/day3</string>
     <string name="pref_time_before_key"  translatable="false">time_before_key</string>
     <string name="pref_enable_notifications_key" translatable="false">enable_notification</string>
@@ -104,6 +104,20 @@
     <string name="pref_time_8" translatable="false">8</string>
     <string name="pref_time_12" translatable="false">12</string>
     <string name="pref_time_17" translatable="false">17</string>
+
+    <!-- New Strings -->
+    <string name="date_yesterday">Yesterday</string>
+    <string name="pref_theme_dialog_title">Theme Colour</string>
+    <string name="pref_theme_title">Choose Colour</string>
+    <string name="theme0">Blue</string>
+    <string name="theme1">Pink</string>
+    <string name="theme2">Green</string>
+    <string name="pref_category_list">Display Settings</string>
+    <string name="preffered_email">Choose your preferred email app</string>
+    <string name="send_email">Send Email</string>
+    <string name="email_me_text">Receive help, submit feedback or suggest a new feature</string>
+    <string name="reminder_for">"Reminder for "</string>
+    <string name="for_next_year">" for next year"</string>
 
 
 </resources>

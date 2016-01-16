@@ -32,7 +32,6 @@
     <string name="reminder_set">включить</string>
     <string name="reminder_canceled">отменен</string>
     <string name="pref_category_reminder">настройки напоминаний</string>
-    <string name="pref_category_list">настройки списка</string>
 
     <!-- Preference Strings -->
     <string name="enabled">включен</string>
@@ -74,5 +73,19 @@
 
     <!-- Information & help Text -->
     <string name="empty_list_message">Нажмите на значок день рождения торт, чтобы добавить новые дни рождения!</string>
+
+    <!-- New Strings -->
+    <string name="date_yesterday">Вчера</string>
+    <string name="pref_theme_dialog_title">тема Цвет</string>
+    <string name="pref_theme_title">Выберите цвет</string>
+    <string name="theme0">синий</string>
+    <string name="theme1">розовый</string>
+    <string name="theme2">зеленый</string>
+    <string name="pref_category_list">Настройки отображения</string>
+    <string name="preffered_email">Выберите желаемое приложение</string>
+    <string name="send_email">Отправить на e-mail</string>
+    <string name="email_me_text">Получите помощь, отправить отзыв или предложить новую функцию</string>
+    <string name="reminder_for">"напоминание "</string>
+    <string name="for_next_year">" на следующий год"</string>
 
 </resources>

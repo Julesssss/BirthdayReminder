@@ -2,15 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="website.julianrosser.birthdays">
 
-
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
-
+    <!-- Needed to ensure Alarms are set while device is sleeping -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- Needed to reset alarms after device has restarted -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- Speaks for itself -->
     <uses-permission android:name="android.permission.VIBRATE" />
-
-    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+    <!-- For saving JSON data -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
     <!-- For Analytics-->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -19,7 +18,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/GreenTheme">
 
         <!-- Main Activity -->
         <activity
@@ -55,7 +54,7 @@
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".AlarmNotificationBuilder" />
+        <receiver android:name=".NotificationBuilderReceiver" />
 
         <service android:name=".SetAlarmsService" />
 
@@ -65,16 +64,15 @@
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="website.julianrosser.birthdays.MainActivity" />
+                android:value=".MainActivity" />
         </activity>
         <activity
             android:name=".HelpActivity"
             android:label="@string/title_activity_help"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme">
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="website.julianrosser.birthdays.MainActivity" />
+                android:value=".MainActivity" />
         </activity>
     </application>
 

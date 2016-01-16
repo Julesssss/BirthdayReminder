@@ -9,14 +9,13 @@
         <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
     </style>
 
-
     <!-- Style Preference AlertDialog background colour -->
-    <style name="DialogTheme" parent="AlertDialog.AppCompat">
+    <style name="DialogTheme">
         <item name="android:windowIsFloating">true</item>
         <item name="android:buttonStyle">@style/RobotoButtonStyle</item>
-        <item name="android:windowBackground">@color/colorPrimary</item>
+        <item name="android:windowBackground">?attr/theme_colour</item>
         <item name="android:windowFullscreen">false</item>
-        <item name="android:colorAccent">@color/colorAccent</item>
+        <item name="android:colorAccent">?attr/accent_colour</item>
         <item name="android:listViewStyle">@style/Widget.AppCompat.ListView</item>
     </style>
 

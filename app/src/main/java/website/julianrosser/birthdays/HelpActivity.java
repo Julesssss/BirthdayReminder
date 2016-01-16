@@ -1,8 +1,10 @@
 package website.julianrosser.birthdays;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -19,18 +21,22 @@ public class HelpActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help);
 
+        // Set up toolbar reference
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Set up FloatingActionButton ref and listener
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Receive help, submit feedback or suggest a new feature", Snackbar.LENGTH_LONG)
-                        .setAction("Send Email", new View.OnClickListener() {
+                Snackbar.make(view, R.string.email_me_text, Snackbar.LENGTH_LONG)
+                        .setAction(R.string.send_email, new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 emailMe();
@@ -45,6 +51,7 @@ public class HelpActivity extends AppCompatActivity {
             }
         });
 
+        // Show home button on toolbar
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -68,12 +75,29 @@ public class HelpActivity extends AppCompatActivity {
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
+    // Set Activity theme depending on user preference
+    public void setTheme() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        if (prefs.getString(getResources().getString(R.string.pref_theme_key), "0").equals("0")) {
+            setTheme(R.style.BlueTheme);
+        } else if (prefs.getString(getResources().getString(R.string.pref_theme_key), "0").equals("1")) {
+            setTheme(R.style.PinkTheme);
+        } else if (prefs.getString(getResources().getString(R.string.pref_theme_key), "0").equals("2")) {
+            setTheme(R.style.GreenTheme);
+        } else {
+            setTheme(R.style.PinkTheme);
+        }
+    }
+
+
     public void emailMe() {
         Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:" + "julianrosser91@gmail.com"));
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Birthday Reminder");
-        emailIntent.putExtra(Intent.EXTRA_TEXT, "Message.");
 
-        startActivity(Intent.createChooser(emailIntent, "Choose your preferred email app"));
+        emailIntent.putExtra(Intent.EXTRA_TEXT, "App Version: " + BuildConfig.VERSION_NAME + "\n\n");
+
+        startActivity(Intent.createChooser(emailIntent, getString(R.string.preffered_email)));
 
         mTracker.send(new HitBuilders.EventBuilder()
                 .setCategory("Action")

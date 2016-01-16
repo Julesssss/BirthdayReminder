@@ -145,6 +145,8 @@ public class Birthday {
             return WordUtils.capitalize(MainActivity.getAppContext().getString(R.string.date_today) + "!");
         } else if (i == 1) {
             return WordUtils.capitalize(MainActivity.getAppContext().getString(R.string.date_tomorrow) + "!");
+        } else if (i == -1) {
+            return MainActivity.getAppContext().getString(R.string.date_yesterday);
         } else if (i > 1 && i <= 6) {
             Date newDate = new Date();
             newDate.setTime(getDate().getTime() - DAY_IN_MILLIS);

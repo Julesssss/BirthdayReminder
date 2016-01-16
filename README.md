@@ -1,16 +1,18 @@
-# Birthday Reminder 2.0
+# Birthday Reminder 2.1
 App for Android devices which notifies users of upcoming birthdays.
 
-![](http://julianrosser.website/images/app_screenshots/birthday180.png)![](http://julianrosser.website/images/app_screenshots/birthday184.png)
+![](http://julianrosser.website/images/app_screenshots/birthday200.png)![](http://julianrosser.website/images/app_screenshots/birthday201.png)
 
 [<img src="http://i.imgur.com/aL8bBy5.png?1">](https://play.google.com/store/apps/details?id=website.julianrosser.birthdays)
 
 TODO - Main:
 
-- Translate last strings (Need Internet)
-- Include Year
+- icon
+- test devices
+- New theme screenshots & translated screenshots
+
 - Translated play store description and images  (Need Internet)
-- Record screen-cast (Add, rotate, edit, delete, reminder)
+- Record screen-cast (Add, rotate, edit, delete, reminder, theme)
 
 Bugs:
 - Crash when click noti while on settings activity and go back to 1st (Unlikely to happen to user)
@@ -19,15 +21,15 @@ Bugs:
 
 Next Update?
 - Widget
-- Alternative Colour
-- Change Name to Simple Birthday reminder?
+- Include Year ???????????
+- Change Name to Simple Birthday reminder?  IN PLAY STORE INFO
 - Data Backup
 - RecyclerFragment onSavedInstance (array, adapter)
 - Undo birthday delete?
 - Pref category not bold -api19
 - Tablet fragment layout & window sizes!
 - Roboto font < api 16
-- 2 birthdays on same day?
+- todo 2 birthdays on same day? Check when setting alarms, use alternative notification message if this happens.
 - Fragments as bottom cards?
 - Custom Notification
 - Button Merge to alertDialog?
@@ -36,6 +38,9 @@ Next Update?
 
 
 Log
+- 16/01 - Finished themes implementation, changes instantly when changed. Added green theme. Refactored drawable filenames.
+- 15/01 - Multiple Themes! -1 days change to Yesterday string. Translated remaining Strings.
+- 14/01 - Updated to ATTEMPT to fix bug where Notifications aren't received. Set colours programmatically in prep for themes.
 - 29/12 - Fixed Pref List Style & background for styles & 21+. Removed AddFromContact(), added Material blue colours.
 - 27/12 - Added 2 weeks before option.
 - 26/12 - Translated screenshots

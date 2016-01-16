@@ -9,6 +9,19 @@
     </string-array>
 
     <!-- Prefs -->
+    <!-- Day of reminder  -->
+    <string-array translatable="false" name="themeEntries">
+        <item>@string/theme0</item>
+        <item>@string/theme1</item>
+        <item>@string/theme2</item>
+    </string-array>
+
+    <string-array translatable="false" name="themeValues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
 
     <!-- Day of reminder  -->
     <string-array translatable="false" name="dayRemindEntries">

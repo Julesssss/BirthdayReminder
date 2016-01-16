@@ -32,7 +32,6 @@
     <string name="reminder_set">mettre</string>
     <string name="reminder_canceled">annulé</string>
     <string name="pref_category_reminder">Paramètres de rappel</string>
-    <string name="pref_category_list">Paramètres de la liste</string>
 
     <!-- Preference Strings -->
     <string name="enabled">permis</string>
@@ -73,5 +72,19 @@
 
     <!-- Information & help Text -->
     <string name="empty_list_message">Appuyez sur le gâteau d\'anniversaire icône pour commencer à ajouter les anniversaires!</string>
+
+    <!-- New Strings -->
+    <string name="date_yesterday">Hier</string>
+    <string name="pref_theme_dialog_title">Couleur thème</string>
+    <string name="pref_theme_title">Choisissez Couleur</string>
+    <string name="theme0">Bleu</string>
+    <string name="theme1">Rose</string>
+    <string name="theme2">vert</string>
+    <string name="pref_category_list">Paramètres d\'affichage</string>
+    <string name="preffered_email">Choisissez votre application préférée</string>
+    <string name="send_email">Envoyer le message</string>
+    <string name="email_me_text">Envoyer MeReceive aide, envoyez vos commentaires ou suggérer une nouvelle featuressage</string>
+    <string name="reminder_for">"Rappel pour "</string>
+    <string name="for_next_year">" pour l'année prochaine"</string>
 
 </resources>

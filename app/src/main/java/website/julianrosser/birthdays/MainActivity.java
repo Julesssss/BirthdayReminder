@@ -34,6 +34,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 
 import website.julianrosser.birthdays.DialogFragments.AddEditFragment;
 import website.julianrosser.birthdays.DialogFragments.ItemOptionsFragment;
@@ -82,6 +83,8 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        setTheme();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -92,9 +95,6 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         // Initialize context reference
         mContext = this;
         mAppContext = getApplicationContext();
-
-        // Set default preference values
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         // Find RecyclerListFragment reference
         if (savedInstanceState != null) {
@@ -128,6 +128,17 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         mTitle = "Birthday Reminders";
         mDescription = "Simple birthday reminders for loved-ones";
         mSchemaType = "http://schema.org/Article";
+
+        // Get sample of theme choice
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        Random r = new Random();
+        if (r.nextInt(10) == 5) {
+            mTracker.send(new HitBuilders.EventBuilder()
+                    .setCategory("Samples")
+                    .setAction("Theme")
+                    .setValue(Long.valueOf(prefs.getString(getResources().getString(R.string.pref_theme_key), "0")))
+                    .build());
+        }
     }
 
     public Action getAction() {
@@ -191,11 +202,14 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
             e.printStackTrace();
         }
 
-        mTracker.send(new HitBuilders.EventBuilder()
-                .setCategory("Data")
-                .setAction("Birthdays count")
-                .setLabel("" + birthdaysList.size())
-                .build());
+        Random r = new Random();
+        if (r.nextInt(10) == 5) {
+            mTracker.send(new HitBuilders.EventBuilder()
+                    .setCategory("Data")
+                    .setAction("Birthdays count")
+                    .setValue(birthdaysList.size())
+                    .build());
+        }
 
         AppIndex.AppIndexApi.end(mClient, getAction());
         mClient.disconnect();
@@ -413,7 +427,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
 
         // CreateIntent to start the AlarmNotificationReceiver
         Intent mNotificationReceiverIntent = new Intent(MainActivity.getAppContext(),
-                AlarmNotificationBuilder.class);
+                NotificationBuilderReceiver.class);
 
         // Create pending Intent using Intent we just built
         PendingIntent mNotificationReceiverPendingIntent = PendingIntent
@@ -523,6 +537,21 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
     // Check if Async task is currently running, to prevent errors when exiting
     private boolean isTaskRunning() {
         return (loadBirthdaysTask != null) && (loadBirthdaysTask.getStatus() == AsyncTask.Status.RUNNING);
+    }
+
+    // Set theme based on users preference
+    public void setTheme() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        if (prefs.getString(getResources().getString(R.string.pref_theme_key), "0").equals("0")) {
+            setTheme(R.style.BlueTheme);
+        } else if (prefs.getString(getResources().getString(R.string.pref_theme_key), "0").equals("1")) {
+            setTheme(R.style.PinkTheme);
+        } else if (prefs.getString(getResources().getString(R.string.pref_theme_key), "0").equals("2")) {
+            setTheme(R.style.GreenTheme);
+        } else {
+            setTheme(R.style.PinkTheme);
+        }
     }
 
     /**

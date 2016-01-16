@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="date_background_accent" format="reference"/>
+    <attr name="theme_colour" format="reference"/>
+    <attr name="theme_colour_dark" format="reference"/>
+    <attr name="accent_colour" format="reference"/>
+
+</resources>

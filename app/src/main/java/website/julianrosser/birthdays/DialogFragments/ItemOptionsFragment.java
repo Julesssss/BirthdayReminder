@@ -4,8 +4,10 @@ package website.julianrosser.birthdays.DialogFragments;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -88,7 +90,18 @@ public class ItemOptionsFragment extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().getWindow().setBackgroundDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.dialog_background));
+
+        // Set background depending on theme
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+        if (prefs.getString(getResources().getString(R.string.pref_theme_key), "0").equals("0")) {
+            getDialog().getWindow().setBackgroundDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.dialog_background_blue));
+        } else if (prefs.getString(getResources().getString(R.string.pref_theme_key), "0").equals("1")) {
+            getDialog().getWindow().setBackgroundDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.dialog_background_pink));
+        } else {
+            getDialog().getWindow().setBackgroundDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.dialog_background_green));
+        }
+
         getDialog().getWindow().setLayout(getPixelsFromDP(DIALOG_WIDTH_SIZE), ViewGroup.LayoutParams.WRAP_CONTENT);
         // To ensure data is kept through orientation change
         setRetainInstance(true);
@@ -205,7 +218,7 @@ public class ItemOptionsFragment extends DialogFragment {
             if (position == 2) {
                 holder.imageIcon.setImageDrawable(MainActivity.birthdaysList.get(birthdayListPosition).getRemindAlarmDrawable());
             } else {
-                    holder.imageIcon.setImageDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), imageIcons[position]));
+                holder.imageIcon.setImageDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), imageIcons[position]));
             }
 
             return rowView;

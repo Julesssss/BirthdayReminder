@@ -5,27 +5,72 @@
 
     </style>
 
+    <style name="PinkTheme" parent="AppTheme">
+        <item name="colorPrimary">@color/primary_pink_500</item>
+        <item name="colorPrimaryDark">@color/primary_pink_700</item>
+        <item name="colorAccent">@color/blue_accent_400</item>
+        <item name="date_background_accent">@drawable/accent_colour_pink</item>
+        <item name="accent_colour">@color/blue_accent_400</item>
+        <item name="theme_colour">@drawable/colour_pink</item>
+        <item name="theme_colour_dark">@color/primary_pink_700</item>
+        <item name="android:navigationBarColor">@color/primary_pink_900</item>
+        <item name="android:statusBarColor">@color/primary_pink_800</item>
+        <!--<item name="android:preferenceCategoryStyle">@style/PreferenceCategory</item>-->
+
+    </style>
+
+    <style name="BlueTheme" parent="AppTheme">
+        <item name="colorPrimary">@color/primary_blue_600</item>
+        <item name="colorPrimaryDark">@color/primary_blue_700</item>
+        <item name="colorAccent">@color/pink_accent_400</item>
+        <item name="date_background_accent">@drawable/accent_colour_blue</item>
+        <item name="accent_colour">@color/pink_accent_400</item>
+        <item name="theme_colour">@drawable/colour_blue</item>
+        <item name="theme_colour_dark">@color/primary_blue_700</item>
+        <item name="android:navigationBarColor">@color/primary_blue_900</item>
+        <item name="android:statusBarColor">@color/primary_blue_800</item>
+
+    </style>
+
+    <style name="GreenTheme" parent="AppTheme">
+        <item name="colorPrimary">@color/material_green_500</item>
+        <item name="colorPrimaryDark">@color/material_green_600</item>
+        <item name="colorAccent">@color/blue_accent_400</item>
+        <item name="date_background_accent">@drawable/accent_colour_green</item>
+        <item name="accent_colour">@color/blue_accent_400</item>
+        <item name="theme_colour">@drawable/colour_green</item>
+        <item name="theme_colour_dark">@color/material_green_600</item>
+        <item name="android:navigationBarColor">@color/material_green_800</item>
+        <item name="android:statusBarColor">@color/material_green_700</item>
+    </style>
+
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
         <item name="android:buttonStyle">@style/RobotoButtonStyle</item>
         <item name="android:editTextStyle">@style/EditTextTheme</item>
-
         <item name="android:listSeparatorTextViewStyle">@style/ListSeparator</item>
         <!--<item name="android:preferenceCategoryStyle">@style/PreferenceCategory</item>-->
-
-        <item name="android:preferenceStyle">@style/PreferenceTheme</item>
-
         <item name="android:textAppearanceLarge">@style/MyTextAppearance</item>
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/navigationBarColor</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
     </style>
 
     <!-- Preference Theme - This sets all PrefDialogs background colours -->
-    <style name="PreferenceTheme" parent="AppTheme" >
-        <item name="android:listViewStyle">@style/ListViewPrefs</item>
+    <style name="PreferenceThemeBlue" parent="BlueTheme">
+        <item name="android:listViewStyle">@style/ListViewPrefsBlue</item>
+        <item name="android:alertDialogTheme">@style/DialogTheme</item>
+    </style>
+
+    <!-- Preference Theme - This sets all PrefDialogs background colours -->
+    <style name="PreferenceThemePink" parent="PinkTheme">
+        <item name="android:listViewStyle">@style/ListViewPrefsPink</item>
+        <item name="android:alertDialogTheme">@style/DialogTheme</item>
+    </style>
+
+    <!-- Preference Theme - This sets all PrefDialogs background colours -->
+    <style name="PreferenceThemeGreen" parent="GreenTheme">
+        <item name="android:listViewStyle">@style/ListViewPrefsGreen</item>
         <item name="android:alertDialogTheme">@style/DialogTheme</item>
     </style>
 
@@ -37,10 +82,19 @@
         <!--<item name="android:background">@color/ColorPrimary</item>-->
     </style>
 
-    <style name="ListViewPrefs" parent="@style/Widget.AppCompat.ListView">
-        <!--<item name="android:background">@color/colorPrimary</item>-->
-        <item name="android:background">@color/colorPrimary</item>
-            <item name="android:windowBackground">@color/colorPrimary</item>
+    <style name="ListViewPrefsBlue" parent="@style/Widget.AppCompat.ListView">
+        <item name="android:background">@color/primary_blue_600</item>
+        <item name="android:windowBackground">@color/primary_blue_600</item>
+    </style>
+
+    <style name="ListViewPrefsPink" parent="@style/Widget.AppCompat.ListView">
+        <item name="android:background">@color/primary_pink_500</item>
+        <item name="android:windowBackground">@color/primary_pink_500</item>
+    </style>
+
+    <style name="ListViewPrefsGreen" parent="@style/Widget.AppCompat.ListView">
+        <item name="android:background">@color/material_green_500</item>
+        <item name="android:windowBackground">@color/material_green_500</item>
     </style>
 
     <style name="DialogFragmentTheme" parent="AppTheme">
@@ -72,17 +126,14 @@
         <item name="android:textColor">#fff</item>
     </style>
 
-    <!-- ActionBar styles -->
-    <style name="MyActionBar">
-        <item name="colorPrimaryDark">@color/navigationBarColor</item>
-        <item name="android:colorBackground">@color/colorPrimaryDark</item>
-        <!-- Support library compatibility -->
-        <item name="android:textAppearance">@color/colorPrimaryDark</item>
-    </style>
-
     <style name="PopUpTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:actionMenuTextColor">@color/textColorPrimary</item>
-        <item name="android:colorBackground">@color/colorPrimaryDark</item>
+        <item name="android:colorBackground">?attr/theme_colour_dark</item>
+    </style>
+
+    <style name="WindowAnimationTransition">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
 
 
@@ -90,12 +141,10 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">25dp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/colorAccent</item>
         <item name="android:textSize">14sp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:paddingLeft">5sp</item>
     </style>
-
 
     <style name="OldStyles">
 

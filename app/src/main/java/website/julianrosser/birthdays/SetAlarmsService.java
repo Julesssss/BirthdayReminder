@@ -149,14 +149,14 @@ public class SetAlarmsService extends Service {
 
             // CreateIntent to start the AlarmNotificationReceiver
             Intent mNotificationReceiverIntent = new Intent(mContext,
-                    AlarmNotificationBuilder.class);
+                    NotificationBuilderReceiver.class);
 
             // Build message String
             String messageString = "" + b.getName() + "'s " + mContext.getResources().getString(R.string.birthday)
                     + " " + mContext.getResources().getString(R.string.date_is) + " " +
                     Birthday.getFormattedStringDay(b, mContext);
 
-            mNotificationReceiverIntent.putExtra(AlarmNotificationBuilder.STRING_MESSAGE_KEY, messageString);
+            mNotificationReceiverIntent.putExtra(NotificationBuilderReceiver.STRING_MESSAGE_KEY, messageString);
 
             // Create pending Intent using Intent we just built
             PendingIntent mNotificationReceiverPendingIntent = PendingIntent

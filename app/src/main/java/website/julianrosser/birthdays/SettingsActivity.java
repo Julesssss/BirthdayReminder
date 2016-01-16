@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
@@ -26,7 +27,10 @@ public class SettingsActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        setTheme();
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_settings);
 
         // hide drop shadow if running lollipop or higher
@@ -38,8 +42,7 @@ public class SettingsActivity extends AppCompatActivity {
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
-        setTheme(R.style.PreferenceTheme);
-
+        // Create Settings Fragment
         getFragmentManager().beginTransaction()
                 .replace(R.id.content, new SettingsFragment())
                 .commit();
@@ -53,101 +56,20 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
         mTracker.setScreenName("Settings");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
+    //
     @Override
-    protected void onStop() {
-        super.onStop();
-        Intent serviceIntent = new Intent(this, SetAlarmsService.class);
-        startService(serviceIntent);
-    }
+    protected void onPause() {
+        super.onPause();
 
-    /**
-     * Use separate fragment so we can keep the ActionBar
-     */
-    public static class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceChangeListener, Preference.OnPreferenceClickListener {
-
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.preferences);
-
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_days_before_key)));
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_time_before_key)));
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_sort_by_key)));
-
-            Preference testNotiPref = findPreference(getString(R.string.pref_test_notification_key));
-            testNotiPref.setOnPreferenceClickListener(this);
-
-            Preference sortByPref = findPreference(getString(R.string.pref_sort_by_key));
-            sortByPref.setOnPreferenceChangeListener(this);
-        }
-
-        // Set list background to override theme dark
-        @Override
-        public void onViewCreated(View view, Bundle savedInstanceState) {
-            super.onViewCreated(view, savedInstanceState);
-
-
-
-            //view.setBackgroundColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.colorPrimary));
-        }
-
-        /**
-         * Attaches a listener so the summary is always updated with the preference value.
-         * Also fires the listener once, to initialize the summary (so it shows up before the value
-         * is changed.)
-         */
-        private void bindPreferenceSummaryToValue(Preference preference) {
-            // Set the listener to watch for value changes.
-            preference.setOnPreferenceChangeListener(this);
-
-            // Trigger the listener immediately with the preference's
-            // current value.
-            onPreferenceChange(preference,
-                    PreferenceManager
-                            .getDefaultSharedPreferences(preference.getContext())
-                            .getString(preference.getKey(), ""));
-        }
-
-        // Callback method for updating preference summary
-        @Override
-        public boolean onPreferenceChange(Preference preference, Object value) {
-            String stringValue = value.toString();
-
-            if (preference instanceof ListPreference) {
-                // For list preferences, look up the correct display value in
-                // the preference's 'entries' list (since they have separate labels/values).
-                ListPreference listPreference = (ListPreference) preference;
-                int prefIndex = listPreference.findIndexOfValue(stringValue);
-                if (prefIndex >= 0) {
-                    preference.setSummary(listPreference.getEntries()[prefIndex]);
-                }
-            } else {
-                // For other preferences, set the summary to the value's simple string representation.
-                preference.setSummary(stringValue);
-            }
-
-            return true;
-        }
-
-        @Override
-        public boolean onPreferenceClick(Preference preference) {
-
-            // If user clicks 'Test Reminder', launch test notification
-            if (preference.getKey().equals(getString(R.string.pref_test_notification_key))) {
-                launchTestNotification();
-            }
-
-            mTracker.send(new HitBuilders.EventBuilder()
-                    .setCategory("Preference")
-                    .setAction("Pref click")
-                    .setLabel(preference.getKey())
-                    .build());
-
-            return false;
+        // Detect if Activity is closing, and recreate MainActivity to apply new theme
+        if (this.isFinishing()) {
+            Intent i = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(i);
         }
     }
 
@@ -180,11 +102,11 @@ public class SettingsActivity extends AppCompatActivity {
                 .setContentText(messageText)
                 .setContentIntent(mContentIntent);
 
-        if (AlarmNotificationBuilder.getVibrationAllowedPref(context)) {
-            notificationBuilder.setVibrate(AlarmNotificationBuilder.mVibratePattern);
+        if (NotificationBuilderReceiver.getVibrationAllowedPref(context)) {
+            notificationBuilder.setVibrate(NotificationBuilderReceiver.mVibratePattern);
         }
-        if (AlarmNotificationBuilder.getSoundAllowedPref(context)) {
-            notificationBuilder.setSound(AlarmNotificationBuilder.notificationSound);
+        if (NotificationBuilderReceiver.getSoundAllowedPref(context)) {
+            notificationBuilder.setSound(NotificationBuilderReceiver.notificationSound);
         }
 
         // Get NotificationManager
@@ -203,6 +125,23 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
+    // Sets theme based on users preference
+    public void setTheme() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        if (prefs.getString(getResources().getString(R.string.pref_theme_key), "0").equals("0")) {
+            setTheme(R.style.PreferenceThemeBlue);
+
+        } else if (prefs.getString(getResources().getString(R.string.pref_theme_key), "0").equals("1")) {
+            setTheme(R.style.PreferenceThemePink);
+
+        } else {
+            setTheme(R.style.PreferenceThemeGreen);
+        }
+
+
+    }
+
     synchronized public Tracker getDefaultTracker() {
         if (mTracker == null) {
             GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
@@ -210,5 +149,111 @@ public class SettingsActivity extends AppCompatActivity {
             mTracker = analytics.newTracker(R.xml.global_tracker);
         }
         return mTracker;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Intent serviceIntent = new Intent(this, SetAlarmsService.class);
+        startService(serviceIntent);
+    }
+
+    /**
+     * Use separate fragment so we can keep the ActionBar
+     */
+    public static class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceChangeListener, Preference.OnPreferenceClickListener {
+
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.preferences);
+
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_days_before_key)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_time_before_key)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_sort_by_key)));
+
+            Preference testNotiPref = findPreference(getString(R.string.pref_test_notification_key));
+            testNotiPref.setOnPreferenceClickListener(this);
+
+            Preference themePref = findPreference(getString(R.string.pref_theme_key));
+            themePref.setOnPreferenceClickListener(this);
+            themePref.setOnPreferenceChangeListener(this);
+            setThemeSummary(themePref);
+
+            Preference sortByPref = findPreference(getString(R.string.pref_sort_by_key));
+            sortByPref.setOnPreferenceChangeListener(this);
+        }
+
+        private void setThemeSummary(Preference pref) {
+            ListPreference listPref = (ListPreference) pref;
+            pref.setSummary(listPref.getEntry());
+        }
+
+        /**
+         * Attaches a listener so the summary is always updated with the preference value.
+         * Also fires the listener once, to initialize the summary (so it shows up before the value
+         * is changed.)
+         */
+        private void bindPreferenceSummaryToValue(Preference preference) {
+            // Set the listener to watch for value changes.
+            preference.setOnPreferenceChangeListener(this);
+
+            // Trigger the listener immediately with the preference's
+            // current value.
+            onPreferenceChange(preference,
+                    PreferenceManager
+                            .getDefaultSharedPreferences(preference.getContext())
+                            .getString(preference.getKey(), ""));
+        }
+
+        // Callback method for updating preference summary
+        @Override
+        public boolean onPreferenceChange(Preference preference, Object value) {
+
+            String stringValue = value.toString();
+
+            if (preference instanceof ListPreference) {
+                // For list preferences, look up the correct display value in
+                // the preference's 'entries' list (since they have separate labels/values).
+                ListPreference listPreference = (ListPreference) preference;
+                int prefIndex = listPreference.findIndexOfValue(stringValue);
+                if (prefIndex >= 0) {
+                    preference.setSummary(listPreference.getEntries()[prefIndex]);
+                }
+
+            } else {
+                // For other preferences, set the summary to the value's simple string representation.
+                preference.setSummary(stringValue);
+            }
+
+            if (preference.getKey().equals(getString(R.string.pref_theme_key))) {
+                // If theme preference is changed, immediately recreate the activity.
+                getActivity().recreate();
+                // Also remove MainActivity, so it can be recreated to apply theme
+                if (MainActivity.mContext != null) {
+                    MainActivity.mContext.finish();
+                }
+            }
+
+            return true;
+        }
+
+        @Override
+        public boolean onPreferenceClick(Preference preference) {
+
+            // If user clicks 'Test Reminder', launch test notification
+            if (preference.getKey().equals(getString(R.string.pref_test_notification_key))) {
+                launchTestNotification();
+            }
+
+            mTracker.send(new HitBuilders.EventBuilder()
+                    .setCategory("Preference")
+                    .setAction("Pref click")
+                    .setLabel(preference.getKey())
+                    .build());
+
+            return false;
+        }
     }
 }

@@ -3,6 +3,28 @@
 
     <PreferenceCategory
         android:layout="@layout/preference_layout"
+        android:title="@string/pref_category_list">
+
+        <ListPreference
+            android:defaultValue="0"
+            android:dialogTitle="@string/pref_theme_title"
+            android:entries="@array/themeEntries"
+            android:entryValues="@array/themeValues"
+            android:key="@string/pref_theme_key"
+            android:title="@string/pref_theme_dialog_title" />
+
+        <ListPreference
+            android:defaultValue="0"
+            android:dialogTitle="@string/pref_sort_by_title"
+            android:entries="@array/pref_sort_entries"
+            android:entryValues="@array/pref_sort_values"
+            android:key="@string/pref_sort_by_key"
+            android:title="@string/pref_sort_by_title" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:layout="@layout/preference_layout"
         android:title="@string/pref_category_reminder">
 
         <CheckBoxPreference
@@ -41,27 +63,13 @@
             android:summaryOff="@string/pref_sound_false"
             android:summaryOn="@string/pref_sound_true"
             android:title="@string/pref_sound_label" />
-¬
+        ¬
         <PreferenceScreen
             android:key="@string/pref_test_notification_key"
             android:summary="@string/pref_test_notification_summary"
             android:title="@string/pref_test_notification_title">
 
         </PreferenceScreen>
-
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:layout="@layout/preference_layout"
-        android:title="@string/pref_category_list">
-        <ListPreference
-
-            android:defaultValue="0"
-            android:dialogTitle="@string/pref_sort_by_title"
-            android:entries="@array/pref_sort_entries"
-            android:entryValues="@array/pref_sort_values"
-            android:key="@string/pref_sort_by_key"
-            android:title="@string/pref_sort_by_title" />
 
     </PreferenceCategory>
 

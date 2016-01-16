@@ -32,7 +32,6 @@
     <string name="reminder_set">conjunto</string>
     <string name="reminder_canceled">cancelado</string>
     <string name="pref_category_reminder">Ajustes de recordatorio</string>
-    <string name="pref_category_list">Configuración de la lista</string>
 
     <!-- Preference Strings -->
     <string name="enabled">habilitado</string>
@@ -73,5 +72,19 @@
 
     <!-- Information & help Text -->
     <string name="empty_list_message">Toque el icono de pastel de cumpleaños para añadir nuevas cumpleaños!</string>
+
+    <!-- New Strings -->
+    <string name="date_yesterday">ayer</string>
+    <string name="pref_theme_dialog_title">color del tema</string>
+    <string name="pref_theme_title">Elija Color</string>
+    <string name="theme0">azul</string>
+    <string name="theme1">Rosa</string>
+    <string name="theme2">verde</string>
+    <string name="pref_category_list">Configuración de pantalla</string>
+    <string name="preffered_email">Elige tu aplicación de correo electrónico preferida</string>
+    <string name="send_email">enviar mensaje</string>
+    <string name="email_me_text">Recibe ayuda, enviar comentarios o sugerir una nueva característica</string>
+    <string name="reminder_for">"Recordatorio para "</string>
+    <string name="for_next_year">" para el próximo año"</string>
 
 </resources>

@@ -33,7 +33,6 @@
     <string name="reminder_set">set</string>
     <string name="reminder_canceled">storniert</string>
     <string name="pref_category_reminder">Erinnerungseinstellungen</string>
-    <string name="pref_category_list">Listeneinstellungen</string>
 
     <!-- Preference Strings -->
     <string name="birthday">geburtstag</string>
@@ -73,5 +72,19 @@
     <string name="help_alarm_single_content">Tippen Sie auf das Alarmsymbol, um den Alarm Erinnerung umzuschalten.</string>
     <string name="help_alarm_all_title">Schalten Sie alle Erinnerungen off</string>
     <string name="help_alarm_all_content">Öffnen Sie das Menü Einstellungen, und tippen Sie auf die Option Erinnerung Meldungen zulassen.</string>
+
+    <!-- New Strings -->
+    <string name="date_yesterday">gestern</string>
+    <string name="pref_theme_dialog_title">Thema Farbe</string>
+    <string name="pref_theme_title">wählen Sie Farbe</string>
+    <string name="theme0">blau</string>
+    <string name="theme1">rosa</string>
+    <string name="theme2">Grün</string>
+    <string name="pref_category_list">Bildschirmeinstellungen</string>
+    <string name="preffered_email">Wählen Sie Ihre bevorzugte Anwendung</string>
+    <string name="send_email">Nachricht senden</string>
+    <string name="email_me_text">Erhalten Sie Hilfe, Feedback zu übermitteln oder schlagen eine neue Funktion</string>
+    <string name="reminder_for">Erinnerung fürr</string>
+    <string name="for_next_year">" für das nächste Jahr"</string>
 
 </resources>

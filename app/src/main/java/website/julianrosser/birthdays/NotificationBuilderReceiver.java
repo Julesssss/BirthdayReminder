@@ -3,21 +3,26 @@ package website.julianrosser.birthdays;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
+import android.os.PowerManager;
 import android.preference.PreferenceManager;
+import android.support.v4.content.WakefulBroadcastReceiver;
 
-public class AlarmNotificationBuilder extends BroadcastReceiver {
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
+public class NotificationBuilderReceiver extends WakefulBroadcastReceiver {
 
     // Birthday data
     public static String STRING_MESSAGE_KEY = "message_key";
 
     // Use same ID's, so that only 1 notification can be shown at any time.
-    int PENDING_INTENT_ID = 0;
+    int PENDING_INTENT_ID = 2000;
     int MY_NOTIFICATION_ID = 100;
 
     // Hard coded reference to sound file, also used for test notification
@@ -28,6 +33,12 @@ public class AlarmNotificationBuilder extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+
+        // Acquire WakeLock to prevent device sleeping before alarms are set.
+        PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+                "WakelockTag");
+        wakeLock.acquire();
 
         // Intent which opens App when notification is clicked
         Intent mNotificationIntent = new Intent(context, MainActivity.class);
@@ -42,6 +53,7 @@ public class AlarmNotificationBuilder extends BroadcastReceiver {
         // Build notification
         Notification.Builder notificationBuilder = new Notification.Builder(
                 context).setTicker(mMessageString)
+                .setDefaults(Notification.DEFAULT_ALL)
                 .setSmallIcon(R.drawable.ic_cake_white_24dp)
                 .setAutoCancel(true)
                 .setContentTitle(context.getString(R.string.notification_title))
@@ -51,8 +63,14 @@ public class AlarmNotificationBuilder extends BroadcastReceiver {
         // These notification parameters depend on users preferences
         if (getVibrationAllowedPref(context)) {
             notificationBuilder.setVibrate(mVibratePattern);
-        } if (getSoundAllowedPref(context)) {
+        }
+        if (getSoundAllowedPref(context)) {
             notificationBuilder.setSound(notificationSound);
+        }
+
+        // Set Priority
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            notificationBuilder.setPriority(Notification.PRIORITY_HIGH);
         }
 
         // Get NotificationManager
@@ -70,8 +88,16 @@ public class AlarmNotificationBuilder extends BroadcastReceiver {
                     notificationBuilder.getNotification());
         }
 
-//        // Output
-//        Log.i(getClass().getSimpleName(), "" + mMessageString + " - notification at: " + DateFormat.getDateTimeInstance().format(new Date()));
+        // Obtain the shared Tracker instance.
+        GoogleAnalytics analytics = GoogleAnalytics.getInstance(context);
+        Tracker mTracker = analytics.newTracker(R.xml.global_tracker);
+
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Action")
+                .setAction("Reminder!")
+                .build());
+
+        wakeLock.release();
 
     }
 
