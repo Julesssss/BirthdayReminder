@@ -183,8 +183,8 @@ public class AddEditFragment extends DialogFragment {
         if (prefs.getString(getResources().getString(R.string.pref_theme_key), "0").equals("0")) {
             getDialog().getWindow().setBackgroundDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.dialog_background_blue));
             // Set buttons accent colour
-            ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.pink_accent_400));
-            ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.pink_accent_400));
+            ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.material_lime_500));
+            ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.material_lime_500));
         } else if (prefs.getString(getResources().getString(R.string.pref_theme_key), "0").equals("1")) {
             getDialog().getWindow().setBackgroundDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.dialog_background_pink));
             // Set buttons accent colour
@@ -193,8 +193,8 @@ public class AddEditFragment extends DialogFragment {
         } else {
             getDialog().getWindow().setBackgroundDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.dialog_background_green));
             // Set buttons accent colour
-            ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.blue_accent_400));
-            ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.blue_accent_400));
+            ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.blue_accent_700));
+            ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.blue_accent_700));
         }
 
         // Null check

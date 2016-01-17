@@ -18,9 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:layout_marginBottom="@dimen/fa_button_margin_bottom"
-        android:layout_marginEnd="@dimen/fa_button_margin_right"
-        android:layout_marginRight="@dimen/fa_button_margin_right"
+        android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_cake_white_24dp"
         app:elevation="6dp"
         app:rippleColor="@color/textColorPrimary" />

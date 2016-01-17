@@ -1,4 +1,4 @@
-# Birthday Reminder 2.1
+# Birthday Reminder 2.2
 App for Android devices which notifies users of upcoming birthdays.
 
 ![](http://julianrosser.website/images/app_screenshots/birthday200.png)![](http://julianrosser.website/images/app_screenshots/birthday201.png)
@@ -7,15 +7,11 @@ App for Android devices which notifies users of upcoming birthdays.
 
 TODO - Main:
 
-- icon
-- test devices
 - New theme screenshots & translated screenshots
-
-- Translated play store description and images  (Need Internet)
+- Translated play store description and images
 - Record screen-cast (Add, rotate, edit, delete, reminder, theme)
 
 Bugs:
-- Crash when click noti while on settings activity and go back to 1st (Unlikely to happen to user)
 - Quickly click to open Fragments twice
 - SettingsActivity keeps calling Service. callback or some solution to ToManyCalls problem
 
@@ -38,6 +34,7 @@ Next Update?
 
 
 Log
+- 17/01 - Icon mk3. Finalized theme colours. Fixed uncommon bug where Activity would open new instance from notification intent.
 - 16/01 - Finished themes implementation, changes instantly when changed. Added green theme. Refactored drawable filenames.
 - 15/01 - Multiple Themes! -1 days change to Yesterday string. Translated remaining Strings.
 - 14/01 - Updated to ATTEMPT to fix bug where Notifications aren't received. Set colours programmatically in prep for themes.

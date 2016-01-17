@@ -18,8 +18,8 @@ import com.google.android.gms.analytics.Tracker;
 
 public class NotificationBuilderReceiver extends WakefulBroadcastReceiver {
 
-    // Birthday data
     public static String STRING_MESSAGE_KEY = "message_key";
+    public static String WAKE_LOCK_TAG = "wake_lock_key";
 
     // Use same ID's, so that only 1 notification can be shown at any time.
     int PENDING_INTENT_ID = 2000;
@@ -37,11 +37,13 @@ public class NotificationBuilderReceiver extends WakefulBroadcastReceiver {
         // Acquire WakeLock to prevent device sleeping before alarms are set.
         PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
-                "WakelockTag");
+                WAKE_LOCK_TAG);
         wakeLock.acquire();
 
         // Intent which opens App when notification is clicked
         Intent mNotificationIntent = new Intent(context, MainActivity.class);
+
+        mNotificationIntent.putExtra(MainActivity.INTENT_FROM_KEY, MainActivity.INTENT_FROM_NOTIFICATION);
 
         // Use Intent and other information to build PendingIntent
         PendingIntent mContentIntent = PendingIntent.getActivity(context, PENDING_INTENT_ID,

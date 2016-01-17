@@ -22,9 +22,9 @@
     <style name="BlueTheme" parent="AppTheme">
         <item name="colorPrimary">@color/primary_blue_600</item>
         <item name="colorPrimaryDark">@color/primary_blue_700</item>
-        <item name="colorAccent">@color/pink_accent_400</item>
+        <item name="colorAccent">@color/material_lime_500</item>
         <item name="date_background_accent">@drawable/accent_colour_blue</item>
-        <item name="accent_colour">@color/pink_accent_400</item>
+        <item name="accent_colour">@color/material_lime_500</item>
         <item name="theme_colour">@drawable/colour_blue</item>
         <item name="theme_colour_dark">@color/primary_blue_700</item>
         <item name="android:navigationBarColor">@color/primary_blue_900</item>
@@ -33,11 +33,11 @@
     </style>
 
     <style name="GreenTheme" parent="AppTheme">
-        <item name="colorPrimary">@color/material_green_500</item>
+        <item name="colorPrimary">@color/material_green_400</item>
         <item name="colorPrimaryDark">@color/material_green_600</item>
-        <item name="colorAccent">@color/blue_accent_400</item>
+        <item name="colorAccent">@color/blue_accent_700</item>
         <item name="date_background_accent">@drawable/accent_colour_green</item>
-        <item name="accent_colour">@color/blue_accent_400</item>
+        <item name="accent_colour">@color/blue_accent_700</item>
         <item name="theme_colour">@drawable/colour_green</item>
         <item name="theme_colour_dark">@color/material_green_600</item>
         <item name="android:navigationBarColor">@color/material_green_800</item>
@@ -79,6 +79,9 @@
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowFullscreen">false</item>
         <item name="android:listViewStyle">@style/Widget.AppCompat.ListView</item>
+        <item name="android:textColor">?attr/theme_colour_dark</item>
+        <item name="android:textColorSecondary">?attr/theme_colour_dark</item>
+        <item name="android:textColorHighlight">?attr/theme_colour_dark</item>
         <!--<item name="android:background">@color/ColorPrimary</item>-->
     </style>
 
@@ -93,8 +96,8 @@
     </style>
 
     <style name="ListViewPrefsGreen" parent="@style/Widget.AppCompat.ListView">
-        <item name="android:background">@color/material_green_500</item>
-        <item name="android:windowBackground">@color/material_green_500</item>
+        <item name="android:background">@color/material_green_400</item>
+        <item name="android:windowBackground">@color/material_green_400</item>
     </style>
 
     <style name="DialogFragmentTheme" parent="AppTheme">

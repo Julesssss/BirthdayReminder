@@ -16,8 +16,8 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:elevation="6dp"
             android:background="?attr/colorPrimaryDark"
+            android:elevation="6dp"
             android:minHeight="?attr/actionBarSize"
             app:navigationIcon="?attr/homeAsUpIndicator"
             app:popupTheme="@style/PopUpTheme" />
@@ -32,6 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_mail_outline_white_24dp" />
+        android:src="@drawable/ic_mail_outline_white_24dp"
+        app:rippleColor="@color/textColorPrimary" />
 
 </android.support.design.widget.CoordinatorLayout>

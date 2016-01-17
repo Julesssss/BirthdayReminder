@@ -46,6 +46,9 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
 
     static final String FILENAME = "birthdays.json";
 
+    static String INTENT_FROM_KEY = "intent_from_key";
+    static int INTENT_FROM_NOTIFICATION = 30;
+
     // Keys for orientation change reference
     final String ADD_EDIT_INSTANCE_KEY = "fragment_add_edit";
     final String ITEM_OPTIONS_INSTANCE_KEY = "fragment_item_options";
@@ -128,6 +131,14 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         mTitle = "Birthday Reminders";
         mDescription = "Simple birthday reminders for loved-ones";
         mSchemaType = "http://schema.org/Article";
+
+        if (getIntent().getExtras() != null && getIntent().getExtras().getInt(INTENT_FROM_KEY, 10) == INTENT_FROM_NOTIFICATION) {
+            mTracker.send(new HitBuilders.EventBuilder()
+                    .setCategory("Action")
+                    .setAction("Notification Touch")
+                    .build());
+        }
+
 
         // Get sample of theme choice
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -229,8 +240,10 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        //Save the fragment's instance (IF THEY EXIST!)
-        getSupportFragmentManager().putFragment(outState, RECYCLER_LIST_INSTANCE_KEY, recyclerListFragment);
+        if (recyclerListFragment != null && recyclerListFragment.isAdded()) {
+            //Save the fragment's instance (IF THEY EXIST!)
+            getSupportFragmentManager().putFragment(outState, RECYCLER_LIST_INSTANCE_KEY, recyclerListFragment);
+        }
 
         if (itemOptionsFragment != null && itemOptionsFragment.isAdded()) {
             getSupportFragmentManager().putFragment(outState, ITEM_OPTIONS_INSTANCE_KEY, itemOptionsFragment);

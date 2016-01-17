@@ -25,7 +25,7 @@
     <color name="primary_blue_700">#1976d2</color>
     <color name="primary_blue_800">#1565c0</color>
     <color name="primary_blue_900">#0d47a1</color>
-    <color name="pink_accent_400">#F50057</color>
+    <color name="material_lime_500">#cddc39</color>
 
     <!-- Material Green Colours -->
     <color name="material_green_400">#66BB6A</color>

@@ -92,13 +92,6 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
         return view;
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        emptyView = null;
-        recyclerView = null;
-    }
-
     // Show or hide the 'no birthdays found' message depending on size of birthday Array
     public static void showEmptyMessageIfRequired() {
 
