@@ -1,14 +1,14 @@
 # Birthday Reminder 2.2
 App for Android devices which notifies users of upcoming birthdays.
 
-![](http://julianrosser.website/images/app_screenshots/birthday200.png)![](http://julianrosser.website/images/app_screenshots/birthday201.png)
+![](http://julianrosser.website/images/app_screenshots/birthday220.png)![](http://julianrosser.website/images/app_screenshots/birthday222.png)![](http://julianrosser.website/images/app_screenshots/birthday221.png)
 
 [<img src="http://i.imgur.com/aL8bBy5.png?1">](https://play.google.com/store/apps/details?id=website.julianrosser.birthdays)
 
-TODO - Main:
+TODO:
 
-- New theme screenshots & translated screenshots
-- Translated play store description and images
+- Special notification message if 2 reminders on same day
+- Translate PlayStore description & screenshots
 - Record screen-cast (Add, rotate, edit, delete, reminder, theme)
 
 Bugs:
@@ -16,24 +16,19 @@ Bugs:
 - SettingsActivity keeps calling Service. callback or some solution to ToManyCalls problem
 
 Next Update?
-- Widget
-- Include Year ???????????
-- Change Name to Simple Birthday reminder?  IN PLAY STORE INFO
-- Data Backup
+- Widget: show next birthday
+- Include Year ??
+- Data Backup to SQLite
 - RecyclerFragment onSavedInstance (array, adapter)
 - Undo birthday delete?
 - Pref category not bold -api19
 - Tablet fragment layout & window sizes!
 - Roboto font < api 16
-- todo 2 birthdays on same day? Check when setting alarms, use alternative notification message if this happens.
-- Fragments as bottom cards?
 - Custom Notification
 - Button Merge to alertDialog?
-- SQL database instead of JSON ??? necessary? Will take effort, perhaps as backup
-- FAB (+ toolbar?) hide on scroll, but show on data changed
-
 
 Log
+- 18/01 - Finalized and pushed update 2.2 to app stores. Updated device screenshots.
 - 17/01 - Icon mk3. Finalized theme colours. Fixed uncommon bug where Activity would open new instance from notification intent.
 - 16/01 - Finished themes implementation, changes instantly when changed. Added green theme. Refactored drawable filenames.
 - 15/01 - Multiple Themes! -1 days change to Yesterday string. Translated remaining Strings.
