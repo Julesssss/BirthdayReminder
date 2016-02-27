@@ -292,9 +292,9 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
 
         // Build date object which will be used by new Birthday
         Date dateOfBirth = new Date();
-        dateOfBirth.setDate(day);
-        dateOfBirth.setMonth(month);
         dateOfBirth.setYear(Birthday.getYearOfNextBirthday(dateOfBirth));
+        dateOfBirth.setMonth(month);
+        dateOfBirth.setDate(day);
 
         // Format name by capitalizing name
         name = WordUtils.capitalize(name);
