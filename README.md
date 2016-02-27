@@ -1,7 +1,7 @@
 # Birthday Reminder 2.2
 App for Android devices which notifies users of upcoming birthdays.
 
-![](http://julianrosser.website/images/app_screenshots/birthday220.png)![](http://julianrosser.website/images/app_screenshots/birthday222.png)![](http://julianrosser.website/images/app_screenshots/birthday221.png)
+![](http://i.imgur.com/yJP9f4O.png)![](http://i.imgur.com/PaiXGEV.png)![](http://i.imgur.com/NmQy37X.png)
 
 [<img src="http://i.imgur.com/aL8bBy5.png?1">](https://play.google.com/store/apps/details?id=website.julianrosser.birthdays)
 
@@ -28,6 +28,7 @@ Next Update?
 - Button Merge to alertDialog?
 
 Log
+- 27/02 - Fixed date bug where 1st day of following month would be selected.
 - 18/01 - Finalized and pushed update 2.2 to app stores. Updated device screenshots.
 - 17/01 - Icon mk3. Finalized theme colours. Fixed uncommon bug where Activity would open new instance from notification intent.
 - 16/01 - Finished themes implementation, changes instantly when changed. Added green theme. Refactored drawable filenames.
