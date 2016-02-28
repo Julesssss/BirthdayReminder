@@ -9,8 +9,8 @@ android {
         applicationId "website.julianrosser.birthdays"
         minSdkVersion 11
         targetSdkVersion 23
-        versionCode 22
-        versionName "2.2"
+        versionCode 221
+        versionName "2.2.1"
     }
 
 
