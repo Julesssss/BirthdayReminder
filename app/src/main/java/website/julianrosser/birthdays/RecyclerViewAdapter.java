@@ -20,12 +20,8 @@ public class RecyclerViewAdapter
         extends RecyclerView.Adapter
         <RecyclerViewAdapter.ListItemViewHolder> {
 
-    Context appContext;
-
     // Constructor
-    public RecyclerViewAdapter(ArrayList<Birthday> birthdayData, Context c) { //
-
-        appContext = c;
+    public RecyclerViewAdapter(ArrayList<Birthday> birthdayData) { //
 
         if (birthdayData == null) {
             MainActivity.birthdaysList = new ArrayList<>();
@@ -61,6 +57,10 @@ public class RecyclerViewAdapter
 
         viewHolder.textDateMonth.setText(birthday.getBirthMonth());
 
+        if (birthday.getYear() != 0) {
+            viewHolder.textAge.setText(birthday.getYear());
+        }
+
         // Set correct icon depending on Alarm on or off
         viewHolder.imageAlarm.setImageDrawable(birthday.getRemindAlarmDrawable());
         viewHolder.imageAlarm.setOnClickListener(new View.OnClickListener() {
@@ -72,10 +72,10 @@ public class RecyclerViewAdapter
 
                 // Notify user of change. If birthday is today, let user know alarm is set for next year
                 if (birthday.getDaysBetween() == 0 && birthday.getRemind()) {
-                    Snackbar.make(viewHolder.imageAlarm, appContext.getString(R.string.reminder_for) + birthday.getName() + " " +
-                            birthday.getReminderString() + appContext.getString(R.string.for_next_year), Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(viewHolder.imageAlarm, BirthdayReminder.getInstance().getString(R.string.reminder_for) + birthday.getName() + " " +
+                            birthday.getReminderString() + BirthdayReminder.getInstance().getString(R.string.for_next_year), Snackbar.LENGTH_LONG).show();
                 } else {
-                    Snackbar.make(viewHolder.imageAlarm, appContext.getString(R.string.reminder_for) + birthday.getName() + " " +
+                    Snackbar.make(viewHolder.imageAlarm, BirthdayReminder.getInstance().getString(R.string.reminder_for) + birthday.getName() + " " +
                             birthday.getReminderString(), Snackbar.LENGTH_LONG).show();
 
 
@@ -183,10 +183,12 @@ public class RecyclerViewAdapter
      */
     public final static class ListItemViewHolder extends RecyclerView.ViewHolder {
 
+
         // TextView references
         TextView textDateDay;
         TextView textDateMonth;
         TextView textName;
+        TextView textAge;
         TextView textDaysRemaining;
         ImageView imageAlarm;
         View container;
@@ -199,6 +201,7 @@ public class RecyclerViewAdapter
             container = itemView.findViewById(R.id.list_container);
             textName = (TextView) itemView.findViewById(R.id.name);
             textDaysRemaining = (TextView) itemView.findViewById(R.id.days_remaining);
+            textAge = (TextView) itemView.findViewById(R.id.textViewAge);
             textDateDay = (TextView) itemView.findViewById(R.id.dateDay);
             textDateMonth = (TextView) itemView.findViewById(R.id.dateMonth);
             imageAlarm = (ImageView) itemView.findViewById(R.id.alarmImage);

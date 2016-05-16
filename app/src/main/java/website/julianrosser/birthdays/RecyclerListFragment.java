@@ -85,7 +85,7 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
         // Can use this to optimize performance as RecyclerView will NOT change size.
         recyclerView.setHasFixedSize(true);
 
-        mAdapter = new RecyclerViewAdapter(MainActivity.birthdaysList, getActivity().getApplicationContext());
+        mAdapter = new RecyclerViewAdapter(MainActivity.birthdaysList);
 
         recyclerView.setAdapter(mAdapter);
 

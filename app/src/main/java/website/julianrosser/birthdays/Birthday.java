@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Random;
 
 @SuppressWarnings("deprecation")
 public class Birthday {
@@ -32,6 +33,7 @@ public class Birthday {
     private String name;
     private Date date;
     private boolean remind;
+    private int year;
 
     Context mAppContext;
 
@@ -44,6 +46,7 @@ public class Birthday {
         this.remind = notifyUserOfBirthday;
         this.date = dateOfBirthday;
         this.mAppContext = c;
+        this.year = new Random().nextInt(2);
     }
 
     /**
@@ -91,6 +94,10 @@ public class Birthday {
     /**
      * Getters & setters for variables
      */
+
+    public int getYear() {
+        return year;
+    }
 
     public Date getDate() {
         return date;
@@ -292,4 +299,6 @@ public class Birthday {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(c);
         return Integer.valueOf(sharedPref.getString(c.getString(R.string.pref_days_before_key), "1"));
     }
+
+
 }
