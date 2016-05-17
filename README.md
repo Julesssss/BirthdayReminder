@@ -7,6 +7,11 @@ App for Android devices which notifies users of upcoming birthdays.
 
 TODO:
 
+YEAR
+- Save year to JSON, reload correct year
+- Option to show year for each user, store boolean for each birthday?
+- Dialog checkbox for turning on
+
 - Special notification message if 2 reminders on same day
 - Translate PlayStore description & screenshots
 - Record screen-cast (Add, rotate, edit, delete, reminder, theme)

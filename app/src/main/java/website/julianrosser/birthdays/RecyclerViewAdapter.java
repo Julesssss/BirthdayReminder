@@ -58,7 +58,7 @@ public class RecyclerViewAdapter
         viewHolder.textDateMonth.setText(birthday.getBirthMonth());
 
         if (birthday.getYear() != 0) {
-            viewHolder.textAge.setText(birthday.getYear());
+            viewHolder.textAge.setText(String.valueOf(birthday.getYear()));
         }
 
         // Set correct icon depending on Alarm on or off

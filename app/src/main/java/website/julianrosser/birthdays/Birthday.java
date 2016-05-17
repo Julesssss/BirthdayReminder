@@ -33,7 +33,7 @@ public class Birthday {
     private String name;
     private Date date;
     private boolean remind;
-    private int year;
+    private int yearofBirth;
 
     Context mAppContext;
 
@@ -46,7 +46,7 @@ public class Birthday {
         this.remind = notifyUserOfBirthday;
         this.date = dateOfBirthday;
         this.mAppContext = c;
-        this.year = new Random().nextInt(2);
+        this.yearofBirth = dateOfBirthday.getYear();
     }
 
     /**
@@ -57,6 +57,7 @@ public class Birthday {
         this.name = editName;
         this.date = editDate;
         this.mAppContext = c;
+        this.yearofBirth = editDate.getYear();
     }
 
     /**
@@ -96,7 +97,7 @@ public class Birthday {
      */
 
     public int getYear() {
-        return year;
+        return yearofBirth;
     }
 
     public Date getDate() {

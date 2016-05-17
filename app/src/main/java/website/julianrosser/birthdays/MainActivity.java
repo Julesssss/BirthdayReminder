@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
@@ -288,13 +289,16 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
 
     // Callback from AddEditFragment, create new Birthday object and add to array
     @Override
-    public void onDialogPositiveClick(AddEditFragment dialog, String name, int day, int month, int addEditMode, final int position) {
+    public void onDialogPositiveClick(AddEditFragment dialog, String name, int day, int month, int year, int addEditMode, final int position) {
 
         // Build date object which will be used by new Birthday
         Date dateOfBirth = new Date();
-        dateOfBirth.setYear(Birthday.getYearOfNextBirthday(dateOfBirth));
+//        dateOfBirth.setYear(Birthday.getYearOfNextBirthday(dateOfBirth)); // todo year
+        dateOfBirth.setYear(year);
         dateOfBirth.setMonth(month);
         dateOfBirth.setDate(day);
+
+        Toast.makeText(MainActivity.this, "YEAR: " + year, Toast.LENGTH_SHORT).show();
 
         // Format name by capitalizing name
         name = WordUtils.capitalize(name);

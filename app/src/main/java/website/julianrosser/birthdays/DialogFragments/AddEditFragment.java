@@ -54,6 +54,7 @@ public class AddEditFragment extends DialogFragment {
 
     // Use this instance of the interface to deliver action events
     NoticeDialogListener mListener;
+    private boolean showYear = true;
 
     public AddEditFragment() {
         // Required empty public constructor
@@ -67,7 +68,7 @@ public class AddEditFragment extends DialogFragment {
     /* MainActivity implements this interface in order to receive event callbacks. Passes the
     DialogFragment in case the host needs to query it. */
     public interface NoticeDialogListener {
-        void onDialogPositiveClick(AddEditFragment dialog, String name, int date, int month, int AddEditMode, int position);
+        void onDialogPositiveClick(AddEditFragment dialog, String name, int date, int month, int year, int AddEditMode, int position);
     }
 
     // We override the Fragment.onAttach() method to instantiate NoticeDialogListener and read bundle data
@@ -111,7 +112,11 @@ public class AddEditFragment extends DialogFragment {
 
         // Get DatePicker reference and hide year spinner
         final DatePicker datePicker = (DatePicker) view.findViewById(R.id.datePicker);
-        datePicker.findViewById(Resources.getSystem().getIdentifier("year", "id", "android")).setVisibility(View.GONE);
+
+        // todo - if year is hidden, hide from vie
+        if (! showYear) {
+            datePicker.findViewById(Resources.getSystem().getIdentifier("year", "id", "android")).setVisibility(View.GONE);
+        }
 
         // Set Birthday name and birth date if in Edit mode
         if (ADD_OR_EDIT_MODE == MODE_EDIT) {
@@ -212,9 +217,12 @@ public class AddEditFragment extends DialogFragment {
                         // Get date and month from datepicker
                         int dateOfMonth = datePicker.getDayOfMonth();
                         int month = datePicker.getMonth();
+                        // todo - year
+                        int year = datePicker.getYear();
 
                         // Send the positive button event back to MainActivity
-                        mListener.onDialogPositiveClick(AddEditFragment.this, editText.getText().toString(), dateOfMonth, month,
+                        mListener.onDialogPositiveClick(AddEditFragment.this, editText.getText().toString(),
+                                dateOfMonth, month, year,
                                 ADD_OR_EDIT_MODE, bundle.getInt(POS_KEY));
 
                         // Finally close the dialog, and breath a sign of relief
