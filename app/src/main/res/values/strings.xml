@@ -118,6 +118,7 @@
     <string name="email_me_text">Receive help, submit feedback or suggest a new feature</string>
     <string name="reminder_for">"Reminder for "</string>
     <string name="for_next_year">" for next year"</string>
+    <string name="include_year">Include year</string>
 
 
 </resources>

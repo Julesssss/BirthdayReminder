@@ -22,9 +22,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import java.util.Calendar;
 
 import website.julianrosser.birthdays.R;
 
@@ -37,6 +41,7 @@ public class AddEditFragment extends DialogFragment {
     public final static String MODE_KEY = "key_mode";
     public final static String DATE_KEY = "key_date";
     public final static String MONTH_KEY = "key_month";
+    public final static String SHOW_YEAR_KEY = "key_show_year";
     public final static String YEAR_KEY = "key_year";
     public final static String POS_KEY = "key_pos";
     public final static String NAME_KEY = "key_position";
@@ -56,7 +61,8 @@ public class AddEditFragment extends DialogFragment {
 
     // Use this instance of the interface to deliver action events
     NoticeDialogListener mListener;
-    private boolean showYear = true;
+    private boolean showYear = true; // todo YEAR
+    private CheckBox checkYearToggle;
 
     public AddEditFragment() {
         // Required empty public constructor
@@ -70,7 +76,7 @@ public class AddEditFragment extends DialogFragment {
     /* MainActivity implements this interface in order to receive event callbacks. Passes the
     DialogFragment in case the host needs to query it. */
     public interface NoticeDialogListener {
-        void onDialogPositiveClick(AddEditFragment dialog, String name, int date, int month, int year, int AddEditMode, int position);
+        void onDialogPositiveClick(AddEditFragment dialog, String name, int date, int month, int year, boolean includeYear, int AddEditMode, int position);
     }
 
     // We override the Fragment.onAttach() method to instantiate NoticeDialogListener and read bundle data
@@ -111,27 +117,34 @@ public class AddEditFragment extends DialogFragment {
         // Inflate the brilliantly designed layout, passing null as the parent view because its
         // going in the dialog layout
         view = inflater.inflate(R.layout.add_edit_birthday_fragment, null);
-
         // Get DatePicker reference and hide year spinner
         final DatePicker datePicker = (DatePicker) view.findViewById(R.id.datePicker);
-
-        // todo - if year is hidden, hide from vie
-        if (! showYear) {
-            datePicker.findViewById(Resources.getSystem().getIdentifier("year", "id", "android")).setVisibility(View.GONE);
-        }
+        checkYearToggle = (CheckBox) view.findViewById(R.id.checkboxShowYear);
+        checkYearToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setYearFieldVisibility(isChecked, datePicker);
+            }
+        });
 
         // Set Birthday name and birth date if in Edit mode
         if (ADD_OR_EDIT_MODE == MODE_EDIT) {
+
+            boolean showYear = bundle.getBoolean(SHOW_YEAR_KEY, true);
+            checkYearToggle.setChecked(showYear);
+            setYearFieldVisibility(showYear, datePicker);
 
             EditText editText = (EditText) view.findViewById(R.id.editTextName);
             editText.setText(bundle.getString(NAME_KEY));
 
             // Move cursor to end of text
             editText.setSelection(editText.getText().length());
+            datePicker.updateDate(bundle.getInt(YEAR_KEY), bundle.getInt(MONTH_KEY), bundle.getInt(DATE_KEY));
 
-            int year = bundle.getInt(YEAR_KEY);
-            Log.i(getClass().getSimpleName(), "YEAR " + year); // todo YEAR
-            datePicker.updateDate(year, bundle.getInt(MONTH_KEY), bundle.getInt(DATE_KEY));
+        } else {
+            Calendar today = Calendar.getInstance();
+            setYearFieldVisibility(false, datePicker);
+            datePicker.updateDate(2000, today.get(Calendar.MONTH), today.get(Calendar.DATE));
         }
 
         // Set view, then add buttons and title
@@ -142,6 +155,14 @@ public class AddEditFragment extends DialogFragment {
                 .setTitle(getDialogTitle());
 
         return builder.create();
+    }
+
+    private void setYearFieldVisibility(boolean isChecked, DatePicker datePicker) {
+        if (isChecked) {
+            datePicker.findViewById(Resources.getSystem().getIdentifier("year", "id", "android")).setVisibility(View.VISIBLE);
+        } else {
+            datePicker.findViewById(Resources.getSystem().getIdentifier("year", "id", "android")).setVisibility(View.GONE);
+        }
     }
 
     // Set background colour and dialog width
@@ -222,10 +243,11 @@ public class AddEditFragment extends DialogFragment {
                         int dateOfMonth = datePicker.getDayOfMonth();
                         int month = datePicker.getMonth();
                         int year = datePicker.getYear();
+                        boolean includeYear = checkYearToggle.isChecked();
 
                         // Send the positive button event back to MainActivity
                         mListener.onDialogPositiveClick(AddEditFragment.this, editText.getText().toString(),
-                                dateOfMonth, month, year,
+                                dateOfMonth, month, year, includeYear,
                                 ADD_OR_EDIT_MODE, bundle.getInt(POS_KEY));
 
                         // Finally close the dialog, and breath a sign of relief

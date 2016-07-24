@@ -52,8 +52,15 @@ public class RecyclerViewAdapter
         viewHolder.textDateDay.setText(birthday.getBirthDay());
         viewHolder.textDateMonth.setText(birthday.getBirthMonth());
 
+        // Should display age?
+        if (birthday.shouldIncludeYear()) {
+            viewHolder.textAge.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.textAge.setVisibility(View.GONE);
+        }
+
         if (birthday.getYear() != 0) {
-            viewHolder.textAge.setText(String.valueOf(birthday.getYear()));
+            viewHolder.textAge.setText(birthday.getAge());
         } else {
             // don't show age field
             viewHolder.textAge.setText("NA");

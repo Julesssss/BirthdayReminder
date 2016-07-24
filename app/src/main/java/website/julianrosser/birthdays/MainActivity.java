@@ -273,6 +273,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
             bundle.putInt(AddEditFragment.YEAR_KEY, editBirthday.getYear());
             bundle.putInt(AddEditFragment.POS_KEY, birthdayListPosition);
             bundle.putString(AddEditFragment.NAME_KEY, editBirthday.getName());
+            bundle.putBoolean(AddEditFragment.SHOW_YEAR_KEY, editBirthday.shouldIncludeYear());
         }
 
         // Pass bundle to Dialog, get FragmentManager and show
@@ -290,7 +291,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
 
     // Callback from AddEditFragment, create new Birthday object and add to array
     @Override
-    public void onDialogPositiveClick(AddEditFragment dialog, String name, int day, int month, int year, int addEditMode, final int position) {
+    public void onDialogPositiveClick(AddEditFragment dialog, String name, int day, int month, int year, boolean includeYear, int addEditMode, final int position) {
 
         // Build date object which will be used by new Birthday
         Date dateOfBirth = new Date();
@@ -298,8 +299,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         dateOfBirth.setYear(year);
         dateOfBirth.setMonth(month);
         dateOfBirth.setDate(day);
-    // todo - remove ----v
-        Toast.makeText(MainActivity.this, "YEAR: " + year, Toast.LENGTH_SHORT).show();
+
 
         // Format name by capitalizing name
         name = WordUtils.capitalize(name);
@@ -310,7 +310,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         if (addEditMode == AddEditFragment.MODE_EDIT) {
             // Edit text
             birthday = birthdaysList.get(position);
-            birthday.edit(name, dateOfBirth, true, getApplicationContext());
+            birthday.edit(name, dateOfBirth, true, includeYear, getApplicationContext());
 
             mContext.runOnUiThread(new Runnable() {
                 @Override
@@ -366,7 +366,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
 
         } else {
             // Create birthday, add to array and notify adapter
-            birthday = new Birthday(name, dateOfBirth, true, getApplicationContext());
+            birthday = new Birthday(name, dateOfBirth, true, includeYear, getApplicationContext());
             birthdaysList.add(birthday);
 
             // Notify adapter

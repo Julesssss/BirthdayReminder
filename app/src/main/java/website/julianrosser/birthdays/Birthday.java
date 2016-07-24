@@ -23,6 +23,7 @@ public class Birthday {
     private static final String JSON_DATE = "date";
     private static final String JSON_YEAR = "year";
     private static final String JSON_REMIND = "remind";
+    private static final String JSON_SHOW_YEAR = "show_year";
 
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
             "dd.MM.yyyy", Locale.getDefault());
@@ -34,30 +35,33 @@ public class Birthday {
     private Date date;
     private boolean remind;
     private int yearOfBirth;
+    private boolean showYear;
 
     Context mAppContext;
 
     /**
      * Constructor for creating new birthday.
      */
-    public Birthday(String name, Date dateOfBirthday, boolean notifyUserOfBirthday, Context c) {
+    public Birthday(String name, Date dateOfBirthday, boolean notifyUserOfBirthday, boolean includeYear, Context c) {
 
         this.name = name;
         this.remind = notifyUserOfBirthday;
         this.date = dateOfBirthday;
         this.mAppContext = c;
         this.yearOfBirth = dateOfBirthday.getYear();
+        this.showYear = includeYear;
     }
 
     /**
      * For updating Birthday information without creating new
      */
-    public void edit(String editName, Date editDate, boolean editRemind, Context c) {
+    public void edit(String editName, Date editDate, boolean editRemind, boolean includeYear, Context c) {
 
         this.name = editName;
         this.date = editDate;
         this.mAppContext = c;
         this.yearOfBirth = editDate.getYear();
+        this.showYear = includeYear;
     }
 
     /**
@@ -82,7 +86,11 @@ public class Birthday {
         // year
         if (json.has(JSON_YEAR)) {
             yearOfBirth = json.getInt(JSON_YEAR);
+        } else {
+            yearOfBirth = 0;
         }
+        // Should use age
+        showYear = json.has(JSON_SHOW_YEAR) && json.getBoolean(JSON_SHOW_YEAR);
     }
 
     /**
@@ -94,12 +102,16 @@ public class Birthday {
         json.put(JSON_DATE, this.getDate().getTime());
         json.put(JSON_YEAR, this.getYear());
         json.put(JSON_REMIND, this.getRemind());
+        json.put(JSON_SHOW_YEAR, this.shouldIncludeYear());
         return json;
     }
 
     /**
      * Getters & setters for variables
      */
+    public boolean shouldIncludeYear() {
+        return showYear;
+    }
 
     public int getYear() {
         return yearOfBirth;
@@ -307,4 +319,15 @@ public class Birthday {
     }
 
 
+    public String getAge() {
+        int currentYear = new Date().getYear() + 1900;
+        int age = currentYear - yearOfBirth;
+        // Age at next birthday modifier
+        age  += 1;
+        if (age < 0) {
+            return "N/A";
+        } else {
+            return String.valueOf(age);
+        }
+    }
 }
