@@ -295,7 +295,6 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
 
         // Build date object which will be used by new Birthday
         Date dateOfBirth = new Date();
-//        dateOfBirth.setYear(Birthday.getYearOfNextBirthday(dateOfBirth)); // todo year
         dateOfBirth.setYear(year);
         dateOfBirth.setMonth(month);
         dateOfBirth.setDate(day);

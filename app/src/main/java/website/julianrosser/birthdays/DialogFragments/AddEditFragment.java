@@ -61,7 +61,6 @@ public class AddEditFragment extends DialogFragment {
 
     // Use this instance of the interface to deliver action events
     NoticeDialogListener mListener;
-    private boolean showYear = true; // todo YEAR
     private CheckBox checkYearToggle;
 
     public AddEditFragment() {
@@ -119,6 +118,8 @@ public class AddEditFragment extends DialogFragment {
         view = inflater.inflate(R.layout.add_edit_birthday_fragment, null);
         // Get DatePicker reference and hide year spinner
         final DatePicker datePicker = (DatePicker) view.findViewById(R.id.datePicker);
+        setUpDatePicker(datePicker);
+
         checkYearToggle = (CheckBox) view.findViewById(R.id.checkboxShowYear);
         checkYearToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -141,10 +142,6 @@ public class AddEditFragment extends DialogFragment {
             editText.setSelection(editText.getText().length());
             datePicker.updateDate(bundle.getInt(YEAR_KEY), bundle.getInt(MONTH_KEY), bundle.getInt(DATE_KEY));
 
-        } else {
-            Calendar today = Calendar.getInstance();
-            setYearFieldVisibility(false, datePicker);
-            datePicker.updateDate(2000, today.get(Calendar.MONTH), today.get(Calendar.DATE));
         }
 
         // Set view, then add buttons and title
@@ -155,6 +152,18 @@ public class AddEditFragment extends DialogFragment {
                 .setTitle(getDialogTitle());
 
         return builder.create();
+    }
+
+    private void setUpDatePicker(final DatePicker datePicker) {
+        Calendar today = Calendar.getInstance();
+        setYearFieldVisibility(false, datePicker);
+        datePicker.init(2000, today.get(Calendar.MONTH), today.get(Calendar.DATE), new DatePicker.OnDateChangedListener() {
+            @Override
+            public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(datePicker.getWindowToken(), 0);
+            }
+        });
     }
 
     private void setYearFieldVisibility(boolean isChecked, DatePicker datePicker) {
