@@ -92,7 +92,7 @@
         android:layout_toStartOf="@id/alarmImage"
         android:gravity="center_vertical"
         android:singleLine="true"
-        android:text="46?"
+        android:text=".???"
         android:textColor="#fff"
         android:textSize="15sp" />
 

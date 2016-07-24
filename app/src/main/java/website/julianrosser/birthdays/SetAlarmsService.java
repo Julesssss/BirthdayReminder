@@ -113,7 +113,7 @@ public class SetAlarmsService extends Service {
     }
 
     @SuppressWarnings("deprecation")
-    private void setAlarm(Birthday b) {
+    private void setAlarm(Birthday birthday) {
         // Get milliseconds remaining in current day
         Date currentTimeDate = new Date();
         int remHour = 23 - currentTimeDate.getHours(); // extra hour
@@ -123,7 +123,7 @@ public class SetAlarmsService extends Service {
                 + (remMinute * 60 * 1000);
 
         // Get days between in milliseconds
-        fullDaysBetweenInMillis = ((b.getDaysBetween() - 1) * dayInMillis);
+        fullDaysBetweenInMillis = ((birthday.getDaysBetween() - 1) * dayInMillis);
 
         // Alarm time in milliseconds
         int hourOfAlarm = getTimeOfReminderPref();
@@ -145,16 +145,16 @@ public class SetAlarmsService extends Service {
         if (alarmDelayInMillis > 0) {
 
             // get unique id for each notification from name
-            int id = b.getName().hashCode();
+            int id = birthday.getName().hashCode();
 
             // CreateIntent to start the AlarmNotificationReceiver
             Intent mNotificationReceiverIntent = new Intent(mContext,
                     NotificationBuilderReceiver.class);
 
             // Build message String
-            String messageString = "" + b.getName() + "'s " + mContext.getResources().getString(R.string.birthday)
+            String messageString = "" + birthday.getName() + "'s " + mContext.getResources().getString(R.string.birthday)
                     + " " + mContext.getResources().getString(R.string.date_is) + " " +
-                    Birthday.getFormattedStringDay(b, mContext);
+                    Birthday.getFormattedStringDay(birthday, mContext);
 
             mNotificationReceiverIntent.putExtra(NotificationBuilderReceiver.STRING_MESSAGE_KEY, messageString);
 

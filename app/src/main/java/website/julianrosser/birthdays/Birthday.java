@@ -14,7 +14,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Random;
 
 @SuppressWarnings("deprecation")
 public class Birthday {
@@ -22,6 +21,7 @@ public class Birthday {
     // JSON keys
     private static final String JSON_NAME = "name";
     private static final String JSON_DATE = "date";
+    private static final String JSON_YEAR = "year";
     private static final String JSON_REMIND = "remind";
 
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
@@ -33,7 +33,7 @@ public class Birthday {
     private String name;
     private Date date;
     private boolean remind;
-    private int yearofBirth;
+    private int yearOfBirth;
 
     Context mAppContext;
 
@@ -46,7 +46,7 @@ public class Birthday {
         this.remind = notifyUserOfBirthday;
         this.date = dateOfBirthday;
         this.mAppContext = c;
-        this.yearofBirth = dateOfBirthday.getYear();
+        this.yearOfBirth = dateOfBirthday.getYear();
     }
 
     /**
@@ -57,7 +57,7 @@ public class Birthday {
         this.name = editName;
         this.date = editDate;
         this.mAppContext = c;
-        this.yearofBirth = editDate.getYear();
+        this.yearOfBirth = editDate.getYear();
     }
 
     /**
@@ -79,6 +79,10 @@ public class Birthday {
             date = new Date();
             date.setTime(json.getLong(JSON_DATE));
         }
+        // year
+        if (json.has(JSON_YEAR)) {
+            yearOfBirth = json.getInt(JSON_YEAR);
+        }
     }
 
     /**
@@ -88,6 +92,7 @@ public class Birthday {
         JSONObject json = new JSONObject();
         json.put(JSON_NAME, this.getName());
         json.put(JSON_DATE, this.getDate().getTime());
+        json.put(JSON_YEAR, this.getYear());
         json.put(JSON_REMIND, this.getRemind());
         return json;
     }
@@ -97,7 +102,7 @@ public class Birthday {
      */
 
     public int getYear() {
-        return yearofBirth;
+        return yearOfBirth;
     }
 
     public Date getDate() {

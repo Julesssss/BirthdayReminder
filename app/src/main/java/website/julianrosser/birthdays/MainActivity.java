@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
                     .commit();
         }
 
-        // This is to help the fragment keep it;s state on rotation
+        // This is to help the fragment keep its state on rotation
         recyclerListFragment.setRetainInstance(true);
 
         // Obtain the shared Tracker instance.
@@ -270,6 +270,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
             // Pass birthday's data to Fragment
             bundle.putInt(AddEditFragment.DATE_KEY, editBirthday.getDate().getDate());
             bundle.putInt(AddEditFragment.MONTH_KEY, editBirthday.getDate().getMonth());
+            bundle.putInt(AddEditFragment.YEAR_KEY, editBirthday.getYear());
             bundle.putInt(AddEditFragment.POS_KEY, birthdayListPosition);
             bundle.putString(AddEditFragment.NAME_KEY, editBirthday.getName());
         }
@@ -297,7 +298,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         dateOfBirth.setYear(year);
         dateOfBirth.setMonth(month);
         dateOfBirth.setDate(day);
-
+    // todo - remove ----v
         Toast.makeText(MainActivity.this, "YEAR: " + year, Toast.LENGTH_SHORT).show();
 
         // Format name by capitalizing name

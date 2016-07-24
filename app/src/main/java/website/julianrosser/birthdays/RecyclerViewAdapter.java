@@ -1,6 +1,5 @@
 package website.julianrosser.birthdays;
 
-import android.content.Context;
 import android.graphics.Typeface;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
@@ -31,7 +30,6 @@ public class RecyclerViewAdapter
         }
     }
 
-
     @Override
     public ListItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View itemView = LayoutInflater.
@@ -50,15 +48,15 @@ public class RecyclerViewAdapter
 
         // Pass data to the TextViews
         viewHolder.textName.setText(birthday.getName());
-
         viewHolder.textDaysRemaining.setText(birthday.getFormattedDaysRemainingString());
-
         viewHolder.textDateDay.setText(birthday.getBirthDay());
-
         viewHolder.textDateMonth.setText(birthday.getBirthMonth());
 
         if (birthday.getYear() != 0) {
             viewHolder.textAge.setText(String.valueOf(birthday.getYear()));
+        } else {
+            // don't show age field
+            viewHolder.textAge.setText("NA");
         }
 
         // Set correct icon depending on Alarm on or off
@@ -75,7 +73,7 @@ public class RecyclerViewAdapter
                     Snackbar.make(viewHolder.imageAlarm, BirthdayReminder.getInstance().getString(R.string.reminder_for) + birthday.getName() + " " +
                             birthday.getReminderString() + BirthdayReminder.getInstance().getString(R.string.for_next_year), Snackbar.LENGTH_LONG).show();
                 } else {
-                    Snackbar.make(viewHolder.imageAlarm, BirthdayReminder.getInstance().getString(R.string.reminder_for) + birthday.getName() + " " +
+                    Snackbar.make(viewHolder.imageAlarm, MainActivity.getAppContext().getString(R.string.reminder_for) + birthday.getName() + " " +
                             birthday.getReminderString(), Snackbar.LENGTH_LONG).show();
 
 

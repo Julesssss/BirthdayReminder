@@ -15,6 +15,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.view.ContextThemeWrapper;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +37,7 @@ public class AddEditFragment extends DialogFragment {
     public final static String MODE_KEY = "key_mode";
     public final static String DATE_KEY = "key_date";
     public final static String MONTH_KEY = "key_month";
+    public final static String YEAR_KEY = "key_year";
     public final static String POS_KEY = "key_pos";
     public final static String NAME_KEY = "key_position";
 
@@ -127,7 +129,9 @@ public class AddEditFragment extends DialogFragment {
             // Move cursor to end of text
             editText.setSelection(editText.getText().length());
 
-            datePicker.updateDate(2016, bundle.getInt(MONTH_KEY), bundle.getInt(DATE_KEY));
+            int year = bundle.getInt(YEAR_KEY);
+            Log.i(getClass().getSimpleName(), "YEAR " + year); // todo YEAR
+            datePicker.updateDate(year, bundle.getInt(MONTH_KEY), bundle.getInt(DATE_KEY));
         }
 
         // Set view, then add buttons and title
@@ -217,7 +221,6 @@ public class AddEditFragment extends DialogFragment {
                         // Get date and month from datepicker
                         int dateOfMonth = datePicker.getDayOfMonth();
                         int month = datePicker.getMonth();
-                        // todo - year
                         int year = datePicker.getYear();
 
                         // Send the positive button event back to MainActivity
