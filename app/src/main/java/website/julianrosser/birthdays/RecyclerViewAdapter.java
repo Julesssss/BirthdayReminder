@@ -60,7 +60,7 @@ public class RecyclerViewAdapter
         }
 
         if (birthday.getYear() != 0) {
-            viewHolder.textAge.setText(birthday.getAge());
+            viewHolder.textAge.setText(birthday.getAge() + " in");
         } else {
             // don't show age field
             viewHolder.textAge.setText("NA");
