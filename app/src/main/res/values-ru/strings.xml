@@ -87,5 +87,7 @@
     <string name="email_me_text">Получите помощь, отправить отзыв или предложить новую функцию</string>
     <string name="reminder_for">"напоминание "</string>
     <string name="for_next_year">" на следующий год"</string>
+    <string name="include_year">Включают год</string>
+
 
 </resources>
