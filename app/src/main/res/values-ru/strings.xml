@@ -88,6 +88,8 @@
     <string name="reminder_for">"напоминание "</string>
     <string name="for_next_year">" на следующий год"</string>
     <string name="include_year">Включают год</string>
+    <string name="deleted">удален</string>
+    <string name="undo">Отмена</string>
 
 
 </resources>

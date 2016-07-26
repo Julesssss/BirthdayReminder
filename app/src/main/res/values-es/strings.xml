@@ -87,6 +87,8 @@
     <string name="reminder_for">"Recordatorio para "</string>
     <string name="for_next_year">" para el próximo año"</string>
     <string name="include_year">incluir año</string>
+    <string name="deleted">eliminados</string>
+    <string name="undo">anular</string>
 
 
 </resources>

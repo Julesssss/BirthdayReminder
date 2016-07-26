@@ -119,5 +119,7 @@
     <string name="reminder_for">"Reminder for "</string>
     <string name="for_next_year">" for next year"</string>
     <string name="include_year">Include year</string>
+    <string name="deleted">Deleted</string>
+    <string name="undo">Undo</string>
 
 </resources>

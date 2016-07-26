@@ -87,6 +87,8 @@
     <string name="reminder_for">Erinnerung fürr</string>
     <string name="for_next_year">" für das nächste Jahr"</string>
     <string name="include_year">Enthalten jahr</string>
+    <string name="deleted">gelöscht</string>
+    <string name="undo">lösen</string>
 
 
 </resources>

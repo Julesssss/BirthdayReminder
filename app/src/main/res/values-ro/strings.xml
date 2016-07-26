@@ -87,6 +87,8 @@
     <string name="reminder_for">"memento pentru "</string>
     <string name="for_next_year">" pentru anul viitor"</string>
     <string name="include_year">Includeți an</string>
+    <string name="deleted">eliminate</string>
+    <string name="undo">anula</string>
 
 
 </resources>

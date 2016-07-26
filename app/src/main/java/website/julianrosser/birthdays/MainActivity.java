@@ -43,36 +43,28 @@ import website.julianrosser.birthdays.DialogFragments.ItemOptionsFragment;
 @SuppressWarnings("deprecation")
 public class MainActivity extends AppCompatActivity implements AddEditFragment.NoticeDialogListener, ItemOptionsFragment.ItemOptionsListener {
 
-    public static ArrayList<Birthday> birthdaysList = new ArrayList<>();
-
     static final String FILENAME = "birthdays.json";
-
+    public static ArrayList<Birthday> birthdaysList = new ArrayList<>();
+    public static Tracker mTracker;
     static String INTENT_FROM_KEY = "intent_from_key";
     static int INTENT_FROM_NOTIFICATION = 30;
-
+    static RecyclerListFragment recyclerListFragment;
+    static MainActivity mContext;
+    static Context mAppContext;
     // Keys for orientation change reference
     final String ADD_EDIT_INSTANCE_KEY = "fragment_add_edit";
     final String ITEM_OPTIONS_INSTANCE_KEY = "fragment_item_options";
     final String RECYCLER_LIST_INSTANCE_KEY = "fragment_recycler_list";
-
-    static RecyclerListFragment recyclerListFragment;
-
     // Fragment references
     AddEditFragment addEditFragment;
     ItemOptionsFragment itemOptionsFragment;
-
-    static MainActivity mContext;
-    static Context mAppContext;
-
+    LoadBirthdaysTask loadBirthdaysTask;
     // App indexing
     private GoogleApiClient mClient;
     private String mUrl;
     private String mTitle;
     private String mDescription;
     private String mSchemaType;
-
-    LoadBirthdaysTask loadBirthdaysTask;
-    public static Tracker mTracker;
     private Toolbar mToolbar;
 
     /**
@@ -84,6 +76,85 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
 
     public static Context getAppContext() {
         return mAppContext;
+    }
+
+    // This builds an identical PendingIntent to the alarm and cancels when
+    private static void cancelAlarm(Birthday deletedBirthday) {
+
+        // CreateIntent to start the AlarmNotificationReceiver
+        Intent mNotificationReceiverIntent = new Intent(MainActivity.getAppContext(),
+                NotificationBuilderReceiver.class);
+
+        // Create pending Intent using Intent we just built
+        PendingIntent mNotificationReceiverPendingIntent = PendingIntent
+                .getBroadcast(getAppContext(), deletedBirthday.getName().hashCode(),
+                        mNotificationReceiverIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // Finish by passing PendingIntent and delay time to AlarmManager
+        AlarmManager mAlarmManager = (AlarmManager) getAppContext().getSystemService(ALARM_SERVICE);
+        mAlarmManager.cancel(mNotificationReceiverPendingIntent);
+    }
+
+    // Force UI thread to ensure mAdapter updates RecyclerView list
+    public static void dataChangedUiThread() {
+        // Reorder ArrayList to sort by desired method
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getAppContext());
+
+        // Get users sort preference
+        if (Integer.valueOf(sharedPref.getString(getAppContext().getString(R.string.pref_sort_by_key), "0")) == 1) {
+            RecyclerViewAdapter.sortBirthdaysByName();
+        } else {
+            RecyclerViewAdapter.sortBirthdaysByDate();
+        }
+
+        mContext.runOnUiThread(new Runnable() {
+            public void run() {
+                if (RecyclerListFragment.floatingActionButton != null && RecyclerListFragment.floatingActionButton.getVisibility() == View.INVISIBLE) {
+                    RecyclerListFragment.floatingActionButton.show();
+                }
+
+                RecyclerListFragment.mAdapter.notifyDataSetChanged();
+                RecyclerListFragment.showEmptyMessageIfRequired();
+            }
+        });
+    }
+
+    /**
+     * Save Birthdays to JSON file, then Update alarms by starting Service
+     **/
+    public static void saveBirthdays()
+            throws JSONException, IOException {
+
+        if (birthdaysList != null) {
+
+            try {
+                // Build an array in JSON
+                JSONArray array = new JSONArray();
+                for (Birthday b : birthdaysList)
+                    array.put(b.toJSON());
+
+                // Write the file to disk
+                Writer writer = null;
+                try {
+                    OutputStream out = mAppContext.openFileOutput(FILENAME,
+                            Context.MODE_PRIVATE);
+                    writer = new OutputStreamWriter(out);
+                    writer.write(array.toString());
+
+                } finally {
+                    if (writer != null)
+                        writer.close();
+                }
+
+            } catch (JSONException | IOException e) {
+                e.printStackTrace();
+            }
+
+            // Launch service to update alarms when data changed
+            Intent serviceIntent = new Intent(MainActivity.getAppContext(), SetAlarmsService.class);
+            MainActivity.getAppContext().startService(serviceIntent);
+        }
     }
 
     @Override
@@ -413,7 +484,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
     }
 
     // We only use this method to delete data from Birthday array and pass a reference to the cancel alarm method.
-    public static void deleteFromArray(final int position) {
+    public void deleteFromArray(final int position) {
 
         // Cancel the notification PendingIntent
         cancelAlarm(birthdaysList.get(position));
@@ -421,6 +492,8 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         // Notify adapter
         mContext.runOnUiThread(new Runnable() {
             public void run() {
+
+                final Birthday birthdayToDelete = birthdaysList.get(position);
 
                 birthdaysList.remove(position);
 
@@ -436,48 +509,36 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }
-        });
-    }
+                Snackbar.make(mToolbar, MainActivity.getAppContext().getString(R.string.deleted) + " "
+                        + birthdayToDelete.getName(), Snackbar.LENGTH_LONG).setAction(R.string.undo,
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                birthdaysList.add(birthdayToDelete);
+                                // Notify adapter
+                                mContext.runOnUiThread(new Runnable() {
+                                    public void run() {
 
-    // This builds an identical PendingIntent to the alarm and cancels when
-    private static void cancelAlarm(Birthday deletedBirthday) {
+                                        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getAppContext());
 
-        // CreateIntent to start the AlarmNotificationReceiver
-        Intent mNotificationReceiverIntent = new Intent(MainActivity.getAppContext(),
-                NotificationBuilderReceiver.class);
+                                        // Get users sort preference
+                                        if (Integer.valueOf(sharedPref.getString(getAppContext().getString(R.string.pref_sort_by_key), "0")) == 1) {
+                                            RecyclerViewAdapter.sortBirthdaysByName();
+                                        } else {
+                                            RecyclerViewAdapter.sortBirthdaysByDate();
+                                        }
 
-        // Create pending Intent using Intent we just built
-        PendingIntent mNotificationReceiverPendingIntent = PendingIntent
-                .getBroadcast(getAppContext(), deletedBirthday.getName().hashCode(),
-                        mNotificationReceiverIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT);
-
-        // Finish by passing PendingIntent and delay time to AlarmManager
-        AlarmManager mAlarmManager = (AlarmManager) getAppContext().getSystemService(ALARM_SERVICE);
-        mAlarmManager.cancel(mNotificationReceiverPendingIntent);
-    }
-
-    // Force UI thread to ensure mAdapter updates RecyclerView list
-    public static void dataChangedUiThread() {
-        // Reorder ArrayList to sort by desired method
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getAppContext());
-
-        // Get users sort preference
-        if (Integer.valueOf(sharedPref.getString(getAppContext().getString(R.string.pref_sort_by_key), "0")) == 1) {
-            RecyclerViewAdapter.sortBirthdaysByName();
-        } else {
-            RecyclerViewAdapter.sortBirthdaysByDate();
-        }
-
-        mContext.runOnUiThread(new Runnable() {
-            public void run() {
-                if (RecyclerListFragment.floatingActionButton != null && RecyclerListFragment.floatingActionButton.getVisibility() == View.INVISIBLE) {
-                    RecyclerListFragment.floatingActionButton.show();
-                }
-
-                RecyclerListFragment.mAdapter.notifyDataSetChanged();
-                RecyclerListFragment.showEmptyMessageIfRequired();
+                                        RecyclerListFragment.mAdapter.notifyItemInserted(birthdaysList.indexOf(birthdayToDelete));
+                                        RecyclerListFragment.showEmptyMessageIfRequired();
+                                    }
+                                });
+                                try {
+                                    saveBirthdays();
+                                }  catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }).show();
             }
         });
     }
@@ -507,43 +568,6 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * Save Birthdays to JSON file, then Update alarms by starting Service
-     **/
-    public static void saveBirthdays()
-            throws JSONException, IOException {
-
-        if (birthdaysList != null) {
-
-            try {
-                // Build an array in JSON
-                JSONArray array = new JSONArray();
-                for (Birthday b : birthdaysList)
-                    array.put(b.toJSON());
-
-                // Write the file to disk
-                Writer writer = null;
-                try {
-                    OutputStream out = mAppContext.openFileOutput(FILENAME,
-                            Context.MODE_PRIVATE);
-                    writer = new OutputStreamWriter(out);
-                    writer.write(array.toString());
-
-                } finally {
-                    if (writer != null)
-                        writer.close();
-                }
-
-            } catch (JSONException | IOException e) {
-                e.printStackTrace();
-            }
-
-            // Launch service to update alarms when data changed
-            Intent serviceIntent = new Intent(MainActivity.getAppContext(), SetAlarmsService.class);
-            MainActivity.getAppContext().startService(serviceIntent);
-        }
     }
 
     // Call this method from Adapter so reference can be kept here in MainActivity

@@ -87,6 +87,8 @@
     <string name="reminder_for">"promemoria per "</string>
     <string name="for_next_year">" per il prossimo anno"</string>
     <string name="include_year">Includi anno</string>
+    <string name="deleted">cancellati</string>
+    <string name="undo">disfare</string>
 
 
 </resources>
