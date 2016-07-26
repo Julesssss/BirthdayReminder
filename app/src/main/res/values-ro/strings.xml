@@ -86,5 +86,7 @@
     <string name="email_me_text">Primesc ajutor, trimite feedback sau sugerează o caracteristică nouă</string>
     <string name="reminder_for">"memento pentru "</string>
     <string name="for_next_year">" pentru anul viitor"</string>
+    <string name="include_year">Includeți an</string>
+
 
 </resources>

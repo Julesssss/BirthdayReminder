@@ -86,5 +86,7 @@
     <string name="email_me_text">Ricevere aiuto, inviare commenti o suggerire una nuova funzione</string>
     <string name="reminder_for">"promemoria per "</string>
     <string name="for_next_year">" per il prossimo anno"</string>
+    <string name="include_year">Includi anno</string>
+
 
 </resources>

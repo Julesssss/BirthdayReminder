@@ -15,15 +15,20 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.view.ContextThemeWrapper;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import java.util.Calendar;
 
 import website.julianrosser.birthdays.R;
 
@@ -36,6 +41,8 @@ public class AddEditFragment extends DialogFragment {
     public final static String MODE_KEY = "key_mode";
     public final static String DATE_KEY = "key_date";
     public final static String MONTH_KEY = "key_month";
+    public final static String SHOW_YEAR_KEY = "key_show_year";
+    public final static String YEAR_KEY = "key_year";
     public final static String POS_KEY = "key_pos";
     public final static String NAME_KEY = "key_position";
 
@@ -54,6 +61,7 @@ public class AddEditFragment extends DialogFragment {
 
     // Use this instance of the interface to deliver action events
     NoticeDialogListener mListener;
+    private CheckBox checkYearToggle;
 
     public AddEditFragment() {
         // Required empty public constructor
@@ -67,7 +75,7 @@ public class AddEditFragment extends DialogFragment {
     /* MainActivity implements this interface in order to receive event callbacks. Passes the
     DialogFragment in case the host needs to query it. */
     public interface NoticeDialogListener {
-        void onDialogPositiveClick(AddEditFragment dialog, String name, int date, int month, int AddEditMode, int position);
+        void onDialogPositiveClick(AddEditFragment dialog, String name, int date, int month, int year, boolean includeYear, int AddEditMode, int position);
     }
 
     // We override the Fragment.onAttach() method to instantiate NoticeDialogListener and read bundle data
@@ -108,21 +116,32 @@ public class AddEditFragment extends DialogFragment {
         // Inflate the brilliantly designed layout, passing null as the parent view because its
         // going in the dialog layout
         view = inflater.inflate(R.layout.add_edit_birthday_fragment, null);
-
         // Get DatePicker reference and hide year spinner
         final DatePicker datePicker = (DatePicker) view.findViewById(R.id.datePicker);
-        datePicker.findViewById(Resources.getSystem().getIdentifier("year", "id", "android")).setVisibility(View.GONE);
+        setUpDatePicker(datePicker);
+
+        checkYearToggle = (CheckBox) view.findViewById(R.id.checkboxShowYear);
+        checkYearToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setYearFieldVisibility(isChecked, datePicker);
+            }
+        });
 
         // Set Birthday name and birth date if in Edit mode
         if (ADD_OR_EDIT_MODE == MODE_EDIT) {
+
+            boolean showYear = bundle.getBoolean(SHOW_YEAR_KEY, true);
+            checkYearToggle.setChecked(showYear);
+            setYearFieldVisibility(showYear, datePicker);
 
             EditText editText = (EditText) view.findViewById(R.id.editTextName);
             editText.setText(bundle.getString(NAME_KEY));
 
             // Move cursor to end of text
             editText.setSelection(editText.getText().length());
+            datePicker.updateDate(bundle.getInt(YEAR_KEY), bundle.getInt(MONTH_KEY), bundle.getInt(DATE_KEY));
 
-            datePicker.updateDate(2016, bundle.getInt(MONTH_KEY), bundle.getInt(DATE_KEY));
         }
 
         // Set view, then add buttons and title
@@ -133,6 +152,26 @@ public class AddEditFragment extends DialogFragment {
                 .setTitle(getDialogTitle());
 
         return builder.create();
+    }
+
+    private void setUpDatePicker(final DatePicker datePicker) {
+        Calendar today = Calendar.getInstance();
+        setYearFieldVisibility(false, datePicker);
+        datePicker.init(2000, today.get(Calendar.MONTH), today.get(Calendar.DATE), new DatePicker.OnDateChangedListener() {
+            @Override
+            public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(datePicker.getWindowToken(), 0);
+            }
+        });
+    }
+
+    private void setYearFieldVisibility(boolean isChecked, DatePicker datePicker) {
+        if (isChecked) {
+            datePicker.findViewById(Resources.getSystem().getIdentifier("year", "id", "android")).setVisibility(View.VISIBLE);
+        } else {
+            datePicker.findViewById(Resources.getSystem().getIdentifier("year", "id", "android")).setVisibility(View.GONE);
+        }
     }
 
     // Set background colour and dialog width
@@ -212,9 +251,12 @@ public class AddEditFragment extends DialogFragment {
                         // Get date and month from datepicker
                         int dateOfMonth = datePicker.getDayOfMonth();
                         int month = datePicker.getMonth();
+                        int year = datePicker.getYear();
+                        boolean includeYear = checkYearToggle.isChecked();
 
                         // Send the positive button event back to MainActivity
-                        mListener.onDialogPositiveClick(AddEditFragment.this, editText.getText().toString(), dateOfMonth, month,
+                        mListener.onDialogPositiveClick(AddEditFragment.this, editText.getText().toString(),
+                                dateOfMonth, month, year, includeYear,
                                 ADD_OR_EDIT_MODE, bundle.getInt(POS_KEY));
 
                         // Finally close the dialog, and breath a sign of relief

@@ -1,6 +1,5 @@
 package website.julianrosser.birthdays;
 
-import android.content.Context;
 import android.graphics.Typeface;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
@@ -20,12 +19,8 @@ public class RecyclerViewAdapter
         extends RecyclerView.Adapter
         <RecyclerViewAdapter.ListItemViewHolder> {
 
-    Context appContext;
-
     // Constructor
-    public RecyclerViewAdapter(ArrayList<Birthday> birthdayData, Context c) { //
-
-        appContext = c;
+    public RecyclerViewAdapter(ArrayList<Birthday> birthdayData) { //
 
         if (birthdayData == null) {
             MainActivity.birthdaysList = new ArrayList<>();
@@ -34,7 +29,6 @@ public class RecyclerViewAdapter
             MainActivity.getContext().launchLoadBirthdaysTask();
         }
     }
-
 
     @Override
     public ListItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
@@ -54,12 +48,23 @@ public class RecyclerViewAdapter
 
         // Pass data to the TextViews
         viewHolder.textName.setText(birthday.getName());
-
         viewHolder.textDaysRemaining.setText(birthday.getFormattedDaysRemainingString());
-
         viewHolder.textDateDay.setText(birthday.getBirthDay());
-
         viewHolder.textDateMonth.setText(birthday.getBirthMonth());
+
+        // Should display age?
+        if (birthday.shouldIncludeYear()) {
+            viewHolder.textAge.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.textAge.setVisibility(View.GONE);
+        }
+
+        if (birthday.getYear() != 0) {
+            viewHolder.textAge.setText(birthday.getAge());
+        } else {
+            // don't show age field
+            viewHolder.textAge.setText("NA");
+        }
 
         // Set correct icon depending on Alarm on or off
         viewHolder.imageAlarm.setImageDrawable(birthday.getRemindAlarmDrawable());
@@ -69,17 +74,6 @@ public class RecyclerViewAdapter
 
                 // Change birthdays remind bool
                 birthday.toggleReminder();
-
-                // Notify user of change. If birthday is today, let user know alarm is set for next year
-                if (birthday.getDaysBetween() == 0 && birthday.getRemind()) {
-                    Snackbar.make(viewHolder.imageAlarm, appContext.getString(R.string.reminder_for) + birthday.getName() + " " +
-                            birthday.getReminderString() + appContext.getString(R.string.for_next_year), Snackbar.LENGTH_LONG).show();
-                } else {
-                    Snackbar.make(viewHolder.imageAlarm, appContext.getString(R.string.reminder_for) + birthday.getName() + " " +
-                            birthday.getReminderString(), Snackbar.LENGTH_LONG).show();
-
-
-                }
 
                 // Get correct position, as deleted views may have altered pos int
                 int currentPosition = RecyclerListFragment.recyclerView.getChildAdapterPosition(viewHolder.itemView);
@@ -151,8 +145,10 @@ public class RecyclerViewAdapter
     // Sort Birthday array by closest date
     public static void sortBirthdaysByDate() {
 
-        for (Birthday b : MainActivity.birthdaysList)
+
+        for (Birthday b : MainActivity.birthdaysList) {
             b.setYearOfDate(Birthday.getYearOfNextBirthday(b.getDate()));
+        }
 
         //Sorting
         Collections.sort(MainActivity.birthdaysList, new Comparator<Birthday>() {
@@ -183,10 +179,12 @@ public class RecyclerViewAdapter
      */
     public final static class ListItemViewHolder extends RecyclerView.ViewHolder {
 
+
         // TextView references
         TextView textDateDay;
         TextView textDateMonth;
         TextView textName;
+        TextView textAge;
         TextView textDaysRemaining;
         ImageView imageAlarm;
         View container;
@@ -199,6 +197,7 @@ public class RecyclerViewAdapter
             container = itemView.findViewById(R.id.list_container);
             textName = (TextView) itemView.findViewById(R.id.name);
             textDaysRemaining = (TextView) itemView.findViewById(R.id.days_remaining);
+            textAge = (TextView) itemView.findViewById(R.id.textViewAge);
             textDateDay = (TextView) itemView.findViewById(R.id.dateDay);
             textDateMonth = (TextView) itemView.findViewById(R.id.dateMonth);
             imageAlarm = (ImageView) itemView.findViewById(R.id.alarmImage);

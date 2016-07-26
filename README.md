@@ -7,27 +7,13 @@ App for Android devices which notifies users of upcoming birthdays.
 
 TODO:
 
-- Special notification message if 2 reminders on same day
-- Translate PlayStore description & screenshots
-- Record screen-cast (Add, rotate, edit, delete, reminder, theme)
-
-Bugs:
-- Quickly click to open Fragments twice
-- SettingsActivity keeps calling Service. callback or some solution to ToManyCalls problem
-
-Next Update?
-- Widget: show next birthday
-- Include Year ??
-- Data Backup to SQLite
-- RecyclerFragment onSavedInstance (array, adapter)
-- Undo birthday delete?
-- Pref category not bold -api19
-- Tablet fragment layout & window sizes!
-- Roboto font < api 16
-- Custom Notification
-- Button Merge to alertDialog?
+YEAR
+- Save year to JSON, reload correct year
+- Option to show year for each user, store boolean for each birthday?
+- Dialog checkbox for turning on
 
 Log
+- 23/07 - Created Trello board for tracking issues and new features.
 - 27/02 - Fixed date bug where 1st day of following month would be selected.
 - 18/01 - Finalized and pushed update 2.2 to app stores. Updated device screenshots.
 - 17/01 - Icon mk3. Finalized theme colours. Fixed uncommon bug where Activity would open new instance from notification intent.

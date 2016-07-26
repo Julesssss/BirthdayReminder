@@ -85,7 +85,7 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
         // Can use this to optimize performance as RecyclerView will NOT change size.
         recyclerView.setHasFixedSize(true);
 
-        mAdapter = new RecyclerViewAdapter(MainActivity.birthdaysList, getActivity().getApplicationContext());
+        mAdapter = new RecyclerViewAdapter(MainActivity.birthdaysList);
 
         recyclerView.setAdapter(mAdapter);
 
@@ -94,17 +94,8 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
 
     // Show or hide the 'no birthdays found' message depending on size of birthday Array
     public static void showEmptyMessageIfRequired() {
-
-        if (MainActivity.birthdaysList.isEmpty()) {
+        if (MainActivity.birthdaysList.isEmpty()){
             emptyView.setVisibility(View.VISIBLE);
-            emptyView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Open New Birthday Fragment
-                    MainActivity.getContext().showAddEditBirthdayFragment(AddEditFragment.MODE_ADD, 0);
-                }
-            });
-
         } else {
             emptyView.setVisibility(View.INVISIBLE);
         }

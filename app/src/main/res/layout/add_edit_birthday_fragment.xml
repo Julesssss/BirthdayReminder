@@ -25,11 +25,19 @@
         android:textColor="#fff"
         android:textColorHint="#fff" />
 
+    <CheckBox
+        android:id="@+id/checkboxShowYear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextName"
+        android:layout_centerHorizontal="true"
+        android:text="@string/include_year" />
+
     <DatePicker
         android:id="@+id/datePicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/editTextName"
+        android:layout_below="@id/checkboxShowYear"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="-24dp"
         android:layout_marginTop="-24dp"

@@ -79,12 +79,14 @@
     <string name="pref_theme_title">Choisissez Couleur</string>
     <string name="theme0">Bleu</string>
     <string name="theme1">Rose</string>
-    <string name="theme2">vert</string>
+    <string name="theme2">Vert</string>
     <string name="pref_category_list">Paramètres d\'affichage</string>
     <string name="preffered_email">Choisissez votre application préférée</string>
     <string name="send_email">Envoyer le message</string>
     <string name="email_me_text">Envoyer MeReceive aide, envoyez vos commentaires ou suggérer une nouvelle featuressage</string>
     <string name="reminder_for">"Rappel pour "</string>
-    <string name="for_next_year">" pour l'année prochaine"</string>
+    <string name="for_next_year">" pour l\'année prochaine"</string>
+    <string name="include_year">Inclure l\'année</string>
+
 
 </resources>

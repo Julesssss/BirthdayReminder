@@ -86,5 +86,7 @@
     <string name="email_me_text">Recibe ayuda, enviar comentarios o sugerir una nueva característica</string>
     <string name="reminder_for">"Recordatorio para "</string>
     <string name="for_next_year">" para el próximo año"</string>
+    <string name="include_year">incluir año</string>
+
 
 </resources>
