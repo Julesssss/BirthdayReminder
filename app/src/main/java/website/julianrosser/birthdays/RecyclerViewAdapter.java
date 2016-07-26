@@ -75,17 +75,6 @@ public class RecyclerViewAdapter
                 // Change birthdays remind bool
                 birthday.toggleReminder();
 
-                // Notify user of change. If birthday is today, let user know alarm is set for next year
-                if (birthday.getDaysBetween() == 0 && birthday.getRemind()) {
-                    Snackbar.make(viewHolder.imageAlarm, BirthdayReminder.getInstance().getString(R.string.reminder_for) + birthday.getName() + " " +
-                            birthday.getReminderString() + BirthdayReminder.getInstance().getString(R.string.for_next_year), Snackbar.LENGTH_LONG).show();
-                } else {
-                    Snackbar.make(viewHolder.imageAlarm, MainActivity.getAppContext().getString(R.string.reminder_for) + birthday.getName() + " " +
-                            birthday.getReminderString(), Snackbar.LENGTH_LONG).show();
-
-
-                }
-
                 // Get correct position, as deleted views may have altered pos int
                 int currentPosition = RecyclerListFragment.recyclerView.getChildAdapterPosition(viewHolder.itemView);
 
@@ -156,8 +145,10 @@ public class RecyclerViewAdapter
     // Sort Birthday array by closest date
     public static void sortBirthdaysByDate() {
 
-        for (Birthday b : MainActivity.birthdaysList)
+
+        for (Birthday b : MainActivity.birthdaysList) {
             b.setYearOfDate(Birthday.getYearOfNextBirthday(b.getDate()));
+        }
 
         //Sorting
         Collections.sort(MainActivity.birthdaysList, new Comparator<Birthday>() {

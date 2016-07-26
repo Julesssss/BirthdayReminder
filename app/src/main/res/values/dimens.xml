@@ -13,7 +13,7 @@
     <dimen name="alarm_toggle_padding_width">8dp</dimen>
     <dimen name="alarm_toggle_padding_height">8dp</dimen>
 
-    <dimen name="prevent_name_overlap_margin">6dp</dimen>
+    <dimen name="prevent_name_overlap_margin">4dp</dimen>
 
     <!-- FLoating Action Button position -->
     <dimen name="fa_button_margin_right">16dp</dimen>

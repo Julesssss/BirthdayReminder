@@ -10,12 +10,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
 
     LoadBirthdaysTask loadBirthdaysTask;
     public static Tracker mTracker;
+    private Toolbar mToolbar;
 
     /**
      * For easy access to MainActivity context from multiple Classes
@@ -93,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         setContentView(R.layout.activity_main);
 
         // Pass toolbar as ActionBar for functionality
-        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
         // Initialize context reference
@@ -615,13 +616,22 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
     public void alarmToggled(int position) {
 
         // Use position parameter to get Birthday reference
-        Birthday b = birthdaysList.get(position);
+        Birthday birthday = birthdaysList.get(position);
 
         // Cancel the previously set alarm, without re-calling service
-        cancelAlarm(b);
+        cancelAlarm(birthday);
 
         // Notify adapter of change, so that UI is updated
         dataChangedUiThread();
+
+        // Notify user of change. If birthday is today, let user know alarm is set for next year
+        if (birthday.getDaysBetween() == 0 && birthday.getRemind()) {
+            Snackbar.make(mToolbar, BirthdayReminder.getInstance().getString(R.string.reminder_for) + birthday.getName() + " " +
+                    birthday.getReminderString() + BirthdayReminder.getInstance().getString(R.string.for_next_year), Snackbar.LENGTH_LONG).show();
+        } else {
+            Snackbar.make(mToolbar, MainActivity.getAppContext().getString(R.string.reminder_for) + birthday.getName() + " " +
+                    birthday.getReminderString(), Snackbar.LENGTH_LONG).show();
+        }
 
         // Attempt to save updated Birthday data
         try {

@@ -78,10 +78,8 @@
         android:layout_toStartOf="@+id/alarmImage"
         android:gravity="center_vertical"
         android:orientation="vertical"
-        android:paddingEnd="16dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingStart="16dp">
+        android:paddingEnd="8dp"
+        android:paddingRight="8dp">
 
         <TextView
             android:id="@+id/textViewAge"
@@ -114,6 +112,8 @@
         android:layout_height="match_parent"
         android:layout_toEndOf="@id/group_1"
         android:layout_toRightOf="@id/group_1"
+        android:layout_toLeftOf="@id/days_age_layout"
+        android:layout_toStartOf="@id/days_age_layout"
         android:gravity="center_vertical"
         android:paddingEnd="@dimen/prevent_name_overlap_margin"
         android:paddingLeft="@dimen/list_item_name_padding"
