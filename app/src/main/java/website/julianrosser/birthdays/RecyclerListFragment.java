@@ -26,9 +26,6 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
     // Reference to view which shows when list empty.
     static View emptyView;
 
-    // Need this reference to show onResume
-    public static FloatingActionButton floatingActionButton;
-
     // Required empty constructor
     public RecyclerListFragment() {
     }
@@ -48,15 +45,6 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
 
         // Initialise important reference to the main view: RecyclerView
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-
-        // Floating Action Button
-        FloatingActionButton floatingActionButton = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Open New Birthday Fragment
-                MainActivity.getContext().showAddEditBirthdayFragment(AddEditFragment.MODE_ADD, 0);
-            }
-        });
 
         // Reference empty TextView
         emptyView = view.findViewById(R.id.empty_view);

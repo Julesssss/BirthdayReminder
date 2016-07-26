@@ -10,12 +10,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
@@ -65,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
     private String mTitle;
     private String mDescription;
     private String mSchemaType;
-    private Toolbar mToolbar;
+    private static FloatingActionButton floatingActionButton;
 
     /**
      * For easy access to MainActivity context from multiple Classes
@@ -94,30 +96,6 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         // Finish by passing PendingIntent and delay time to AlarmManager
         AlarmManager mAlarmManager = (AlarmManager) getAppContext().getSystemService(ALARM_SERVICE);
         mAlarmManager.cancel(mNotificationReceiverPendingIntent);
-    }
-
-    // Force UI thread to ensure mAdapter updates RecyclerView list
-    public static void dataChangedUiThread() {
-        // Reorder ArrayList to sort by desired method
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getAppContext());
-
-        // Get users sort preference
-        if (Integer.valueOf(sharedPref.getString(getAppContext().getString(R.string.pref_sort_by_key), "0")) == 1) {
-            RecyclerViewAdapter.sortBirthdaysByName();
-        } else {
-            RecyclerViewAdapter.sortBirthdaysByDate();
-        }
-
-        mContext.runOnUiThread(new Runnable() {
-            public void run() {
-                if (RecyclerListFragment.floatingActionButton != null && RecyclerListFragment.floatingActionButton.getVisibility() == View.INVISIBLE) {
-                    RecyclerListFragment.floatingActionButton.show();
-                }
-
-                RecyclerListFragment.mAdapter.notifyDataSetChanged();
-                RecyclerListFragment.showEmptyMessageIfRequired();
-            }
-        });
     }
 
     /**
@@ -157,6 +135,26 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         }
     }
 
+    // Force UI thread to ensure mAdapter updates RecyclerView list
+    public static void dataChangedUiThread() {
+        // Reorder ArrayList to sort by desired method
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getAppContext());
+
+        // Get users sort preference
+        if (Integer.valueOf(sharedPref.getString(getAppContext().getString(R.string.pref_sort_by_key), "0")) == 1) {
+            RecyclerViewAdapter.sortBirthdaysByName();
+        } else {
+            RecyclerViewAdapter.sortBirthdaysByDate();
+        }
+
+        if (floatingActionButton != null && floatingActionButton.getVisibility() == View.INVISIBLE) {
+            floatingActionButton.show();
+        }
+
+        RecyclerListFragment.mAdapter.notifyDataSetChanged();
+        RecyclerListFragment.showEmptyMessageIfRequired();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -165,8 +163,16 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         setContentView(R.layout.activity_main);
 
         // Pass toolbar as ActionBar for functionality
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+
+        floatingActionButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Open New Birthday Fragment
+                showAddEditBirthdayFragment(AddEditFragment.MODE_ADD, 0);
+            }
+        });
 
         // Initialize context reference
         mContext = this;
@@ -271,7 +277,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
             mAppContext = getApplicationContext();
         }
 
-        MainActivity.dataChangedUiThread();
+        dataChangedUiThread();
 
         // Tracker
         mTracker.setScreenName("MainActivity");
@@ -500,8 +506,8 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
                 RecyclerListFragment.mAdapter.notifyItemRemoved(position);
                 RecyclerListFragment.showEmptyMessageIfRequired();
 
-                if (RecyclerListFragment.floatingActionButton != null && RecyclerListFragment.floatingActionButton.getVisibility() == View.INVISIBLE) {
-                    RecyclerListFragment.floatingActionButton.show();
+                if (floatingActionButton != null && floatingActionButton.getVisibility() == View.INVISIBLE) {
+                    floatingActionButton.show();
                 }
 
                 try {
@@ -509,7 +515,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                Snackbar.make(mToolbar, MainActivity.getAppContext().getString(R.string.deleted) + " "
+                Snackbar.make(floatingActionButton, MainActivity.getAppContext().getString(R.string.deleted) + " "
                         + birthdayToDelete.getName(), Snackbar.LENGTH_LONG).setAction(R.string.undo,
                         new View.OnClickListener() {
                             @Override
@@ -534,7 +540,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
                                 });
                                 try {
                                     saveBirthdays();
-                                }  catch (Exception e) {
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
                             }
@@ -650,10 +656,10 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
 
         // Notify user of change. If birthday is today, let user know alarm is set for next year
         if (birthday.getDaysBetween() == 0 && birthday.getRemind()) {
-            Snackbar.make(mToolbar, BirthdayReminder.getInstance().getString(R.string.reminder_for) + birthday.getName() + " " +
+            Snackbar.make(floatingActionButton, BirthdayReminder.getInstance().getString(R.string.reminder_for) + birthday.getName() + " " +
                     birthday.getReminderString() + BirthdayReminder.getInstance().getString(R.string.for_next_year), Snackbar.LENGTH_LONG).show();
         } else {
-            Snackbar.make(mToolbar, MainActivity.getAppContext().getString(R.string.reminder_for) + birthday.getName() + " " +
+            Snackbar.make(floatingActionButton, MainActivity.getAppContext().getString(R.string.reminder_for) + birthday.getName() + " " +
                     birthday.getReminderString(), Snackbar.LENGTH_LONG).show();
         }
 

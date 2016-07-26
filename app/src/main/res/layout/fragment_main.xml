@@ -1,8 +1,7 @@
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="?attr/theme_colour"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?attr/theme_colour">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -10,16 +9,6 @@
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:paddingTop="8dp" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_cake_white_24dp"
-        app:elevation="6dp"
-        app:rippleColor="@color/textColorPrimary" />
 
     <LinearLayout
         android:id="@+id/empty_view"
@@ -38,16 +27,6 @@
             android:textColor="#fff"
             android:textSize="24sp" />
 
-        <!--<ImageView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center_horizontal"-->
-            <!--android:layout_marginTop="16dp"-->
-            <!--android:background="@drawable/circle_background"-->
-            <!--android:elevation="6dp"-->
-            <!--android:padding="16dp"-->
-            <!--android:src="@drawable/ic_cake_white_24dp" />-->
-
     </LinearLayout>
 
     <View
@@ -56,4 +35,4 @@
         android:layout_height="6dp"
         android:background="@drawable/toolbar_dropshadow" />
 
-</android.support.design.widget.CoordinatorLayout>
+</RelativeLayout>
