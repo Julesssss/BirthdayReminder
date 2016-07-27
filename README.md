@@ -1,4 +1,4 @@
-# Birthday Reminder 2.2
+# Birthday Reminder 2.3
 A simple Material Design Android app which notifies users of upcoming birthdays.
 
 ![](http://i.imgur.com/zcF2X4Z.png)![](http://i.imgur.com/PaiXGEV.png)![](http://i.imgur.com/yC20tDa.png)
@@ -7,5 +7,7 @@ A simple Material Design Android app which notifies users of upcoming birthdays.
 
 Update 2.3:
 
-- Added year input field. Now displays persons age in list.
+- Added year input field. User can now display persons age in list if they know the year of birth.
 - Undo option added when deleting birthdays
+
+
