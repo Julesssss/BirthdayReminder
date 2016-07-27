@@ -320,10 +320,24 @@ public class Birthday {
 
 
     public String getAge() {
-        int currentYear = new Date().getYear() + 1900;
-        int age = currentYear - yearOfBirth;
-        // Age at next birthday modifier
-        age  += 1;
+        Date birthDate = getDate();
+
+        int year = this.getYear();
+
+        Calendar calendarBirthday = Calendar.getInstance();
+        calendarBirthday.set(year, birthDate.getMonth(), birthDate.getDate());
+
+        Calendar nextBirthdate = Calendar.getInstance();
+        nextBirthdate.set(getYearOfNextBirthday(birthDate), birthDate.getMonth(), birthDate.getDate());
+
+        int age = nextBirthdate.get(Calendar.YEAR) - calendarBirthday.get(Calendar.YEAR);
+
+        if (nextBirthdate.get(Calendar.MONTH) > calendarBirthday.get(Calendar.MONTH) ||
+                (nextBirthdate.get(Calendar.MONTH) == calendarBirthday.get(Calendar.MONTH) &&
+                        nextBirthdate.get(Calendar.DATE) > calendarBirthday.get(Calendar.DATE))) {
+            age--;
+        }
+
         if (age < 0) {
             return "N/A";
         } else {
