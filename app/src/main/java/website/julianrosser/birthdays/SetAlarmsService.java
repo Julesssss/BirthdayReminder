@@ -31,7 +31,6 @@ public class SetAlarmsService extends Service {
     ArrayList<Birthday> mBirthdayList = new ArrayList<>();
 
     long dayInMillis = 86400000l; // / 86,400,000 milliseconds in a day
-
     long hourInMillis = 3600000l; // Amount of milliseconds in an hour
 
     long fullDaysBetweenInMillis, millisExtraAlarmHour, millisRemainingInDay,
@@ -77,6 +76,7 @@ public class SetAlarmsService extends Service {
             }
         }
         // Service has to control its own life cycles, so call stopSelf here
+        mContext = null;
         stopSelf();
     }
 

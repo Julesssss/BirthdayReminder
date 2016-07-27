@@ -75,7 +75,7 @@ public class Birthday {
         }
 
         // Check whether user wants to be reminded for this birthday.
-        remind = !json.has(JSON_REMIND) || json.getBoolean(JSON_REMIND);
+        remind = !json.has(JSON_REMIND) || json.getBoolean(JSON_REMIND );
         // Default to true if not found, log message.
 
         // Date of birthday in millis.
@@ -87,9 +87,9 @@ public class Birthday {
         if (json.has(JSON_YEAR)) {
             yearOfBirth = json.getInt(JSON_YEAR);
         } else {
-            yearOfBirth = 0;
+            yearOfBirth = 1990;
         }
-        // Should use age
+        // Should use age?
         showYear = json.has(JSON_SHOW_YEAR) && json.getBoolean(JSON_SHOW_YEAR);
     }
 

@@ -140,8 +140,12 @@ public class AddEditFragment extends DialogFragment {
 
             // Move cursor to end of text
             editText.setSelection(editText.getText().length());
-            datePicker.updateDate(bundle.getInt(YEAR_KEY), bundle.getInt(MONTH_KEY), bundle.getInt(DATE_KEY));
 
+            // Set DatePicker
+            int spinnerYear =  bundle.getInt(YEAR_KEY);
+            int spinnerMonth =  bundle.getInt(MONTH_KEY);
+            int spinnerDate =  bundle.getInt(DATE_KEY);
+            datePicker.updateDate(spinnerYear, spinnerMonth, spinnerDate);
         }
 
         // Set view, then add buttons and title
