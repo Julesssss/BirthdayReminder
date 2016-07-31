@@ -10,9 +10,12 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <!-- For saving JSON data -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!-- For Analytics-->
+    <!-- For Analytics -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Access to contacts -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
 
     <application
         android:allowBackup="true"
@@ -39,8 +42,9 @@
                 <data
                     android:host="www.julianrosser.website"
                     android:scheme="http" />
-                <!-- note that the leading "/" is required for pathPrefix-->
-                <!-- Accepts URIs that begin with "example://gizmos”
+                <!-- note that the leading "/" is required for pathPrefix -->
+                <!--
+                Accepts URIs that begin with "example://gizmos”
                 <data android:scheme="example"
                       android:host="gizmos" />
                 -->
@@ -74,6 +78,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
+        <activity android:name=".ImportContactsActivity"></activity>
     </application>
 
 </manifest>
