@@ -13,6 +13,16 @@ android {
         versionName "2.3"
     }
 
+    productFlavors {
+
+        regular {
+
+        }
+
+        booty {
+            applicationId 'website.julianrosser.birthdays.debuggg'
+        }
+    }
 
     buildTypes {
         release {

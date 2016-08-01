@@ -4,6 +4,12 @@
     tools:context=".MainActivity">
 
     <item
+        android:id="@+id/action_import_contacts"
+        android:orderInCategory="260"
+        android:title="@string/action_import_contacts"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="280"
         android:title="@string/action_settings"

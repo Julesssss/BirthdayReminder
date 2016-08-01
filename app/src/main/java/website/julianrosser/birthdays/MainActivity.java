@@ -1,10 +1,12 @@
 package website.julianrosser.birthdays;
 
+import android.Manifest;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,12 +14,14 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
@@ -48,11 +52,13 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
     static final String FILENAME = "birthdays.json";
     public static ArrayList<Birthday> birthdaysList = new ArrayList<>();
     public static Tracker mTracker;
+    public static int INTENT_FROM_NOTIFICATION = 30;
+    public static int CONTACT_PERMISSION_CODE = 333;
     static String INTENT_FROM_KEY = "intent_from_key";
-    static int INTENT_FROM_NOTIFICATION = 30;
     static RecyclerListFragment recyclerListFragment;
     static MainActivity mContext;
     static Context mAppContext;
+    private static FloatingActionButton floatingActionButton;
     // Keys for orientation change reference
     final String ADD_EDIT_INSTANCE_KEY = "fragment_add_edit";
     final String ITEM_OPTIONS_INSTANCE_KEY = "fragment_item_options";
@@ -67,7 +73,6 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
     private String mTitle;
     private String mDescription;
     private String mSchemaType;
-    private static FloatingActionButton floatingActionButton;
 
     /**
      * For easy access to MainActivity context from multiple Classes
@@ -509,7 +514,6 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
                 if (floatingActionButton != null && floatingActionButton.getVisibility() == View.INVISIBLE) {
                     floatingActionButton.show();
                 }
-
                 try {
                     saveBirthdays();
                 } catch (Exception e) {
@@ -564,7 +568,10 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_import_contacts) {
+            checkContactPermissionAndLaunchImportActivity();
+
+        } else if (id == R.id.action_settings) {
             Intent i = new Intent(this, SettingsActivity.class);
             startActivity(i);
 
@@ -674,5 +681,51 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
                 .setCategory("Action")
                 .setAction("Toggle Alarm")
                 .build());
+    }
+
+    public void checkContactPermissionAndLaunchImportActivity() {
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_CONTACTS)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // No explanation needed, we can request the permission.
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_CONTACTS},
+                    CONTACT_PERMISSION_CODE);
+
+            // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+            // app-defined int constant. The callback method gets the
+            // result of the request.
+        } else {
+            //
+            Toast.makeText(this, "ENABLED :)", Toast.LENGTH_SHORT).show();
+            launchImportContactActivity();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        if (requestCode == CONTACT_PERMISSION_CODE) {
+            // If request is cancelled, the result arrays are empty.
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                Toast.makeText(this, "PERMISSION GRANTED :)", Toast.LENGTH_SHORT).show();
+                launchImportContactActivity();
+
+            } else {
+                // permission denied, boo! Disable the
+                // functionality that depends on this permission.
+                Toast.makeText(this, "PERMISSION DENIED :)", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    public void launchImportContactActivity() {
+        Intent intent = new Intent(this, ImportContactsActivity.class);
+        startActivity(intent);
     }
 }

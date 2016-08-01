@@ -138,8 +138,6 @@ public class SettingsActivity extends AppCompatActivity {
         } else {
             setTheme(R.style.PreferenceThemeGreen);
         }
-
-
     }
 
     synchronized public Tracker getDefaultTracker() {
