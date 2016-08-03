@@ -3,14 +3,20 @@ package website.julianrosser.birthdays;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import website.julianrosser.birthdays.DialogFragments.AddEditFragment;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+
+import website.julianrosser.birthdays.events.ContactsLoadedEvent;
 
 /**
  * Main view. Fragment which holds the RecyclerView.
@@ -18,7 +24,7 @@ import website.julianrosser.birthdays.DialogFragments.AddEditFragment;
 public class RecyclerListFragment extends android.support.v4.app.Fragment {
 
     // Reference to mAdapter
-    public static RecyclerViewAdapter mAdapter;
+    public static BirthdayViewAdapter mAdapter;
 
     // Reference to recyclerView
     public static RecyclerView recyclerView;
@@ -73,12 +79,14 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
         // Can use this to optimize performance as RecyclerView will NOT change size.
         recyclerView.setHasFixedSize(true);
 
-        mAdapter = new RecyclerViewAdapter(MainActivity.birthdaysList);
+        mAdapter = new BirthdayViewAdapter(MainActivity.birthdaysList);
 
         recyclerView.setAdapter(mAdapter);
 
         return view;
     }
+
+
 
     // Show or hide the 'no birthdays found' message depending on size of birthday Array
     public static void showEmptyMessageIfRequired() {

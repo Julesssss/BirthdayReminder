@@ -1,13 +1,9 @@
 package website.julianrosser.birthdays;
 
-import android.graphics.Typeface;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.google.android.gms.analytics.HitBuilders;
 
@@ -15,12 +11,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class RecyclerViewAdapter
-        extends RecyclerView.Adapter
-        <RecyclerViewAdapter.ListItemViewHolder> {
+public class BirthdayViewAdapter extends RecyclerView.Adapter<BirthdayViewHolder> {
 
     // Constructor
-    public RecyclerViewAdapter(ArrayList<Birthday> birthdayData) { //
+    public BirthdayViewAdapter(ArrayList<Birthday> birthdayData) { //
 
         if (birthdayData == null) {
             MainActivity.birthdaysList = new ArrayList<>();
@@ -31,16 +25,16 @@ public class RecyclerViewAdapter
     }
 
     @Override
-    public ListItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public BirthdayViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View itemView = LayoutInflater.
                 from(viewGroup.getContext()).
                 inflate(R.layout.birthday_list_view, viewGroup, false);
 
-        return new ListItemViewHolder(itemView);
+        return new BirthdayViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(final ListItemViewHolder viewHolder, final int position) {
+    public void onBindViewHolder(final BirthdayViewHolder viewHolder, final int position) {
         // Get reference to birthday
         final Birthday birthday = MainActivity.birthdaysList.get(position);
 
@@ -103,7 +97,7 @@ public class RecyclerViewAdapter
     }
 
     @Override
-    public void onViewRecycled(ListItemViewHolder holder) {
+    public void onViewRecycled(BirthdayViewHolder holder) {
         holder.itemView.setOnLongClickListener(null);
         super.onViewRecycled(holder);
     }
@@ -174,34 +168,5 @@ public class RecyclerViewAdapter
         return MainActivity.birthdaysList.size();
     }
 
-    /**
-     * ViewHolder class to hold view references to be used in recyclerview.
-     */
-    public final static class ListItemViewHolder extends RecyclerView.ViewHolder {
 
-
-        // TextView references
-        TextView textDateDay;
-        TextView textDateMonth;
-        TextView textName;
-        TextView textAge;
-        TextView textDaysRemaining;
-        ImageView imageAlarm;
-        View container;
-        Typeface typeLight;
-
-        public ListItemViewHolder(View itemView) {
-            super(itemView);
-
-            // Set up references
-            container = itemView.findViewById(R.id.list_container);
-            textName = (TextView) itemView.findViewById(R.id.name);
-            textDaysRemaining = (TextView) itemView.findViewById(R.id.days_remaining);
-            textAge = (TextView) itemView.findViewById(R.id.textViewAge);
-            textDateDay = (TextView) itemView.findViewById(R.id.dateDay);
-            textDateMonth = (TextView) itemView.findViewById(R.id.dateMonth);
-            imageAlarm = (ImageView) itemView.findViewById(R.id.alarmImage);
-            typeLight = Typeface.createFromAsset(MainActivity.getAppContext().getResources().getAssets(), "Roboto-Light.ttf");
-        }
-    }
 }

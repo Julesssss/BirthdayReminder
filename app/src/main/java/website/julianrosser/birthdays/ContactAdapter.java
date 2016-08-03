@@ -20,11 +20,11 @@ public class ContactAdapter
 
     ArrayList<Contact> allContacts;
 
-    public ContactAdapter(ArrayList<Contact> contacts) {
-        allContacts = contacts;
-        if (allContacts == null) {
+    public ContactAdapter() {
+//        allContacts = contacts;
+//        if (allContacts == null) {
             allContacts = new ArrayList<>();
-        }
+//        }
     }
 
     @Override
@@ -62,11 +62,12 @@ public class ContactAdapter
 
     @Override
     public int getItemCount() {
-        return MainActivity.birthdaysList.size();
+        return allContacts.size();
     }
 
     public void setData(ArrayList<Contact> contactsList) {
         allContacts = contactsList;
+        notifyDataSetChanged();
     }
 
     /**

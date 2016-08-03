@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/list_container"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/list_height"
+    android:layout_gravity="center_vertical"
+    android:background="?android:attr/selectableItemBackground"
+    android:baselineAligned="false"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/list_item_padding_small"
+    android:paddingRight="@dimen/list_item_padding_small">
+
+    <LinearLayout
+        android:id="@+id/group_1"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:clipToPadding="false"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingEnd="@dimen/list_item_padding_small"
+        android:paddingLeft="@dimen/list_item_padding_small"
+        android:paddingRight="@dimen/list_item_padding_small"
+        android:paddingStart="@dimen/list_item_padding_small">
+
+        <TextView
+            android:id="@+id/dateDay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/day_background"
+            android:elevation="2dp"
+            android:gravity="center"
+            android:paddingLeft="1dp"
+            android:paddingRight="1dp"
+            android:singleLine="true"
+            android:textColor="#fff"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/dateMonth"
+            android:layout_width="36dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="?attr/date_background_accent"
+            android:elevation="2dp"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textColor="#ffffff"
+            android:textSize="17sp" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/alarmImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:paddingBottom="@dimen/alarm_toggle_padding_height"
+        android:paddingEnd="@dimen/alarm_toggle_padding_width"
+        android:paddingLeft="@dimen/alarm_toggle_padding_width"
+        android:paddingRight="@dimen/alarm_toggle_padding_width"
+        android:paddingStart="@dimen/alarm_toggle_padding_width"
+        android:paddingTop="@dimen/alarm_toggle_padding_height"
+        android:scaleX=".85"
+        android:scaleY=".85"
+        android:src="@drawable/ic_alarm_on_white_24dp" />
+
+    <!--<LinearLayout-->
+        <!--android:id="@+id/days_age_layout"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_toLeftOf="@+id/alarmImage"-->
+        <!--android:layout_toStartOf="@+id/alarmImage"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:orientation="vertical"-->
+        <!--android:paddingEnd="8dp"-->
+        <!--android:paddingRight="8dp">-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/textViewAge"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="right"-->
+            <!--android:singleLine="true"-->
+            <!--android:text="42"-->
+            <!--android:textColor="#fff"-->
+            <!--android:layout_marginRight="4dp"-->
+            <!--android:drawablePadding="6dp"-->
+            <!--android:drawableLeft="@drawable/ic_cake_white_18dp"-->
+            <!--android:textSize="15sp"-->
+            <!--android:textStyle="bold" />-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/days_remaining"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:singleLine="true"-->
+            <!--android:textColor="#fff"-->
+            <!--android:textSize="14sp" />-->
+
+    <!--</LinearLayout>-->
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_toEndOf="@id/group_1"
+        android:layout_toRightOf="@id/group_1"
+        android:layout_toLeftOf="@id/days_age_layout"
+        android:layout_toStartOf="@id/days_age_layout"
+        android:gravity="center_vertical"
+        android:paddingEnd="@dimen/prevent_name_overlap_margin"
+        android:paddingLeft="@dimen/list_item_name_padding"
+        android:paddingRight="@dimen/prevent_name_overlap_margin"
+        android:paddingStart="@dimen/list_item_name_padding"
+        android:singleLine="true"
+        android:textColor="#fff"
+        android:textSize="20sp" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:background="#1effffff" />
+
+</RelativeLayout>

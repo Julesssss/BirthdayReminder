@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
     public static ArrayList<Birthday> birthdaysList = new ArrayList<>();
     public static Tracker mTracker;
     public static int INTENT_FROM_NOTIFICATION = 30;
-    public static int CONTACT_PERMISSION_CODE = 333;
+    public static int CONTACT_PERMISSION_CODE = 3;
     static String INTENT_FROM_KEY = "intent_from_key";
     static RecyclerListFragment recyclerListFragment;
     static MainActivity mContext;
@@ -147,9 +147,9 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
 
         // Get users sort preference
         if (Integer.valueOf(sharedPref.getString(getAppContext().getString(R.string.pref_sort_by_key), "0")) == 1) {
-            RecyclerViewAdapter.sortBirthdaysByName();
+            BirthdayViewAdapter.sortBirthdaysByName();
         } else {
-            RecyclerViewAdapter.sortBirthdaysByDate();
+            BirthdayViewAdapter.sortBirthdaysByDate();
         }
 
         if (floatingActionButton != null && floatingActionButton.getVisibility() == View.INVISIBLE) {
@@ -406,10 +406,10 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
                     if (Integer.valueOf(sharedPref.getString(getAppContext().getString(R.string.pref_sort_by_key), "0")) != 1) {
 
                         // PREF SORT: DATE
-                        if (RecyclerViewAdapter.willChangeDateOrder(birthday)) {
+                        if (BirthdayViewAdapter.willChangeDateOrder(birthday)) {
 
                             // Order will change, sort, then notify adapter of move
-                            RecyclerViewAdapter.sortBirthdaysByDate();
+                            BirthdayViewAdapter.sortBirthdaysByDate();
                             RecyclerListFragment.mAdapter.notifyItemMoved(position, birthdaysList.indexOf(birthday));
 
                         } else {
@@ -420,10 +420,10 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
                     } else {
 
                         // PREF SORT: NAME. If order changes, sort the notify adapter
-                        if (RecyclerViewAdapter.willChangeNameOrder(birthday)) {
+                        if (BirthdayViewAdapter.willChangeNameOrder(birthday)) {
 
                             // Order will change, sort, then notify adapter of move
-                            RecyclerViewAdapter.sortBirthdaysByName();
+                            BirthdayViewAdapter.sortBirthdaysByName();
                             RecyclerListFragment.mAdapter.notifyItemMoved(position, birthdaysList.indexOf(birthday));
 
                         } else {
@@ -459,9 +459,9 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
 
                     // Get users sort preference
                     if (Integer.valueOf(sharedPref.getString(getAppContext().getString(R.string.pref_sort_by_key), "0")) == 1) {
-                        RecyclerViewAdapter.sortBirthdaysByName();
+                        BirthdayViewAdapter.sortBirthdaysByName();
                     } else {
-                        RecyclerViewAdapter.sortBirthdaysByDate();
+                        BirthdayViewAdapter.sortBirthdaysByDate();
                     }
 
                     RecyclerListFragment.mAdapter.notifyItemInserted(birthdaysList.indexOf(birthday));
@@ -533,9 +533,9 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
 
                                         // Get users sort preference
                                         if (Integer.valueOf(sharedPref.getString(getAppContext().getString(R.string.pref_sort_by_key), "0")) == 1) {
-                                            RecyclerViewAdapter.sortBirthdaysByName();
+                                            BirthdayViewAdapter.sortBirthdaysByName();
                                         } else {
-                                            RecyclerViewAdapter.sortBirthdaysByDate();
+                                            BirthdayViewAdapter.sortBirthdaysByDate();
                                         }
 
                                         RecyclerListFragment.mAdapter.notifyItemInserted(birthdaysList.indexOf(birthdayToDelete));
@@ -595,6 +595,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
     }
 
     // Set theme based on users preference
+    // todo - refactor
     public void setTheme() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
@@ -699,8 +700,6 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
             // app-defined int constant. The callback method gets the
             // result of the request.
         } else {
-            //
-            Toast.makeText(this, "ENABLED :)", Toast.LENGTH_SHORT).show();
             launchImportContactActivity();
         }
     }
@@ -712,14 +711,13 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
             // If request is cancelled, the result arrays are empty.
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                Toast.makeText(this, "PERMISSION GRANTED :)", Toast.LENGTH_SHORT).show();
                 launchImportContactActivity();
 
             } else {
                 // permission denied, boo! Disable the
                 // functionality that depends on this permission.
-                Toast.makeText(this, "PERMISSION DENIED :)", Toast.LENGTH_SHORT).show();
+                // todo - string
+                Toast.makeText(this, "Permission needed to load contacts", Toast.LENGTH_SHORT).show();
             }
         }
     }

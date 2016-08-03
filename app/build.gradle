@@ -6,7 +6,7 @@ android {
     buildToolsVersion "22.0.1"
 
     defaultConfig {
-        applicationId "website.julianrosser.birthdays"
+        applicationId "website.julianrosser.birthdays.dev"
         minSdkVersion 11
         targetSdkVersion 23
         versionCode 230
@@ -37,4 +37,5 @@ dependencies {
     compile 'com.android.support:design:23.1.1'
     compile 'com.google.android.gms:play-services-appindexing:8.3.0'
     compile 'com.google.android.gms:play-services-analytics:8.3.0'
+    compile 'org.greenrobot:eventbus:3.0.0'
 }

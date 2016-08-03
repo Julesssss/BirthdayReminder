@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -21,23 +21,30 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <!-- Use standard android.R class list id instead of app specific id. This is just useful for
-         consistency. -->
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <!-- TODO - REMOVE TEXT STRING
-    Use standard android.R class empty id instead of app specific id. This is just useful for
-     consistency. -->
-    <TextView
-        android:id="@+id/android:empty"
+    <FrameLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fontFamily="sans-serif-light"
-        android:gravity="center"
-        android:text="No Contacts"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-</FrameLayout>
+    <!--&lt;!&ndash; Use standard android.R class list id instead of app specific id. This is just useful for-->
+         <!--consistency. &ndash;&gt;-->
+    <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/recyclerView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_marginTop="?android:attr/actionBarSize" />-->
+
+    <!--&lt;!&ndash; TODO - REMOVE TEXT STRING-->
+    <!--Use standard android.R class empty id instead of app specific id. This is just useful for-->
+     <!--consistency. &ndash;&gt;-->
+    <!--<TextView-->
+        <!--android:id="@+id/empty_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:fontFamily="sans-serif-light"-->
+        <!--android:gravity="center"-->
+        <!--android:text="No Contacts found with birthday information"-->
+        <!--android:textAppearance="?android:attr/textAppearanceLarge" />-->
+
+</android.support.design.widget.CoordinatorLayout>

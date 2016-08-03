@@ -7,18 +7,21 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.widget.LinearLayout;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+
+import website.julianrosser.birthdays.events.ContactsLoadedEvent;
 
 public class ImportContactsActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
     private ContactAdapter mContactAdapter;
+    private ImportContactFragment recyclerListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,39 +36,29 @@ public class ImportContactsActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayout.HORIZONTAL, false));
 
-        loadContacts();
+        // Create new RecyclerListFragment
+        recyclerListFragment = ImportContactFragment.newInstance();
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.container, recyclerListFragment)
+                .commit();
+        recyclerListFragment.setRetainInstance(true);
     }
 
-    private void loadContacts() {
-        ArrayList<Contact> contactsList = new ArrayList<>();
-        ContentResolver cr = getContentResolver();
-        Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
-                null, null, null, null);
-        if (cur != null && cur.getCount() > 0) {
-            while (cur.moveToNext()) {
-                String id = cur.getString(
-                        cur.getColumnIndex(ContactsContract.Contacts._ID));
-                String name = cur.getString(
-                        cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-                ContentResolver bd = getContentResolver();
-                Cursor bdc = bd.query(android.provider.ContactsContract.Data.CONTENT_URI, new String[] { ContactsContract.CommonDataKinds.Event.DATA }, android.provider.ContactsContract.Data.CONTACT_ID+" = "+id+" AND "+ ContactsContract.Contacts.Data.MIMETYPE+" = '"+ ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE+"' AND "+ ContactsContract.CommonDataKinds.Event.TYPE+" = "+ ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY, null, android.provider.ContactsContract.Data.DISPLAY_NAME);
-                if (bdc != null && bdc.getCount() > 0) {
-                    while (bdc.moveToNext()) {
-                        String birthday = bdc.getString(0);
-                        Log.i(getClass().getSimpleName(), "Name: " + name + "  //  Birth: " + birthday);
-                        // now "id" is the user's unique ID, "name" is his full name and "birthday" is the date and time of his birth
-                        Contact con = new Contact(name, birthday);
-                        contactsList.add(con);
-                    }
-                }
-            }
-        }
-        mContactAdapter = new ContactAdapter(contactsList);
-        mRecyclerView.setAdapter(mContactAdapter);
-    }
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        EventBus.getDefault().register(this);
+//    }
+//
+//    @Override
+//    public void onPause() {
+//        EventBus.getDefault().unregister(this);
+//        super.onPause();
+//    }
+
+
 
 
     // Set Activity theme depending on user preference
