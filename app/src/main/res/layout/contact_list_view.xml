@@ -54,7 +54,7 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/alarmImage"
+        android:id="@+id/addImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -68,51 +68,15 @@
         android:paddingTop="@dimen/alarm_toggle_padding_height"
         android:scaleX=".85"
         android:scaleY=".85"
-        android:src="@drawable/ic_alarm_on_white_24dp" />
-
-    <!--<LinearLayout-->
-        <!--android:id="@+id/days_age_layout"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_toLeftOf="@+id/alarmImage"-->
-        <!--android:layout_toStartOf="@+id/alarmImage"-->
-        <!--android:gravity="center_vertical"-->
-        <!--android:orientation="vertical"-->
-        <!--android:paddingEnd="8dp"-->
-        <!--android:paddingRight="8dp">-->
-
-        <!--<TextView-->
-            <!--android:id="@+id/textViewAge"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="right"-->
-            <!--android:singleLine="true"-->
-            <!--android:text="42"-->
-            <!--android:textColor="#fff"-->
-            <!--android:layout_marginRight="4dp"-->
-            <!--android:drawablePadding="6dp"-->
-            <!--android:drawableLeft="@drawable/ic_cake_white_18dp"-->
-            <!--android:textSize="15sp"-->
-            <!--android:textStyle="bold" />-->
-
-        <!--<TextView-->
-            <!--android:id="@+id/days_remaining"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:singleLine="true"-->
-            <!--android:textColor="#fff"-->
-            <!--android:textSize="14sp" />-->
-
-    <!--</LinearLayout>-->
+        android:src="@drawable/ic_add_circle_outline_white_24dp" />
 
     <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_toEndOf="@id/group_1"
-        android:layout_toRightOf="@id/group_1"
         android:layout_toLeftOf="@id/days_age_layout"
+        android:layout_toRightOf="@id/group_1"
         android:layout_toStartOf="@id/days_age_layout"
         android:gravity="center_vertical"
         android:paddingEnd="@dimen/prevent_name_overlap_margin"

@@ -8,36 +8,29 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.analytics.HitBuilders;
-
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 public class ContactAdapter
         extends RecyclerView.Adapter
-        <ContactAdapter.ListItemViewHolder> {
+        <ContactAdapter.ContactViewHolder> {
 
     ArrayList<Contact> allContacts;
 
     public ContactAdapter() {
-//        allContacts = contacts;
-//        if (allContacts == null) {
             allContacts = new ArrayList<>();
-//        }
     }
 
     @Override
-    public ListItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public ContactViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View itemView = LayoutInflater.
                 from(viewGroup.getContext()).
-                inflate(R.layout.birthday_list_view, viewGroup, false);
+                inflate(R.layout.contact_list_view, viewGroup, false);
 
-        return new ListItemViewHolder(itemView);
+        return new ContactViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(final ListItemViewHolder viewHolder, final int position) {
+    public void onBindViewHolder(final ContactViewHolder viewHolder, final int position) {
         // Get reference to birthday
         if (allContacts.size() <= position) {
             return;
@@ -48,14 +41,13 @@ public class ContactAdapter
         viewHolder.container.setVisibility(View.VISIBLE);
 
         // Pass data to the TextViews
-        viewHolder.textName.setText(contact.getName());
-        viewHolder.textDaysRemaining.setText(contact.getBirthday());
-//        viewHolder.textDateDay.setText(contact.getBirthDay());
+        viewHolder.textName.setText(contact.getName() + " - " + contact.getBirthday());
+//        viewHolder.textDateDay.setText(contact.);
 //        viewHolder.textDateMonth.setText(contact.getBirthMonth());
     }
 
     @Override
-    public void onViewRecycled(ListItemViewHolder holder) {
+    public void onViewRecycled(ContactViewHolder holder) {
         holder.itemView.setOnLongClickListener(null);
         super.onViewRecycled(holder);
     }
@@ -73,31 +65,33 @@ public class ContactAdapter
     /**
      * ViewHolder class to hold view references to be used in recyclerview.
      */
-    public final static class ListItemViewHolder extends RecyclerView.ViewHolder {
-
+    public final class ContactViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         // TextView references
         TextView textDateDay;
         TextView textDateMonth;
         TextView textName;
-        TextView textAge;
-        TextView textDaysRemaining;
-        ImageView imageAlarm;
+        ImageView imageAdd;
         View container;
         Typeface typeLight;
 
-        public ListItemViewHolder(View itemView) {
+        public ContactViewHolder(View itemView) {
             super(itemView);
 
             // Set up references
             container = itemView.findViewById(R.id.list_container);
             textName = (TextView) itemView.findViewById(R.id.name);
-            textDaysRemaining = (TextView) itemView.findViewById(R.id.days_remaining);
-            textAge = (TextView) itemView.findViewById(R.id.textViewAge);
             textDateDay = (TextView) itemView.findViewById(R.id.dateDay);
             textDateMonth = (TextView) itemView.findViewById(R.id.dateMonth);
-            imageAlarm = (ImageView) itemView.findViewById(R.id.alarmImage);
+            imageAdd = (ImageView) itemView.findViewById(R.id.addImage);
+            imageAdd.setOnClickListener(this);
             typeLight = Typeface.createFromAsset(MainActivity.getAppContext().getResources().getAssets(), "Roboto-Light.ttf");
+        }
+
+        @Override
+        public void onClick(View v) {
+//            v.getTag();
+
         }
     }
 }
