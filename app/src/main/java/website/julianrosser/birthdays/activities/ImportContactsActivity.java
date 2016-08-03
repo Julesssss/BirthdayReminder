@@ -1,21 +1,15 @@
-package website.julianrosser.birthdays;
+package website.julianrosser.birthdays.activities;
 
-import android.content.ContentResolver;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 
-import org.greenrobot.eventbus.EventBus;
-
-import java.util.ArrayList;
-
-import website.julianrosser.birthdays.events.ContactsLoadedEvent;
+import website.julianrosser.birthdays.adapter.ContactAdapter;
+import website.julianrosser.birthdays.R;
+import website.julianrosser.birthdays.fragments.ImportContactFragment;
 
 public class ImportContactsActivity extends AppCompatActivity {
 

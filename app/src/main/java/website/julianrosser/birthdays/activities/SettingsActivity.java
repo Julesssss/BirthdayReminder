@@ -1,4 +1,4 @@
-package website.julianrosser.birthdays;
+package website.julianrosser.birthdays.activities;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -19,6 +19,10 @@ import android.view.View;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+
+import website.julianrosser.birthdays.recievers.NotificationBuilderReceiver;
+import website.julianrosser.birthdays.R;
+import website.julianrosser.birthdays.services.SetAlarmsService;
 
 public class SettingsActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package website.julianrosser.birthdays;
+package website.julianrosser.birthdays.services;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -22,6 +22,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
+
+import website.julianrosser.birthdays.recievers.NotificationBuilderReceiver;
+import website.julianrosser.birthdays.R;
+import website.julianrosser.birthdays.activities.MainActivity;
+import website.julianrosser.birthdays.model.Birthday;
 
 /**
  * This service sets notifications alarms for each birthday.

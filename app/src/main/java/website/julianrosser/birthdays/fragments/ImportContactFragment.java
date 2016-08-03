@@ -1,4 +1,4 @@
-package website.julianrosser.birthdays;
+package website.julianrosser.birthdays.fragments;
 
 
 import android.content.ContentResolver;
@@ -21,7 +21,11 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 
-import website.julianrosser.birthdays.events.ContactsLoadedEvent;
+import website.julianrosser.birthdays.model.Contact;
+import website.julianrosser.birthdays.adapter.ContactAdapter;
+import website.julianrosser.birthdays.activities.MainActivity;
+import website.julianrosser.birthdays.R;
+import website.julianrosser.birthdays.model.events.ContactsLoadedEvent;
 
 /**
  * Main view. Fragment which

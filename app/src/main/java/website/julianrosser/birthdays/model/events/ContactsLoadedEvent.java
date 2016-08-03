@@ -1,8 +1,8 @@
-package website.julianrosser.birthdays.events;
+package website.julianrosser.birthdays.model.events;
 
 import java.util.ArrayList;
 
-import website.julianrosser.birthdays.Contact;
+import website.julianrosser.birthdays.model.Contact;
 
 public class ContactsLoadedEvent {
 

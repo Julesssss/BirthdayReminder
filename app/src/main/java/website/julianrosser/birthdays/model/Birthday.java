@@ -1,4 +1,4 @@
-package website.julianrosser.birthdays;
+package website.julianrosser.birthdays.model;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -14,6 +14,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+
+import website.julianrosser.birthdays.R;
+import website.julianrosser.birthdays.activities.MainActivity;
 
 @SuppressWarnings("deprecation")
 public class Birthday {
@@ -147,7 +150,6 @@ public class Birthday {
         } else {
             return MainActivity.getAppContext().getResources().getDrawable(R.drawable.ic_alarm_off_white_24dp);
         }
-
     }
 
     public boolean toggleReminder() {
@@ -155,6 +157,7 @@ public class Birthday {
         return remind;
     }
 
+    // Refactoring
     public String getBirthMonth() {
         return (String) DateFormat.format("MMM", date);
     }
@@ -269,6 +272,7 @@ public class Birthday {
         return millisNow > millisBDAY + DAY_IN_MILLIS;
     }
 
+    // todo - refactor
     private String getDateSuffix() {
         // d stands for date of birthday
         int d = this.getDate().getDate();

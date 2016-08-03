@@ -1,4 +1,4 @@
-package website.julianrosser.birthdays.DialogFragments;
+package website.julianrosser.birthdays.fragments.DialogFragments;
 
 
 import android.app.Activity;
@@ -15,7 +15,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.view.ContextThemeWrapper;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;

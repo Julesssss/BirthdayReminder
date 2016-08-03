@@ -25,7 +25,7 @@
 
         <!-- Main Activity -->
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask">
             <intent-filter>
@@ -51,39 +51,39 @@
         </activity>
 
         <!-- Boot BroadcastReceiver -->
-        <receiver android:name=".BootBroadcastReceiver">
+        <receiver android:name=".recievers.BootBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".NotificationBuilderReceiver" />
+        <receiver android:name=".recievers.NotificationBuilderReceiver" />
 
-        <service android:name=".SetAlarmsService" />
+        <service android:name=".services.SetAlarmsService" />
 
         <activity
-            android:name=".SettingsActivity"
+            android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".activities.MainActivity" />
         </activity>
         <activity
-            android:name=".HelpActivity"
+            android:name=".activities.HelpActivity"
             android:label="@string/title_activity_help"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".activities.MainActivity" />
         </activity>
         <activity
-            android:name=".ImportContactsActivity"
+            android:name=".activities.ImportContactsActivity"
             android:label="@string/action_import_contacts"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".activities.MainActivity" />
         </activity>
     </application>
 

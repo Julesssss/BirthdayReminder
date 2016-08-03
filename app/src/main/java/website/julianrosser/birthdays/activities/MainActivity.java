@@ -1,4 +1,4 @@
-package website.julianrosser.birthdays;
+package website.julianrosser.birthdays.activities;
 
 import android.Manifest;
 import android.app.AlarmManager;
@@ -43,18 +43,26 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 
-import website.julianrosser.birthdays.DialogFragments.AddEditFragment;
-import website.julianrosser.birthdays.DialogFragments.ItemOptionsFragment;
+import website.julianrosser.birthdays.model.Birthday;
+import website.julianrosser.birthdays.BirthdayReminder;
+import website.julianrosser.birthdays.adapter.BirthdayViewAdapter;
+import website.julianrosser.birthdays.model.tasks.LoadBirthdaysTask;
+import website.julianrosser.birthdays.recievers.NotificationBuilderReceiver;
+import website.julianrosser.birthdays.R;
+import website.julianrosser.birthdays.services.SetAlarmsService;
+import website.julianrosser.birthdays.fragments.DialogFragments.AddEditFragment;
+import website.julianrosser.birthdays.fragments.DialogFragments.ItemOptionsFragment;
+import website.julianrosser.birthdays.fragments.RecyclerListFragment;
 
 @SuppressWarnings("deprecation")
 public class MainActivity extends AppCompatActivity implements AddEditFragment.NoticeDialogListener, ItemOptionsFragment.ItemOptionsListener {
 
-    static final String FILENAME = "birthdays.json";
+    public static final String FILENAME = "birthdays.json";
     public static ArrayList<Birthday> birthdaysList = new ArrayList<>();
     public static Tracker mTracker;
     public static int INTENT_FROM_NOTIFICATION = 30;
     public static int CONTACT_PERMISSION_CODE = 3;
-    static String INTENT_FROM_KEY = "intent_from_key";
+    public static String INTENT_FROM_KEY = "intent_from_key";
     static RecyclerListFragment recyclerListFragment;
     static MainActivity mContext;
     static Context mAppContext;

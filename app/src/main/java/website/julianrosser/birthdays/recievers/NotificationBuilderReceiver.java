@@ -1,4 +1,4 @@
-package website.julianrosser.birthdays;
+package website.julianrosser.birthdays.recievers;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -15,6 +15,9 @@ import android.support.v4.content.WakefulBroadcastReceiver;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+
+import website.julianrosser.birthdays.R;
+import website.julianrosser.birthdays.activities.MainActivity;
 
 public class NotificationBuilderReceiver extends WakefulBroadcastReceiver {
 
@@ -43,6 +46,7 @@ public class NotificationBuilderReceiver extends WakefulBroadcastReceiver {
         // Intent which opens App when notification is clicked
         Intent mNotificationIntent = new Intent(context, MainActivity.class);
 
+        // todo - refactor to Constants - INTERNT_FROM_KEY
         mNotificationIntent.putExtra(MainActivity.INTENT_FROM_KEY, MainActivity.INTENT_FROM_NOTIFICATION);
 
         // Use Intent and other information to build PendingIntent

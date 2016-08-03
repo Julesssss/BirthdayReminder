@@ -1,4 +1,4 @@
-package website.julianrosser.birthdays.DialogFragments;
+package website.julianrosser.birthdays.fragments.DialogFragments;
 
 
 import android.app.Activity;
@@ -24,7 +24,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import website.julianrosser.birthdays.MainActivity;
+import website.julianrosser.birthdays.activities.MainActivity;
 import website.julianrosser.birthdays.R;
 
 public class ItemOptionsFragment extends DialogFragment {

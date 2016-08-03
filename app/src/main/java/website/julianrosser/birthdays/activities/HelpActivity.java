@@ -1,4 +1,4 @@
-package website.julianrosser.birthdays;
+package website.julianrosser.birthdays.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,6 +14,9 @@ import android.view.View;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+
+import website.julianrosser.birthdays.BuildConfig;
+import website.julianrosser.birthdays.R;
 
 public class HelpActivity extends AppCompatActivity {
 

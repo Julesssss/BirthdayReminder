@@ -1,4 +1,4 @@
-package website.julianrosser.birthdays;
+package website.julianrosser.birthdays.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +10,12 @@ import com.google.android.gms.analytics.HitBuilders;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+
+import website.julianrosser.birthdays.model.Birthday;
+import website.julianrosser.birthdays.R;
+import website.julianrosser.birthdays.activities.MainActivity;
+import website.julianrosser.birthdays.fragments.RecyclerListFragment;
+import website.julianrosser.birthdays.viewholder.BirthdayViewHolder;
 
 public class BirthdayViewAdapter extends RecyclerView.Adapter<BirthdayViewHolder> {
 
@@ -37,63 +43,16 @@ public class BirthdayViewAdapter extends RecyclerView.Adapter<BirthdayViewHolder
     public void onBindViewHolder(final BirthdayViewHolder viewHolder, final int position) {
         // Get reference to birthday
         final Birthday birthday = MainActivity.birthdaysList.get(position);
-
-        viewHolder.container.setVisibility(View.VISIBLE);
-
+        viewHolder.setTag(birthday);
+        viewHolder.showView();
         // Pass data to the TextViews
-        viewHolder.textName.setText(birthday.getName());
-        viewHolder.textDaysRemaining.setText(birthday.getFormattedDaysRemainingString());
-        viewHolder.textDateDay.setText(birthday.getBirthDay());
-        viewHolder.textDateMonth.setText(birthday.getBirthMonth());
+        viewHolder.setText(birthday.getName());
+        viewHolder.setDaysRemaining(birthday.getFormattedDaysRemainingString());
+        viewHolder.setBirthday(birthday.getBirthDay(), birthday.getBirthMonth());
+        viewHolder.displayAgeIfNeeded(birthday.shouldIncludeYear(), birthday.getYear(), birthday.getAge());
+        viewHolder.setImageIcon(birthday.getRemindAlarmDrawable());
+        viewHolder.setImageClickListener();
 
-        // Should display age?
-        if (birthday.shouldIncludeYear()) {
-            viewHolder.textAge.setVisibility(View.VISIBLE);
-        } else {
-            viewHolder.textAge.setVisibility(View.GONE);
-        }
-
-        if (birthday.getYear() != 0) {
-            viewHolder.textAge.setText(birthday.getAge());
-        } else {
-            // don't show age field
-            viewHolder.textAge.setText("NA");
-        }
-
-        // Set correct icon depending on Alarm on or off
-        viewHolder.imageAlarm.setImageDrawable(birthday.getRemindAlarmDrawable());
-        viewHolder.imageAlarm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                // Change birthdays remind bool
-                birthday.toggleReminder();
-
-                // Get correct position, as deleted views may have altered pos int
-                int currentPosition = RecyclerListFragment.recyclerView.getChildAdapterPosition(viewHolder.itemView);
-
-                MainActivity.mTracker.send(new HitBuilders.EventBuilder()
-                        .setCategory("Action")
-                        .setAction("Toggle Alarm ICON")
-                        .build());
-
-                // Callback to MainActivity.
-                MainActivity.getContext().alarmToggled(currentPosition);
-            }
-        });
-
-        // When item is clicked, show context menu for that item
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                // Get actual position, accounting for deletion
-                int currentPosition = RecyclerListFragment.recyclerView.getChildAdapterPosition(viewHolder.itemView);
-
-                // Open ItemOption menu for selected birthday
-                MainActivity.getContext().showItemOptionsFragment(currentPosition);
-            }
-        });
     }
 
     @Override
