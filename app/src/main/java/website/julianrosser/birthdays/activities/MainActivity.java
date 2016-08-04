@@ -400,7 +400,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         if (addEditMode == AddEditFragment.MODE_EDIT) {
             // Edit text
             birthday = birthdaysList.get(position);
-            birthday.edit(name, dateOfBirth, true, includeYear, getApplicationContext());
+            birthday.edit(name, dateOfBirth, true, includeYear);
 
             mContext.runOnUiThread(new Runnable() {
                 @Override
@@ -456,7 +456,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
 
         } else {
             // Create birthday, add to array and notify adapter
-            birthday = new Birthday(name, dateOfBirth, true, includeYear, getApplicationContext());
+            birthday = new Birthday(name, dateOfBirth, true, includeYear);
             birthdaysList.add(birthday);
 
             // Notify adapter
@@ -471,7 +471,6 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
                     } else {
                         BirthdayViewAdapter.sortBirthdaysByDate();
                     }
-
                     RecyclerListFragment.mAdapter.notifyItemInserted(birthdaysList.indexOf(birthday));
                     RecyclerListFragment.showEmptyMessageIfRequired();
                 }
@@ -482,17 +481,17 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
                     .setAction("New Birthday")
                     .build());
 
-            mTracker.send(new HitBuilders.EventBuilder()
-                    .setCategory("Data")
-                    .setAction("Name")
-                    .setLabel(name)
-                    .build());
+//            mTracker.send(new HitBuilders.EventBuilder()
+//                    .setCategory("Data")
+//                    .setAction("Name")
+//                    .setLabel(name)
+//                    .build());
 
-            mTracker.send(new HitBuilders.EventBuilder()
-                    .setCategory("Data")
-                    .setAction("Date")
-                    .setLabel(dateOfBirth.getDate() + " / " + dateOfBirth.getMonth())
-                    .build());
+//            mTracker.send(new HitBuilders.EventBuilder()
+//                    .setCategory("Data")
+//                    .setAction("Date")
+//                    .setLabel(dateOfBirth.getDate() + " / " + dateOfBirth.getMonth())
+//                    .build());
         }
 
         try {
@@ -672,8 +671,8 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
 
         // Notify user of change. If birthday is today, let user know alarm is set for next year
         if (birthday.getDaysBetween() == 0 && birthday.getRemind()) {
-            Snackbar.make(floatingActionButton, BirthdayReminder.getInstance().getString(R.string.reminder_for) + birthday.getName() + " " +
-                    birthday.getReminderString() + BirthdayReminder.getInstance().getString(R.string.for_next_year), Snackbar.LENGTH_LONG).show();
+            Snackbar.make(floatingActionButton, floatingActionButton.getContext().getString(R.string.reminder_for) + birthday.getName() + " " +
+                    birthday.getReminderString() + floatingActionButton.getContext().getString(R.string.for_next_year), Snackbar.LENGTH_LONG).show();
         } else {
             Snackbar.make(floatingActionButton, MainActivity.getAppContext().getString(R.string.reminder_for) + birthday.getName() + " " +
                     birthday.getReminderString(), Snackbar.LENGTH_LONG).show();
@@ -712,6 +711,16 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         }
     }
 
+    public static boolean isContactAlreadyAdded(Birthday contact) {
+        boolean onList = false;
+        for (Birthday b : birthdaysList) {
+            if (b.getName().equals(contact.getName())) {
+                onList = true;
+            }
+        }
+        return onList;
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
@@ -725,7 +734,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
                 // permission denied, boo! Disable the
                 // functionality that depends on this permission.
                 // todo - string
-                Toast.makeText(this, "Permission needed to load contacts", Toast.LENGTH_SHORT).show();
+                Snackbar.make(floatingActionButton, "Permission needed to load contacts", Snackbar.LENGTH_SHORT).show();
             }
         }
     }

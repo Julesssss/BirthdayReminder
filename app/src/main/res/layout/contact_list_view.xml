@@ -66,8 +66,7 @@
         android:paddingRight="@dimen/alarm_toggle_padding_width"
         android:paddingStart="@dimen/alarm_toggle_padding_width"
         android:paddingTop="@dimen/alarm_toggle_padding_height"
-        android:scaleX=".85"
-        android:scaleY=".85"
+        android:background="?android:attr/selectableItemBackground"
         android:src="@drawable/ic_add_circle_outline_white_24dp" />
 
     <TextView

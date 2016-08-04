@@ -40,17 +40,14 @@ public class Birthday {
     private int yearOfBirth;
     private boolean showYear;
 
-    Context mAppContext;
-
     /**
      * Constructor for creating new birthday.
      */
-    public Birthday(String name, Date dateOfBirthday, boolean notifyUserOfBirthday, boolean includeYear, Context c) {
+    public Birthday(String name, Date dateOfBirthday, boolean notifyUserOfBirthday, boolean includeYear) {
 
         this.name = name;
         this.remind = notifyUserOfBirthday;
         this.date = dateOfBirthday;
-        this.mAppContext = c;
         this.yearOfBirth = dateOfBirthday.getYear();
         this.showYear = includeYear;
     }
@@ -58,11 +55,10 @@ public class Birthday {
     /**
      * For updating Birthday information without creating new
      */
-    public void edit(String editName, Date editDate, boolean editRemind, boolean includeYear, Context c) {
+    public void edit(String editName, Date editDate, boolean editRemind, boolean includeYear) {
 
         this.name = editName;
         this.date = editDate;
-        this.mAppContext = c;
         this.yearOfBirth = editDate.getYear();
         this.showYear = includeYear;
     }

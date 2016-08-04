@@ -41,6 +41,7 @@ public class ContactAdapter
         viewHolder.setTag(contact);
         viewHolder.setName(contact.getName());
         viewHolder.setDate(contact.getBirthday());
+        viewHolder.setImageIcon(contact.getName());
     }
 
     @Override

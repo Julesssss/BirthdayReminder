@@ -2,6 +2,7 @@ package website.julianrosser.birthdays.viewholder;
 
 import android.graphics.Typeface;
 import android.net.ParseException;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
 import android.view.View;
@@ -10,10 +11,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import website.julianrosser.birthdays.R;
+import website.julianrosser.birthdays.Utils;
 import website.julianrosser.birthdays.activities.MainActivity;
+import website.julianrosser.birthdays.model.Birthday;
 import website.julianrosser.birthdays.model.Contact;
 
 /**
@@ -45,7 +49,22 @@ public class ContactViewHolder extends RecyclerView.ViewHolder implements View.O
     @Override
     public void onClick(View v) {
         Contact contact = (Contact) v.getTag();
-        Toast.makeText(v.getContext(), "ADDING " + contact.getName() + " TO BIRTHDAYS...", Toast.LENGTH_SHORT).show();
+
+        Date birthdate = Utils.stringToDate(contact.getBirthday());
+        if ((birthdate.getYear() + 1900) < 1902) {
+            birthdate.setYear(1990);
+        } else {
+            birthdate.setYear(birthdate.getYear() + 1900);
+        }
+        Birthday birthday = new Birthday(contact.getName(), birthdate, true, false);
+
+        if (MainActivity.isContactAlreadyAdded(birthday)) { // todo - string
+            Snackbar.make(container, contact.getName() + " has already been added", Snackbar.LENGTH_SHORT).show();
+        } else {
+            MainActivity.birthdaysList.add(birthday);
+            Snackbar.make(container, "Added " + contact.getName(), Snackbar.LENGTH_SHORT).show();
+            setImageIcon(birthday.getName());
+        }
     }
 
     public void setName(String name) {
@@ -58,22 +77,9 @@ public class ContactViewHolder extends RecyclerView.ViewHolder implements View.O
     }
 
     public void setDate(String birthday) {
-        stringToDate(birthday);
-    }
-
-    private String stringToDate(String birthdayString) {
-        Date date = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            date = format.parse(birthdayString);
-            System.out.println(date);
-        } catch (java.text.ParseException e) {
-            e.printStackTrace();
-        }
-        textDateDay.setText("" + getBirthDay(date));
-        textDateMonth.setText("" + getBirthMonth(date));
-
-        return null;
+        Date birthdate = Utils.stringToDate(birthday);
+        textDateDay.setText("" + getBirthDay(birthdate));
+        textDateMonth.setText("" + getBirthMonth(birthdate));
     }
 
     public String getBirthMonth(Date date) {
@@ -100,5 +106,17 @@ public class ContactViewHolder extends RecyclerView.ViewHolder implements View.O
         } else {
             return "th";
         }
+    }
+
+    public void setImageIcon(String name) {
+        ArrayList<Birthday> birthdaysList = MainActivity.birthdaysList;
+
+        for (Birthday birthday : birthdaysList) {
+            if (birthday.getName().equals(name)) {
+                imageAdd.setImageDrawable(imageAdd.getContext().getResources().getDrawable(R.drawable.ic_done_white_24dp));
+                return;
+            }
+        }
+        imageAdd.setImageDrawable(imageAdd.getContext().getResources().getDrawable(R.drawable.ic_add_circle_outline_white_24dp));
     }
 }
