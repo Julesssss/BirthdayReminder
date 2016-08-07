@@ -6,7 +6,7 @@ android {
     buildToolsVersion "22.0.1"
 
     defaultConfig {
-        applicationId "website.julianrosser.birthdays.dev"
+        applicationId "website.julianrosser.birthdays"
         minSdkVersion 11
         targetSdkVersion 23
         versionCode 230
