@@ -86,5 +86,16 @@
     <string name="email_me_text">Primesc ajutor, trimite feedback sau sugerează o caracteristică nouă</string>
     <string name="reminder_for">"memento pentru "</string>
     <string name="for_next_year">" pentru anul viitor"</string>
+    <string name="include_year">Includeți an</string>
+    <string name="deleted">eliminate</string>
+    <string name="undo">anula</string>
+    <string name="contact_already_added">a fost deja adăugat</string>
+    <string name="contact_permission_denied_message">Permisiunea necesară pentru a încărca contacte</string>
+    <string name="import_contacts">contacte de import</string>
+    <string name="no_contacts_found">Nicio persoană de contact găsite</string>
+    <string name="no_contacts_message">Vă rugăm să adăugați informații ziua de naștere la persoanele de contact pentru ei pentru a arăta aici.</string>
+    <string name="added">a adăugat</string>
+    <string name="title_privacy_policy">Politica de confidentialitate</string>
+
 
 </resources>

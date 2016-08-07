@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="?attr/actionBarSize"
+    android:background="?attr/theme_colour">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin_privacy"
+        android:paddingRight="@dimen/activity_horizontal_margin_privacy"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".activities.HelpActivity"
+        tools:showIn="@layout/activity_help">
+
+        <!-- Privacy Summary -->
+        <TextView
+            android:id="@+id/textPrivacySummary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/privacy_margin_large"
+            android:text="@string/privacy_policy_summary"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="@dimen/privacy_text_size_title"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/privacy_margin_smallest"
+            android:text="@string/privacy_title_1"
+            android:textSize="@dimen/privacy_text_size_subtitle"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/privacy_margin_small"
+            android:text="@string/privacy_text_1"
+            android:textSize="@dimen/privacy_text_size_paragraph" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/privacy_margin_smallest"
+            android:text="@string/privacy_title_2"
+            android:textSize="@dimen/privacy_text_size_subtitle"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/privacy_margin_small"
+            android:text="@string/privacy_text_2"
+            android:textSize="@dimen/privacy_text_size_paragraph" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/privacy_margin_smallest"
+            android:text="@string/privacy_title_3"
+            android:textSize="@dimen/privacy_text_size_subtitle"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/privacy_margin_small"
+            android:text="@string/privacy_text_3"
+            android:textSize="@dimen/privacy_text_size_paragraph" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/privacy_margin_smallest"
+            android:text="@string/privacy_title_4"
+            android:textSize="@dimen/privacy_text_size_subtitle"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/privacy_margin_small"
+            android:text="@string/privacy_text_4"
+            android:textSize="@dimen/privacy_text_size_paragraph" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/privacy_margin_smallest"
+            android:text="@string/privacy_title_5"
+            android:textSize="@dimen/privacy_text_size_subtitle"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/privacy_margin_small"
+            android:text="@string/privacy_text_5"
+            android:textSize="@dimen/privacy_text_size_paragraph" />
+
+        <!-- Full Privacy Policy-->
+        <TextView
+            android:id="@+id/textPrivacyFull"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/privacy_margin_large"
+            android:layout_marginTop="8dp"
+            android:text="@string/privacy_policy_summary"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="@dimen/privacy_text_size_title"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/privacy_margin_smallest"
+            android:text="@string/privacy_title_6"
+            android:textSize="@dimen/privacy_text_size_subtitle"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/privacy_margin_small"
+            android:text="@string/privacy_text_6"
+            android:textSize="@dimen/privacy_text_size_paragraph" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/privacy_margin_smallest"
+            android:text="@string/privacy_title_7"
+            android:textSize="@dimen/privacy_text_size_subtitle"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/privacy_margin_small"
+            android:text="@string/privacy_text_7"
+            android:textSize="@dimen/privacy_text_size_paragraph" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/privacy_margin_smallest"
+            android:text="@string/privacy_title_8"
+            android:textSize="@dimen/privacy_text_size_subtitle"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/privacy_margin_small"
+            android:text="@string/privacy_text_8"
+            android:textSize="@dimen/privacy_text_size_paragraph" />
+
+    </LinearLayout>
+
+</ScrollView>

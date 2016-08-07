@@ -1,4 +1,4 @@
-package website.julianrosser.birthdays;
+package website.julianrosser.birthdays.model;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -15,13 +15,19 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import website.julianrosser.birthdays.R;
+import website.julianrosser.birthdays.Utils;
+import website.julianrosser.birthdays.activities.BirthdayListActivity;
+
 @SuppressWarnings("deprecation")
 public class Birthday {
 
     // JSON keys
     private static final String JSON_NAME = "name";
     private static final String JSON_DATE = "date";
+    private static final String JSON_YEAR = "year";
     private static final String JSON_REMIND = "remind";
+    private static final String JSON_SHOW_YEAR = "show_year";
 
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
             "dd.MM.yyyy", Locale.getDefault());
@@ -32,28 +38,30 @@ public class Birthday {
     private String name;
     private Date date;
     private boolean remind;
-
-    Context mAppContext;
+    private int yearOfBirth;
+    private boolean showYear;
 
     /**
      * Constructor for creating new birthday.
      */
-    public Birthday(String name, Date dateOfBirthday, boolean notifyUserOfBirthday, Context c) {
+    public Birthday(String name, Date dateOfBirthday, boolean notifyUserOfBirthday, boolean includeYear) {
 
         this.name = name;
         this.remind = notifyUserOfBirthday;
         this.date = dateOfBirthday;
-        this.mAppContext = c;
+        this.yearOfBirth = dateOfBirthday.getYear();
+        this.showYear = includeYear;
     }
 
     /**
      * For updating Birthday information without creating new
      */
-    public void edit(String editName, Date editDate, boolean editRemind, Context c) {
+    public void edit(String editName, Date editDate, boolean editRemind, boolean includeYear) {
 
         this.name = editName;
         this.date = editDate;
-        this.mAppContext = c;
+        this.yearOfBirth = editDate.getYear();
+        this.showYear = includeYear;
     }
 
     /**
@@ -67,7 +75,7 @@ public class Birthday {
         }
 
         // Check whether user wants to be reminded for this birthday.
-        remind = !json.has(JSON_REMIND) || json.getBoolean(JSON_REMIND);
+        remind = !json.has(JSON_REMIND) || json.getBoolean(JSON_REMIND );
         // Default to true if not found, log message.
 
         // Date of birthday in millis.
@@ -75,6 +83,14 @@ public class Birthday {
             date = new Date();
             date.setTime(json.getLong(JSON_DATE));
         }
+        // year
+        if (json.has(JSON_YEAR)) {
+            yearOfBirth = json.getInt(JSON_YEAR);
+        } else {
+            yearOfBirth = 1990;
+        }
+        // Should use age?
+        showYear = json.has(JSON_SHOW_YEAR) && json.getBoolean(JSON_SHOW_YEAR);
     }
 
     /**
@@ -84,13 +100,22 @@ public class Birthday {
         JSONObject json = new JSONObject();
         json.put(JSON_NAME, this.getName());
         json.put(JSON_DATE, this.getDate().getTime());
+        json.put(JSON_YEAR, this.getYear());
         json.put(JSON_REMIND, this.getRemind());
+        json.put(JSON_SHOW_YEAR, this.shouldIncludeYear());
         return json;
     }
 
     /**
      * Getters & setters for variables
      */
+    public boolean shouldIncludeYear() {
+        return showYear;
+    }
+
+    public int getYear() {
+        return yearOfBirth;
+    }
 
     public Date getDate() {
         return date;
@@ -110,19 +135,18 @@ public class Birthday {
 
     public String getReminderString() {
         if (remind) {
-            return MainActivity.getAppContext().getString(R.string.reminder_set);
+            return BirthdayListActivity.getAppContext().getString(R.string.reminder_set);
         } else {
-            return MainActivity.getAppContext().getString(R.string.reminder_canceled);
+            return BirthdayListActivity.getAppContext().getString(R.string.reminder_canceled);
         }
     }
 
     public Drawable getRemindAlarmDrawable() {
         if (remind) {
-            return MainActivity.getAppContext().getResources().getDrawable(R.drawable.ic_alarm_on_white_24dp);
+            return BirthdayListActivity.getAppContext().getResources().getDrawable(R.drawable.ic_alarm_on_white_24dp);
         } else {
-            return MainActivity.getAppContext().getResources().getDrawable(R.drawable.ic_alarm_off_white_24dp);
+            return BirthdayListActivity.getAppContext().getResources().getDrawable(R.drawable.ic_alarm_off_white_24dp);
         }
-
     }
 
     public boolean toggleReminder() {
@@ -130,35 +154,36 @@ public class Birthday {
         return remind;
     }
 
+    // Refactoring
     public String getBirthMonth() {
         return (String) DateFormat.format("MMM", date);
     }
 
     public String getBirthDay() {
-        return "" + date.getDate() + getDateSuffix();
+        return "" + date.getDate() + Utils.getDateSuffix(date.getDate());
     }
 
     public String getFormattedDaysRemainingString() {
         int i = getDaysBetween();
 
         if (i == 0) {
-            return WordUtils.capitalize(MainActivity.getAppContext().getString(R.string.date_today) + "!");
+            return WordUtils.capitalize(BirthdayListActivity.getAppContext().getString(R.string.date_today) + "!");
         } else if (i == 1) {
-            return WordUtils.capitalize(MainActivity.getAppContext().getString(R.string.date_tomorrow) + "!");
+            return WordUtils.capitalize(BirthdayListActivity.getAppContext().getString(R.string.date_tomorrow) + "!");
         } else if (i == -1) {
-            return MainActivity.getAppContext().getString(R.string.date_yesterday);
+            return BirthdayListActivity.getAppContext().getString(R.string.date_yesterday);
         } else if (i > 1 && i <= 6) {
             Date newDate = new Date();
             newDate.setTime(getDate().getTime() - DAY_IN_MILLIS);
             return (String) DateFormat.format("EEEE", newDate);
         } else if (i == 7) {
-            return WordUtils.capitalize(MainActivity.getAppContext().getString(R.string.date_week));
+            return WordUtils.capitalize(BirthdayListActivity.getAppContext().getString(R.string.date_week));
         } else if (i < 9) {
-            return " " + String.valueOf(i) + " " + MainActivity.getAppContext().getString(R.string.date_days);
+            return " " + String.valueOf(i) + " " + BirthdayListActivity.getAppContext().getString(R.string.date_days);
         } else if (i > 99) {
-            return "  " + String.valueOf(i) + " " + MainActivity.getAppContext().getString(R.string.date_days);
+            return "  " + String.valueOf(i) + " " + BirthdayListActivity.getAppContext().getString(R.string.date_days);
         } else {
-            return "" + i + " " + MainActivity.getAppContext().getString(R.string.date_days);
+            return "" + i + " " + BirthdayListActivity.getAppContext().getString(R.string.date_days);
         }
     }
 
@@ -244,22 +269,6 @@ public class Birthday {
         return millisNow > millisBDAY + DAY_IN_MILLIS;
     }
 
-    private String getDateSuffix() {
-        // d stands for date of birthday
-        int d = this.getDate().getDate();
-
-        if (d == 11 || d == 12 || d == 13) {
-            return "th";
-        } else if (d % 10 == 1) {
-            return "st";
-        } else if (d % 10 == 2) {
-            return "nd";
-        } else if (d % 10 == 3) {
-            return "rd";
-        } else {
-            return "th";
-        }
-    }
 
     /**
      * Returns a formatted day string built for notification display.
@@ -291,5 +300,32 @@ public class Birthday {
     public static int getDaysBeforeReminderPref(Context c) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(c);
         return Integer.valueOf(sharedPref.getString(c.getString(R.string.pref_days_before_key), "1"));
+    }
+
+
+    public String getAge() {
+        Date birthDate = getDate();
+
+        int year = this.getYear();
+
+        Calendar calendarBirthday = Calendar.getInstance();
+        calendarBirthday.set(year, birthDate.getMonth(), birthDate.getDate());
+
+        Calendar nextBirthdate = Calendar.getInstance();
+        nextBirthdate.set(getYearOfNextBirthday(birthDate), birthDate.getMonth(), birthDate.getDate());
+
+        int age = nextBirthdate.get(Calendar.YEAR) - calendarBirthday.get(Calendar.YEAR);
+
+        if (nextBirthdate.get(Calendar.MONTH) > calendarBirthday.get(Calendar.MONTH) ||
+                (nextBirthdate.get(Calendar.MONTH) == calendarBirthday.get(Calendar.MONTH) &&
+                        nextBirthdate.get(Calendar.DATE) > calendarBirthday.get(Calendar.DATE))) {
+            age--;
+        }
+
+        if (age < 0) {
+            return "N/A";
+        } else {
+            return String.valueOf(age);
+        }
     }
 }

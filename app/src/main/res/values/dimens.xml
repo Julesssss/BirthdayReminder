@@ -6,14 +6,14 @@
     <dimen name="list_height">60dp</dimen>
     <dimen name="list_item_padding">16dp</dimen>
     <dimen name="list_item_padding_small">8dp</dimen>
-    <dimen name="list_item_name_padding">16dp</dimen>
+    <dimen name="list_item_name_padding">8dp</dimen>
     <dimen name="list_date_end_padding">8dp</dimen>
 
 
     <dimen name="alarm_toggle_padding_width">8dp</dimen>
     <dimen name="alarm_toggle_padding_height">8dp</dimen>
 
-    <dimen name="prevent_name_overlap_margin">6dp</dimen>
+    <dimen name="prevent_name_overlap_margin">4dp</dimen>
 
     <!-- FLoating Action Button position -->
     <dimen name="fa_button_margin_right">16dp</dimen>
@@ -24,5 +24,12 @@
     <dimen name="elevation_high">12dp</dimen>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_horizontal_margin_privacy">24dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="privacy_text_size_paragraph">16sp</dimen>
+    <dimen name="privacy_margin_small">16dp</dimen>
+    <dimen name="privacy_text_size_subtitle">18sp</dimen>
+    <dimen name="privacy_text_size_title">23sp</dimen>
+    <dimen name="privacy_margin_large">8dp</dimen>
+    <dimen name="privacy_margin_smallest">4dp</dimen>
 </resources>

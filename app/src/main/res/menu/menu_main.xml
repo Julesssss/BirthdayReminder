@@ -1,7 +1,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".MainActivity">
+    tools:context=".activities.BirthdayListActivity">
+
+    <item
+        android:id="@+id/action_import_contacts"
+        android:orderInCategory="260"
+        android:title="@string/import_contacts"
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/action_settings"
@@ -13,5 +19,10 @@
         android:id="@+id/action_help"
         android:orderInCategory="300"
         android:title="@string/action_help" />
+
+    <item
+        android:id="@+id/action_privacy_policy"
+        android:orderInCategory="320"
+        android:title="@string/title_privacy_policy" />
 
 </menu>

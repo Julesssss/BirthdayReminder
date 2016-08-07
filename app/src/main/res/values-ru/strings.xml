@@ -22,7 +22,7 @@
     <string name="button_negative">Отмена</string>
 
     <string name="birthday">день рождения</string>
-    <string name="date_is"> </string>
+    <string name="date_is">это</string>
     <string name="date_today">Cегодня</string>
     <string name="date_tomorrow">завтра</string>
     <string name="date_week">Следующая неделя</string>
@@ -87,5 +87,16 @@
     <string name="email_me_text">Получите помощь, отправить отзыв или предложить новую функцию</string>
     <string name="reminder_for">"напоминание "</string>
     <string name="for_next_year">" на следующий год"</string>
+    <string name="include_year">Включают год</string>
+    <string name="deleted">удален</string>
+    <string name="undo">Отмена</string>
+    <string name="no_contacts_message">Пожалуйста, добавьте информацию о дне рождения ваших контактов для них, чтобы показать здесь.</string>
+    <string name="no_contacts_found">Не найдено ни одного контакта</string>
+    <string name="import_contacts">Импортировать контакты</string>
+    <string name="contact_permission_denied_message">Разрешение необходимо загрузить контакты</string>
+    <string name="contact_already_added">уже была добавлена</string>
+    <string name="added">добавленный</string>
+    <string name="title_privacy_policy">политика конфиденциальности</string>
+
 
 </resources>

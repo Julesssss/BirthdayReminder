@@ -1,4 +1,4 @@
-package website.julianrosser.birthdays;
+package website.julianrosser.birthdays.services;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -23,6 +23,12 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
 
+import website.julianrosser.birthdays.Constants;
+import website.julianrosser.birthdays.recievers.NotificationBuilderReceiver;
+import website.julianrosser.birthdays.R;
+import website.julianrosser.birthdays.activities.BirthdayListActivity;
+import website.julianrosser.birthdays.model.Birthday;
+
 /**
  * This service sets notifications alarms for each birthday.
  */
@@ -31,7 +37,6 @@ public class SetAlarmsService extends Service {
     ArrayList<Birthday> mBirthdayList = new ArrayList<>();
 
     long dayInMillis = 86400000l; // / 86,400,000 milliseconds in a day
-
     long hourInMillis = 3600000l; // Amount of milliseconds in an hour
 
     long fullDaysBetweenInMillis, millisExtraAlarmHour, millisRemainingInDay,
@@ -77,6 +82,7 @@ public class SetAlarmsService extends Service {
             }
         }
         // Service has to control its own life cycles, so call stopSelf here
+        mContext = null;
         stopSelf();
     }
 
@@ -87,7 +93,7 @@ public class SetAlarmsService extends Service {
         BufferedReader reader = null;
         try {
             // Open and read the file into a StringBuilder
-            InputStream in = mContext.openFileInput(MainActivity.FILENAME); // Causes crash if no MainActivity??????
+            InputStream in = mContext.openFileInput(Constants.FILENAME);
             reader = new BufferedReader(new InputStreamReader(in));
             StringBuilder jsonString = new StringBuilder();
             String line;
@@ -113,7 +119,7 @@ public class SetAlarmsService extends Service {
     }
 
     @SuppressWarnings("deprecation")
-    private void setAlarm(Birthday b) {
+    private void setAlarm(Birthday birthday) {
         // Get milliseconds remaining in current day
         Date currentTimeDate = new Date();
         int remHour = 23 - currentTimeDate.getHours(); // extra hour
@@ -123,7 +129,7 @@ public class SetAlarmsService extends Service {
                 + (remMinute * 60 * 1000);
 
         // Get days between in milliseconds
-        fullDaysBetweenInMillis = ((b.getDaysBetween() - 1) * dayInMillis);
+        fullDaysBetweenInMillis = ((birthday.getDaysBetween() - 1) * dayInMillis);
 
         // Alarm time in milliseconds
         int hourOfAlarm = getTimeOfReminderPref();
@@ -145,16 +151,16 @@ public class SetAlarmsService extends Service {
         if (alarmDelayInMillis > 0) {
 
             // get unique id for each notification from name
-            int id = b.getName().hashCode();
+            int id = birthday.getName().hashCode();
 
             // CreateIntent to start the AlarmNotificationReceiver
             Intent mNotificationReceiverIntent = new Intent(mContext,
                     NotificationBuilderReceiver.class);
 
             // Build message String
-            String messageString = "" + b.getName() + "'s " + mContext.getResources().getString(R.string.birthday)
+            String messageString = "" + birthday.getName() + "'s " + mContext.getResources().getString(R.string.birthday)
                     + " " + mContext.getResources().getString(R.string.date_is) + " " +
-                    Birthday.getFormattedStringDay(b, mContext);
+                    Birthday.getFormattedStringDay(birthday, mContext);
 
             mNotificationReceiverIntent.putExtra(NotificationBuilderReceiver.STRING_MESSAGE_KEY, messageString);
 

@@ -1,4 +1,4 @@
-package website.julianrosser.birthdays;
+package website.julianrosser.birthdays.activities;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -12,7 +12,6 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
@@ -20,7 +19,11 @@ import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
-public class SettingsActivity extends AppCompatActivity {
+import website.julianrosser.birthdays.R;
+import website.julianrosser.birthdays.recievers.NotificationBuilderReceiver;
+import website.julianrosser.birthdays.services.SetAlarmsService;
+
+public class SettingsActivity extends BaseActivity {
 
     static Context mContext;
     private static Tracker mTracker;
@@ -66,9 +69,9 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        // Detect if Activity is closing, and recreate MainActivity to apply new theme
+        // Detect if Activity is closing, and recreate BirthdayListActivity to apply new theme
         if (this.isFinishing()) {
-            Intent i = new Intent(getApplicationContext(), MainActivity.class);
+            Intent i = new Intent(getApplicationContext(), BirthdayListActivity.class);
             startActivity(i);
         }
     }
@@ -78,13 +81,13 @@ public class SettingsActivity extends AppCompatActivity {
      */
     private static void launchTestNotification() {
 
-        Context context = MainActivity.getAppContext();
+        Context context = BirthdayListActivity.getAppContext();
 
         int PENDING_INTENT_ID = 0;
         int MY_NOTIFICATION_ID = 100;
 
         // Intent which opens App when notification is clicked
-        Intent mNotificationIntent = new Intent(); //(context, MainActivity.class);
+        Intent mNotificationIntent = new Intent(); //(context, BirthdayListActivity.class);
 
         // Use Intent and other information to build PendingIntent
         PendingIntent mContentIntent = PendingIntent.getActivity(context, PENDING_INTENT_ID, // test noti, diff number
@@ -138,8 +141,6 @@ public class SettingsActivity extends AppCompatActivity {
         } else {
             setTheme(R.style.PreferenceThemeGreen);
         }
-
-
     }
 
     synchronized public Tracker getDefaultTracker() {
@@ -159,6 +160,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     /**
+     * todo - REFACTOR
      * Use separate fragment so we can keep the ActionBar
      */
     public static class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceChangeListener, Preference.OnPreferenceClickListener {
@@ -230,9 +232,9 @@ public class SettingsActivity extends AppCompatActivity {
             if (preference.getKey().equals(getString(R.string.pref_theme_key))) {
                 // If theme preference is changed, immediately recreate the activity.
                 getActivity().recreate();
-                // Also remove MainActivity, so it can be recreated to apply theme
-                if (MainActivity.mContext != null) {
-                    MainActivity.mContext.finish();
+                // Also remove BirthdayListActivity, so it can be recreated to apply theme
+                if (BirthdayListActivity.mContext != null) {
+                    BirthdayListActivity.mContext.finish();
                 }
             }
 

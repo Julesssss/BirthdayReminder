@@ -1,8 +1,10 @@
-package website.julianrosser.birthdays;
+package website.julianrosser.birthdays.recievers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+
+import website.julianrosser.birthdays.services.SetAlarmsService;
 
 /**
  * Listen for device restarts, so we can reset all the canceled alarms.

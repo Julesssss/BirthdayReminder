@@ -10,9 +10,12 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <!-- For saving JSON data -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!-- For Analytics-->
+    <!-- For Analytics -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Access to contacts -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
 
     <application
         android:allowBackup="true"
@@ -22,12 +25,11 @@
 
         <!-- Main Activity -->
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.BirthdayListActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter android:label="@string/app_name">
@@ -39,8 +41,9 @@
                 <data
                     android:host="www.julianrosser.website"
                     android:scheme="http" />
-                <!-- note that the leading "/" is required for pathPrefix-->
-                <!-- Accepts URIs that begin with "example://gizmos”
+                <!-- note that the leading "/" is required for pathPrefix -->
+                <!--
+                Accepts URIs that begin with "example://gizmos”
                 <data android:scheme="example"
                       android:host="gizmos" />
                 -->
@@ -48,31 +51,47 @@
         </activity>
 
         <!-- Boot BroadcastReceiver -->
-        <receiver android:name=".BootBroadcastReceiver">
+        <receiver android:name=".recievers.BootBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".NotificationBuilderReceiver" />
+        <receiver android:name=".recievers.NotificationBuilderReceiver" />
 
-        <service android:name=".SetAlarmsService" />
+        <service android:name=".services.SetAlarmsService" />
 
         <activity
-            android:name=".SettingsActivity"
+            android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".activities.BirthdayListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".activities.BirthdayListActivity" />
         </activity>
         <activity
-            android:name=".HelpActivity"
+            android:name=".activities.HelpActivity"
             android:label="@string/title_activity_help"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".activities.BirthdayListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".activities.BirthdayListActivity" />
+        </activity>
+        <activity
+            android:name=".activities.PrivacyPolicyActivity"
+            android:label="@string/title_privacy_policy"
+            android:parentActivityName=".activities.BirthdayListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.BirthdayListActivity" />
+        </activity>
+        <activity
+            android:name=".activities.ImportContactsActivity"
+            android:label="@string/import_contacts"
+            android:parentActivityName=".activities.BirthdayListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.BirthdayListActivity" />
         </activity>
     </application>
 

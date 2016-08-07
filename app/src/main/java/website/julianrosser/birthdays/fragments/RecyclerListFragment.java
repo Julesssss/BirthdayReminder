@@ -1,16 +1,17 @@
-package website.julianrosser.birthdays;
+package website.julianrosser.birthdays.fragments;
 
 
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import website.julianrosser.birthdays.DialogFragments.AddEditFragment;
+import website.julianrosser.birthdays.activities.BirthdayListActivity;
+import website.julianrosser.birthdays.adapter.BirthdayViewAdapter;
+import website.julianrosser.birthdays.R;
 
 /**
  * Main view. Fragment which holds the RecyclerView.
@@ -18,16 +19,13 @@ import website.julianrosser.birthdays.DialogFragments.AddEditFragment;
 public class RecyclerListFragment extends android.support.v4.app.Fragment {
 
     // Reference to mAdapter
-    public static RecyclerViewAdapter mAdapter;
+    public static BirthdayViewAdapter mAdapter;
 
     // Reference to recyclerView
     public static RecyclerView recyclerView;
 
     // Reference to view which shows when list empty.
     static View emptyView;
-
-    // Need this reference to show onResume
-    public static FloatingActionButton floatingActionButton;
 
     // Required empty constructor
     public RecyclerListFragment() {
@@ -49,15 +47,6 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
         // Initialise important reference to the main view: RecyclerView
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 
-        // Floating Action Button
-        FloatingActionButton floatingActionButton = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Open New Birthday Fragment
-                MainActivity.getContext().showAddEditBirthdayFragment(AddEditFragment.MODE_ADD, 0);
-            }
-        });
-
         // Reference empty TextView
         emptyView = view.findViewById(R.id.empty_view);
 
@@ -71,7 +60,7 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
         }
 
         // Set layout properties
-        LinearLayoutManager llm = new LinearLayoutManager(MainActivity.getAppContext());
+        LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
 
@@ -85,26 +74,19 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
         // Can use this to optimize performance as RecyclerView will NOT change size.
         recyclerView.setHasFixedSize(true);
 
-        mAdapter = new RecyclerViewAdapter(MainActivity.birthdaysList, getActivity().getApplicationContext());
+        mAdapter = new BirthdayViewAdapter(BirthdayListActivity.birthdaysList);
 
         recyclerView.setAdapter(mAdapter);
 
         return view;
     }
 
+
+
     // Show or hide the 'no birthdays found' message depending on size of birthday Array
     public static void showEmptyMessageIfRequired() {
-
-        if (MainActivity.birthdaysList.isEmpty()) {
+        if (BirthdayListActivity.birthdaysList.isEmpty()){
             emptyView.setVisibility(View.VISIBLE);
-            emptyView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Open New Birthday Fragment
-                    MainActivity.getContext().showAddEditBirthdayFragment(AddEditFragment.MODE_ADD, 0);
-                }
-            });
-
         } else {
             emptyView.setVisibility(View.INVISIBLE);
         }

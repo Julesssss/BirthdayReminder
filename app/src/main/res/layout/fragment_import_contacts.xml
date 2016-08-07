@@ -23,9 +23,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="@string/empty_list_message"
+            android:text="@string/no_contacts_found"
             android:textColor="#fff"
             android:textSize="24sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center_horizontal"
+            android:text="@string/no_contacts_message"
+            android:textColor="#fff"
+            android:textSize="18sp" />
 
     </LinearLayout>
 
@@ -34,5 +43,11 @@
         android:layout_width="match_parent"
         android:layout_height="6dp"
         android:background="@drawable/toolbar_dropshadow" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
 
 </RelativeLayout>
