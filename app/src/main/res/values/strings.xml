@@ -123,6 +123,27 @@
     <string name="deleted">Deleted</string>
     <string name="undo">Undo</string>
 
+    <!-- Privacy Policy  -->
+    <string name="privacy_policy_summary" translatable="false">Privacy Policy Summary</string>
+    <string name="privacy_title_1" translatable="false">Personal Data</string>
+    <string name="privacy_text_1" translatable="false">Personal information (names, contacts and birthdates) are not, and will never be shared with any 3rd parties.</string>
+    <string name="privacy_title_2" translatable="false">Google Analytics</string>
+    <string name="privacy_text_2" translatable="false">Anonymous cookies and usage data is used to improve the app.</string>
+    <string name="privacy_title_3" translatable="false">Read Contacts Permission</string>
+    <string name="privacy_text_3" translatable="false">This is only used to import contacts with birthday information, no data is saved.</string>
+    <string name="privacy_title_4" translatable="false">Contacting the User</string>
+    <string name="privacy_text_4" translatable="false">If you use the contact button to email me, I will be able to see your email address. I will only use it to send you a reply.</string>
+    <string name="privacy_title_5" translatable="false">Push notifications</string>
+    <string name="privacy_text_5" translatable="false">This Application may send reminder push notifications. They can be disabled in the settings menu if desired.</string>
+    <string name="privacy_policy_full" translatable="false">Full Privacy Policy</string>
+    <string name="privacy_title_6" translatable="false">Types of data collected</string>
+    <string name="privacy_text_6" translatable="false">Among the types of Personal Data that this Application collects, by itself or through third parties, there are: Cookies, Usage Data and email address. The Personal Data may be freely provided by the User, or collected automatically when using this Application.\n\nAny use of Cookies - or of other tracking tools - by this Application or by the owners of third party services used by this Application, unless stated otherwise, serves to identify Users and remember their preferences, for the sole purpose of providing the service required by the User. Failure to provide certain Personal Data may make it impossible for this Application to provide its services. Users are responsible for any Personal Data of third parties obtained, published or shared through this Application and confirm that they have the third party\'s consent to provide the Data to the Owner.</string>
+    <string name="privacy_title_7" translatable="false">Methods of processing</string>
+    <string name="privacy_text_7" translatable="false">The Data Controller processes the Data of Users in a proper manner and shall take appropriate security measures to prevent unauthorized access, disclosure, modification, or unauthorized destruction of the Data. The Data processing is carried out using computers and/or IT enabled tools, following organizational procedures and modes strictly related to the purposes indicated. In addition to the Data Controller, in some cases, the Data may be accessible to certain types of persons in charge, involved with the operation of the site (administration, sales, marketing, legal, system administration) or external parties (such as third party technical service providers, mail carriers, hosting providers, IT companies, communications agencies) appointed, if necessary, as Data Processors by the Owner. The updated list of these parties may be requested from the Data Controller at any time.\n\nThe Data is processed at the Data Controller\'s operating offices and in any other places where the parties involved with the processing are located. For further information, please contact the Data Controller. The Data is kept for the time necessary to provide the service requested by the User, or stated by the purposes outlined in this document, and the User can always request that the Data Controller suspend or remove the data.</string>
+    <string name="privacy_title_8" translatable="false">Use of collected data</string>
+    <string name="privacy_text_8" translatable="false">The Data concerning the User is collected to allow the Owner to provide its services, as well as for the following purposes: Analytics and Contacting the User. The Personal Data used for each purpose is outlined in the specific sections below.\n\nGoogle Analytics is a web analysis service provided by Google Inc. (“Google”). Google utilizes the Data collected to track and examine the use of this Application, to prepare reports on its activities and share them with other Google services. Google may use the Data collected to contextualize and personalize the ads of its own advertising network.\n\nBy filling in the contact form with their Data, the User authorizes this Application to use these details to reply to requests for information, quotes or any other kind of request as indicated by the form’s header. Personal Data collected: email address.</string>
+
+
     <!--  2.4 Import contacts  -->
     <string name="import_contacts">Import Contacts</string>
     <string name="no_contacts_found">No Contacts found</string>
@@ -131,5 +152,6 @@
     <string name="contact_already_added">has already been added</string>
     <string name="not_available" translatable="false">N/A</string>
     <string name="added">added</string>
+    <string name="title_privacy_policy">Privacy Policy</string>
 
 </resources>

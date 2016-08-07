@@ -1,5 +1,9 @@
 package website.julianrosser.birthdays;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -28,6 +32,20 @@ public class Utils {
             return "rd";
         } else {
             return "th";
+        }
+    }
+
+    public static int getHighlightColor(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+
+        if (prefs.getString(context.getResources().getString(R.string.pref_theme_key), "0").equals("0")) {
+            return R.color.material_lime_500;
+        } else if (prefs.getString(context.getResources().getString(R.string.pref_theme_key), "0").equals("1")) {
+            return R.color.blue_accent_400;
+        } else if (prefs.getString(context.getResources().getString(R.string.pref_theme_key), "0").equals("2")) {
+            return R.color.blue_accent_700;
+        } else {
+            return R.color.blue_accent_400;
         }
     }
 }

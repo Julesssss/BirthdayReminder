@@ -78,6 +78,14 @@
                 android:value=".activities.BirthdayListActivity" />
         </activity>
         <activity
+            android:name=".activities.PrivacyPolicyActivity"
+            android:label="@string/title_privacy_policy"
+            android:parentActivityName=".activities.BirthdayListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.BirthdayListActivity" />
+        </activity>
+        <activity
             android:name=".activities.ImportContactsActivity"
             android:label="@string/import_contacts"
             android:parentActivityName=".activities.BirthdayListActivity">

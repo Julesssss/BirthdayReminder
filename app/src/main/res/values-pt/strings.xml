@@ -95,6 +95,7 @@
     <string name="contact_permission_denied_message">A permissão necessária para carregar contatos</string>
     <string name="contact_already_added">já foi adicionada</string>
     <string name="added">adicionou</string>
+    <string name="title_privacy_policy">Política de Privacidade</string>
 
 
 </resources>

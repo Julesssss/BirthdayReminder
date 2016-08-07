@@ -581,6 +581,10 @@ public class BirthdayListActivity extends AppCompatActivity implements AddEditFr
             Intent intentHelp = new Intent(this, HelpActivity.class);
             startActivity(intentHelp);
             return true;
+        } else if (id == R.id.action_privacy_policy) {
+            Intent intentPrivacy = new Intent(this, PrivacyPolicyActivity.class);
+            startActivity(intentPrivacy);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

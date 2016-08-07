@@ -95,6 +95,7 @@
     <string name="no_contacts_found">Keine Kontakte gefunden</string>
     <string name="no_contacts_message">Bitte fügen Sie Geburtstagsinformationen zu Ihren Kontakten für sie hier zu zeigen.</string>
     <string name="added">hinzugefügt</string>
+    <string name="title_privacy_policy">Datenschutz-Bestimmungen</string>
 
 
 </resources>

@@ -20,4 +20,9 @@
         android:orderInCategory="300"
         android:title="@string/action_help" />
 
+    <item
+        android:id="@+id/action_privacy_policy"
+        android:orderInCategory="320"
+        android:title="@string/title_privacy_policy" />
+
 </menu>

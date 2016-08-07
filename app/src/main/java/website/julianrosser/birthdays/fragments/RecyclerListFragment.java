@@ -60,7 +60,7 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
         }
 
         // Set layout properties
-        LinearLayoutManager llm = new LinearLayoutManager(BirthdayListActivity.getAppContext());
+        LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
 
