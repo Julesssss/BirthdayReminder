@@ -89,6 +89,11 @@
     <string name="include_year">Inclure l\'année</string>
     <string name="deleted">supprimé</string>
     <string name="undo">annuler</string>
+    <string name="no_contacts_message"> S\'il vous plaît ajouter des informations d\'anniversaire à vos contacts pour eux de montrer ici.</string>
+    <string name="no_contacts_found">Aucun contact trouvé</string>
+    <string name="import_contacts">contacts d\'importation</string>
+    <string name="contact_already_added">a déjà été ajouté</string>
+    <string name="contact_permission_denied_message">l\'autorisation nécessaire pour charger les contacts</string>
 
 
 </resources>

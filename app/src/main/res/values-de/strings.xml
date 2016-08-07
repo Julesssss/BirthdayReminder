@@ -89,6 +89,11 @@
     <string name="include_year">Enthalten jahr</string>
     <string name="deleted">gelöscht</string>
     <string name="undo">lösen</string>
+    <string name="contact_already_added">wurde bereits hinzugefügt</string>
+    <string name="contact_permission_denied_message">Die Erlaubnis benötigt Kontakte zu laden</string>
+    <string name="import_contacts">Kontakte importieren</string>
+    <string name="no_contacts_found">Keine Kontakte gefunden</string>
+    <string name="no_contacts_message">Bitte fügen Sie Geburtstagsinformationen zu Ihren Kontakten für sie hier zu zeigen.</string>
 
 
 </resources>
