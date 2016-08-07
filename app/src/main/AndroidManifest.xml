@@ -79,7 +79,7 @@
         </activity>
         <activity
             android:name=".activities.ImportContactsActivity"
-            android:label="@string/action_import_contacts"
+            android:label="@string/import_contacts"
             android:parentActivityName=".activities.BirthdayListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

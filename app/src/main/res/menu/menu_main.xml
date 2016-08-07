@@ -6,7 +6,7 @@
     <item
         android:id="@+id/action_import_contacts"
         android:orderInCategory="260"
-        android:title="@string/action_import_contacts"
+        android:title="@string/import_contacts"
         app:showAsAction="never" />
 
     <item

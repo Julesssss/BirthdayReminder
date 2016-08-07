@@ -20,8 +20,11 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import website.julianrosser.birthdays.activities.BirthdayListActivity;
+import website.julianrosser.birthdays.model.Birthday;
 import website.julianrosser.birthdays.model.Contact;
 import website.julianrosser.birthdays.adapter.ContactAdapter;
 import website.julianrosser.birthdays.R;
@@ -167,6 +170,12 @@ public class ImportContactFragment extends android.support.v4.app.Fragment {
         @Override
         protected ArrayList<Contact> doInBackground(Void... params) {
             contacts = loadContacts();
+            Collections.sort(contacts, new Comparator<Contact>() {
+                @Override
+                public int compare(Contact b1, Contact b2) {
+                    return b1.getName().compareTo(b2.getName());
+                }
+            });
             return contacts;
         }
 

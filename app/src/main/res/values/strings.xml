@@ -124,6 +124,6 @@
     <string name="undo">Undo</string>
 
     <!--  TODO  -->
-    <string name="action_import_contacts">Import Contacts</string>
+    <string name="import_contacts">Import Contacts</string>
 
 </resources>
