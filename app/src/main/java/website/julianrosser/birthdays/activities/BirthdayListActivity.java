@@ -16,7 +16,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,18 +42,18 @@ import java.util.Date;
 import java.util.Random;
 
 import website.julianrosser.birthdays.Constants;
-import website.julianrosser.birthdays.model.Birthday;
-import website.julianrosser.birthdays.adapter.BirthdayViewAdapter;
-import website.julianrosser.birthdays.model.tasks.LoadBirthdaysTask;
-import website.julianrosser.birthdays.recievers.NotificationBuilderReceiver;
 import website.julianrosser.birthdays.R;
-import website.julianrosser.birthdays.services.SetAlarmsService;
+import website.julianrosser.birthdays.adapter.BirthdayViewAdapter;
 import website.julianrosser.birthdays.fragments.DialogFragments.AddEditFragment;
 import website.julianrosser.birthdays.fragments.DialogFragments.ItemOptionsFragment;
 import website.julianrosser.birthdays.fragments.RecyclerListFragment;
+import website.julianrosser.birthdays.model.Birthday;
+import website.julianrosser.birthdays.model.tasks.LoadBirthdaysTask;
+import website.julianrosser.birthdays.recievers.NotificationBuilderReceiver;
+import website.julianrosser.birthdays.services.SetAlarmsService;
 
 @SuppressWarnings("deprecation")
-public class BirthdayListActivity extends AppCompatActivity implements AddEditFragment.NoticeDialogListener, ItemOptionsFragment.ItemOptionsListener {
+public class BirthdayListActivity extends BaseActivity implements AddEditFragment.NoticeDialogListener, ItemOptionsFragment.ItemOptionsListener {
     ;
     public static ArrayList<Birthday> birthdaysList = new ArrayList<>();
     public static Tracker mTracker;

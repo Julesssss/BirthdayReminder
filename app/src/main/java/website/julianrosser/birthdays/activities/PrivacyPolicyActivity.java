@@ -3,7 +3,6 @@ package website.julianrosser.birthdays.activities;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
@@ -14,7 +13,7 @@ import com.google.android.gms.analytics.Tracker;
 import website.julianrosser.birthdays.R;
 import website.julianrosser.birthdays.Utils;
 
-public class PrivacyPolicyActivity extends AppCompatActivity {
+public class PrivacyPolicyActivity extends BaseActivity {
 
     private Tracker mTracker;
 
