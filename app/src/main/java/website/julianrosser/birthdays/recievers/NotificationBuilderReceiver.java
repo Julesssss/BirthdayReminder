@@ -16,6 +16,7 @@ import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
+import website.julianrosser.birthdays.Constants;
 import website.julianrosser.birthdays.R;
 import website.julianrosser.birthdays.activities.BirthdayListActivity;
 
@@ -46,8 +47,7 @@ public class NotificationBuilderReceiver extends WakefulBroadcastReceiver {
         // Intent which opens App when notification is clicked
         Intent mNotificationIntent = new Intent(context, BirthdayListActivity.class);
 
-        // todo - refactor to Constants - INTERNT_FROM_KEY
-        mNotificationIntent.putExtra(BirthdayListActivity.INTENT_FROM_KEY, BirthdayListActivity.INTENT_FROM_NOTIFICATION);
+        mNotificationIntent.putExtra(Constants.INTENT_FROM_KEY, Constants.INTENT_FROM_NOTIFICATION);
 
         // Use Intent and other information to build PendingIntent
         PendingIntent mContentIntent = PendingIntent.getActivity(context, PENDING_INTENT_ID,

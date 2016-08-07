@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import website.julianrosser.birthdays.Constants;
 import website.julianrosser.birthdays.activities.BirthdayListActivity;
 import website.julianrosser.birthdays.model.Birthday;
 
@@ -49,8 +50,7 @@ public class LoadBirthdaysTask extends AsyncTask<Void, Void, ArrayList<Birthday>
         BufferedReader reader = null;
         try {
             // Open and read the file into a StringBuilder
-            // todo - refactor FILENAME to constants
-            InputStream in = BirthdayListActivity.getAppContext().openFileInput(BirthdayListActivity.FILENAME);
+            InputStream in = BirthdayListActivity.getAppContext().openFileInput(Constants.FILENAME);
             reader = new BufferedReader(new InputStreamReader(in));
             StringBuilder jsonString = new StringBuilder();
 

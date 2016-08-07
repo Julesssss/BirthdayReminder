@@ -125,5 +125,10 @@
 
     <!--  TODO  -->
     <string name="import_contacts">Import Contacts</string>
+    <string name="no_contacts_found">No Contacts found</string>
+    <string name="no_contacts_message">Please add birthday information to your contacts for them to show here.</string>
+    <string name="contact_permission_denied_message">Permission needed to load contacts</string>
+    <string name="contact_already_added">" has already been added"</string>
+    <string name="not_available">N/A</string>
 
 </resources>

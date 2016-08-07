@@ -76,8 +76,7 @@ public class BirthdayViewHolder extends RecyclerView.ViewHolder implements View.
             textAge.setText(age);
         } else {
             // don't show age field
-            // todo - String refactor
-            textAge.setText("NA");
+            textAge.setText(R.string.not_available);
         }
     }
 

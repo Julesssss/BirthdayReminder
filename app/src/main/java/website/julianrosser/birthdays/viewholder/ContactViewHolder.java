@@ -55,8 +55,8 @@ public class ContactViewHolder extends RecyclerView.ViewHolder implements View.O
         }
         Birthday birthday = new Birthday(contact.getName(), birthdate, true, false);
 
-        if (BirthdayListActivity.isContactAlreadyAdded(birthday)) { // todo - string
-            Snackbar.make(container, contact.getName() + " has already been added", Snackbar.LENGTH_SHORT).show();
+        if (BirthdayListActivity.isContactAlreadyAdded(birthday)) {
+            Snackbar.make(container, contact.getName() + container.getContext().getString(R.string.contact_already_added), Snackbar.LENGTH_SHORT).show();
         } else {
             BirthdayListActivity.birthdaysList.add(birthday);
             Snackbar.make(container, "Added " + contact.getName(), Snackbar.LENGTH_SHORT).show();
@@ -84,25 +84,7 @@ public class ContactViewHolder extends RecyclerView.ViewHolder implements View.O
     }
 
     public String getBirthDay(Date date) {
-        return "" + date.getDate() + getDateSuffix(date);
-    }
-
-    // todo - refactor
-    private String getDateSuffix(Date date) {
-        // d stands for date of birthday
-        int d = date.getDate();
-
-        if (d == 11 || d == 12 || d == 13) {
-            return "th";
-        } else if (d % 10 == 1) {
-            return "st";
-        } else if (d % 10 == 2) {
-            return "nd";
-        } else if (d % 10 == 3) {
-            return "rd";
-        } else {
-            return "th";
-        }
+        return "" + date.getDate() + Utils.getDateSuffix(date.getDate());
     }
 
     public void setImageIcon(String name) {

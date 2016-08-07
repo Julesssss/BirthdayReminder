@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import website.julianrosser.birthdays.R;
+import website.julianrosser.birthdays.Utils;
 import website.julianrosser.birthdays.activities.BirthdayListActivity;
 
 @SuppressWarnings("deprecation")
@@ -159,7 +160,7 @@ public class Birthday {
     }
 
     public String getBirthDay() {
-        return "" + date.getDate() + getDateSuffix();
+        return "" + date.getDate() + Utils.getDateSuffix(date.getDate());
     }
 
     public String getFormattedDaysRemainingString() {
@@ -268,23 +269,6 @@ public class Birthday {
         return millisNow > millisBDAY + DAY_IN_MILLIS;
     }
 
-    // todo - refactor
-    private String getDateSuffix() {
-        // d stands for date of birthday
-        int d = this.getDate().getDate();
-
-        if (d == 11 || d == 12 || d == 13) {
-            return "th";
-        } else if (d % 10 == 1) {
-            return "st";
-        } else if (d % 10 == 2) {
-            return "nd";
-        } else if (d % 10 == 3) {
-            return "rd";
-        } else {
-            return "th";
-        }
-    }
 
     /**
      * Returns a formatted day string built for notification display.

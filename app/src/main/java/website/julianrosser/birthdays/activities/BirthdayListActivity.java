@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 
+import website.julianrosser.birthdays.Constants;
 import website.julianrosser.birthdays.model.Birthday;
 import website.julianrosser.birthdays.adapter.BirthdayViewAdapter;
 import website.julianrosser.birthdays.model.tasks.LoadBirthdaysTask;
@@ -54,13 +55,9 @@ import website.julianrosser.birthdays.fragments.RecyclerListFragment;
 
 @SuppressWarnings("deprecation")
 public class BirthdayListActivity extends AppCompatActivity implements AddEditFragment.NoticeDialogListener, ItemOptionsFragment.ItemOptionsListener {
-
-    public static final String FILENAME = "birthdays.json";
+    ;
     public static ArrayList<Birthday> birthdaysList = new ArrayList<>();
     public static Tracker mTracker;
-    public static int INTENT_FROM_NOTIFICATION = 30;
-    public static int CONTACT_PERMISSION_CODE = 3;
-    public static String INTENT_FROM_KEY = "intent_from_key";
     static RecyclerListFragment recyclerListFragment;
     static BirthdayListActivity mContext;
     static Context mAppContext;
@@ -126,7 +123,7 @@ public class BirthdayListActivity extends AppCompatActivity implements AddEditFr
                 // Write the file to disk
                 Writer writer = null;
                 try {
-                    OutputStream out = mAppContext.openFileOutput(FILENAME,
+                    OutputStream out = mAppContext.openFileOutput(Constants.FILENAME,
                             Context.MODE_PRIVATE);
                     writer = new OutputStreamWriter(out);
                     writer.write(array.toString());
@@ -222,7 +219,7 @@ public class BirthdayListActivity extends AppCompatActivity implements AddEditFr
         mDescription = "Simple birthday reminders for loved-ones";
         mSchemaType = "http://schema.org/Article";
 
-        if (getIntent().getExtras() != null && getIntent().getExtras().getInt(INTENT_FROM_KEY, 10) == INTENT_FROM_NOTIFICATION) {
+        if (getIntent().getExtras() != null && getIntent().getExtras().getInt(Constants.INTENT_FROM_KEY, 10) == Constants.INTENT_FROM_NOTIFICATION) {
             mTracker.send(new HitBuilders.EventBuilder()
                     .setCategory("Action")
                     .setAction("Notification Touch")
@@ -699,7 +696,7 @@ public class BirthdayListActivity extends AppCompatActivity implements AddEditFr
 
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.READ_CONTACTS},
-                    CONTACT_PERMISSION_CODE);
+                    Constants.CONTACT_PERMISSION_CODE);
 
             // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
             // app-defined int constant. The callback method gets the
@@ -722,7 +719,7 @@ public class BirthdayListActivity extends AppCompatActivity implements AddEditFr
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
-        if (requestCode == CONTACT_PERMISSION_CODE) {
+        if (requestCode == Constants.CONTACT_PERMISSION_CODE) {
             // If request is cancelled, the result arrays are empty.
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -731,8 +728,7 @@ public class BirthdayListActivity extends AppCompatActivity implements AddEditFr
             } else {
                 // permission denied, boo! Disable the
                 // functionality that depends on this permission.
-                // todo - string
-                Snackbar.make(floatingActionButton, "Permission needed to load contacts", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(floatingActionButton, R.string.contact_permission_denied_message, Snackbar.LENGTH_SHORT).show();
             }
         }
     }
