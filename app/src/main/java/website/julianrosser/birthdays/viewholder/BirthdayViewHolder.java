@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.google.android.gms.analytics.HitBuilders;
 
 import website.julianrosser.birthdays.R;
-import website.julianrosser.birthdays.activities.MainActivity;
+import website.julianrosser.birthdays.activities.BirthdayListActivity;
 import website.julianrosser.birthdays.fragments.RecyclerListFragment;
 import website.julianrosser.birthdays.model.Birthday;
 
@@ -40,7 +40,7 @@ public class BirthdayViewHolder extends RecyclerView.ViewHolder implements View.
         textDateDay = (TextView) itemView.findViewById(R.id.dateDay);
         textDateMonth = (TextView) itemView.findViewById(R.id.dateMonth);
         imageAlarm = (ImageView) itemView.findViewById(R.id.alarmImage);
-        typeLight = Typeface.createFromAsset(MainActivity.getAppContext().getResources().getAssets(), "Roboto-Light.ttf");
+        typeLight = Typeface.createFromAsset(BirthdayListActivity.getAppContext().getResources().getAssets(), "Roboto-Light.ttf");
     }
 
     public void setTag(Birthday birthday) {
@@ -102,20 +102,20 @@ public class BirthdayViewHolder extends RecyclerView.ViewHolder implements View.
             // Get correct position, as deleted views may have altered pos int
             int currentPosition = RecyclerListFragment.recyclerView.getChildAdapterPosition(itemView);
 
-            MainActivity.mTracker.send(new HitBuilders.EventBuilder()
+            BirthdayListActivity.mTracker.send(new HitBuilders.EventBuilder()
                     .setCategory("Action")
                     .setAction("Toggle Alarm ICON")
                     .build());
 
-            // Callback to MainActivity.
-            MainActivity.getContext().alarmToggled(currentPosition);
+            // Callback to BirthdayListActivity.
+            BirthdayListActivity.getContext().alarmToggled(currentPosition);
 
         } else {
             // Get actual position, accounting for deletion
             int currentPosition = RecyclerListFragment.recyclerView.getChildAdapterPosition(itemView);
 
             // Open ItemOption menu for selected birthday
-            MainActivity.getContext().showItemOptionsFragment(currentPosition);
+            BirthdayListActivity.getContext().showItemOptionsFragment(currentPosition);
         }
     }
 }

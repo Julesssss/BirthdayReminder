@@ -21,7 +21,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
@@ -44,7 +43,6 @@ import java.util.Date;
 import java.util.Random;
 
 import website.julianrosser.birthdays.model.Birthday;
-import website.julianrosser.birthdays.BirthdayReminder;
 import website.julianrosser.birthdays.adapter.BirthdayViewAdapter;
 import website.julianrosser.birthdays.model.tasks.LoadBirthdaysTask;
 import website.julianrosser.birthdays.recievers.NotificationBuilderReceiver;
@@ -55,7 +53,7 @@ import website.julianrosser.birthdays.fragments.DialogFragments.ItemOptionsFragm
 import website.julianrosser.birthdays.fragments.RecyclerListFragment;
 
 @SuppressWarnings("deprecation")
-public class MainActivity extends AppCompatActivity implements AddEditFragment.NoticeDialogListener, ItemOptionsFragment.ItemOptionsListener {
+public class BirthdayListActivity extends AppCompatActivity implements AddEditFragment.NoticeDialogListener, ItemOptionsFragment.ItemOptionsListener {
 
     public static final String FILENAME = "birthdays.json";
     public static ArrayList<Birthday> birthdaysList = new ArrayList<>();
@@ -64,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
     public static int CONTACT_PERMISSION_CODE = 3;
     public static String INTENT_FROM_KEY = "intent_from_key";
     static RecyclerListFragment recyclerListFragment;
-    static MainActivity mContext;
+    static BirthdayListActivity mContext;
     static Context mAppContext;
     private static FloatingActionButton floatingActionButton;
     // Keys for orientation change reference
@@ -83,9 +81,9 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
     private String mSchemaType;
 
     /**
-     * For easy access to MainActivity context from multiple Classes
+     * For easy access to BirthdayListActivity context from multiple Classes
      */
-    public static MainActivity getContext() {
+    public static BirthdayListActivity getContext() {
         return mContext;
     }
 
@@ -97,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
     private static void cancelAlarm(Birthday deletedBirthday) {
 
         // CreateIntent to start the AlarmNotificationReceiver
-        Intent mNotificationReceiverIntent = new Intent(MainActivity.getAppContext(),
+        Intent mNotificationReceiverIntent = new Intent(BirthdayListActivity.getAppContext(),
                 NotificationBuilderReceiver.class);
 
         // Create pending Intent using Intent we just built
@@ -143,15 +141,15 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
             }
 
             // Launch service to update alarms when data changed
-            Intent serviceIntent = new Intent(MainActivity.getAppContext(), SetAlarmsService.class);
-            MainActivity.getAppContext().startService(serviceIntent);
+            Intent serviceIntent = new Intent(BirthdayListActivity.getAppContext(), SetAlarmsService.class);
+            BirthdayListActivity.getAppContext().startService(serviceIntent);
         }
     }
 
     // Force UI thread to ensure mAdapter updates RecyclerView list
     public static void dataChangedUiThread() {
         // Reorder ArrayList to sort by desired method
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getAppContext());
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(BirthdayListActivity.getAppContext());
 
         // Get users sort preference
         if (Integer.valueOf(sharedPref.getString(getAppContext().getString(R.string.pref_sort_by_key), "0")) == 1) {
@@ -293,7 +291,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         dataChangedUiThread();
 
         // Tracker
-        mTracker.setScreenName("MainActivity");
+        mTracker.setScreenName("BirthdayListActivity");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
@@ -408,7 +406,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
 
                     /** Logic for edit animation. Depending first on sorting preference, check whether the sorting will change.
                      * if so, used adapter moved animation, else just refresh information */
-                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getAppContext());
+                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(BirthdayListActivity.getAppContext());
 
                     // Get users sorting preference
                     if (Integer.valueOf(sharedPref.getString(getAppContext().getString(R.string.pref_sort_by_key), "0")) != 1) {
@@ -463,7 +461,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
             mContext.runOnUiThread(new Runnable() {
                 public void run() {
 
-                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getAppContext());
+                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(BirthdayListActivity.getAppContext());
 
                     // Get users sort preference
                     if (Integer.valueOf(sharedPref.getString(getAppContext().getString(R.string.pref_sort_by_key), "0")) == 1) {
@@ -526,7 +524,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                Snackbar.make(floatingActionButton, MainActivity.getAppContext().getString(R.string.deleted) + " "
+                Snackbar.make(floatingActionButton, BirthdayListActivity.getAppContext().getString(R.string.deleted) + " "
                         + birthdayToDelete.getName(), Snackbar.LENGTH_LONG).setAction(R.string.undo,
                         new View.OnClickListener() {
                             @Override
@@ -536,7 +534,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
                                 mContext.runOnUiThread(new Runnable() {
                                     public void run() {
 
-                                        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getAppContext());
+                                        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(BirthdayListActivity.getAppContext());
 
                                         // Get users sort preference
                                         if (Integer.valueOf(sharedPref.getString(getAppContext().getString(R.string.pref_sort_by_key), "0")) == 1) {
@@ -590,7 +588,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
         return super.onOptionsItemSelected(item);
     }
 
-    // Call this method from Adapter so reference can be kept here in MainActivity
+    // Call this method from Adapter so reference can be kept here in BirthdayListActivity
     public void launchLoadBirthdaysTask() {
         loadBirthdaysTask = new LoadBirthdaysTask();
         loadBirthdaysTask.execute();
@@ -674,7 +672,7 @@ public class MainActivity extends AppCompatActivity implements AddEditFragment.N
             Snackbar.make(floatingActionButton, floatingActionButton.getContext().getString(R.string.reminder_for) + birthday.getName() + " " +
                     birthday.getReminderString() + floatingActionButton.getContext().getString(R.string.for_next_year), Snackbar.LENGTH_LONG).show();
         } else {
-            Snackbar.make(floatingActionButton, MainActivity.getAppContext().getString(R.string.reminder_for) + birthday.getName() + " " +
+            Snackbar.make(floatingActionButton, BirthdayListActivity.getAppContext().getString(R.string.reminder_for) + birthday.getName() + " " +
                     birthday.getReminderString(), Snackbar.LENGTH_LONG).show();
         }
 

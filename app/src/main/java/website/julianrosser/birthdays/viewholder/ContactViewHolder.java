@@ -1,22 +1,19 @@
 package website.julianrosser.birthdays.viewholder;
 
 import android.graphics.Typeface;
-import android.net.ParseException;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 import website.julianrosser.birthdays.R;
 import website.julianrosser.birthdays.Utils;
-import website.julianrosser.birthdays.activities.MainActivity;
+import website.julianrosser.birthdays.activities.BirthdayListActivity;
 import website.julianrosser.birthdays.model.Birthday;
 import website.julianrosser.birthdays.model.Contact;
 
@@ -43,7 +40,7 @@ public class ContactViewHolder extends RecyclerView.ViewHolder implements View.O
         textDateMonth = (TextView) itemView.findViewById(R.id.dateMonth);
         imageAdd = (ImageView) itemView.findViewById(R.id.addImage);
         imageAdd.setOnClickListener(this);
-        typeLight = Typeface.createFromAsset(MainActivity.getAppContext().getResources().getAssets(), "Roboto-Light.ttf");
+        typeLight = Typeface.createFromAsset(BirthdayListActivity.getAppContext().getResources().getAssets(), "Roboto-Light.ttf");
     }
 
     @Override
@@ -58,10 +55,10 @@ public class ContactViewHolder extends RecyclerView.ViewHolder implements View.O
         }
         Birthday birthday = new Birthday(contact.getName(), birthdate, true, false);
 
-        if (MainActivity.isContactAlreadyAdded(birthday)) { // todo - string
+        if (BirthdayListActivity.isContactAlreadyAdded(birthday)) { // todo - string
             Snackbar.make(container, contact.getName() + " has already been added", Snackbar.LENGTH_SHORT).show();
         } else {
-            MainActivity.birthdaysList.add(birthday);
+            BirthdayListActivity.birthdaysList.add(birthday);
             Snackbar.make(container, "Added " + contact.getName(), Snackbar.LENGTH_SHORT).show();
             setImageIcon(birthday.getName());
         }
@@ -109,7 +106,7 @@ public class ContactViewHolder extends RecyclerView.ViewHolder implements View.O
     }
 
     public void setImageIcon(String name) {
-        ArrayList<Birthday> birthdaysList = MainActivity.birthdaysList;
+        ArrayList<Birthday> birthdaysList = BirthdayListActivity.birthdaysList;
 
         for (Birthday birthday : birthdaysList) {
             if (birthday.getName().equals(name)) {

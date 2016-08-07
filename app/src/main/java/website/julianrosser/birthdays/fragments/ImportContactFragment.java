@@ -21,9 +21,9 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 
+import website.julianrosser.birthdays.activities.BirthdayListActivity;
 import website.julianrosser.birthdays.model.Contact;
 import website.julianrosser.birthdays.adapter.ContactAdapter;
-import website.julianrosser.birthdays.activities.MainActivity;
 import website.julianrosser.birthdays.R;
 import website.julianrosser.birthdays.model.events.ContactsLoadedEvent;
 
@@ -92,7 +92,7 @@ public class ImportContactFragment extends android.support.v4.app.Fragment {
         }
 
         // Set layout properties
-        LinearLayoutManager llm = new LinearLayoutManager(MainActivity.getAppContext());
+        LinearLayoutManager llm = new LinearLayoutManager(BirthdayListActivity.getAppContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
 

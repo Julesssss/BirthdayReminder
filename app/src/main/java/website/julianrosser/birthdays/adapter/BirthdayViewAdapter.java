@@ -5,16 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.analytics.HitBuilders;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import website.julianrosser.birthdays.activities.BirthdayListActivity;
 import website.julianrosser.birthdays.model.Birthday;
 import website.julianrosser.birthdays.R;
-import website.julianrosser.birthdays.activities.MainActivity;
-import website.julianrosser.birthdays.fragments.RecyclerListFragment;
 import website.julianrosser.birthdays.viewholder.BirthdayViewHolder;
 
 public class BirthdayViewAdapter extends RecyclerView.Adapter<BirthdayViewHolder> {
@@ -23,10 +20,10 @@ public class BirthdayViewAdapter extends RecyclerView.Adapter<BirthdayViewHolder
     public BirthdayViewAdapter(ArrayList<Birthday> birthdayData) { //
 
         if (birthdayData == null) {
-            MainActivity.birthdaysList = new ArrayList<>();
+            BirthdayListActivity.birthdaysList = new ArrayList<>();
         } else if (birthdayData.size() == 0) {
             // After Adapter is constructed, start the process of loading data
-            MainActivity.getContext().launchLoadBirthdaysTask();
+            BirthdayListActivity.getContext().launchLoadBirthdaysTask();
         }
     }
 
@@ -42,7 +39,7 @@ public class BirthdayViewAdapter extends RecyclerView.Adapter<BirthdayViewHolder
     @Override
     public void onBindViewHolder(final BirthdayViewHolder viewHolder, final int position) {
         // Get reference to birthday
-        final Birthday birthday = MainActivity.birthdaysList.get(position);
+        final Birthday birthday = BirthdayListActivity.birthdaysList.get(position);
         viewHolder.setTag(birthday);
         viewHolder.showView();
         // Pass data to the TextViews
@@ -63,7 +60,7 @@ public class BirthdayViewAdapter extends RecyclerView.Adapter<BirthdayViewHolder
 
     // use this method to find out whether edit will change order of birthdays
     public static boolean willChangeDateOrder(Birthday b) {
-        ArrayList<Birthday> originalOrder = MainActivity.birthdaysList;
+        ArrayList<Birthday> originalOrder = BirthdayListActivity.birthdaysList;
 
         int originalPos = originalOrder.indexOf(b);
 
@@ -80,7 +77,7 @@ public class BirthdayViewAdapter extends RecyclerView.Adapter<BirthdayViewHolder
 
     // use this method to find out whether edit will change order of birthdays
     public static boolean willChangeNameOrder(Birthday b) {
-        ArrayList<Birthday> originalOrder = MainActivity.birthdaysList;
+        ArrayList<Birthday> originalOrder = BirthdayListActivity.birthdaysList;
 
         int originalPos = originalOrder.indexOf(b);
 
@@ -99,12 +96,12 @@ public class BirthdayViewAdapter extends RecyclerView.Adapter<BirthdayViewHolder
     public static void sortBirthdaysByDate() {
 
 
-        for (Birthday b : MainActivity.birthdaysList) {
+        for (Birthday b : BirthdayListActivity.birthdaysList) {
             b.setYearOfDate(Birthday.getYearOfNextBirthday(b.getDate()));
         }
 
         //Sorting
-        Collections.sort(MainActivity.birthdaysList, new Comparator<Birthday>() {
+        Collections.sort(BirthdayListActivity.birthdaysList, new Comparator<Birthday>() {
             @Override
             public int compare(Birthday b1, Birthday b2) {
                 return b1.getDate().compareTo(b2.getDate());
@@ -114,7 +111,7 @@ public class BirthdayViewAdapter extends RecyclerView.Adapter<BirthdayViewHolder
 
     // Sort Birthday array by first name
     public static void sortBirthdaysByName() {
-        Collections.sort(MainActivity.birthdaysList, new Comparator<Birthday>() {
+        Collections.sort(BirthdayListActivity.birthdaysList, new Comparator<Birthday>() {
             @Override
             public int compare(Birthday b1, Birthday b2) {
                 return b1.getName().compareTo(b2.getName());
@@ -124,7 +121,7 @@ public class BirthdayViewAdapter extends RecyclerView.Adapter<BirthdayViewHolder
 
     @Override
     public int getItemCount() {
-        return MainActivity.birthdaysList.size();
+        return BirthdayListActivity.birthdaysList.size();
     }
 
 

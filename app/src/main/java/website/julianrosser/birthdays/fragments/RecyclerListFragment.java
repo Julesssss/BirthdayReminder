@@ -9,8 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import website.julianrosser.birthdays.activities.BirthdayListActivity;
 import website.julianrosser.birthdays.adapter.BirthdayViewAdapter;
-import website.julianrosser.birthdays.activities.MainActivity;
 import website.julianrosser.birthdays.R;
 
 /**
@@ -60,7 +60,7 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
         }
 
         // Set layout properties
-        LinearLayoutManager llm = new LinearLayoutManager(MainActivity.getAppContext());
+        LinearLayoutManager llm = new LinearLayoutManager(BirthdayListActivity.getAppContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
 
@@ -74,7 +74,7 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
         // Can use this to optimize performance as RecyclerView will NOT change size.
         recyclerView.setHasFixedSize(true);
 
-        mAdapter = new BirthdayViewAdapter(MainActivity.birthdaysList);
+        mAdapter = new BirthdayViewAdapter(BirthdayListActivity.birthdaysList);
 
         recyclerView.setAdapter(mAdapter);
 
@@ -85,7 +85,7 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
 
     // Show or hide the 'no birthdays found' message depending on size of birthday Array
     public static void showEmptyMessageIfRequired() {
-        if (MainActivity.birthdaysList.isEmpty()){
+        if (BirthdayListActivity.birthdaysList.isEmpty()){
             emptyView.setVisibility(View.VISIBLE);
         } else {
             emptyView.setVisibility(View.INVISIBLE);

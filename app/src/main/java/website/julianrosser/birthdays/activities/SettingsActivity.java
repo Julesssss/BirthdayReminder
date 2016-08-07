@@ -70,9 +70,9 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        // Detect if Activity is closing, and recreate MainActivity to apply new theme
+        // Detect if Activity is closing, and recreate BirthdayListActivity to apply new theme
         if (this.isFinishing()) {
-            Intent i = new Intent(getApplicationContext(), MainActivity.class);
+            Intent i = new Intent(getApplicationContext(), BirthdayListActivity.class);
             startActivity(i);
         }
     }
@@ -82,13 +82,13 @@ public class SettingsActivity extends AppCompatActivity {
      */
     private static void launchTestNotification() {
 
-        Context context = MainActivity.getAppContext();
+        Context context = BirthdayListActivity.getAppContext();
 
         int PENDING_INTENT_ID = 0;
         int MY_NOTIFICATION_ID = 100;
 
         // Intent which opens App when notification is clicked
-        Intent mNotificationIntent = new Intent(); //(context, MainActivity.class);
+        Intent mNotificationIntent = new Intent(); //(context, BirthdayListActivity.class);
 
         // Use Intent and other information to build PendingIntent
         PendingIntent mContentIntent = PendingIntent.getActivity(context, PENDING_INTENT_ID, // test noti, diff number
@@ -232,9 +232,9 @@ public class SettingsActivity extends AppCompatActivity {
             if (preference.getKey().equals(getString(R.string.pref_theme_key))) {
                 // If theme preference is changed, immediately recreate the activity.
                 getActivity().recreate();
-                // Also remove MainActivity, so it can be recreated to apply theme
-                if (MainActivity.mContext != null) {
-                    MainActivity.mContext.finish();
+                // Also remove BirthdayListActivity, so it can be recreated to apply theme
+                if (BirthdayListActivity.mContext != null) {
+                    BirthdayListActivity.mContext.finish();
                 }
             }
 

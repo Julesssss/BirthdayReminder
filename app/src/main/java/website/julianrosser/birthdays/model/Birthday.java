@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import website.julianrosser.birthdays.R;
-import website.julianrosser.birthdays.activities.MainActivity;
+import website.julianrosser.birthdays.activities.BirthdayListActivity;
 
 @SuppressWarnings("deprecation")
 public class Birthday {
@@ -134,17 +134,17 @@ public class Birthday {
 
     public String getReminderString() {
         if (remind) {
-            return MainActivity.getAppContext().getString(R.string.reminder_set);
+            return BirthdayListActivity.getAppContext().getString(R.string.reminder_set);
         } else {
-            return MainActivity.getAppContext().getString(R.string.reminder_canceled);
+            return BirthdayListActivity.getAppContext().getString(R.string.reminder_canceled);
         }
     }
 
     public Drawable getRemindAlarmDrawable() {
         if (remind) {
-            return MainActivity.getAppContext().getResources().getDrawable(R.drawable.ic_alarm_on_white_24dp);
+            return BirthdayListActivity.getAppContext().getResources().getDrawable(R.drawable.ic_alarm_on_white_24dp);
         } else {
-            return MainActivity.getAppContext().getResources().getDrawable(R.drawable.ic_alarm_off_white_24dp);
+            return BirthdayListActivity.getAppContext().getResources().getDrawable(R.drawable.ic_alarm_off_white_24dp);
         }
     }
 
@@ -166,23 +166,23 @@ public class Birthday {
         int i = getDaysBetween();
 
         if (i == 0) {
-            return WordUtils.capitalize(MainActivity.getAppContext().getString(R.string.date_today) + "!");
+            return WordUtils.capitalize(BirthdayListActivity.getAppContext().getString(R.string.date_today) + "!");
         } else if (i == 1) {
-            return WordUtils.capitalize(MainActivity.getAppContext().getString(R.string.date_tomorrow) + "!");
+            return WordUtils.capitalize(BirthdayListActivity.getAppContext().getString(R.string.date_tomorrow) + "!");
         } else if (i == -1) {
-            return MainActivity.getAppContext().getString(R.string.date_yesterday);
+            return BirthdayListActivity.getAppContext().getString(R.string.date_yesterday);
         } else if (i > 1 && i <= 6) {
             Date newDate = new Date();
             newDate.setTime(getDate().getTime() - DAY_IN_MILLIS);
             return (String) DateFormat.format("EEEE", newDate);
         } else if (i == 7) {
-            return WordUtils.capitalize(MainActivity.getAppContext().getString(R.string.date_week));
+            return WordUtils.capitalize(BirthdayListActivity.getAppContext().getString(R.string.date_week));
         } else if (i < 9) {
-            return " " + String.valueOf(i) + " " + MainActivity.getAppContext().getString(R.string.date_days);
+            return " " + String.valueOf(i) + " " + BirthdayListActivity.getAppContext().getString(R.string.date_days);
         } else if (i > 99) {
-            return "  " + String.valueOf(i) + " " + MainActivity.getAppContext().getString(R.string.date_days);
+            return "  " + String.valueOf(i) + " " + BirthdayListActivity.getAppContext().getString(R.string.date_days);
         } else {
-            return "" + i + " " + MainActivity.getAppContext().getString(R.string.date_days);
+            return "" + i + " " + BirthdayListActivity.getAppContext().getString(R.string.date_days);
         }
     }
 

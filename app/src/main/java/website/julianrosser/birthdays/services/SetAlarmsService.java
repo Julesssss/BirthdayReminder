@@ -25,7 +25,7 @@ import java.util.Date;
 
 import website.julianrosser.birthdays.recievers.NotificationBuilderReceiver;
 import website.julianrosser.birthdays.R;
-import website.julianrosser.birthdays.activities.MainActivity;
+import website.julianrosser.birthdays.activities.BirthdayListActivity;
 import website.julianrosser.birthdays.model.Birthday;
 
 /**
@@ -92,7 +92,7 @@ public class SetAlarmsService extends Service {
         BufferedReader reader = null;
         try {
             // Open and read the file into a StringBuilder
-            InputStream in = mContext.openFileInput(MainActivity.FILENAME); // Causes crash if no MainActivity??????
+            InputStream in = mContext.openFileInput(BirthdayListActivity.FILENAME); // Causes crash if no BirthdayListActivity??????
             reader = new BufferedReader(new InputStreamReader(in));
             StringBuilder jsonString = new StringBuilder();
             String line;

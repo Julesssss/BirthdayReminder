@@ -25,7 +25,7 @@
 
         <!-- Main Activity -->
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".activities.BirthdayListActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask">
             <intent-filter>
@@ -64,26 +64,26 @@
         <activity
             android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".activities.MainActivity">
+            android:parentActivityName=".activities.BirthdayListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.MainActivity" />
+                android:value=".activities.BirthdayListActivity" />
         </activity>
         <activity
             android:name=".activities.HelpActivity"
             android:label="@string/title_activity_help"
-            android:parentActivityName=".activities.MainActivity">
+            android:parentActivityName=".activities.BirthdayListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.MainActivity" />
+                android:value=".activities.BirthdayListActivity" />
         </activity>
         <activity
             android:name=".activities.ImportContactsActivity"
             android:label="@string/action_import_contacts"
-            android:parentActivityName=".activities.MainActivity">
+            android:parentActivityName=".activities.BirthdayListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.MainActivity" />
+                android:value=".activities.BirthdayListActivity" />
         </activity>
     </application>
 

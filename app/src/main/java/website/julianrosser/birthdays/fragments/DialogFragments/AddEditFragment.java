@@ -71,7 +71,7 @@ public class AddEditFragment extends DialogFragment {
         return new AddEditFragment();
     }
 
-    /* MainActivity implements this interface in order to receive event callbacks. Passes the
+    /* BirthdayListActivity implements this interface in order to receive event callbacks. Passes the
     DialogFragment in case the host needs to query it. */
     public interface NoticeDialogListener {
         void onDialogPositiveClick(AddEditFragment dialog, String name, int date, int month, int year, boolean includeYear, int AddEditMode, int position);
@@ -257,7 +257,7 @@ public class AddEditFragment extends DialogFragment {
                         int year = datePicker.getYear();
                         boolean includeYear = checkYearToggle.isChecked();
 
-                        // Send the positive button event back to MainActivity
+                        // Send the positive button event back to BirthdayListActivity
                         mListener.onDialogPositiveClick(AddEditFragment.this, editText.getText().toString(),
                                 dateOfMonth, month, year, includeYear,
                                 ADD_OR_EDIT_MODE, bundle.getInt(POS_KEY));

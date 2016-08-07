@@ -24,7 +24,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import website.julianrosser.birthdays.activities.MainActivity;
+import website.julianrosser.birthdays.activities.BirthdayListActivity;
 import website.julianrosser.birthdays.R;
 
 public class ItemOptionsFragment extends DialogFragment {
@@ -50,17 +50,17 @@ public class ItemOptionsFragment extends DialogFragment {
 
         ItemOptionsFragment itemOptionsFragment = new ItemOptionsFragment();
 
-        // We need reference to selected birthday for passing back to MainActivity
+        // We need reference to selected birthday for passing back to BirthdayListActivity
         birthdayListPosition = position;
 
         // Get selected birthday's title
-        titleName = MainActivity.birthdaysList.get(birthdayListPosition).getName();
+        titleName = BirthdayListActivity.birthdaysList.get(birthdayListPosition).getName();
 
         return itemOptionsFragment;
     }
 
 
-    /* MainActivity implements this interface in order to receive event callbacks. Passes the
+    /* BirthdayListActivity implements this interface in order to receive event callbacks. Passes the
     DialogFragment in case the host needs to query it. */
     public interface ItemOptionsListener {
         void onItemEdit(ItemOptionsFragment dialog, int position);
@@ -134,7 +134,7 @@ public class ItemOptionsFragment extends DialogFragment {
         ListView listView = (ListView) inflater.inflate(R.layout.item_edit_fragment, null);
 
         // Create adapter using custom class
-        OptionListAdapter adapter = new OptionListAdapter(MainActivity.getContext(),
+        OptionListAdapter adapter = new OptionListAdapter(BirthdayListActivity.getContext(),
                 getResources().getStringArray(R.array.item_menu_array));
         listView.setAdapter(adapter);
 
@@ -175,10 +175,10 @@ public class ItemOptionsFragment extends DialogFragment {
 
         private LayoutInflater inflater = null;
 
-        public OptionListAdapter(MainActivity mainActivity, String[] stringArray) {
+        public OptionListAdapter(BirthdayListActivity birthdayListActivity, String[] stringArray) {
 
             result = stringArray;
-            context = mainActivity;
+            context = birthdayListActivity;
             inflater = (LayoutInflater) context.
                     getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
@@ -216,7 +216,7 @@ public class ItemOptionsFragment extends DialogFragment {
             holder.imageIcon = (ImageView) rowView.findViewById(R.id.imageView);
 
             if (position == 2) {
-                holder.imageIcon.setImageDrawable(MainActivity.birthdaysList.get(birthdayListPosition).getRemindAlarmDrawable());
+                holder.imageIcon.setImageDrawable(BirthdayListActivity.birthdaysList.get(birthdayListPosition).getRemindAlarmDrawable());
             } else {
                 holder.imageIcon.setImageDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), imageIcons[position]));
             }
