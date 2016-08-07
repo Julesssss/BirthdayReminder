@@ -130,5 +130,6 @@
     <string name="contact_permission_denied_message">Permission needed to load contacts</string>
     <string name="contact_already_added">has already been added</string>
     <string name="not_available" translatable="false">N/A</string>
+    <string name="added">added</string>
 
 </resources>

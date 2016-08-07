@@ -94,6 +94,7 @@
     <string name="import_contacts">contacte de import</string>
     <string name="no_contacts_found">Nicio persoană de contact găsite</string>
     <string name="no_contacts_message">Vă rugăm să adăugați informații ziua de naștere la persoanele de contact pentru ei pentru a arăta aici.</string>
+    <string name="added">a adăugat</string>
 
 
 </resources>

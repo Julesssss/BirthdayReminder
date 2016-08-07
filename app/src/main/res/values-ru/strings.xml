@@ -95,6 +95,7 @@
     <string name="import_contacts">Импортировать контакты</string>
     <string name="contact_permission_denied_message">Разрешение необходимо загрузить контакты</string>
     <string name="contact_already_added">уже была добавлена</string>
+    <string name="added">добавленный</string>
 
 
 </resources>

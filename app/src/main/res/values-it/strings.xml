@@ -94,6 +94,7 @@
     <string name="import_contacts">importare i contatti</string>
     <string name="no_contacts_found">Nessun contatto trovato</string>
     <string name="no_contacts_message"> Si prega di aggiungere le informazioni di compleanno ai tuoi contatti per loro di mostrare qui.</string>
+    <string name="added">aggiunto</string>
 
 
 </resources>

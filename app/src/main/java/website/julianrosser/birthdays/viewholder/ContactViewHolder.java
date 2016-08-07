@@ -59,7 +59,7 @@ public class ContactViewHolder extends RecyclerView.ViewHolder implements View.O
             Snackbar.make(container, contact.getName() + " " + container.getContext().getString(R.string.contact_already_added), Snackbar.LENGTH_SHORT).show();
         } else {
             BirthdayListActivity.birthdaysList.add(birthday);
-            Snackbar.make(container, "Added " + contact.getName(), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(container, contact.getName() + " " + container.getContext().getString(R.string.added), Snackbar.LENGTH_SHORT).show();
             setImageIcon(birthday.getName());
         }
     }

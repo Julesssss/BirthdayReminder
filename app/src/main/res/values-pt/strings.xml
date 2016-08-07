@@ -94,6 +94,7 @@
     <string name="import_contacts"> importar contatos</string>
     <string name="contact_permission_denied_message">A permissão necessária para carregar contatos</string>
     <string name="contact_already_added">já foi adicionada</string>
+    <string name="added">adicionou</string>
 
 
 </resources>
