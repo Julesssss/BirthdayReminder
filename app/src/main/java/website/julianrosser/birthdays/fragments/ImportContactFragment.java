@@ -130,7 +130,9 @@ public class ImportContactFragment extends android.support.v4.app.Fragment {
                 String name = cur.getString(
                         cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
                 ContentResolver bd = getActivity().getContentResolver();
-                Cursor bdc = bd.query(android.provider.ContactsContract.Data.CONTENT_URI, new String[] { ContactsContract.CommonDataKinds.Event.DATA }, android.provider.ContactsContract.Data.CONTACT_ID+" = "+id+" AND "+ ContactsContract.Contacts.Data.MIMETYPE+" = '"+ ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE+"' AND "+ ContactsContract.CommonDataKinds.Event.TYPE+" = "+ ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY, null, android.provider.ContactsContract.Data.DISPLAY_NAME);
+                Cursor bdc = bd.query(android.provider.ContactsContract.Data.CONTENT_URI,
+                        new String[] { ContactsContract.CommonDataKinds.Event.DATA },
+                        android.provider.ContactsContract.Data.CONTACT_ID+" = "+id+" AND "+ ContactsContract.Contacts.Data.MIMETYPE+" = '"+ ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE+"' AND "+ ContactsContract.CommonDataKinds.Event.TYPE+" = "+ ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY, null, android.provider.ContactsContract.Data.DISPLAY_NAME);
                 if (bdc != null && bdc.getCount() > 0) {
                     while (bdc.moveToNext()) {
                         String birthday = bdc.getString(0);
@@ -139,6 +141,8 @@ public class ImportContactFragment extends android.support.v4.app.Fragment {
                         Contact con = new Contact(name, birthday);
                         contactsList.add(con);
                     }
+                }
+                if (bdc != null) {
                     bdc.close();
                 }
             }
