@@ -2,6 +2,7 @@ package website.julianrosser.birthdays.viewholder;
 
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -114,7 +115,11 @@ public class BirthdayViewHolder extends RecyclerView.ViewHolder implements View.
             int currentPosition = RecyclerListFragment.recyclerView.getChildAdapterPosition(itemView);
 
             // Open ItemOption menu for selected birthday
-            BirthdayListActivity.getContext().showItemOptionsFragment(currentPosition);
+            if (currentPosition != RecyclerView.NO_POSITION) {
+                BirthdayListActivity.getContext().showItemOptionsFragment(currentPosition);
+            } else {
+                Snackbar.make(container, R.string.error_try_again, Snackbar.LENGTH_SHORT).show();
+            }
         }
     }
 }

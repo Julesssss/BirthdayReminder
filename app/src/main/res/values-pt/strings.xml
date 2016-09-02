@@ -96,6 +96,7 @@
     <string name="contact_already_added">já foi adicionada</string>
     <string name="added">adicionou</string>
     <string name="title_privacy_policy">Política de Privacidade</string>
+    <string name="error_try_again">Erro, por favor, tente novamente&#8230;</string>
 
 
 </resources>

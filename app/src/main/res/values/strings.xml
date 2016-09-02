@@ -153,5 +153,6 @@
     <string name="not_available" translatable="false">N/A</string>
     <string name="added">added</string>
     <string name="title_privacy_policy">Privacy Policy</string>
+    <string name="error_try_again">Error, please try again &#8230;</string>
 
 </resources>

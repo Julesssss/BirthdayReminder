@@ -96,6 +96,7 @@
     <string name="no_contacts_message"> Si prega di aggiungere le informazioni di compleanno ai tuoi contatti per loro di mostrare qui.</string>
     <string name="added">aggiunto</string>
     <string name="title_privacy_policy">politica sulla riservatezza</string>
+    <string name="error_try_again">Errore, riprova&#8230;</string>
 
 
 </resources>

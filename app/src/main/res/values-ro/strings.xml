@@ -96,6 +96,7 @@
     <string name="no_contacts_message">Vă rugăm să adăugați informații ziua de naștere la persoanele de contact pentru ei pentru a arăta aici.</string>
     <string name="added">a adăugat</string>
     <string name="title_privacy_policy">Politica de confidentialitate</string>
+    <string name="error_try_again">Eroare, vă rugăm să încercați din nou&#8230;</string>
 
 
 </resources>
