@@ -96,7 +96,7 @@
     <string name="contact_permission_denied_message">l\'autorisation nécessaire pour charger les contacts</string>
     <string name="added">ajouté</string>
     <string name="title_privacy_policy">Politique de confidentialité</string>
-    <string name="error_try_again">Erreur, s'il vous plaît essayer à nouveau&#8230;</string>
+    <string name="error_try_again">Erreur, s\'il vous plaît essayer à nouveau&#8230;</string>
 
 
 </resources>

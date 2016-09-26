@@ -113,7 +113,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/privacy_margin_large"
             android:layout_marginTop="8dp"
-            android:text="@string/privacy_policy_summary"
+            android:text="@string/privacy_policy_full"
             android:textColor="@color/textColorPrimary"
             android:textSize="@dimen/privacy_text_size_title"
             android:textStyle="bold" />
