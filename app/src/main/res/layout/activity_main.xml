@@ -42,8 +42,7 @@
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/blue_accent_400"
-        android:layout_marginTop="?attr/actionBarSize"
+        android:background="?attr/theme_colour"
         android:choiceMode="singleChoice"
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp" />

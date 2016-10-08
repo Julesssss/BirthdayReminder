@@ -43,6 +43,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Random;
 
@@ -182,9 +183,13 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
         setSupportActionBar(mToolbar);
 
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
+
+
+        String[] menuItems = getResources().getStringArray(R.array.menu_nav_drawer);
+
         // Set the adapter for the list view
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.drawer_list_item, new String[] {"oNE", "tWO", "tHrEe"}));
+        mDrawerList.setAdapter(new ArrayAdapter<>(this,
+                R.layout.drawer_list_item, menuItems));
         // Set the list's click listener
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
