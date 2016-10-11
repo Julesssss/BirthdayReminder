@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -22,9 +23,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
@@ -43,7 +42,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Random;
 
@@ -59,7 +57,7 @@ import website.julianrosser.birthdays.recievers.NotificationBuilderReceiver;
 import website.julianrosser.birthdays.services.SetAlarmsService;
 
 @SuppressWarnings("deprecation")
-public class BirthdayListActivity extends BaseActivity implements AddEditFragment.NoticeDialogListener, ItemOptionsFragment.ItemOptionsListener {
+public class BirthdayListActivity extends BaseActivity implements AddEditFragment.NoticeDialogListener, ItemOptionsFragment.ItemOptionsListener, View.OnClickListener {
     ;
     public static ArrayList<Birthday> birthdaysList = new ArrayList<>();
     public static Tracker mTracker;
@@ -81,9 +79,10 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
     private String mTitle;
     private String mDescription;
 
-    private ListView mDrawerList;
+    //    private ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
+    private NavigationView navigationView;
 
     /**
      * For easy access to BirthdayListActivity context from multiple Classes
@@ -171,6 +170,16 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
         RecyclerListFragment.showEmptyMessageIfRequired();
     }
 
+    public static boolean isContactAlreadyAdded(Birthday contact) {
+        boolean onList = false;
+        for (Birthday b : birthdaysList) {
+            if (b.getName().equals(contact.getName())) {
+                onList = true;
+            }
+        }
+        return onList;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -182,16 +191,48 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        //Setting Navigation View Item Selected FirebaseAuthListener to handle the item click of the navigation menu
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
+            // This method will trigger on item Click of navigation menu
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
 
-        String[] menuItems = getResources().getStringArray(R.array.menu_nav_drawer);
+                //Checking if the item is in checked state or not, if not make it in checked state
+                if (menuItem.isChecked()) menuItem.setChecked(false);
+                else menuItem.setChecked(true);
 
-        // Set the adapter for the list view
-        mDrawerList.setAdapter(new ArrayAdapter<>(this,
-                R.layout.drawer_list_item, menuItems));
-        // Set the list's click listener
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+                //Closing drawer on item click
+                mDrawerLayout.closeDrawers();
+
+                //Check to see which item was being clicked and perform appropriate action
+                switch (menuItem.getItemId()) {
+
+                    //Replacing the main content with ContentFragment Which is our Inbox View;
+                    case R.id.menu_birthdays:
+//                        Toast.makeText(getApplicationContext(), "What\'s On Selected", Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.menu_help:
+                        startActivity(new Intent(getApplicationContext(), HelpActivity.class));
+                        return true;
+                    case R.id.menu_import_contacts:
+                        startActivity(new Intent(getApplicationContext(), ImportContactsActivity.class));
+                        return true;
+                    case R.id.menu_settings:
+                        startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        });
+
+        // Nav header info
+        View headerView = navigationView.inflateHeaderView(R.layout.layout_nav_header);
+
+        RelativeLayout userDetailLayout = (RelativeLayout) headerView.findViewById(R.id.layoutNavUserInfo);
+        userDetailLayout.setOnClickListener(this);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
@@ -214,6 +255,7 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
         getSupportActionBar().setHomeButtonEnabled(true);
 
         floatingActionButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
@@ -266,9 +308,6 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
                     .setAction("Notification Touch")
                     .build());
         }
-
-
-
 
         // Get sample of theme choice
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -659,47 +698,21 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
         }
     }
 
-    // NavDrawer
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            selectItem(position);
-        }
-    }
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
 
-    /** Swaps fragments in the main content view */
-    private void selectItem(int position) {
-        // Create a new fragment and specify the planet to show based on position
-//        Fragment fragment = new PlanetFragment();
-//        Bundle args = new Bundle();
-//        args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);
-//        fragment.setArguments(args);
-//
-//        // Insert the fragment by replacing any existing fragment
-//        FragmentManager fragmentManager = getFragmentManager();
-//        fragmentManager.beginTransaction()
-//                .replace(R.id.content_frame, fragment)
-//                .commit();
-//
-//        // Highlight the selected item, update the title, and close the drawer
-//        mDrawerList.setItemChecked(position, true);
-//        setTitle(mPlanetTitles[position]);
-//        mDrawerLayout.closeDrawer(mDrawerList);
+        switch (id) {
+            case R.id.layoutNavUserInfo:
+                Snackbar.make(v, "Change user display", Snackbar.LENGTH_SHORT).show();
+                break;
+        }
     }
 
     @Override
     public void setTitle(CharSequence title) {
         mTitle = (String) title;
         getActionBar().setTitle(mTitle);
-    }
-
-    /* Called whenever we call invalidateOptionsMenu() */
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        // If the nav drawer is open, hide action items related to the content view
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-//        menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
-        return super.onPrepareOptionsMenu(menu);
     }
 
     /**
@@ -794,16 +807,6 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
         } else {
             launchImportContactActivity();
         }
-    }
-
-    public static boolean isContactAlreadyAdded(Birthday contact) {
-        boolean onList = false;
-        for (Birthday b : birthdaysList) {
-            if (b.getName().equals(contact.getName())) {
-                onList = true;
-            }
-        }
-        return onList;
     }
 
     @Override

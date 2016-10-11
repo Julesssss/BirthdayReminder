@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="280dp"
+    android:layout_height="160dp">
+
+    <FrameLayout
+        android:layout_width="280dp"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imageViewNavDrawerBackground"
+            android:layout_width="280dp"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            tools:ignore="ContentDescription" />
+
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/profile_image"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="32dp"
+        android:src="@drawable/ic_add_circle_outline_white_24dp" />
+
+    <!-- Subtitle -->
+    <RelativeLayout
+        android:id="@+id/layoutNavUserInfo"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_below="@id/profile_image"
+        android:layout_marginTop="8dp"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:paddingLeft="16dp">
+
+        <TextView
+            android:id="@+id/navHeaderName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Julian Rosser"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/navHeaderEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/navHeaderName"
+            android:text="julianrosser91@gmail.com"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
