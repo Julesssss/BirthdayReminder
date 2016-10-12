@@ -211,13 +211,12 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
 
                     //Replacing the main content with ContentFragment Which is our Inbox View;
                     case R.id.menu_birthdays:
-//                        Toast.makeText(getApplicationContext(), "What\'s On Selected", Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.menu_help:
                         startActivity(new Intent(getApplicationContext(), HelpActivity.class));
                         return true;
                     case R.id.menu_import_contacts:
-                        startActivity(new Intent(getApplicationContext(), ImportContactsActivity.class));
+                        checkContactPermissionAndLaunchImportActivity();
                         return true;
                     case R.id.menu_settings:
                         startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
@@ -796,7 +795,6 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
                 != PackageManager.PERMISSION_GRANTED) {
 
             // No explanation needed, we can request the permission.
-
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.READ_CONTACTS},
                     Constants.CONTACT_PERMISSION_CODE);
