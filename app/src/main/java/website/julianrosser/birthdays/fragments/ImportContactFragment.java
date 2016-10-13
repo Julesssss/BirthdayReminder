@@ -95,7 +95,7 @@ public class ImportContactFragment extends android.support.v4.app.Fragment {
         }
 
         // Set layout properties
-        LinearLayoutManager llm = new LinearLayoutManager(BirthdayListActivity.getAppContext());
+        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
 

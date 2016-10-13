@@ -12,6 +12,7 @@ import java.util.Comparator;
 import website.julianrosser.birthdays.activities.BirthdayListActivity;
 import website.julianrosser.birthdays.model.Birthday;
 import website.julianrosser.birthdays.R;
+import website.julianrosser.birthdays.model.tasks.LoadBirthdaysTask;
 import website.julianrosser.birthdays.viewholder.BirthdayViewHolder;
 
 public class BirthdayViewAdapter extends RecyclerView.Adapter<BirthdayViewHolder> {
@@ -23,7 +24,8 @@ public class BirthdayViewAdapter extends RecyclerView.Adapter<BirthdayViewHolder
             BirthdayListActivity.birthdaysList = new ArrayList<>();
         } else if (birthdayData.size() == 0) {
             // After Adapter is constructed, start the process of loading data
-            BirthdayListActivity.getContext().launchLoadBirthdaysTask();
+            LoadBirthdaysTask loadBirthdaysTask = new LoadBirthdaysTask();
+            loadBirthdaysTask.execute();
         }
     }
 
@@ -123,6 +125,5 @@ public class BirthdayViewAdapter extends RecyclerView.Adapter<BirthdayViewHolder
     public int getItemCount() {
         return BirthdayListActivity.birthdaysList.size();
     }
-
 
 }

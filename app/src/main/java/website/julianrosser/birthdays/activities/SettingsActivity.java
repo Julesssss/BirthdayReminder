@@ -19,6 +19,7 @@ import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
+import website.julianrosser.birthdays.BirthdayReminder;
 import website.julianrosser.birthdays.R;
 import website.julianrosser.birthdays.recievers.NotificationBuilderReceiver;
 import website.julianrosser.birthdays.services.SetAlarmsService;
@@ -26,7 +27,7 @@ import website.julianrosser.birthdays.services.SetAlarmsService;
 public class SettingsActivity extends BaseActivity {
 
     static Context mContext;
-    private static Tracker mTracker;
+    private Tracker mTracker;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,7 +82,7 @@ public class SettingsActivity extends BaseActivity {
      */
     private static void launchTestNotification() {
 
-        Context context = BirthdayListActivity.getAppContext();
+        Context context = BirthdayReminder.getInstance();
 
         int PENDING_INTENT_ID = 0;
         int MY_NOTIFICATION_ID = 100;
@@ -233,9 +234,7 @@ public class SettingsActivity extends BaseActivity {
                 // If theme preference is changed, immediately recreate the activity.
                 getActivity().recreate();
                 // Also remove BirthdayListActivity, so it can be recreated to apply theme
-                if (BirthdayListActivity.mContext != null) {
-                    BirthdayListActivity.mContext.finish();
-                }
+
             }
 
             return true;
@@ -249,7 +248,7 @@ public class SettingsActivity extends BaseActivity {
                 launchTestNotification();
             }
 
-            mTracker.send(new HitBuilders.EventBuilder()
+            ((SettingsActivity)getActivity()).mTracker.send(new HitBuilders.EventBuilder()
                     .setCategory("Preference")
                     .setAction("Pref click")
                     .setLabel(preference.getKey())

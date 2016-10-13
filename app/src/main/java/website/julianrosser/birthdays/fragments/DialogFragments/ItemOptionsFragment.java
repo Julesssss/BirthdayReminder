@@ -134,7 +134,7 @@ public class ItemOptionsFragment extends DialogFragment {
         ListView listView = (ListView) inflater.inflate(R.layout.item_edit_fragment, null);
 
         // Create adapter using custom class
-        OptionListAdapter adapter = new OptionListAdapter(BirthdayListActivity.getContext(),
+        OptionListAdapter adapter = new OptionListAdapter(getActivity(),
                 getResources().getStringArray(R.array.item_menu_array));
         listView.setAdapter(adapter);
 
@@ -175,7 +175,7 @@ public class ItemOptionsFragment extends DialogFragment {
 
         private LayoutInflater inflater = null;
 
-        public OptionListAdapter(BirthdayListActivity birthdayListActivity, String[] stringArray) {
+        public OptionListAdapter(Context birthdayListActivity, String[] stringArray) {
 
             result = stringArray;
             context = birthdayListActivity;

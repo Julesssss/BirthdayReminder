@@ -1,6 +1,5 @@
 package website.julianrosser.birthdays.viewholder;
 
-import android.graphics.Typeface;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
@@ -28,7 +27,6 @@ public class ContactViewHolder extends RecyclerView.ViewHolder implements View.O
     private TextView textName;
     private ImageView imageAdd;
     private View container;
-    private Typeface typeLight;
 
     public ContactViewHolder(View itemView) {
         super(itemView);
@@ -40,7 +38,6 @@ public class ContactViewHolder extends RecyclerView.ViewHolder implements View.O
         textDateMonth = (TextView) itemView.findViewById(R.id.dateMonth);
         imageAdd = (ImageView) itemView.findViewById(R.id.addImage);
         imageAdd.setOnClickListener(this);
-        typeLight = Typeface.createFromAsset(BirthdayListActivity.getAppContext().getResources().getAssets(), "Roboto-Light.ttf");
     }
 
     @Override
@@ -79,11 +76,11 @@ public class ContactViewHolder extends RecyclerView.ViewHolder implements View.O
         textDateMonth.setText("" + getBirthMonth(birthdate));
     }
 
-    public String getBirthMonth(Date date) {
+    private String getBirthMonth(Date date) {
         return (String) DateFormat.format("MMM", date);
     }
 
-    public String getBirthDay(Date date) {
+    private String getBirthDay(Date date) {
         return "" + date.getDate() + Utils.getDateSuffix(date.getDate());
     }
 
