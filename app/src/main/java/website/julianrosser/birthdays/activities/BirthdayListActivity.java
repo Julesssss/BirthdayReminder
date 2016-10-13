@@ -86,10 +86,9 @@ import website.julianrosser.birthdays.views.CircleTransform;
 @SuppressWarnings("deprecation")
 public class BirthdayListActivity extends BaseActivity implements AddEditFragment.NoticeDialogListener, ItemOptionsFragment.ItemOptionsListener, View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
     private static final int RC_SIGN_IN = 6006;
-    ;
     public static ArrayList<Birthday> birthdaysList = new ArrayList<>();
-    public static Tracker mTracker;
-    static RecyclerListFragment recyclerListFragment;
+    public Tracker mTracker;
+    RecyclerListFragment recyclerListFragment;
     BirthdayListActivity mContext;
     Context mAppContext;
     private FloatingActionButton floatingActionButton;

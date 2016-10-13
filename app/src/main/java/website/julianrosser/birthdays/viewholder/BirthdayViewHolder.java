@@ -103,11 +103,6 @@ public class BirthdayViewHolder extends RecyclerView.ViewHolder implements View.
             // Get correct position, as deleted views may have altered pos int
             int currentPosition = RecyclerListFragment.recyclerView.getChildAdapterPosition(itemView);
 
-            BirthdayListActivity.mTracker.send(new HitBuilders.EventBuilder()
-                    .setCategory("Action")
-                    .setAction("Toggle Alarm ICON")
-                    .build());
-
             // Callback to BirthdayListActivity.
             EventBus.getDefault().post(new BirthdayAlarmToggleEvent(currentPosition));
 
