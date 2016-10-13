@@ -25,7 +25,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
@@ -41,6 +43,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -48,6 +52,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.squareup.picasso.Picasso;
 
 import org.apache.commons.lang3.text.WordUtils;
 import org.json.JSONArray;
@@ -71,6 +76,7 @@ import website.julianrosser.birthdays.model.Birthday;
 import website.julianrosser.birthdays.model.tasks.LoadBirthdaysTask;
 import website.julianrosser.birthdays.recievers.NotificationBuilderReceiver;
 import website.julianrosser.birthdays.services.SetAlarmsService;
+import website.julianrosser.birthdays.views.CircleTransform;
 
 @SuppressWarnings("deprecation")
 public class BirthdayListActivity extends BaseActivity implements AddEditFragment.NoticeDialogListener, ItemOptionsFragment.ItemOptionsListener, View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
@@ -82,21 +88,23 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
     static BirthdayListActivity mContext;
     static Context mAppContext;
     private static FloatingActionButton floatingActionButton;
+
     // Keys for orientation change reference
     final String ADD_EDIT_INSTANCE_KEY = "fragment_add_edit";
     final String ITEM_OPTIONS_INSTANCE_KEY = "fragment_item_options";
     final String RECYCLER_LIST_INSTANCE_KEY = "fragment_recycler_list";
+
     // Fragment references
     AddEditFragment addEditFragment;
     ItemOptionsFragment itemOptionsFragment;
     LoadBirthdaysTask loadBirthdaysTask;
+
     // App indexing
     private GoogleApiClient mClient;
     private String mUrl;
     private String mTitle;
     private String mDescription;
 
-    //    private ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private NavigationView navigationView;
@@ -105,6 +113,12 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
     private GoogleApiClient mGoogleApiClient;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+
+    private LinearLayout userDetailLayout;
+    private SignInButton signInButton;
+    private TextView textNavHeaderUserName;
+    private TextView textNavHeaderEmail;
+    private ImageView imageNavHeaderProfile;
 
     /**
      * For easy access to BirthdayListActivity context from multiple Classes
@@ -252,8 +266,12 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
         // Nav header info
         View headerView = navigationView.inflateHeaderView(R.layout.layout_nav_header);
 
-        RelativeLayout userDetailLayout = (RelativeLayout) headerView.findViewById(R.id.layoutNavUserInfo);
+        userDetailLayout = (LinearLayout) headerView.findViewById(R.id.layoutNavHeaderUserInfo);
         userDetailLayout.setOnClickListener(this);
+
+        textNavHeaderUserName = (TextView) headerView.findViewById(R.id.navHeaderUserName);
+        textNavHeaderEmail = (TextView) headerView.findViewById(R.id.navHeaderUserEmail);
+        imageNavHeaderProfile = (ImageView) headerView.findViewById(R.id.profile_image);
 
         setUpGoogleSignInButton(headerView);
 
@@ -365,11 +383,8 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount account = result.getSignInAccount();
             firebaseAuthWithGoogle(account);
-//            .setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
-//            updateUI(true);
         } else {
-            // Signed out, show unauthenticated UI.
-//            updateUI(false);
+            setNavHeaderUserState(NavHeaderState.LOGGED_OUT);
         }
     }
 
@@ -391,14 +406,13 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
                             Toast.makeText(BirthdayListActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
-                        // ...
                     }
                 });
     }
 
     private void setUpGoogleSignInButton(View headerView) {
         GoogleSignInOptions gso = setUpGoogleSignInOptions();
-        SignInButton signInButton = (SignInButton) headerView.findViewById(R.id.sign_in_button);
+        signInButton = (SignInButton) headerView.findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_WIDE);
         signInButton.setScopes(gso.getScopeArray());
         signInButton.setOnClickListener(this);
@@ -410,22 +424,31 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
+                    handleUserAuthenticated(user);
                     Log.d("Auth", "onAuthStateChanged:signed_in:" + user.getUid());
-                    Snackbar.make(floatingActionButton, "SignedIN: " + user.getDisplayName() + " | " + user.getEmail(), Snackbar.LENGTH_SHORT).show();
                 } else {
                     // User is signed out
+                    setNavHeaderUserState(NavHeaderState.LOGGED_OUT);
+                    Snackbar.make(floatingActionButton, "Signed OUT", Snackbar.LENGTH_SHORT).show();
                     Log.d("Auth", "onAuthStateChanged:signed_out");
                 }
-                // ...
             }
         };
+    }
+
+    private void handleUserAuthenticated(FirebaseUser user) {
+        textNavHeaderUserName.setText(user.getDisplayName());
+        textNavHeaderEmail.setText(user.getEmail());
+        Picasso.with(getApplicationContext()).load(user.getPhotoUrl()).transform(new CircleTransform()).into(imageNavHeaderProfile);
+        setNavHeaderUserState(NavHeaderState.SIGNED_IN);
+        Snackbar.make(floatingActionButton, user.getDisplayName() + "signed IN | " + user.getEmail(), Snackbar.LENGTH_SHORT).show();
     }
 
     private GoogleSignInOptions setUpGoogleSignInOptions() {
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken("1072707269724-3v8qbbu86kmfs252eu44amna8cpqqj9c.apps.googleusercontent.com")
+                .requestIdToken(Constants.GOOGLE_SIGN_IN_KEY)
                 .requestEmail()
                 .build();
 
@@ -436,6 +459,26 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
         return gso;
+    }
+
+    enum NavHeaderState {
+        LOGGED_OUT,
+        SIGNED_IN
+    }
+
+    public void setNavHeaderUserState(NavHeaderState state) {
+        switch (state) {
+            case LOGGED_OUT:
+                userDetailLayout.setVisibility(View.GONE);
+                signInButton.setVisibility(View.VISIBLE);
+                imageNavHeaderProfile.setVisibility(View.GONE);
+                break;
+            case SIGNED_IN:
+                userDetailLayout.setVisibility(View.VISIBLE);
+                signInButton.setVisibility(View.GONE);
+                imageNavHeaderProfile.setVisibility(View.VISIBLE);
+                break;
+        }
     }
 
     @Override
@@ -776,24 +819,32 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_import_contacts) {
-            checkContactPermissionAndLaunchImportActivity();
-
-        } else if (id == R.id.action_settings) {
-            Intent i = new Intent(this, SettingsActivity.class);
-            startActivity(i);
-
-        } else if (id == R.id.action_help) {
-            Intent intentHelp = new Intent(this, HelpActivity.class);
-            startActivity(intentHelp);
-            return true;
-        } else if (id == R.id.action_privacy_policy) {
-            Intent intentPrivacy = new Intent(this, PrivacyPolicyActivity.class);
-            startActivity(intentPrivacy);
+        if (id == R.id.action_sign_out) {
+            signOutGoogle();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void signOutGoogle() {
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        setNavHeaderUserState(NavHeaderState.LOGGED_OUT);
+                        Snackbar.make(floatingActionButton, "signOutGoogle: " + status.getStatusMessage(), Snackbar.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void revokeAccessGoogle() {
+        Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        Snackbar.make(floatingActionButton, "revokeAccessGoogle: " + status.getStatusMessage(), Snackbar.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     // Call this method from Adapter so reference can be kept here in BirthdayListActivity
@@ -828,7 +879,7 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
         int id = v.getId();
 
         switch (id) {
-            case R.id.layoutNavUserInfo:
+            case R.id.layoutNavHeaderUserInfo:
                 Snackbar.make(v, "Change user display", Snackbar.LENGTH_SHORT).show();
                 break;
             case R.id.sign_in_button:
