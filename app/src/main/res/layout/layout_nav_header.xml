@@ -29,7 +29,7 @@
     <RelativeLayout
         android:id="@+id/layoutNavUserInfo"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/profile_image"
         android:layout_marginTop="8dp"
         android:background="?attr/selectableItemBackground"
@@ -43,7 +43,8 @@
             android:text="Julian Rosser"
             android:textColor="@android:color/white"
             android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/navHeaderEmail"
@@ -53,7 +54,13 @@
             android:text="julianrosser91@gmail.com"
             android:textColor="@android:color/white"
             android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="invisible" />
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/sign_in_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
     </RelativeLayout>
 

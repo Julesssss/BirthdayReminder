@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 23
@@ -35,10 +34,13 @@ dependencies {
     compile 'com.android.support:support-v4:23.1.1'
     compile 'org.apache.commons:commons-lang3:3.0'
     compile 'com.android.support:design:23.1.1'
-    compile 'com.google.android.gms:play-services-appindexing:9.0.0'
-    compile 'com.google.android.gms:play-services-analytics:9.0.0'
+    compile 'com.google.android.gms:play-services-appindexing:9.6.1'
+    compile 'com.google.android.gms:play-services-analytics:9.6.1'
     compile 'org.greenrobot:eventbus:3.0.0'
-    compile 'com.google.firebase:firebase-core:9.0.0'
-    compile 'com.google.firebase:firebase-crash:9.0.0'
-
+    compile 'com.google.firebase:firebase-core:9.6.1'
+    compile 'com.google.firebase:firebase-crash:9.6.1'
+    compile 'com.google.firebase:firebase-auth:9.6.1'
+    compile 'com.google.android.gms:play-services-auth:9.6.1'
+    compile 'com.google.android.gms:play-services-auth:9.6.1'
 }
+apply plugin: 'com.google.gms.google-services'

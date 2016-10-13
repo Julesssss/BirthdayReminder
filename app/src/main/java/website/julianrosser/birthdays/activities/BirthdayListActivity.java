@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -20,10 +21,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
@@ -31,7 +34,20 @@ import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 import org.apache.commons.lang3.text.WordUtils;
 import org.json.JSONArray;
@@ -57,7 +73,8 @@ import website.julianrosser.birthdays.recievers.NotificationBuilderReceiver;
 import website.julianrosser.birthdays.services.SetAlarmsService;
 
 @SuppressWarnings("deprecation")
-public class BirthdayListActivity extends BaseActivity implements AddEditFragment.NoticeDialogListener, ItemOptionsFragment.ItemOptionsListener, View.OnClickListener {
+public class BirthdayListActivity extends BaseActivity implements AddEditFragment.NoticeDialogListener, ItemOptionsFragment.ItemOptionsListener, View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
+    private static final int RC_SIGN_IN = 6006;
     ;
     public static ArrayList<Birthday> birthdaysList = new ArrayList<>();
     public static Tracker mTracker;
@@ -83,6 +100,11 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private NavigationView navigationView;
+
+    // Sign In
+    private GoogleApiClient mGoogleApiClient;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
     /**
      * For easy access to BirthdayListActivity context from multiple Classes
@@ -233,6 +255,8 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
         RelativeLayout userDetailLayout = (RelativeLayout) headerView.findViewById(R.id.layoutNavUserInfo);
         userDetailLayout.setOnClickListener(this);
 
+        setUpGoogleSignInButton(headerView);
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 mToolbar, R.string.birthday, R.string.button_negative) {
@@ -320,6 +344,105 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
         }
     }
 
+    /**
+     * Google Authentication methods
+     */
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            handleSignInResult(result);
+        }
+    }
+
+    private void handleSignInResult(GoogleSignInResult result) {
+        Log.d("SIGN IN", "handleSignInResult:" + result.isSuccess());
+        if (result.isSuccess()) {
+            // Signed in successfully, show authenticated UI.
+            GoogleSignInAccount account = result.getSignInAccount();
+            firebaseAuthWithGoogle(account);
+//            .setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
+//            updateUI(true);
+        } else {
+            // Signed out, show unauthenticated UI.
+//            updateUI(false);
+        }
+    }
+
+    public void firebaseAuthWithGoogle(GoogleSignInAccount account) {
+        Log.d("Auth", "firebaseAuthWithGoogle: " + account.getId());
+
+        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d("Auth", "signInWithCredential:onComplete:" + task.isSuccessful());
+
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            Log.w("Auth", "signInWithCredential", task.getException());
+                            Toast.makeText(BirthdayListActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        // ...
+                    }
+                });
+    }
+
+    private void setUpGoogleSignInButton(View headerView) {
+        GoogleSignInOptions gso = setUpGoogleSignInOptions();
+        SignInButton signInButton = (SignInButton) headerView.findViewById(R.id.sign_in_button);
+        signInButton.setSize(SignInButton.SIZE_WIDE);
+        signInButton.setScopes(gso.getScopeArray());
+        signInButton.setOnClickListener(this);
+
+        mAuth = FirebaseAuth.getInstance();
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Log.d("Auth", "onAuthStateChanged:signed_in:" + user.getUid());
+                    Snackbar.make(floatingActionButton, "SignedIN: " + user.getDisplayName() + " | " + user.getEmail(), Snackbar.LENGTH_SHORT).show();
+                } else {
+                    // User is signed out
+                    Log.d("Auth", "onAuthStateChanged:signed_out");
+                }
+                // ...
+            }
+        };
+    }
+
+    private GoogleSignInOptions setUpGoogleSignInOptions() {
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken("1072707269724-3v8qbbu86kmfs252eu44amna8cpqqj9c.apps.googleusercontent.com")
+                .requestEmail()
+                .build();
+
+        // Build a GoogleApiClient with access to the Google Sign-In API and the
+        // options specified by gso.
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+        return gso;
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Snackbar.make(floatingActionButton, "Sign in failed", Snackbar.LENGTH_SHORT).show();
+    }
+
     public Action getAction() {
         Thing object = new Thing.Builder()
                 .setName(mTitle)
@@ -337,6 +460,7 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
     public void onStart() {
         super.onStart();
         mClient.connect();
+        mAuth.addAuthStateListener(mAuthListener);
         AppIndex.AppIndexApi.start(mClient, getAction());
     }
 
@@ -389,7 +513,9 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
                     .setValue(birthdaysList.size())
                     .build());
         }
-
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
         AppIndex.AppIndexApi.end(mClient, getAction());
         mClient.disconnect();
         super.onStop();
@@ -705,7 +831,15 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
             case R.id.layoutNavUserInfo:
                 Snackbar.make(v, "Change user display", Snackbar.LENGTH_SHORT).show();
                 break;
+            case R.id.sign_in_button:
+                signIn();
+                break;
         }
+    }
+
+    private void signIn() {
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
     @Override
