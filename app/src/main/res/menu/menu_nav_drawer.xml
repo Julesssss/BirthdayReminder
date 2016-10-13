@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/nav_group_1"
+        android:checkableBehavior="all">
+        <item
+            android:id="@+id/menu_birthdays"
+            android:checked="true"
+            android:icon="@drawable/ic_cake_white_24dp"
+            android:title="Birthdays" />
+        <item
+            android:id="@+id/menu_import_contacts"
+            android:icon="@drawable/ic_done_white_24dp"
+            android:title="Import Contacts" />
+    </group>
+    <group
+        android:id="@+id/nav_group_2"
+        android:checkableBehavior="all">
+        <item
+            android:id="@+id/menu_settings"
+            android:title="Settings" />
+        <item
+            android:id="@+id/menu_help"
+            android:title="Help" />
+    </group>
+</menu>

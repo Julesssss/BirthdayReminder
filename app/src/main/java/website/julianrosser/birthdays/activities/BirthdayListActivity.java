@@ -12,14 +12,23 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
@@ -27,7 +36,23 @@ import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
+import com.squareup.picasso.Picasso;
 
 import org.apache.commons.lang3.text.WordUtils;
 import org.json.JSONArray;
@@ -51,9 +76,11 @@ import website.julianrosser.birthdays.model.Birthday;
 import website.julianrosser.birthdays.model.tasks.LoadBirthdaysTask;
 import website.julianrosser.birthdays.recievers.NotificationBuilderReceiver;
 import website.julianrosser.birthdays.services.SetAlarmsService;
+import website.julianrosser.birthdays.views.CircleTransform;
 
 @SuppressWarnings("deprecation")
-public class BirthdayListActivity extends BaseActivity implements AddEditFragment.NoticeDialogListener, ItemOptionsFragment.ItemOptionsListener {
+public class BirthdayListActivity extends BaseActivity implements AddEditFragment.NoticeDialogListener, ItemOptionsFragment.ItemOptionsListener, View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
+    private static final int RC_SIGN_IN = 6006;
     ;
     public static ArrayList<Birthday> birthdaysList = new ArrayList<>();
     public static Tracker mTracker;
@@ -61,20 +88,37 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
     static BirthdayListActivity mContext;
     static Context mAppContext;
     private static FloatingActionButton floatingActionButton;
+
     // Keys for orientation change reference
     final String ADD_EDIT_INSTANCE_KEY = "fragment_add_edit";
     final String ITEM_OPTIONS_INSTANCE_KEY = "fragment_item_options";
     final String RECYCLER_LIST_INSTANCE_KEY = "fragment_recycler_list";
+
     // Fragment references
     AddEditFragment addEditFragment;
     ItemOptionsFragment itemOptionsFragment;
     LoadBirthdaysTask loadBirthdaysTask;
+
     // App indexing
     private GoogleApiClient mClient;
     private String mUrl;
     private String mTitle;
     private String mDescription;
-    private String mSchemaType;
+
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private NavigationView navigationView;
+
+    // Sign In
+    private GoogleApiClient mGoogleApiClient;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+
+    private LinearLayout userDetailLayout;
+    private SignInButton signInButton;
+    private TextView textNavHeaderUserName;
+    private TextView textNavHeaderEmail;
+    private ImageView imageNavHeaderProfile;
 
     /**
      * For easy access to BirthdayListActivity context from multiple Classes
@@ -162,6 +206,16 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
         RecyclerListFragment.showEmptyMessageIfRequired();
     }
 
+    public static boolean isContactAlreadyAdded(Birthday contact) {
+        boolean onList = false;
+        for (Birthday b : birthdaysList) {
+            if (b.getName().equals(contact.getName())) {
+                onList = true;
+            }
+        }
+        return onList;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -172,6 +226,78 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
         // Pass toolbar as ActionBar for functionality
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        //Setting Navigation View Item Selected FirebaseAuthListener to handle the item click of the navigation menu
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+
+            // This method will trigger on item Click of navigation menu
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+
+                //Checking if the item is in checked state or not, if not make it in checked state
+                if (menuItem.isChecked()) menuItem.setChecked(false);
+                else menuItem.setChecked(true);
+
+                //Closing drawer on item click
+                mDrawerLayout.closeDrawers();
+
+                //Check to see which item was being clicked and perform appropriate action
+                switch (menuItem.getItemId()) {
+
+                    //Replacing the main content with ContentFragment Which is our Inbox View;
+                    case R.id.menu_birthdays:
+                        return true;
+                    case R.id.menu_help:
+                        startActivity(new Intent(getApplicationContext(), HelpActivity.class));
+                        return true;
+                    case R.id.menu_import_contacts:
+                        checkContactPermissionAndLaunchImportActivity();
+                        return true;
+                    case R.id.menu_settings:
+                        startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        });
+
+        // Nav header info
+        View headerView = navigationView.inflateHeaderView(R.layout.layout_nav_header);
+
+        userDetailLayout = (LinearLayout) headerView.findViewById(R.id.layoutNavHeaderUserInfo);
+        userDetailLayout.setOnClickListener(this);
+
+        textNavHeaderUserName = (TextView) headerView.findViewById(R.id.navHeaderUserName);
+        textNavHeaderEmail = (TextView) headerView.findViewById(R.id.navHeaderUserEmail);
+        imageNavHeaderProfile = (ImageView) headerView.findViewById(R.id.profile_image);
+
+        setUpGoogleSignInButton(headerView);
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+                mToolbar, R.string.birthday, R.string.button_negative) {
+
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+        };
+
+        // Set the drawer toggle as the DrawerListener
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         floatingActionButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -216,7 +342,6 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
         mUrl = "http://julianrosser.website";
         mTitle = "Birthday Reminders";
         mDescription = "Simple birthday reminders for loved-ones";
-        mSchemaType = "http://schema.org/Article";
 
         if (getIntent().getExtras() != null && getIntent().getExtras().getInt(Constants.INTENT_FROM_KEY, 10) == Constants.INTENT_FROM_NOTIFICATION) {
             mTracker.send(new HitBuilders.EventBuilder()
@@ -224,7 +349,6 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
                     .setAction("Notification Touch")
                     .build());
         }
-
 
         // Get sample of theme choice
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -236,6 +360,130 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
                     .setValue(Long.valueOf(prefs.getString(getResources().getString(R.string.pref_theme_key), "0")))
                     .build());
         }
+    }
+
+    /**
+     * Google Authentication methods
+     */
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            handleSignInResult(result);
+        }
+    }
+
+    private void handleSignInResult(GoogleSignInResult result) {
+        Log.d("SIGN IN", "handleSignInResult:" + result.isSuccess());
+        if (result.isSuccess()) {
+            // Signed in successfully, show authenticated UI.
+            GoogleSignInAccount account = result.getSignInAccount();
+            firebaseAuthWithGoogle(account);
+        } else {
+            setNavHeaderUserState(NavHeaderState.LOGGED_OUT);
+        }
+    }
+
+    public void firebaseAuthWithGoogle(GoogleSignInAccount account) {
+        Log.d("Auth", "firebaseAuthWithGoogle: " + account.getId());
+
+        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d("Auth", "signInWithCredential:onComplete:" + task.isSuccessful());
+
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            Log.w("Auth", "signInWithCredential", task.getException());
+                            Toast.makeText(BirthdayListActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    private void setUpGoogleSignInButton(View headerView) {
+        GoogleSignInOptions gso = setUpGoogleSignInOptions();
+        signInButton = (SignInButton) headerView.findViewById(R.id.sign_in_button);
+        signInButton.setSize(SignInButton.SIZE_WIDE);
+        signInButton.setScopes(gso.getScopeArray());
+        signInButton.setOnClickListener(this);
+
+        mAuth = FirebaseAuth.getInstance();
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    handleUserAuthenticated(user);
+                    Log.d("Auth", "onAuthStateChanged:signed_in:" + user.getUid());
+                } else {
+                    // User is signed out
+                    setNavHeaderUserState(NavHeaderState.LOGGED_OUT);
+                    Snackbar.make(floatingActionButton, "Signed OUT", Snackbar.LENGTH_SHORT).show();
+                    Log.d("Auth", "onAuthStateChanged:signed_out");
+                }
+            }
+        };
+    }
+
+    private void handleUserAuthenticated(FirebaseUser user) {
+        textNavHeaderUserName.setText(user.getDisplayName());
+        textNavHeaderEmail.setText(user.getEmail());
+        Picasso.with(getApplicationContext()).load(user.getPhotoUrl()).transform(new CircleTransform()).into(imageNavHeaderProfile);
+        setNavHeaderUserState(NavHeaderState.SIGNED_IN);
+        Snackbar.make(floatingActionButton, user.getDisplayName() + "signed IN | " + user.getEmail(), Snackbar.LENGTH_SHORT).show();
+    }
+
+    private GoogleSignInOptions setUpGoogleSignInOptions() {
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(Constants.GOOGLE_SIGN_IN_KEY)
+                .requestEmail()
+                .build();
+
+        // Build a GoogleApiClient with access to the Google Sign-In API and the
+        // options specified by gso.
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+        return gso;
+    }
+
+    enum NavHeaderState {
+        LOGGED_OUT,
+        SIGNED_IN
+    }
+
+    public void setNavHeaderUserState(NavHeaderState state) {
+        switch (state) {
+            case LOGGED_OUT:
+                userDetailLayout.setVisibility(View.GONE);
+                signInButton.setVisibility(View.VISIBLE);
+                imageNavHeaderProfile.setVisibility(View.GONE);
+                break;
+            case SIGNED_IN:
+                userDetailLayout.setVisibility(View.VISIBLE);
+                signInButton.setVisibility(View.GONE);
+                imageNavHeaderProfile.setVisibility(View.VISIBLE);
+                break;
+        }
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Snackbar.make(floatingActionButton, "Sign in failed", Snackbar.LENGTH_SHORT).show();
     }
 
     public Action getAction() {
@@ -255,6 +503,7 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
     public void onStart() {
         super.onStart();
         mClient.connect();
+        mAuth.addAuthStateListener(mAuthListener);
         AppIndex.AppIndexApi.start(mClient, getAction());
     }
 
@@ -307,7 +556,9 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
                     .setValue(birthdaysList.size())
                     .build());
         }
-
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
         AppIndex.AppIndexApi.end(mClient, getAction());
         mClient.disconnect();
         super.onStop();
@@ -568,24 +819,32 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_import_contacts) {
-            checkContactPermissionAndLaunchImportActivity();
-
-        } else if (id == R.id.action_settings) {
-            Intent i = new Intent(this, SettingsActivity.class);
-            startActivity(i);
-
-        } else if (id == R.id.action_help) {
-            Intent intentHelp = new Intent(this, HelpActivity.class);
-            startActivity(intentHelp);
-            return true;
-        } else if (id == R.id.action_privacy_policy) {
-            Intent intentPrivacy = new Intent(this, PrivacyPolicyActivity.class);
-            startActivity(intentPrivacy);
+        if (id == R.id.action_sign_out) {
+            signOutGoogle();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void signOutGoogle() {
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        setNavHeaderUserState(NavHeaderState.LOGGED_OUT);
+                        Snackbar.make(floatingActionButton, "signOutGoogle: " + status.getStatusMessage(), Snackbar.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void revokeAccessGoogle() {
+        Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        Snackbar.make(floatingActionButton, "revokeAccessGoogle: " + status.getStatusMessage(), Snackbar.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     // Call this method from Adapter so reference can be kept here in BirthdayListActivity
@@ -613,6 +872,31 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
         } else {
             setTheme(R.style.PinkTheme);
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+
+        switch (id) {
+            case R.id.layoutNavHeaderUserInfo:
+                Snackbar.make(v, "Change user display", Snackbar.LENGTH_SHORT).show();
+                break;
+            case R.id.sign_in_button:
+                signIn();
+                break;
+        }
+    }
+
+    private void signIn() {
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        mTitle = (String) title;
+        getActionBar().setTitle(mTitle);
     }
 
     /**
@@ -696,7 +980,6 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
                 != PackageManager.PERMISSION_GRANTED) {
 
             // No explanation needed, we can request the permission.
-
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.READ_CONTACTS},
                     Constants.CONTACT_PERMISSION_CODE);
@@ -707,16 +990,6 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
         } else {
             launchImportContactActivity();
         }
-    }
-
-    public static boolean isContactAlreadyAdded(Birthday contact) {
-        boolean onList = false;
-        for (Birthday b : birthdaysList) {
-            if (b.getName().equals(contact.getName())) {
-                onList = true;
-            }
-        }
-        return onList;
     }
 
     @Override
