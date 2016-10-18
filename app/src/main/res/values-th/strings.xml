@@ -1,0 +1,104 @@
+<resources>
+
+    <!-- Titles -->
+    <string name="app_name">วันคล้ายวันเกิด</string>
+    <string name="dialog_add">เพิ่มวันเกิดใหม่</string>
+    <string name="dialog_edit">แก้ไขวันเกิด</string>
+    <string name="title_activity_settings">การตั้งค่า</string>
+    <string name="notification_title">เตือนวันเกิด</string>
+    <string name="title_activity_help">ช่วยด้วย</string>
+
+    <!-- Menu -->
+    <string name="action_help">ช่วยเหลือและความคิดเห็น</string>
+    <string name="action_settings">การตั้งค่า</string>
+
+    <string name="item_menu_edit">แก้ไข</string>
+    <string name="item_menu_delete">ลบ</string>
+    <string name="item_menu_alarm">การแจ้งเตือนแบบก้านยาว</string>
+
+    <!-- AddEdit DialogFragment -->
+    <string name="hint_name">ชื่อ&#8230;</string>
+    <string name="button_positive">ประหยัด</string>
+    <string name="button_negative">ยกเลิก</string>
+
+    <!-- Information & help Text -->
+    <string name="empty_list_message">แตะไอคอนเค้กวันเกิดที่จะเริ่มต้นการเพิ่มวันเกิด!</string>
+
+    <string name="birthday">วันเกิด</string>
+    <string name="date_is">คือ</string>
+    <string name="date_today">ในวันนี้</string>
+    <string name="date_tomorrow">พรุ่งนี้</string>
+    <string name="date_week">สัปดาห์หน้า</string>
+    <string name="date_2_week">ใน 2 สัปดาห์</string>
+    <string name="date_this">นี้</string>
+    <string name="date_days">วัน</string>
+    <string name="reminder_set">ชุด</string>
+    <string name="reminder_canceled">ยกเลิก</string>
+    <string name="pref_category_reminder">ตั้งค่าการเตือน</string>
+
+    <!-- Preference Strings -->
+    <string name="enabled">ใช่</string>
+    <string name="disabled">ไม่</string>
+    <string name="date">วันที่</string>
+    <string name="name">ชื่อ</string>
+    <string name="day0">ในวันที่</string>
+    <string name="day1">1 วันก่อน</string>
+    <string name="day2">2 วันก่อน</string>
+    <string name="day3">3 วันก่อน</string>
+    <string name="day4">4 วันก่อน</string>
+    <string name="day5">5 วันก่อน</string>
+    <string name="day6">6 วันก่อน</string>
+    <string name="day7">หนึ่งสัปดาห์ก่อน</string>
+    <string name="day14">2 สัปดาห์ก่อน</string>
+
+    <string name="pref_remind_day_title">เตือนฉัน</string>
+    <string name="pref_remind_day_title_dialog">วันแห่งการเตือนความจำ</string>
+    <string name="pref_remind_time_title">เวลาของการแจ้งเตือน</string>
+    <string name="pref_enable_notifications_label">แสดงการแจ้งเตือน?</string>
+    <string name="pref_vibrate_label">อนุญาตให้สั่นสะเทือน?</string>
+    <string name="pref_sound_label">อนุญาตให้เสียง?</string>
+    <string name="pref_test_notification_summary">แสดงการแจ้งเตือนตัวอย่างการใช้การตั้งค่าปัจจุบัน</string>
+    <string name="pref_test_notification_title">แสดงตัวอย่างการแจ้งเตือน</string>
+    <string name="pref_sort_by_title">เรียงวันเกิด</string>
+    <string name="pref_sort_by_title_dialog">เรียงโดยวันเกิด</string>
+
+    <string name="help_add_title">เพิ่มวันเกิด</string>
+    <string name="help_add_content">เพื่อเพิ่มการแจ้งเตือนวันเกิดใหม่แตะไอคอนเค้กวันเกิด จากนั้นใส่ชื่อและวันที่</string>
+    <string name="help_edit_title">แก้ไขวันเกิด</string>
+    <string name="help_edit_content">แตะชื่อวันเกิดที่คุณต้องการจะเปลี่ยน จากนั้นคลิกที่ปุ่มแก้ไข</string>
+    <string name="help_delete_title">ลบวันเกิด</string>
+    <string name="help_delete_content">แตะวันเกิดที่คุณต้องการจะเปลี่ยนจากรายการ แล้วแตะลบ</string>
+    <string name="help_alarm_single_title">เปิดการแจ้งเตือนออก</string>
+    <string name="help_alarm_single_content">แตะที่ไอคอนการเตือนภัยเพื่อสลับการแจ้งเตือนปลุก</string>
+    <string name="help_alarm_all_title">เปิดการแจ้งเตือนทั้งหมดออก</string>
+    <string name="help_alarm_all_content">เปิดเมนูการตั้งค่าและแตะ \'อนุญาตการแจ้งเตือนการแจ้งเตือน\' option.For ความช่วยเหลือมากขึ้นเพื่อส่งข้อเสนอแนะหรือให้คำแนะนำคุณลักษณะใหม่โปรดส่งอีเมลฉันที่ julianrosser91@gmail.com หรือแตะที่ปุ่มด้านล่าง!</string>
+
+    <!-- New Strings -->
+    <string name="date_yesterday">เมื่อวาน</string>
+    <string name="pref_theme_dialog_title">ชุดรูปแบบสี</string>
+    <string name="pref_theme_title">เลือกสี</string>
+    <string name="theme0">สีน้ำเงิน</string>
+    <string name="theme1">สีชมพู</string>
+    <string name="theme2">สีเขียว</string>
+    <string name="pref_category_list">ตั้งค่าการแสดง</string>
+    <string name="preffered_email">เลือกแอปอีเมลที่คุณต้องการ</string>
+    <string name="send_email">ส่งอีเมลล์</string>
+    <string name="email_me_text">ได้รับความช่วยเหลือให้ข้อเสนอแนะหรือให้คำแนะนำคุณลักษณะใหม่</string>
+    <string name="reminder_for">"สำหรับการแจ้งเตือน "</string>
+    <string name="for_next_year">" สำหรับปีถัดไป"</string>
+    <string name="include_year">รวมถึงปี</string>
+    <string name="deleted">ที่ถูกลบ</string>
+    <string name="undo">แก้</string>
+
+    <!--  2.4 Import contacts  -->
+    <string name="import_contacts">นำเข้าที่ติดต่อ</string>
+    <string name="no_contacts_found">ไม่มีรายชื่อที่พบ</string>
+    <string name="no_contacts_message">กรุณาเพิ่มข้อมูลวันเกิดให้กับผู้ติดต่อของคุณสำหรับพวกเขาที่จะแสดงที่นี่</string>
+    <string name="contact_permission_denied_message">ได้รับอนุญาตที่จำเป็นในการโหลดรายชื่อผู้ติดต่อ</string>
+    <string name="contact_already_added">ได้รับการเพิ่มแล้ว</string>
+    <string name="not_available" translatable="false">N/A</string>
+    <string name="added">ที่เพิ่ม</string>
+    <string name="title_privacy_policy">นโยบายความเป็นส่วนตัว</string>
+    <string name="error_try_again">ข้อผิดพลาดโปรดลองอีกครั้ง &#8230;</string>
+
+</resources>

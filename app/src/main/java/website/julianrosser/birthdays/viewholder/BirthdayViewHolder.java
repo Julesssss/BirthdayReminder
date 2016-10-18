@@ -1,6 +1,5 @@
 package website.julianrosser.birthdays.viewholder;
 
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
@@ -10,10 +9,14 @@ import android.widget.TextView;
 
 import com.google.android.gms.analytics.HitBuilders;
 
+import org.greenrobot.eventbus.EventBus;
+
 import website.julianrosser.birthdays.R;
 import website.julianrosser.birthdays.activities.BirthdayListActivity;
 import website.julianrosser.birthdays.fragments.RecyclerListFragment;
 import website.julianrosser.birthdays.model.Birthday;
+import website.julianrosser.birthdays.model.events.BirthdayAlarmToggleEvent;
+import website.julianrosser.birthdays.model.events.BirthdayItemClickEvent;
 
 /**
  * ViewHolder class to hold view references to be used in recyclerview.
@@ -28,7 +31,6 @@ public class BirthdayViewHolder extends RecyclerView.ViewHolder implements View.
     private TextView textDaysRemaining;
     private ImageView imageAlarm;
     private View container;
-    private Typeface typeLight;
 
     public BirthdayViewHolder(View itemView) {
         super(itemView);
@@ -41,7 +43,6 @@ public class BirthdayViewHolder extends RecyclerView.ViewHolder implements View.
         textDateDay = (TextView) itemView.findViewById(R.id.dateDay);
         textDateMonth = (TextView) itemView.findViewById(R.id.dateMonth);
         imageAlarm = (ImageView) itemView.findViewById(R.id.alarmImage);
-        typeLight = Typeface.createFromAsset(BirthdayListActivity.getAppContext().getResources().getAssets(), "Roboto-Light.ttf");
     }
 
     public void setTag(Birthday birthday) {
@@ -102,13 +103,8 @@ public class BirthdayViewHolder extends RecyclerView.ViewHolder implements View.
             // Get correct position, as deleted views may have altered pos int
             int currentPosition = RecyclerListFragment.recyclerView.getChildAdapterPosition(itemView);
 
-            BirthdayListActivity.mTracker.send(new HitBuilders.EventBuilder()
-                    .setCategory("Action")
-                    .setAction("Toggle Alarm ICON")
-                    .build());
-
             // Callback to BirthdayListActivity.
-            BirthdayListActivity.getContext().alarmToggled(currentPosition);
+            EventBus.getDefault().post(new BirthdayAlarmToggleEvent(currentPosition));
 
         } else {
             // Get actual position, accounting for deletion
@@ -116,7 +112,7 @@ public class BirthdayViewHolder extends RecyclerView.ViewHolder implements View.
 
             // Open ItemOption menu for selected birthday
             if (currentPosition != RecyclerView.NO_POSITION) {
-                BirthdayListActivity.getContext().showItemOptionsFragment(currentPosition);
+                EventBus.getDefault().post(new BirthdayItemClickEvent(currentPosition));
             } else {
                 Snackbar.make(container, R.string.error_try_again, Snackbar.LENGTH_SHORT).show();
             }

@@ -55,6 +55,8 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.squareup.picasso.Picasso;
 
 import org.apache.commons.lang3.text.WordUtils;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -73,6 +75,9 @@ import website.julianrosser.birthdays.fragments.DialogFragments.AddEditFragment;
 import website.julianrosser.birthdays.fragments.DialogFragments.ItemOptionsFragment;
 import website.julianrosser.birthdays.fragments.RecyclerListFragment;
 import website.julianrosser.birthdays.model.Birthday;
+import website.julianrosser.birthdays.model.events.BirthdayAlarmToggleEvent;
+import website.julianrosser.birthdays.model.events.BirthdayItemClickEvent;
+import website.julianrosser.birthdays.model.events.BirthdaysLoadedEvent;
 import website.julianrosser.birthdays.model.tasks.LoadBirthdaysTask;
 import website.julianrosser.birthdays.recievers.NotificationBuilderReceiver;
 import website.julianrosser.birthdays.services.SetAlarmsService;
@@ -81,13 +86,12 @@ import website.julianrosser.birthdays.views.CircleTransform;
 @SuppressWarnings("deprecation")
 public class BirthdayListActivity extends BaseActivity implements AddEditFragment.NoticeDialogListener, ItemOptionsFragment.ItemOptionsListener, View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
     private static final int RC_SIGN_IN = 6006;
-    ;
     public static ArrayList<Birthday> birthdaysList = new ArrayList<>();
-    public static Tracker mTracker;
-    static RecyclerListFragment recyclerListFragment;
-    static BirthdayListActivity mContext;
-    static Context mAppContext;
-    private static FloatingActionButton floatingActionButton;
+    public Tracker mTracker;
+    RecyclerListFragment recyclerListFragment;
+    BirthdayListActivity mContext;
+    Context mAppContext;
+    private FloatingActionButton floatingActionButton;
 
     // Keys for orientation change reference
     final String ADD_EDIT_INSTANCE_KEY = "fragment_add_edit";
@@ -123,36 +127,36 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
     /**
      * For easy access to BirthdayListActivity context from multiple Classes
      */
-    public static BirthdayListActivity getContext() {
-        return mContext;
-    }
-
-    public static Context getAppContext() {
-        return mAppContext;
-    }
+//    public static BirthdayListActivity getContext() {
+//        return mContext;
+//    }
+//
+//    public static Context getAppContext() {
+//        return mAppContext;
+//    }
 
     // This builds an identical PendingIntent to the alarm and cancels when
-    private static void cancelAlarm(Birthday deletedBirthday) {
+    private void cancelAlarm(Birthday deletedBirthday) {
 
         // CreateIntent to start the AlarmNotificationReceiver
-        Intent mNotificationReceiverIntent = new Intent(BirthdayListActivity.getAppContext(),
+        Intent mNotificationReceiverIntent = new Intent(BirthdayListActivity.this,
                 NotificationBuilderReceiver.class);
 
         // Create pending Intent using Intent we just built
         PendingIntent mNotificationReceiverPendingIntent = PendingIntent
-                .getBroadcast(getAppContext(), deletedBirthday.getName().hashCode(),
+                .getBroadcast(getApplicationContext(), deletedBirthday.getName().hashCode(),
                         mNotificationReceiverIntent,
                         PendingIntent.FLAG_UPDATE_CURRENT);
 
         // Finish by passing PendingIntent and delay time to AlarmManager
-        AlarmManager mAlarmManager = (AlarmManager) getAppContext().getSystemService(ALARM_SERVICE);
+        AlarmManager mAlarmManager = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
         mAlarmManager.cancel(mNotificationReceiverPendingIntent);
     }
 
     /**
      * Save Birthdays to JSON file, then Update alarms by starting Service
      **/
-    public static void saveBirthdays()
+    public void saveBirthdays()
             throws JSONException, IOException {
 
         if (birthdaysList != null) {
@@ -181,18 +185,18 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
             }
 
             // Launch service to update alarms when data changed
-            Intent serviceIntent = new Intent(BirthdayListActivity.getAppContext(), SetAlarmsService.class);
-            BirthdayListActivity.getAppContext().startService(serviceIntent);
+            Intent serviceIntent = new Intent(BirthdayListActivity.this, SetAlarmsService.class);
+            startService(serviceIntent);
         }
     }
 
     // Force UI thread to ensure mAdapter updates RecyclerView list
-    public static void dataChangedUiThread() {
+    public void dataChangedUiThread() {
         // Reorder ArrayList to sort by desired method
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(BirthdayListActivity.getAppContext());
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         // Get users sort preference
-        if (Integer.valueOf(sharedPref.getString(getAppContext().getString(R.string.pref_sort_by_key), "0")) == 1) {
+        if (Integer.valueOf(sharedPref.getString(getApplicationContext().getString(R.string.pref_sort_by_key), "0")) == 1) {
             BirthdayViewAdapter.sortBirthdaysByName();
         } else {
             BirthdayViewAdapter.sortBirthdaysByDate();
@@ -334,6 +338,8 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
 
         // This is to help the fragment keep its state on rotation
         recyclerListFragment.setRetainInstance(true);
+
+        EventBus.getDefault().register(this);
 
         // Obtain the shared Tracker instance.
         mTracker = getDefaultTracker();
@@ -561,6 +567,7 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
         }
         AppIndex.AppIndexApi.end(mClient, getAction());
         mClient.disconnect();
+        EventBus.getDefault().unregister(this);
         super.onStop();
     }
 
@@ -647,16 +654,16 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
             birthday = birthdaysList.get(position);
             birthday.edit(name, dateOfBirth, true, includeYear);
 
-            mContext.runOnUiThread(new Runnable() {
+            runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
 
                     /** Logic for edit animation. Depending first on sorting preference, check whether the sorting will change.
                      * if so, used adapter moved animation, else just refresh information */
-                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(BirthdayListActivity.getAppContext());
+                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
                     // Get users sorting preference
-                    if (Integer.valueOf(sharedPref.getString(getAppContext().getString(R.string.pref_sort_by_key), "0")) != 1) {
+                    if (Integer.valueOf(sharedPref.getString(getApplicationContext().getString(R.string.pref_sort_by_key), "0")) != 1) {
 
                         // PREF SORT: DATE
                         if (BirthdayViewAdapter.willChangeDateOrder(birthday)) {
@@ -664,12 +671,10 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
                             // Order will change, sort, then notify adapter of move
                             BirthdayViewAdapter.sortBirthdaysByDate();
                             RecyclerListFragment.mAdapter.notifyItemMoved(position, birthdaysList.indexOf(birthday));
-
                         } else {
                             // No order change, so just notify item changed
                             RecyclerListFragment.mAdapter.notifyItemChanged(birthdaysList.indexOf(birthday));
                         }
-
                     } else {
 
                         // PREF SORT: NAME. If order changes, sort the notify adapter
@@ -684,7 +689,6 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
                             RecyclerListFragment.mAdapter.notifyItemChanged(birthdaysList.indexOf(birthday));
                         }
                     }
-
                     // Delay update until after animation has finished
                     Runnable r = new Runnable() {
                         public void run() {
@@ -692,11 +696,7 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
                         }
                     };
                     new Handler().postDelayed(r, 500);
-
-
                 }
-
-
             });
 
         } else {
@@ -705,13 +705,13 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
             birthdaysList.add(birthday);
 
             // Notify adapter
-            mContext.runOnUiThread(new Runnable() {
+            runOnUiThread(new Runnable() {
                 public void run() {
 
-                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(BirthdayListActivity.getAppContext());
+                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
                     // Get users sort preference
-                    if (Integer.valueOf(sharedPref.getString(getAppContext().getString(R.string.pref_sort_by_key), "0")) == 1) {
+                    if (Integer.valueOf(sharedPref.getString(getApplicationContext().getString(R.string.pref_sort_by_key), "0")) == 1) {
                         BirthdayViewAdapter.sortBirthdaysByName();
                     } else {
                         BirthdayViewAdapter.sortBirthdaysByDate();
@@ -725,18 +725,6 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
                     .setCategory("Action")
                     .setAction("New Birthday")
                     .build());
-
-//            mTracker.send(new HitBuilders.EventBuilder()
-//                    .setCategory("Data")
-//                    .setAction("Name")
-//                    .setLabel(name)
-//                    .build());
-
-//            mTracker.send(new HitBuilders.EventBuilder()
-//                    .setCategory("Data")
-//                    .setAction("Date")
-//                    .setLabel(dateOfBirth.getDate() + " / " + dateOfBirth.getMonth())
-//                    .build());
         }
 
         try {
@@ -771,7 +759,7 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                Snackbar.make(floatingActionButton, BirthdayListActivity.getAppContext().getString(R.string.deleted) + " "
+                Snackbar.make(floatingActionButton, getApplicationContext().getString(R.string.deleted) + " "
                         + birthdayToDelete.getName(), Snackbar.LENGTH_LONG).setAction(R.string.undo,
                         new View.OnClickListener() {
                             @Override
@@ -781,10 +769,10 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
                                 mContext.runOnUiThread(new Runnable() {
                                     public void run() {
 
-                                        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(BirthdayListActivity.getAppContext());
+                                        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
                                         // Get users sort preference
-                                        if (Integer.valueOf(sharedPref.getString(getAppContext().getString(R.string.pref_sort_by_key), "0")) == 1) {
+                                        if (Integer.valueOf(sharedPref.getString(getApplicationContext().getString(R.string.pref_sort_by_key), "0")) == 1) {
                                             BirthdayViewAdapter.sortBirthdaysByName();
                                         } else {
                                             BirthdayViewAdapter.sortBirthdaysByDate();
@@ -888,6 +876,21 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
         }
     }
 
+    @Subscribe
+    public void onMessageEvent(BirthdaysLoadedEvent event) {
+        birthdaysList = event.getBirthdays();
+    }
+
+    @Subscribe
+    public void onMessageEvent(BirthdayAlarmToggleEvent event) {
+        alarmToggled(event.getCurrentPosition());
+    }
+
+    @Subscribe
+    public void onMessageEvent(BirthdayItemClickEvent event) {
+        showItemOptionsFragment(event.getCurrentPosition());
+    }
+
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -953,10 +956,10 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
 
         // Notify user of change. If birthday is today, let user know alarm is set for next year
         if (birthday.getDaysBetween() == 0 && birthday.getRemind()) {
-            Snackbar.make(floatingActionButton, floatingActionButton.getContext().getString(R.string.reminder_for) + birthday.getName() + " " +
-                    birthday.getReminderString() + floatingActionButton.getContext().getString(R.string.for_next_year), Snackbar.LENGTH_LONG).show();
+            Snackbar.make(floatingActionButton, getApplicationContext().getString(R.string.reminder_for) + birthday.getName() + " " +
+                    birthday.getReminderString() + getApplicationContext().getString(R.string.for_next_year), Snackbar.LENGTH_LONG).show();
         } else {
-            Snackbar.make(floatingActionButton, BirthdayListActivity.getAppContext().getString(R.string.reminder_for) + birthday.getName() + " " +
+            Snackbar.make(floatingActionButton, getApplicationContext().getString(R.string.reminder_for) + birthday.getName() + " " +
                     birthday.getReminderString(), Snackbar.LENGTH_LONG).show();
         }
 
