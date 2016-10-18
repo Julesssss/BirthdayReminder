@@ -155,4 +155,9 @@
     <string name="title_privacy_policy">Privacy Policy</string>
     <string name="error_try_again">Error, please try again &#8230;</string>
 
+    <!-- TODO - Translate-->
+    <!-- 3.0 Update -->
+    <string name="sign_out">Sign out</string>
+
+
 </resources>

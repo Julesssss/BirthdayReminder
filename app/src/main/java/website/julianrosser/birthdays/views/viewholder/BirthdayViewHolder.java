@@ -1,4 +1,4 @@
-package website.julianrosser.birthdays.viewholder;
+package website.julianrosser.birthdays.views.viewholder;
 
 import android.graphics.drawable.Drawable;
 import android.support.design.widget.Snackbar;
@@ -7,12 +7,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.analytics.HitBuilders;
-
 import org.greenrobot.eventbus.EventBus;
 
 import website.julianrosser.birthdays.R;
-import website.julianrosser.birthdays.activities.BirthdayListActivity;
 import website.julianrosser.birthdays.fragments.RecyclerListFragment;
 import website.julianrosser.birthdays.model.Birthday;
 import website.julianrosser.birthdays.model.events.BirthdayAlarmToggleEvent;

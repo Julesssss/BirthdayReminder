@@ -7,20 +7,20 @@
             android:id="@+id/menu_birthdays"
             android:checked="true"
             android:icon="@drawable/ic_cake_white_24dp"
-            android:title="Birthdays" />
+            android:title="@string/app_name" />
         <item
             android:id="@+id/menu_import_contacts"
             android:icon="@drawable/ic_done_white_24dp"
-            android:title="Import Contacts" />
+            android:title="@string/import_contacts" />
     </group>
     <group
         android:id="@+id/nav_group_2"
         android:checkableBehavior="all">
         <item
             android:id="@+id/menu_settings"
-            android:title="Settings" />
+            android:title="@string/action_settings" />
         <item
             android:id="@+id/menu_help"
-            android:title="Help" />
+            android:title="@string/action_help" />
     </group>
 </menu>

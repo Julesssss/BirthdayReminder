@@ -13,7 +13,7 @@ import website.julianrosser.birthdays.activities.BirthdayListActivity;
 import website.julianrosser.birthdays.model.Birthday;
 import website.julianrosser.birthdays.R;
 import website.julianrosser.birthdays.model.tasks.LoadBirthdaysTask;
-import website.julianrosser.birthdays.viewholder.BirthdayViewHolder;
+import website.julianrosser.birthdays.views.viewholder.BirthdayViewHolder;
 
 public class BirthdayViewAdapter extends RecyclerView.Adapter<BirthdayViewHolder> {
 

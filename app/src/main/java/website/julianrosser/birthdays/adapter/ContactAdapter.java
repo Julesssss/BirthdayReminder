@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import website.julianrosser.birthdays.model.Contact;
-import website.julianrosser.birthdays.viewholder.ContactViewHolder;
+import website.julianrosser.birthdays.views.viewholder.ContactViewHolder;
 import website.julianrosser.birthdays.R;
 
 public class ContactAdapter

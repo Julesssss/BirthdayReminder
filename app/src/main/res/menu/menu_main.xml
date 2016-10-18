@@ -5,7 +5,11 @@
     <item
         android:id="@+id/action_sign_out"
         android:orderInCategory="320"
-        android:title="Sign out" />
-    <!-- todo - translate -->
+        android:title="@string/sign_out" />
+
+    <item
+        android:id="@+id/action_firebase"
+        android:orderInCategory="999"
+        android:title="Firebase test" />
 
 </menu>

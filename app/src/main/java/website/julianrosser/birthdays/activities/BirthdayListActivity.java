@@ -52,6 +52,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import org.apache.commons.lang3.text.WordUtils;
@@ -66,8 +68,10 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
+import website.julianrosser.birthdays.BirthdayReminder;
 import website.julianrosser.birthdays.Constants;
 import website.julianrosser.birthdays.R;
 import website.julianrosser.birthdays.adapter.BirthdayViewAdapter;
@@ -339,8 +343,6 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
         // This is to help the fragment keep its state on rotation
         recyclerListFragment.setRetainInstance(true);
 
-        EventBus.getDefault().register(this);
-
         // Obtain the shared Tracker instance.
         mTracker = getDefaultTracker();
 
@@ -391,6 +393,7 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
             firebaseAuthWithGoogle(account);
         } else {
             setNavHeaderUserState(NavHeaderState.LOGGED_OUT);
+            Snackbar.make(floatingActionButton, "Error while logging in", Snackbar.LENGTH_SHORT).show(); // todo - translate
         }
     }
 
@@ -544,6 +547,14 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
         // Tracker
         mTracker.setScreenName("BirthdayListActivity");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -567,7 +578,6 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
         }
         AppIndex.AppIndexApi.end(mClient, getAction());
         mClient.disconnect();
-        EventBus.getDefault().unregister(this);
         super.onStop();
     }
 
@@ -810,8 +820,18 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
         if (id == R.id.action_sign_out) {
             signOutGoogle();
             return true;
+        } else if (id == R.id.action_firebase) {
+            performFirebaseAction();
+            return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void performFirebaseAction() {
+        DatabaseReference dbr = BirthdayReminder.getInstance().getDatabaseReference();
+        for (int i = 0; i < birthdaysList.size(); i++) {
+            dbr.child("" + i).setValue(birthdaysList.get(i).getName());
+        }
     }
 
     private void signOutGoogle() {
@@ -879,15 +899,16 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
     @Subscribe
     public void onMessageEvent(BirthdaysLoadedEvent event) {
         birthdaysList = event.getBirthdays();
+        RecyclerListFragment.showEmptyMessageIfRequired();
     }
 
     @Subscribe
-    public void onMessageEvent(BirthdayAlarmToggleEvent event) {
+    public void onAlarmToggle(BirthdayAlarmToggleEvent event) {
         alarmToggled(event.getCurrentPosition());
     }
 
     @Subscribe
-    public void onMessageEvent(BirthdayItemClickEvent event) {
+    public void onBirthdayClicked(BirthdayItemClickEvent event) {
         showItemOptionsFragment(event.getCurrentPosition());
     }
 
