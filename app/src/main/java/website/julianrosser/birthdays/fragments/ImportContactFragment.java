@@ -10,7 +10,6 @@ import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,11 +22,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import website.julianrosser.birthdays.activities.BirthdayListActivity;
-import website.julianrosser.birthdays.model.Birthday;
-import website.julianrosser.birthdays.model.Contact;
-import website.julianrosser.birthdays.adapter.ContactAdapter;
 import website.julianrosser.birthdays.R;
+import website.julianrosser.birthdays.Utils;
+import website.julianrosser.birthdays.adapter.ContactAdapter;
+import website.julianrosser.birthdays.model.Contact;
 import website.julianrosser.birthdays.model.events.ContactsLoadedEvent;
 
 /**
@@ -39,10 +37,10 @@ public class ImportContactFragment extends android.support.v4.app.Fragment {
     public static ContactAdapter mAdapter;
 
     // Reference to recyclerView
-    public static RecyclerView recyclerView;
+    public RecyclerView recyclerView;
 
     // Reference to view which shows when list empty.
-    static View emptyView;
+    public View emptyView;
 
     public ArrayList<Contact> contacts;
     private ProgressBar progressBar;
@@ -131,14 +129,14 @@ public class ImportContactFragment extends android.support.v4.app.Fragment {
                         cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
                 ContentResolver bd = getActivity().getContentResolver();
                 Cursor bdc = bd.query(android.provider.ContactsContract.Data.CONTENT_URI,
-                        new String[] { ContactsContract.CommonDataKinds.Event.DATA },
-                        android.provider.ContactsContract.Data.CONTACT_ID+" = "+id+" AND "+ ContactsContract.Contacts.Data.MIMETYPE+" = '"+ ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE+"' AND "+ ContactsContract.CommonDataKinds.Event.TYPE+" = "+ ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY, null, android.provider.ContactsContract.Data.DISPLAY_NAME);
+                        new String[]{ContactsContract.CommonDataKinds.Event.DATA},
+                        android.provider.ContactsContract.Data.CONTACT_ID + " = " + id + " AND " + ContactsContract.Contacts.Data.MIMETYPE + " = '" + ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE + "' AND " + ContactsContract.CommonDataKinds.Event.TYPE + " = " + ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY, null, android.provider.ContactsContract.Data.DISPLAY_NAME);
                 if (bdc != null && bdc.getCount() > 0) {
                     while (bdc.moveToNext()) {
                         String birthday = bdc.getString(0);
-                        Log.i(getClass().getSimpleName(), "Name: " + name + "  //  Birth: " + birthday);
+//                        Log.i(getClass().getSimpleName(), "Name: " + name + "  //  Birth: " + birthday);
                         // now "id" is the user's unique ID, "name" is his full name and "birthday" is the date and time of his birth
-                        Contact con = new Contact(name, birthday);
+                        Contact con = new Contact(name, Utils.stringToDate(birthday));
                         contactsList.add(con);
                     }
                 }
@@ -160,13 +158,20 @@ public class ImportContactFragment extends android.support.v4.app.Fragment {
         }
     }
 
-    /** Detect whether contacts were found, and display empty message if necessary. */
+    /**
+     * Detect whether contacts were found, and display empty message if necessary.
+     */
     public void showEmptyMessageIfRequired() {
-        if (contacts.size() == 0){
+        if (contacts.size() == 0) {
             emptyView.setVisibility(View.VISIBLE);
         } else {
             emptyView.setVisibility(View.INVISIBLE);
         }
+    }
+
+    @Subscribe
+    public void onMessageEvent(ContactsLoadedEvent event) {
+        setContacts(event.getContacts());
     }
 
     private class LoadContactsTask extends AsyncTask<Void, Integer, ArrayList<Contact>> {
@@ -186,10 +191,5 @@ public class ImportContactFragment extends android.support.v4.app.Fragment {
         protected void onPostExecute(ArrayList<Contact> result) {
             EventBus.getDefault().post(new ContactsLoadedEvent(result));
         }
-    }
-
-    @Subscribe
-    public void onMessageEvent(ContactsLoadedEvent event) {
-        setContacts(event.getContacts());
     }
 }

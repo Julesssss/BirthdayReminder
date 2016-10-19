@@ -1,11 +1,13 @@
 package website.julianrosser.birthdays.model;
 
+import java.util.Date;
+
 public class Contact {
 
-    String name;
-    String birthday;
+    private String name;
+    private Date birthday;
 
-    public Contact(String name, String birthday) {
+    public Contact(String name, Date birthday) {
         this.name = name;
         this.birthday = birthday;
     }
@@ -14,7 +16,7 @@ public class Contact {
         return name;
     }
 
-    public String getBirthday() {
+    public Date getBirthday() {
         return birthday;
     }
 }

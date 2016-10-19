@@ -13,6 +13,9 @@ public class Utils {
         Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         try {
+            if (birthdayString.startsWith("-")) {
+                birthdayString = birthdayString.replaceFirst("-", "1990");
+            }
             date = format.parse(birthdayString);
             System.out.println(date);
         } catch (java.text.ParseException e) {

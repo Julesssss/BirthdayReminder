@@ -44,12 +44,15 @@ public class ContactViewHolder extends RecyclerView.ViewHolder implements View.O
     public void onClick(View v) {
         Contact contact = (Contact) v.getTag();
 
-        Date birthdate = Utils.stringToDate(contact.getBirthday());
+        Date birthdate = contact.getBirthday();
         if ((birthdate.getYear() + 1900) < 1902) {
             birthdate.setYear(1990);
         } else {
             birthdate.setYear(birthdate.getYear() + 1900);
         }
+        birthdate.setMonth(birthdate.getMonth());
+        birthdate.setDate(birthdate.getDate());
+
         Birthday birthday = new Birthday(contact.getName(), birthdate, true, false);
 
         if (BirthdayListActivity.isContactAlreadyAdded(birthday)) {
@@ -70,8 +73,7 @@ public class ContactViewHolder extends RecyclerView.ViewHolder implements View.O
         imageAdd.setTag(contact);
     }
 
-    public void setDate(String birthday) {
-        Date birthdate = Utils.stringToDate(birthday);
+    public void setDate(Date birthdate) {
         textDateDay.setText("" + getBirthDay(birthdate));
         textDateMonth.setText("" + getBirthMonth(birthdate));
     }
