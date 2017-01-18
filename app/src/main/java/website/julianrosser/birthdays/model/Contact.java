@@ -6,10 +6,12 @@ public class Contact {
 
     private String name;
     private Date birthday;
+    private boolean alreadyAdded;
 
-    public Contact(String name, Date birthday) {
+    public Contact(String name, Date birthday, boolean alreadyAdded) {
         this.name = name;
         this.birthday = birthday;
+        this.alreadyAdded = alreadyAdded;
     }
 
     public String getName() {
@@ -18,5 +20,13 @@ public class Contact {
 
     public Date getBirthday() {
         return birthday;
+    }
+
+    public boolean isAlreadyAdded() {
+        return alreadyAdded;
+    }
+
+    public void setAlreadyAdded(boolean alreadyAdded) {
+        this.alreadyAdded = alreadyAdded;
     }
 }

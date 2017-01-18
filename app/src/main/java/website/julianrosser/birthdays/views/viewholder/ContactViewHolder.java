@@ -7,13 +7,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import website.julianrosser.birthdays.R;
 import website.julianrosser.birthdays.Utils;
-import website.julianrosser.birthdays.activities.BirthdayListActivity;
-import website.julianrosser.birthdays.model.Birthday;
 import website.julianrosser.birthdays.model.Contact;
 
 /**
@@ -27,8 +24,13 @@ public class ContactViewHolder extends RecyclerView.ViewHolder implements View.O
     private TextView textName;
     private ImageView imageAdd;
     private View container;
+    private ContactCallback contactCallback;
 
-    public ContactViewHolder(View itemView) {
+    public interface ContactCallback {
+        void addContact(Contact contact);
+    }
+
+    public ContactViewHolder(View itemView, ContactCallback contactCallback) {
         super(itemView);
 
         // Set up references
@@ -38,30 +40,7 @@ public class ContactViewHolder extends RecyclerView.ViewHolder implements View.O
         textDateMonth = (TextView) itemView.findViewById(R.id.dateMonth);
         imageAdd = (ImageView) itemView.findViewById(R.id.addImage);
         imageAdd.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View v) {
-        Contact contact = (Contact) v.getTag();
-
-        Date birthdate = contact.getBirthday();
-        if ((birthdate.getYear() + 1900) < 1902) {
-            birthdate.setYear(1990);
-        } else {
-            birthdate.setYear(birthdate.getYear() + 1900);
-        }
-        birthdate.setMonth(birthdate.getMonth());
-        birthdate.setDate(birthdate.getDate());
-
-        Birthday birthday = new Birthday(contact.getName(), birthdate, true, false);
-
-        if (BirthdayListActivity.isContactAlreadyAdded(birthday)) {
-            Snackbar.make(container, contact.getName() + " " + container.getContext().getString(R.string.contact_already_added), Snackbar.LENGTH_SHORT).show();
-        } else {
-            BirthdayListActivity.birthdaysList.add(birthday);
-            Snackbar.make(container, contact.getName() + " " + container.getContext().getString(R.string.added), Snackbar.LENGTH_SHORT).show();
-            setImageIcon(birthday.getName());
-        }
+        this.contactCallback = contactCallback;
     }
 
     public void setName(String name) {
@@ -86,15 +65,28 @@ public class ContactViewHolder extends RecyclerView.ViewHolder implements View.O
         return "" + date.getDate() + Utils.getDateSuffix(date.getDate());
     }
 
-    public void setImageIcon(String name) {
-        ArrayList<Birthday> birthdaysList = BirthdayListActivity.birthdaysList;
-
-        for (Birthday birthday : birthdaysList) {
-            if (birthday.getName().equals(name)) {
-                imageAdd.setImageDrawable(imageAdd.getContext().getResources().getDrawable(R.drawable.ic_done_white_24dp));
-                return;
-            }
+    public void setImageIcon(boolean alreadyAdded) {
+        if (alreadyAdded) {
+            imageAdd.setImageDrawable(imageAdd.getContext().getResources().getDrawable(R.drawable.ic_done_white_24dp));
+        } else {
+            imageAdd.setImageDrawable(imageAdd.getContext().getResources().getDrawable(R.drawable.ic_add_circle_outline_white_24dp));
         }
-        imageAdd.setImageDrawable(imageAdd.getContext().getResources().getDrawable(R.drawable.ic_add_circle_outline_white_24dp));
+    }
+
+    @Override
+    public void onClick(View v) {
+        Contact contact = (Contact) v.getTag();
+        int id = v.getId();
+        if (id == R.id.addImage) {
+           if (contact.isAlreadyAdded()) {
+               Snackbar.make(v, contact.getName() + " " + v.getContext().getString(R.string.contact_already_added), Snackbar.LENGTH_SHORT).show();
+           } else {
+               Snackbar.make(v, contact.getName() + " " + v.getContext().getString(R.string.added), Snackbar.LENGTH_SHORT).show();
+               setImageIcon(true);
+               contact.setAlreadyAdded(true);
+
+               contactCallback.addContact(contact);
+           }
+        }
     }
 }
