@@ -3,15 +3,16 @@ package website.julianrosser.birthdays;
 import android.app.Application;
 
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class BirthdayReminder extends Application {
 
-    // Application reference
     private static BirthdayReminder sInstance;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabase;
+    private FirebaseUser currentUser;
 
     public static BirthdayReminder getInstance() {
         return sInstance;
@@ -21,10 +22,14 @@ public class BirthdayReminder extends Application {
     public void onCreate() {
         super.onCreate();
         sInstance = this;
-        FirebaseApp.initializeApp(this);
+        initializeFirebase();
+    }
 
+    private void initializeFirebase() {
+        FirebaseApp.initializeApp(this);
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mDatabase = mFirebaseDatabase.getReference("message");
+        mFirebaseDatabase.setPersistenceEnabled(true);
+        mDatabase = mFirebaseDatabase.getReference();
     }
 
     public DatabaseReference getDatabaseReference() {
@@ -32,8 +37,17 @@ public class BirthdayReminder extends Application {
             if (mFirebaseDatabase == null) {
                 mFirebaseDatabase = FirebaseDatabase.getInstance();
             }
-            mDatabase = mFirebaseDatabase.getReference("message");
+            mDatabase = mFirebaseDatabase.getReference();
         }
         return mDatabase;
     }
+
+    public void setUser(FirebaseUser currentUser) {
+        this.currentUser = currentUser;
+    }
+
+    public FirebaseUser getCurrentUser() {
+        return currentUser;
+    }
+
 }
