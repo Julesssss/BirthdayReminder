@@ -1,5 +1,7 @@
 package website.julianrosser.birthdays.database;
 
+import android.util.Log;
+
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -14,50 +16,43 @@ import java.util.ArrayList;
 import website.julianrosser.birthdays.BirthdayReminder;
 import website.julianrosser.birthdays.Constants;
 import website.julianrosser.birthdays.Utils;
-import website.julianrosser.birthdays.activities.BirthdayListActivity;
 import website.julianrosser.birthdays.model.Birthday;
 import website.julianrosser.birthdays.model.FirebaseBirthday;
 import website.julianrosser.birthdays.model.events.BirthdaysLoadedEvent;
 
 public class FirebaseHelper {
 
-    public static void loadBirthdays() {
-
-        String userID = BirthdayReminder.getInstance().getCurrentUser().getUid();
-
+    public static void loadBirthdaysOnce() {
+        FirebaseUser user = BirthdayReminder.getInstance().getCurrentUser();
+        if (null == user) {
+            Log.i(FirebaseHelper.class.getSimpleName(), "User not loaded yet");
+            return;
+        }
         // load birthdays from FB
-        final DatabaseReference ref = BirthdayReminder.getInstance().getDatabaseReference().child(userID).child(Constants.TABLE_BIRTHDAYS); // todo - refacteringignignigng
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+        final DatabaseReference databaseReference = BirthdayReminder.getInstance().getDatabaseReference().child(user.getUid()).child(Constants.TABLE_BIRTHDAYS);
+        if (databaseReference == null) {
+            Log.i(FirebaseHelper.class.getSimpleName(), "Database not loaded yet");
+            return;
+        }
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                ArrayList<FirebaseBirthday> firebaseBirthdays = new ArrayList<>();
-
+                ArrayList<Birthday> birthdays = new ArrayList<>();
                 for (DataSnapshot birthdaySnap : dataSnapshot.getChildren()) {
                     FirebaseBirthday firebaseBirthday = birthdaySnap.getValue(FirebaseBirthday.class);
-                    firebaseBirthdays.add(firebaseBirthday);
+                    Birthday birthday = Birthday.fromFB(firebaseBirthday);
+                    birthdays.add(birthday);
                 }
-
-                ArrayList<Birthday> birthdays = new ArrayList<>();
-                for (FirebaseBirthday fb : firebaseBirthdays) {
-                    birthdays.add(Birthday.fromFB(fb));
-                }
-
                 EventBus.getDefault().post(new BirthdaysLoadedEvent(birthdays));
-
-                ref.removeEventListener(this);
+                databaseReference.removeEventListener(this);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                ref.removeEventListener(this);
+                Log.i(FirebaseHelper.class.getSimpleName(), databaseError.getMessage());
+                databaseReference.removeEventListener(this);
             }
         });
-    }
-
-    public enum FirebaseUpdate {
-        CREATE,
-        UPDATE,
-        DELETE,
     }
 
     public static void saveBirthdayChange(Birthday birthday, FirebaseUpdate state) {
@@ -93,6 +88,12 @@ public class FirebaseHelper {
             dbr.child("lastUpdated").setValue(ServerValue.TIMESTAMP);
             dbr.child("email").setValue(user.getEmail());
         }
+    }
+
+    public enum FirebaseUpdate {
+        CREATE,
+        UPDATE,
+        DELETE,
     }
 
 }

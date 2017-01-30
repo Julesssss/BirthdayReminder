@@ -9,24 +9,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import website.julianrosser.birthdays.activities.BirthdayListActivity;
-import website.julianrosser.birthdays.model.Birthday;
 import website.julianrosser.birthdays.R;
-import website.julianrosser.birthdays.model.tasks.LoadBirthdaysTask;
+import website.julianrosser.birthdays.model.Birthday;
 import website.julianrosser.birthdays.views.viewholder.BirthdayViewHolder;
 
 public class BirthdayViewAdapter extends RecyclerView.Adapter<BirthdayViewHolder> {
 
-    // Constructor
-    public BirthdayViewAdapter(ArrayList<Birthday> birthdayData) { //
+    private ArrayList<Birthday> birthdays;
 
-        if (birthdayData == null) {
-            BirthdayListActivity.birthdaysList = new ArrayList<>();
-        } else if (birthdayData.size() == 0) {
-            // After Adapter is constructed, start the process of loading data
-            LoadBirthdaysTask loadBirthdaysTask = new LoadBirthdaysTask();
-            loadBirthdaysTask.execute();
-        }
+    // Constructor
+    public BirthdayViewAdapter() {
+        birthdays = new ArrayList<>();
     }
 
     @Override
@@ -41,7 +34,7 @@ public class BirthdayViewAdapter extends RecyclerView.Adapter<BirthdayViewHolder
     @Override
     public void onBindViewHolder(final BirthdayViewHolder viewHolder, final int position) {
         // Get reference to birthday
-        final Birthday birthday = BirthdayListActivity.birthdaysList.get(position);
+        final Birthday birthday = birthdays.get(position);
         viewHolder.setTag(birthday);
         viewHolder.showView();
         // Pass data to the TextViews
@@ -50,8 +43,6 @@ public class BirthdayViewAdapter extends RecyclerView.Adapter<BirthdayViewHolder
         viewHolder.setBirthday(birthday.getBirthDay(), birthday.getBirthMonth());
         viewHolder.displayAgeIfNeeded(birthday.shouldIncludeYear(), birthday.getYear(), birthday.getAge());
         viewHolder.setImageIcon(birthday.getRemindAlarmDrawable());
-        viewHolder.setImageClickListener();
-
     }
 
     @Override
@@ -60,12 +51,16 @@ public class BirthdayViewAdapter extends RecyclerView.Adapter<BirthdayViewHolder
         super.onViewRecycled(holder);
     }
 
+    public void setData(ArrayList<Birthday> birthdays) {
+        this.birthdays = birthdays;
+        notifyDataSetChanged();
+    }
+
     // use this method to find out whether edit will change order of birthdays
-    public static boolean willChangeDateOrder(Birthday b) {
-        ArrayList<Birthday> originalOrder = BirthdayListActivity.birthdaysList;
+    public boolean willChangeDateOrder(Birthday b) {
+        ArrayList<Birthday> originalOrder = birthdays;
 
         int originalPos = originalOrder.indexOf(b);
-
         //Sorting
         Collections.sort(originalOrder, new Comparator<Birthday>() {
             @Override
@@ -73,16 +68,14 @@ public class BirthdayViewAdapter extends RecyclerView.Adapter<BirthdayViewHolder
                 return b1.getDate().compareTo(b2.getDate());
             }
         });
-
         return originalPos != originalOrder.indexOf(b);
     }
 
     // use this method to find out whether edit will change order of birthdays
-    public static boolean willChangeNameOrder(Birthday b) {
-        ArrayList<Birthday> originalOrder = BirthdayListActivity.birthdaysList;
+    public boolean willChangeNameOrder(Birthday b) {
+        ArrayList<Birthday> originalOrder = birthdays;
 
         int originalPos = originalOrder.indexOf(b);
-
         //Sorting
         Collections.sort(originalOrder, new Comparator<Birthday>() {
             @Override
@@ -90,20 +83,16 @@ public class BirthdayViewAdapter extends RecyclerView.Adapter<BirthdayViewHolder
                 return b1.getName().compareTo(b2.getName());
             }
         });
-
         return originalPos != originalOrder.indexOf(b);
     }
 
     // Sort Birthday array by closest date
-    public static void sortBirthdaysByDate() {
-
-
-        for (Birthday b : BirthdayListActivity.birthdaysList) {
+    public void sortBirthdaysByDate() {
+        for (Birthday b : birthdays) {
             b.setYearOfDate(Birthday.getYearOfNextBirthday(b.getDate()));
         }
-
         //Sorting
-        Collections.sort(BirthdayListActivity.birthdaysList, new Comparator<Birthday>() {
+        Collections.sort(birthdays, new Comparator<Birthday>() {
             @Override
             public int compare(Birthday b1, Birthday b2) {
                 return b1.getDate().compareTo(b2.getDate());
@@ -112,8 +101,8 @@ public class BirthdayViewAdapter extends RecyclerView.Adapter<BirthdayViewHolder
     }
 
     // Sort Birthday array by first name
-    public static void sortBirthdaysByName() {
-        Collections.sort(BirthdayListActivity.birthdaysList, new Comparator<Birthday>() {
+    public void sortBirthdaysByName() {
+        Collections.sort(birthdays, new Comparator<Birthday>() {
             @Override
             public int compare(Birthday b1, Birthday b2) {
                 return b1.getName().compareTo(b2.getName());
@@ -123,7 +112,7 @@ public class BirthdayViewAdapter extends RecyclerView.Adapter<BirthdayViewHolder
 
     @Override
     public int getItemCount() {
-        return BirthdayListActivity.birthdaysList.size();
+        return birthdays.size();
     }
 
 }
