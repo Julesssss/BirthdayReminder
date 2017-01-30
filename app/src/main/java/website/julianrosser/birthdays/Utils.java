@@ -51,4 +51,8 @@ public class Utils {
             return R.color.blue_accent_400;
         }
     }
+
+    public static boolean isStringEmpty(String s) {
+        return s == null || s.equals("");
+    }
 }

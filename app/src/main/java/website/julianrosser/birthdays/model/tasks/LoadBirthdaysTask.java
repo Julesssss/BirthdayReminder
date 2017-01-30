@@ -16,10 +16,8 @@ import java.util.ArrayList;
 
 import website.julianrosser.birthdays.BirthdayReminder;
 import website.julianrosser.birthdays.Constants;
-import website.julianrosser.birthdays.activities.BirthdayListActivity;
 import website.julianrosser.birthdays.model.Birthday;
 import website.julianrosser.birthdays.model.events.BirthdaysLoadedEvent;
-import website.julianrosser.birthdays.model.events.ContactsLoadedEvent;
 
 public class LoadBirthdaysTask extends AsyncTask<Void, Void, ArrayList<Birthday>> {
 
