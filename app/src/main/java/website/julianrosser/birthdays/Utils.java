@@ -17,6 +17,7 @@ public class Utils {
                 birthdayString = birthdayString.replaceFirst("-", "1990");
             }
             date = format.parse(birthdayString);
+            date.setYear(date.getYear() + 1900);
             System.out.println(date);
         } catch (java.text.ParseException e) {
             e.printStackTrace();

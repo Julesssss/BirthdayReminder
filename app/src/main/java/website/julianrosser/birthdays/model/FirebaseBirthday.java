@@ -33,7 +33,7 @@ public class FirebaseBirthday {
     }
 
     public static FirebaseBirthday convertToFirebaseBirthday(Birthday birthday) {
-        return new FirebaseBirthday(birthday.getName(), birthday.getDate(), birthday.getYear() + 1900,
+        return new FirebaseBirthday(birthday.getName(), birthday.getDate(), birthday.getYear(),
                 birthday.getRemind(), birthday.shouldIncludeYear(), birthday.getUID());
     }
 
