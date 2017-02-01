@@ -1,14 +1,16 @@
 package website.julianrosser.birthdays.model.events;
 
+import website.julianrosser.birthdays.model.Birthday;
+
 public class BirthdayItemClickEvent {
 
-    private final int currentPosition;
+    private final Birthday birthday;
 
-    public BirthdayItemClickEvent(int currentPosition) {
-        this.currentPosition = currentPosition;
+    public BirthdayItemClickEvent(Birthday birthday) {
+        this.birthday = birthday;
     }
 
-    public int getCurrentPosition() {
-        return currentPosition;
+    public Birthday getBirthday() {
+        return birthday;
     }
 }
