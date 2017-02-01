@@ -21,7 +21,7 @@ public class FirebaseBirthday {
     /**
      * Constructor for creating new birthday.
      */
-    private FirebaseBirthday(String name, Date dateOfBirthday, int year, boolean notifyUserOfBirthday, boolean includeYear, String uID) {
+    public FirebaseBirthday(String name, Date dateOfBirthday, int year, boolean notifyUserOfBirthday, boolean includeYear, String uID) {
 
         this.name = name;
         this.remind = notifyUserOfBirthday;

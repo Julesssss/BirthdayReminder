@@ -1,7 +1,6 @@
 package website.julianrosser.birthdays.views.viewholder;
 
 import android.graphics.drawable.Drawable;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,9 +9,8 @@ import android.widget.TextView;
 import org.greenrobot.eventbus.EventBus;
 
 import website.julianrosser.birthdays.R;
-import website.julianrosser.birthdays.fragments.RecyclerListFragment;
+import website.julianrosser.birthdays.database.FirebaseHelper;
 import website.julianrosser.birthdays.model.Birthday;
-import website.julianrosser.birthdays.model.events.BirthdayAlarmToggleEvent;
 import website.julianrosser.birthdays.model.events.BirthdayItemClickEvent;
 
 /**
@@ -40,6 +38,7 @@ public class BirthdayViewHolder extends RecyclerView.ViewHolder implements View.
         textDateDay = (TextView) itemView.findViewById(R.id.dateDay);
         textDateMonth = (TextView) itemView.findViewById(R.id.dateMonth);
         imageAlarm = (ImageView) itemView.findViewById(R.id.alarmImage);
+        setImageClickListener();
     }
 
     public void setTag(Birthday birthday) {
@@ -94,25 +93,13 @@ public class BirthdayViewHolder extends RecyclerView.ViewHolder implements View.
         Birthday birthday = (Birthday) v.getTag();
 
         int id = v.getId();
+
         if (id == R.id.alarmImage) {
             birthday.toggleReminder();
-
-            // Get correct position, as deleted views may have altered pos int
-            int currentPosition = RecyclerListFragment.recyclerView.getChildAdapterPosition(itemView);
-
-            // Callback to BirthdayListActivity.
-            EventBus.getDefault().post(new BirthdayAlarmToggleEvent(currentPosition));
-
+            FirebaseHelper.saveBirthdayChange(birthday, FirebaseHelper.FirebaseUpdate.UPDATE);
         } else {
-            // Get actual position, accounting for deletion
-            int currentPosition = RecyclerListFragment.recyclerView.getChildAdapterPosition(itemView);
-
-            // Open ItemOption menu for selected birthday
-            if (currentPosition != RecyclerView.NO_POSITION) {
-                EventBus.getDefault().post(new BirthdayItemClickEvent(currentPosition));
-            } else {
-                Snackbar.make(container, R.string.error_try_again, Snackbar.LENGTH_SHORT).show();
-            }
+            // Callback
+            EventBus.getDefault().post(new BirthdayItemClickEvent(birthday));
         }
     }
 }

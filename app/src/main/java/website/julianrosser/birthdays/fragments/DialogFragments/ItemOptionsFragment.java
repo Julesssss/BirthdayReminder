@@ -24,52 +24,42 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import website.julianrosser.birthdays.activities.BirthdayListActivity;
 import website.julianrosser.birthdays.R;
+import website.julianrosser.birthdays.model.Birthday;
 
 public class ItemOptionsFragment extends DialogFragment {
 
+    private static Birthday sBirthday;
 
     final int DIALOG_WIDTH_SIZE = 220;
 
     // Use this instance of the interface to deliver action events
     static ItemOptionsListener mListener;
 
-    // Reference to selected Birthday's position in Array
-    static int birthdayListPosition;
-
-    // String reference which we use for title
-    static String titleName;
-
     public ItemOptionsFragment() {
         // Required empty public constructor
     }
 
     // New instance is preferable as we have option to initialize here instead of using passed in params.
-    public static ItemOptionsFragment newInstance(int position) {
+    public static ItemOptionsFragment newInstance(Birthday birthday) {
 
         ItemOptionsFragment itemOptionsFragment = new ItemOptionsFragment();
 
-        // We need reference to selected birthday for passing back to BirthdayListActivity
-        birthdayListPosition = position;
-
         // Get selected birthday's title
-        titleName = BirthdayListActivity.birthdaysList.get(birthdayListPosition).getName();
+        sBirthday = birthday;
 
         return itemOptionsFragment;
     }
 
-
     /* BirthdayListActivity implements this interface in order to receive event callbacks. Passes the
     DialogFragment in case the host needs to query it. */
     public interface ItemOptionsListener {
-        void onItemEdit(ItemOptionsFragment dialog, int position);
+        void onItemEdit(ItemOptionsFragment dialog, Birthday birthday);
 
-        void onItemDelete(ItemOptionsFragment dialog, int position);
+        void onItemDelete(ItemOptionsFragment dialog, Birthday birthday);
 
-        void onItemToggleAlarm(ItemOptionsFragment dialog, int position);
+        void onItemToggleAlarm(ItemOptionsFragment dialog, Birthday birthday);
     }
-
 
     // We override the Fragment.onAttach() method to instantiate NoticeDialogListener and read bundle data
     @Override
@@ -117,7 +107,7 @@ public class ItemOptionsFragment extends DialogFragment {
     }
 
     // Helper method for getting exact pixel size for device from density independent pixels
-    public int getPixelsFromDP(int px) {
+    public int getPixelsFromDP(int px) { // todo - refactor
         Resources r = getResources();
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, px, r.getDisplayMetrics());
     }
@@ -144,13 +134,13 @@ public class ItemOptionsFragment extends DialogFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 0:
-                        mListener.onItemEdit(ItemOptionsFragment.this, birthdayListPosition);
+                        mListener.onItemEdit(ItemOptionsFragment.this, sBirthday);
                         break;
                     case 1:
-                        mListener.onItemDelete(ItemOptionsFragment.this, birthdayListPosition);
+                        mListener.onItemDelete(ItemOptionsFragment.this, sBirthday);
                         break;
                     case 2:
-                        mListener.onItemToggleAlarm(ItemOptionsFragment.this, birthdayListPosition);
+                        mListener.onItemToggleAlarm(ItemOptionsFragment.this, sBirthday);
                         break;
                 }
             }
@@ -160,7 +150,7 @@ public class ItemOptionsFragment extends DialogFragment {
         builder.setView(listView);
 
         // Set title to name of selected birthday
-        builder.setTitle(titleName);
+        builder.setTitle(sBirthday.getName());
 
         return builder.create();
     }
@@ -198,27 +188,27 @@ public class ItemOptionsFragment extends DialogFragment {
             return result[position].hashCode();
         }
 
-        public class Holder {
+        public class ItemOptionHolder {
             TextView textView;
             ImageView imageIcon;
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            Holder holder = new Holder();
+            ItemOptionHolder itemOptionHolder = new ItemOptionHolder();
 
             View rowView = inflater.inflate(R.layout.item_edit_fragment_list, null);
 
-            holder.textView = (TextView) rowView.findViewById(R.id.option_list_textview);
-            holder.textView.setText(result[position]);
+            itemOptionHolder.textView = (TextView) rowView.findViewById(R.id.option_list_textview);
+            itemOptionHolder.textView.setText(result[position]);
 
             // Get references
-            holder.imageIcon = (ImageView) rowView.findViewById(R.id.imageView);
+            itemOptionHolder.imageIcon = (ImageView) rowView.findViewById(R.id.imageView);
 
             if (position == 2) {
-                holder.imageIcon.setImageDrawable(BirthdayListActivity.birthdaysList.get(birthdayListPosition).getRemindAlarmDrawable());
+                itemOptionHolder.imageIcon.setImageDrawable(sBirthday.getRemindAlarmDrawable());
             } else {
-                holder.imageIcon.setImageDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), imageIcons[position]));
+                itemOptionHolder.imageIcon.setImageDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), imageIcons[position]));
             }
 
             return rowView;
