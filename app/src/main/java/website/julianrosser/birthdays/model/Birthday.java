@@ -14,11 +14,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.UUID;
 
 import website.julianrosser.birthdays.BirthdayReminder;
 import website.julianrosser.birthdays.R;
 import website.julianrosser.birthdays.Utils;
-import website.julianrosser.birthdays.activities.BirthdayListActivity;
 
 @SuppressWarnings("deprecation")
 public class Birthday {
@@ -36,30 +36,32 @@ public class Birthday {
     private static final int DAY_IN_MILLIS = 86400000;
 
     // References to data
-    private String name;
+    public String name;
     private Date date;
     private boolean remind;
     private int yearOfBirth;
     private boolean showYear;
+    private String uID;
 
     /**
      * Constructor for creating new birthday.
+     *
      */
     public Birthday(String name, Date dateOfBirthday, boolean notifyUserOfBirthday, boolean includeYear) {
-
         this.name = name;
         this.remind = notifyUserOfBirthday;
         this.date = dateOfBirthday;
         this.yearOfBirth = dateOfBirthday.getYear();
         this.showYear = includeYear;
+        this.uID = UUID.randomUUID().toString();
     }
 
     /**
      * For updating Birthday information without creating new
      */
     public void edit(String editName, Date editDate, boolean editRemind, boolean includeYear) {
-
         this.name = editName;
+        this.remind = editRemind;
         this.date = editDate;
         this.yearOfBirth = editDate.getYear();
         this.showYear = includeYear;
@@ -128,6 +130,14 @@ public class Birthday {
 
     public void setYearOfDate(int year) {
         this.date.setYear(year);
+    }
+
+    public String getUID() {
+        return uID;
+    }
+
+    public void setUID(String uID) {
+        this.uID = uID;
     }
 
     public boolean getRemind() {
@@ -330,5 +340,15 @@ public class Birthday {
         } else {
             return String.valueOf(age);
         }
+    }
+
+    public static Birthday fromFB(FirebaseBirthday fb) { // todo - refactor to helper
+        Date date = new Date();
+        date.setYear(fb.dateYear);
+        date.setMonth(fb.dateMonth);
+        date.setDate(fb.dateDay);
+        Birthday birthday = new Birthday(fb.name, date, fb.remind, fb.showYear);
+        birthday.setUID(fb.uID);
+        return birthday;
     }
 }
