@@ -17,6 +17,7 @@ import java.util.Locale;
 import java.util.UUID;
 
 import website.julianrosser.birthdays.BirthdayReminder;
+import website.julianrosser.birthdays.Constants;
 import website.julianrosser.birthdays.R;
 import website.julianrosser.birthdays.Utils;
 
@@ -90,7 +91,7 @@ public class Birthday {
         if (json.has(JSON_YEAR)) {
             yearOfBirth = json.getInt(JSON_YEAR);
         } else {
-            yearOfBirth = 1990;
+            yearOfBirth = Constants.DEFAULT_YEAR_OF_BIRTH;
         }
         // Should use age?
         showYear = json.has(JSON_SHOW_YEAR) && json.getBoolean(JSON_SHOW_YEAR);

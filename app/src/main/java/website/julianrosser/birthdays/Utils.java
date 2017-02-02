@@ -2,7 +2,9 @@ package website.julianrosser.birthdays;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.preference.PreferenceManager;
+import android.util.TypedValue;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -55,5 +57,11 @@ public class Utils {
 
     public static boolean isStringEmpty(String s) {
         return s == null || s.equals("");
+    }
+
+    // Helper method for getting exact pixel size for device from density independent pixels
+    public static int getPixelsFromDP(Context context, int px) {
+        Resources r = context.getResources();
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, px, r.getDisplayMetrics());
     }
 }

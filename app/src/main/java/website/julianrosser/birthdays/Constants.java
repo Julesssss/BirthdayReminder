@@ -7,6 +7,7 @@ public class Constants {
      */
     public static final String FILENAME = "birthdays.json";
 
+    public static int DEFAULT_YEAR_OF_BIRTH = 1990;
 
     public static int INTENT_FROM_NOTIFICATION = 30;
     public static int CONTACT_PERMISSION_CODE = 3;

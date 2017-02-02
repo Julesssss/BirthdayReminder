@@ -14,7 +14,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.view.ContextThemeWrapper;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +28,7 @@ import android.widget.Toast;
 import java.util.Calendar;
 import java.util.Date;
 
+import website.julianrosser.birthdays.Constants;
 import website.julianrosser.birthdays.R;
 import website.julianrosser.birthdays.Utils;
 import website.julianrosser.birthdays.database.FirebaseHelper;
@@ -50,7 +50,7 @@ public class AddEditFragment extends DialogFragment {
     public final static int MODE_ADD = 0;
     public final static int MODE_EDIT = 1;
 
-    private final int DIALOG_WIDTH_SIZE = 280;
+    private final int DIALOG_WIDTH_SIZE = 220;
 
     // Reference to passed bundle when in edit mode
     private Bundle bundle;
@@ -160,7 +160,7 @@ public class AddEditFragment extends DialogFragment {
     private void setUpDatePicker(final DatePicker datePicker) {
         Calendar today = Calendar.getInstance();
         setYearFieldVisibility(false, datePicker);
-        datePicker.init(2000, today.get(Calendar.MONTH), today.get(Calendar.DATE), new DatePicker.OnDateChangedListener() {
+        datePicker.init(Constants.DEFAULT_YEAR_OF_BIRTH, today.get(Calendar.MONTH), today.get(Calendar.DATE), new DatePicker.OnDateChangedListener() {
             @Override
             public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -182,7 +182,7 @@ public class AddEditFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        getDialog().getWindow().setLayout(getPixelsFromDP(DIALOG_WIDTH_SIZE), ViewGroup.LayoutParams.WRAP_CONTENT);
+//        getDialog().getWindow().setLayout(Utils.getPixelsFromDP(getActivity(), DIALOG_WIDTH_SIZE), ViewGroup.LayoutParams.WRAP_CONTENT);
 
         setRetainInstance(true);
         return super.onCreateView(inflater, container, savedInstanceState);
@@ -194,12 +194,6 @@ public class AddEditFragment extends DialogFragment {
         if (getDialog() != null && getRetainInstance())
             getDialog().setDismissMessage(null);
         super.onDestroyView();
-    }
-
-    // Helper method for getting exact pixel size for device from density independent pixels
-    public int getPixelsFromDP(int px) {
-        Resources r = getResources();
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, px, r.getDisplayMetrics());
     }
 
     /**

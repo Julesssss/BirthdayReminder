@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -14,7 +13,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.view.ContextThemeWrapper;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -92,8 +90,7 @@ public class ItemOptionsFragment extends DialogFragment {
             getDialog().getWindow().setBackgroundDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.dialog_background_green));
         }
 
-        getDialog().getWindow().setLayout(getPixelsFromDP(DIALOG_WIDTH_SIZE), ViewGroup.LayoutParams.WRAP_CONTENT);
-        // To ensure data is kept through orientation change
+//        getDialog().getWindow().setLayout(Utils.getPixelsFromDP(getActivity(), DIALOG_WIDTH_SIZE), ViewGroup.LayoutParams.WRAP_CONTENT);
         setRetainInstance(true);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -106,18 +103,11 @@ public class ItemOptionsFragment extends DialogFragment {
         super.onDestroyView();
     }
 
-    // Helper method for getting exact pixel size for device from density independent pixels
-    public int getPixelsFromDP(int px) { // todo - refactor
-        Resources r = getResources();
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, px, r.getDisplayMetrics());
-    }
-
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(
                 new ContextThemeWrapper(getActivity(), R.style.DialogFragmentTheme));
-
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         // Inflate the brilliantly designed layout, passing null as the parent view
