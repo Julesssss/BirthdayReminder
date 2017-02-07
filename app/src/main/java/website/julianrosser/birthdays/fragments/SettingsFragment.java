@@ -88,8 +88,6 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         if (preference.getKey().equals(getString(R.string.pref_theme_key))) {
             // If theme preference is changed, immediately recreate the activity.
             getActivity().recreate();
-            // Also remove BirthdayListActivity, so it can be recreated to apply theme
-
         }
 
         return true;

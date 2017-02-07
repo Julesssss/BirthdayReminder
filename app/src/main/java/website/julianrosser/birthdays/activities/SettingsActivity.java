@@ -54,15 +54,13 @@ public class SettingsActivity extends BaseActivity {
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
-    //
     @Override
     protected void onPause() {
         super.onPause();
 
         // Detect if Activity is closing, and recreate BirthdayListActivity to apply new theme
         if (this.isFinishing()) {
-            Intent i = new Intent(getApplicationContext(), BirthdayListActivity.class);
-            startActivity(i);
+            setResult(BirthdayListActivity.RC_SETTINGS);
         }
     }
 
@@ -72,10 +70,8 @@ public class SettingsActivity extends BaseActivity {
 
         if (prefs.getString(getResources().getString(R.string.pref_theme_key), "0").equals("0")) {
             setTheme(R.style.PreferenceThemeBlue);
-
         } else if (prefs.getString(getResources().getString(R.string.pref_theme_key), "0").equals("1")) {
             setTheme(R.style.PreferenceThemePink);
-
         } else {
             setTheme(R.style.PreferenceThemeGreen);
         }
