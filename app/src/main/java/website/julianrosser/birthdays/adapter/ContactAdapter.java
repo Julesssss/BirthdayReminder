@@ -63,8 +63,7 @@ public class ContactAdapter
     // Callback from ViewHolder
     @Override
     public void addContact(Contact contact) {
-        boolean isYearNot1990 = ! (contact.getBirthday().getYear() == 1990);
-        Birthday contactBirthday = new Birthday(contact.getName(), contact.getBirthday(), true, isYearNot1990);
+        Birthday contactBirthday = new Birthday(contact.getName(), contact.getBirthday(), true, contact.hasYear());
         FirebaseHelper.saveBirthdayChange(contactBirthday, FirebaseHelper.FirebaseUpdate.CREATE);
     }
 }

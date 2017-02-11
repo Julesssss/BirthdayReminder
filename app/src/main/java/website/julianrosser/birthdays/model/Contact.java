@@ -2,16 +2,20 @@ package website.julianrosser.birthdays.model;
 
 import java.util.Date;
 
+import website.julianrosser.birthdays.Utils;
+
 public class Contact {
 
     private String name;
     private Date birthday;
     private boolean alreadyAdded;
+    private boolean hasYear;
 
-    public Contact(String name, Date birthday, boolean alreadyAdded) {
+    public Contact(String name, String birthdayString, boolean alreadyAdded) {
         this.name = name;
-        this.birthday = birthday;
+        this.birthday = Utils.stringToDate(birthdayString);
         this.alreadyAdded = alreadyAdded;
+        this.hasYear = Utils.hasYearOfBirth(birthdayString);
     }
 
     public String getName() {
@@ -28,5 +32,9 @@ public class Contact {
 
     public void setAlreadyAdded(boolean alreadyAdded) {
         this.alreadyAdded = alreadyAdded;
+    }
+
+    public boolean hasYear() {
+        return hasYear;
     }
 }

@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import website.julianrosser.birthdays.Utils;
 import website.julianrosser.birthdays.model.Contact;
 import website.julianrosser.birthdays.model.events.ContactsLoadedEvent;
 
@@ -56,7 +55,7 @@ public class LoadContactsTask extends AsyncTask<Void, Integer, ArrayList<Contact
                 if (bdc != null && bdc.getCount() > 0) {
                     while (bdc.moveToNext()) {
                         String birthday = bdc.getString(0);
-                        Contact con = new Contact(name, Utils.stringToDate(birthday), isContactAlreadyAdded(name));
+                        Contact con = new Contact(name, birthday, isContactAlreadyAdded(name));
                         contactsList.add(con);
                     }
                 }

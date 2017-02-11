@@ -27,6 +27,10 @@ public class Utils {
         return date;
     }
 
+    public static boolean hasYearOfBirth(String birthdayString) {
+        return ! birthdayString.startsWith("-");
+    }
+
     public static String getDateSuffix(int date) {
         if (date == 11 || date == 12 || date == 13) {
             return "th";
