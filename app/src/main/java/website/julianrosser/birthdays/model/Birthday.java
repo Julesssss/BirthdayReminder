@@ -49,23 +49,12 @@ public class Birthday {
      *
      */
     public Birthday(String name, Date dateOfBirthday, boolean notifyUserOfBirthday, boolean includeYear) {
-        this.name = name;
+        this.name = WordUtils.capitalize(name);;
         this.remind = notifyUserOfBirthday;
         this.date = dateOfBirthday;
         this.yearOfBirth = dateOfBirthday.getYear();
         this.showYear = includeYear;
         this.uID = UUID.randomUUID().toString();
-    }
-
-    /**
-     * For updating Birthday information without creating new
-     */
-    public void edit(String editName, Date editDate, boolean editRemind, boolean includeYear) {
-        this.name = editName;
-        this.remind = editRemind;
-        this.date = editDate;
-        this.yearOfBirth = editDate.getYear();
-        this.showYear = includeYear;
     }
 
     /**

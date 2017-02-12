@@ -1,16 +1,11 @@
 package website.julianrosser.birthdays.activities;
 
 import android.Manifest;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -52,60 +47,46 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
-import org.apache.commons.lang3.text.WordUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.json.JSONArray;
-import org.json.JSONException;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
 
+import website.julianrosser.birthdays.AlarmsHelper;
 import website.julianrosser.birthdays.BirthdayReminder;
 import website.julianrosser.birthdays.Constants;
 import website.julianrosser.birthdays.R;
-import website.julianrosser.birthdays.adapter.BirthdayViewAdapter;
+import website.julianrosser.birthdays.database.FirebaseHelper;
 import website.julianrosser.birthdays.fragments.DialogFragments.AddEditFragment;
 import website.julianrosser.birthdays.fragments.DialogFragments.ItemOptionsFragment;
 import website.julianrosser.birthdays.fragments.RecyclerListFragment;
 import website.julianrosser.birthdays.model.Birthday;
-import website.julianrosser.birthdays.model.events.BirthdayAlarmToggleEvent;
 import website.julianrosser.birthdays.model.events.BirthdayItemClickEvent;
 import website.julianrosser.birthdays.model.events.BirthdaysLoadedEvent;
-import website.julianrosser.birthdays.model.tasks.LoadBirthdaysTask;
-import website.julianrosser.birthdays.recievers.NotificationBuilderReceiver;
-import website.julianrosser.birthdays.services.SetAlarmsService;
 import website.julianrosser.birthdays.views.CircleTransform;
+import website.julianrosser.birthdays.views.SnackBarHelper;
 
 @SuppressWarnings("deprecation")
-public class BirthdayListActivity extends BaseActivity implements AddEditFragment.NoticeDialogListener, ItemOptionsFragment.ItemOptionsListener, View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
-    private static final int RC_SIGN_IN = 6006;
-    public static ArrayList<Birthday> birthdaysList = new ArrayList<>();
-    public Tracker mTracker;
-    RecyclerListFragment recyclerListFragment;
-    BirthdayListActivity mContext;
-    Context mAppContext;
-    private FloatingActionButton floatingActionButton;
+public class BirthdayListActivity extends BaseActivity implements ItemOptionsFragment.ItemOptionsListener, View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
+
+    private static final int RC_SIGN_IN = 6006; /// todo - refactor
+    public static final int RC_SETTINGS = 5311;
+
+    private ArrayList<Birthday> birthdaysList = new ArrayList<>();
 
     // Keys for orientation change reference
     final String ADD_EDIT_INSTANCE_KEY = "fragment_add_edit";
     final String ITEM_OPTIONS_INSTANCE_KEY = "fragment_item_options";
     final String RECYCLER_LIST_INSTANCE_KEY = "fragment_recycler_list";
+    public Tracker mTracker;
+    private RecyclerListFragment recyclerListFragment;
 
     // Fragment references
-    AddEditFragment addEditFragment;
-    ItemOptionsFragment itemOptionsFragment;
-    LoadBirthdaysTask loadBirthdaysTask;
+    private AddEditFragment addEditFragment;
+    private ItemOptionsFragment itemOptionsFragment;
+    private FloatingActionButton floatingActionButton;
 
     // App indexing
     private GoogleApiClient mClient;
@@ -128,105 +109,31 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
     private TextView textNavHeaderEmail;
     private ImageView imageNavHeaderProfile;
 
-    /**
-     * For easy access to BirthdayListActivity context from multiple Classes
-     */
-//    public static BirthdayListActivity getContext() {
-//        return mContext;
-//    }
+    private String themePref = "";
+
+//    // Force UI thread to ensure mAdapter updates RecyclerView list
+//    public void dataChangedUiThread() {
 //
-//    public static Context getAppContext() {
-//        return mAppContext;
+//        // Reorder ArrayList to sort by desired method
+//        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//
+//        // Get users sort preference // todo - necexssary?
+//        if (Integer.valueOf(sharedPref.getString(getApplicationContext().getString(R.string.pref_sort_by_key), "0")) == 1) {
+//            recyclerListFragment.mAdapter.sortBirthdaysByName();
+//        } else {
+//            recyclerListFragment.mAdapter.sortBirthdaysByDate();
+//        }
+//
+//        if (floatingActionButton != null && floatingActionButton.getVisibility() == View.INVISIBLE) {
+//            floatingActionButton.show();
+//        }
+//
+//        recyclerListFragment.mAdapter.notifyDataSetChanged();
+
 //    }
-
-    // This builds an identical PendingIntent to the alarm and cancels when
-    private void cancelAlarm(Birthday deletedBirthday) {
-
-        // CreateIntent to start the AlarmNotificationReceiver
-        Intent mNotificationReceiverIntent = new Intent(BirthdayListActivity.this,
-                NotificationBuilderReceiver.class);
-
-        // Create pending Intent using Intent we just built
-        PendingIntent mNotificationReceiverPendingIntent = PendingIntent
-                .getBroadcast(getApplicationContext(), deletedBirthday.getName().hashCode(),
-                        mNotificationReceiverIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT);
-
-        // Finish by passing PendingIntent and delay time to AlarmManager
-        AlarmManager mAlarmManager = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
-        mAlarmManager.cancel(mNotificationReceiverPendingIntent);
-    }
-
-    /**
-     * Save Birthdays to JSON file, then Update alarms by starting Service
-     **/
-    public void saveBirthdays()
-            throws JSONException, IOException {
-
-        if (birthdaysList != null) {
-
-            try {
-                // Build an array in JSON
-                JSONArray array = new JSONArray();
-                for (Birthday b : birthdaysList)
-                    array.put(b.toJSON());
-
-                // Write the file to disk
-                Writer writer = null;
-                try {
-                    OutputStream out = mAppContext.openFileOutput(Constants.FILENAME,
-                            Context.MODE_PRIVATE);
-                    writer = new OutputStreamWriter(out);
-                    writer.write(array.toString());
-
-                } finally {
-                    if (writer != null)
-                        writer.close();
-                }
-
-            } catch (JSONException | IOException e) {
-                e.printStackTrace();
-            }
-
-            // Launch service to update alarms when data changed
-            Intent serviceIntent = new Intent(BirthdayListActivity.this, SetAlarmsService.class);
-            startService(serviceIntent);
-        }
-    }
-
-    // Force UI thread to ensure mAdapter updates RecyclerView list
-    public void dataChangedUiThread() {
-        // Reorder ArrayList to sort by desired method
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
-        // Get users sort preference
-        if (Integer.valueOf(sharedPref.getString(getApplicationContext().getString(R.string.pref_sort_by_key), "0")) == 1) {
-            BirthdayViewAdapter.sortBirthdaysByName();
-        } else {
-            BirthdayViewAdapter.sortBirthdaysByDate();
-        }
-
-        if (floatingActionButton != null && floatingActionButton.getVisibility() == View.INVISIBLE) {
-            floatingActionButton.show();
-        }
-
-        RecyclerListFragment.mAdapter.notifyDataSetChanged();
-        RecyclerListFragment.showEmptyMessageIfRequired();
-    }
-
-    public static boolean isContactAlreadyAdded(Birthday contact) {
-        boolean onList = false;
-        for (Birthday b : birthdaysList) {
-            if (b.getName().equals(contact.getName())) {
-                onList = true;
-            }
-        }
-        return onList;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         setTheme();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -243,17 +150,12 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
 
-                //Checking if the item is in checked state or not, if not make it in checked state
-                if (menuItem.isChecked()) menuItem.setChecked(false);
-                else menuItem.setChecked(true);
-
                 //Closing drawer on item click
                 mDrawerLayout.closeDrawers();
 
                 //Check to see which item was being clicked and perform appropriate action
                 switch (menuItem.getItemId()) {
 
-                    //Replacing the main content with ContentFragment Which is our Inbox View;
                     case R.id.menu_birthdays:
                         return true;
                     case R.id.menu_help:
@@ -263,13 +165,14 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
                         checkContactPermissionAndLaunchImportActivity();
                         return true;
                     case R.id.menu_settings:
-                        startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+                        startActivityForResult(new Intent(getApplicationContext(), SettingsActivity.class), RC_SETTINGS);
                         return true;
                     default:
                         return true;
                 }
             }
         });
+        navigationView.setCheckedItem(R.id.menu_birthdays);
 
         // Nav header info
         View headerView = navigationView.inflateHeaderView(R.layout.layout_nav_header);
@@ -287,13 +190,17 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 mToolbar, R.string.birthday, R.string.button_negative) {
 
-            /** Called when a drawer has settled in a completely closed state. */
+            /**
+             * Called when a drawer has settled in a completely closed state.
+             */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 
-            /** Called when a drawer has settled in a completely open state. */
+            /**
+             * Called when a drawer has settled in a completely open state.
+             */
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
@@ -311,13 +218,9 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Open New Birthday Fragment
-                showAddEditBirthdayFragment(AddEditFragment.MODE_ADD, 0);
+                showEditBirthdayFragment();
             }
         });
-
-        // Initialize context reference
-        mContext = this;
-        mAppContext = getApplicationContext();
 
         // Find RecyclerListFragment reference
         if (savedInstanceState != null) {
@@ -349,7 +252,7 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
         mClient = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
         mUrl = "http://julianrosser.website";
         mTitle = "Birthday Reminders";
-        mDescription = "Simple birthday reminders for loved-ones";
+        mDescription = "Simple birthday reminder notifications";
 
         if (getIntent().getExtras() != null && getIntent().getExtras().getInt(Constants.INTENT_FROM_KEY, 10) == Constants.INTENT_FROM_NOTIFICATION) {
             mTracker.send(new HitBuilders.EventBuilder()
@@ -357,22 +260,7 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
                     .setAction("Notification Touch")
                     .build());
         }
-
-        // Get sample of theme choice
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        Random r = new Random();
-        if (r.nextInt(10) == 5) {
-            mTracker.send(new HitBuilders.EventBuilder()
-                    .setCategory("Samples")
-                    .setAction("Theme")
-                    .setValue(Long.valueOf(prefs.getString(getResources().getString(R.string.pref_theme_key), "0")))
-                    .build());
-        }
     }
-
-    /**
-     * Google Authentication methods
-     */
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -382,6 +270,14 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
+
+        } else if (requestCode == RC_SETTINGS) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            String newTheme = prefs.getString(getString(R.string.pref_theme_key), "0");
+            if (! newTheme.equals(themePref)) {
+                recreate();
+                themePref = newTheme;
+            }
         }
     }
 
@@ -430,7 +326,7 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
+                FirebaseUser user = firebaseAuth.getCurrentUser(); // todo - move to HERE
                 if (user != null) {
                     // User is signed in
                     handleUserAuthenticated(user);
@@ -450,7 +346,9 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
         textNavHeaderEmail.setText(user.getEmail());
         Picasso.with(getApplicationContext()).load(user.getPhotoUrl()).transform(new CircleTransform()).into(imageNavHeaderProfile);
         setNavHeaderUserState(NavHeaderState.SIGNED_IN);
-        Snackbar.make(floatingActionButton, user.getDisplayName() + "signed IN | " + user.getEmail(), Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(floatingActionButton, user.getDisplayName() + " signed in", Snackbar.LENGTH_SHORT).show();
+        BirthdayReminder.getInstance().setUser(user);
+        recyclerListFragment.loadBirthdays();
     }
 
     private GoogleSignInOptions setUpGoogleSignInOptions() {
@@ -470,11 +368,6 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
         return gso;
     }
 
-    enum NavHeaderState {
-        LOGGED_OUT,
-        SIGNED_IN
-    }
-
     public void setNavHeaderUserState(NavHeaderState state) {
         switch (state) {
             case LOGGED_OUT:
@@ -492,7 +385,7 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Snackbar.make(floatingActionButton, "Sign in failed", Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(navigationView, "Sign in failed", Snackbar.LENGTH_SHORT).show();
     }
 
     public Action getAction() {
@@ -517,32 +410,13 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        // Remove context to prevent memory leaks
-        mContext = null;
-
-        // Cancel the task if it's running
-        if (isTaskRunning()) {
-            loadBirthdaysTask.cancel(true);
-        }
-
-        loadBirthdaysTask = null;
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
+        recyclerListFragment.loadBirthdays();
 
-        if (mContext == null) {
-            mContext = this;
+        if (navigationView != null) {
+            navigationView.setCheckedItem(R.id.menu_birthdays);
         }
-        if (mAppContext == null) {
-            mAppContext = getApplicationContext();
-        }
-
-        dataChangedUiThread();
 
         // Tracker
         mTracker.setScreenName("BirthdayListActivity");
@@ -559,20 +433,6 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
 
     @Override
     protected void onStop() {
-        try {
-            saveBirthdays();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        Random r = new Random();
-        if (r.nextInt(10) == 5) {
-            mTracker.send(new HitBuilders.EventBuilder()
-                    .setCategory("Data")
-                    .setAction("Birthdays count")
-                    .setValue(birthdaysList.size())
-                    .build());
-        }
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
@@ -607,27 +467,36 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
         }
     }
 
-    public void showAddEditBirthdayFragment(int mode, int birthdayListPosition) {
+    public void showEditBirthdayFragment() {
         // Create an instance of the dialog fragment and show it
         addEditFragment = AddEditFragment.newInstance();
 
         // Create bundle for storing mode information
         Bundle bundle = new Bundle();
         // Pass mode parameter onto Fragment
-        bundle.putInt(AddEditFragment.MODE_KEY, mode);
+        bundle.putInt(AddEditFragment.MODE_KEY, AddEditFragment.MODE_ADD);
+        addEditFragment.setArguments(bundle);
+        // Pass bundle to Dialog, get FragmentManager and show
+        addEditFragment.show(getSupportFragmentManager(), "AddEditBirthdayFragment");
+    }
 
-        // If we are editing an old birthday, pass its information to fragment
-        if (mode == AddEditFragment.MODE_EDIT) {
-            // Reference to birthday we're editing
-            Birthday editBirthday = birthdaysList.get(birthdayListPosition);
-            // Pass birthday's data to Fragment
-            bundle.putInt(AddEditFragment.DATE_KEY, editBirthday.getDate().getDate());
-            bundle.putInt(AddEditFragment.MONTH_KEY, editBirthday.getDate().getMonth());
-            bundle.putInt(AddEditFragment.YEAR_KEY, editBirthday.getYear());
-            bundle.putInt(AddEditFragment.POS_KEY, birthdayListPosition);
-            bundle.putString(AddEditFragment.NAME_KEY, editBirthday.getName());
-            bundle.putBoolean(AddEditFragment.SHOW_YEAR_KEY, editBirthday.shouldIncludeYear());
-        }
+    public void showAddBirthdayFragment(Birthday birthday) {
+        // Create an instance of the dialog fragment and show it
+        addEditFragment = AddEditFragment.newInstance();
+
+        // Create bundle for storing mode information
+        Bundle bundle = new Bundle();
+
+        // Pass mode parameter onto Fragment
+        bundle.putInt(AddEditFragment.MODE_KEY, AddEditFragment.MODE_EDIT);
+        // Reference to birthday we're editing
+        // Pass birthday's data to Fragment
+        bundle.putInt(AddEditFragment.DATE_KEY, birthday.getDate().getDate());
+        bundle.putInt(AddEditFragment.MONTH_KEY, birthday.getDate().getMonth());
+        bundle.putInt(AddEditFragment.YEAR_KEY, birthday.getYear());
+        bundle.putString(AddEditFragment.NAME_KEY, birthday.getName());
+        bundle.putString(AddEditFragment.UID_KEY, birthday.getUID());
+        bundle.putBoolean(AddEditFragment.SHOW_YEAR_KEY, birthday.shouldIncludeYear());
 
         // Pass bundle to Dialog, get FragmentManager and show
         addEditFragment.setArguments(bundle);
@@ -635,172 +504,11 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
     }
 
     // This method creates and shows a new ItemOptionsFragment, this replaces ContextMenu
-    public void showItemOptionsFragment(int position) {
+    public void showItemOptionsFragment(Birthday birthday) {
         // Create an instance of the dialog fragment and show it
-        itemOptionsFragment = ItemOptionsFragment.newInstance(position);
+        itemOptionsFragment = ItemOptionsFragment.newInstance(birthday);
         itemOptionsFragment.setRetainInstance(true);
-        itemOptionsFragment.show(getSupportFragmentManager(), "AddEditBirthdayFragment");
-    }
-
-    // Callback from AddEditFragment, create new Birthday object and add to array
-    @Override
-    public void onDialogPositiveClick(AddEditFragment dialog, String name, int day, int month, int year, boolean includeYear, int addEditMode, final int position) {
-
-        // Build date object which will be used by new Birthday
-        Date dateOfBirth = new Date();
-        dateOfBirth.setYear(year);
-        dateOfBirth.setMonth(month);
-        dateOfBirth.setDate(day);
-
-
-        // Format name by capitalizing name
-        name = WordUtils.capitalize(name);
-
-        final Birthday birthday;
-
-        // Decide whether to create new or edit old birthday
-        if (addEditMode == AddEditFragment.MODE_EDIT) {
-            // Edit text
-            birthday = birthdaysList.get(position);
-            birthday.edit(name, dateOfBirth, true, includeYear);
-
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-
-                    /** Logic for edit animation. Depending first on sorting preference, check whether the sorting will change.
-                     * if so, used adapter moved animation, else just refresh information */
-                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
-                    // Get users sorting preference
-                    if (Integer.valueOf(sharedPref.getString(getApplicationContext().getString(R.string.pref_sort_by_key), "0")) != 1) {
-
-                        // PREF SORT: DATE
-                        if (BirthdayViewAdapter.willChangeDateOrder(birthday)) {
-
-                            // Order will change, sort, then notify adapter of move
-                            BirthdayViewAdapter.sortBirthdaysByDate();
-                            RecyclerListFragment.mAdapter.notifyItemMoved(position, birthdaysList.indexOf(birthday));
-                        } else {
-                            // No order change, so just notify item changed
-                            RecyclerListFragment.mAdapter.notifyItemChanged(birthdaysList.indexOf(birthday));
-                        }
-                    } else {
-
-                        // PREF SORT: NAME. If order changes, sort the notify adapter
-                        if (BirthdayViewAdapter.willChangeNameOrder(birthday)) {
-
-                            // Order will change, sort, then notify adapter of move
-                            BirthdayViewAdapter.sortBirthdaysByName();
-                            RecyclerListFragment.mAdapter.notifyItemMoved(position, birthdaysList.indexOf(birthday));
-
-                        } else {
-                            // order not changes, so forget sot, and just notify item changed
-                            RecyclerListFragment.mAdapter.notifyItemChanged(birthdaysList.indexOf(birthday));
-                        }
-                    }
-                    // Delay update until after animation has finished
-                    Runnable r = new Runnable() {
-                        public void run() {
-                            RecyclerListFragment.mAdapter.notifyDataSetChanged();
-                        }
-                    };
-                    new Handler().postDelayed(r, 500);
-                }
-            });
-
-        } else {
-            // Create birthday, add to array and notify adapter
-            birthday = new Birthday(name, dateOfBirth, true, includeYear);
-            birthdaysList.add(birthday);
-
-            // Notify adapter
-            runOnUiThread(new Runnable() {
-                public void run() {
-
-                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
-                    // Get users sort preference
-                    if (Integer.valueOf(sharedPref.getString(getApplicationContext().getString(R.string.pref_sort_by_key), "0")) == 1) {
-                        BirthdayViewAdapter.sortBirthdaysByName();
-                    } else {
-                        BirthdayViewAdapter.sortBirthdaysByDate();
-                    }
-                    RecyclerListFragment.mAdapter.notifyItemInserted(birthdaysList.indexOf(birthday));
-                    RecyclerListFragment.showEmptyMessageIfRequired();
-                }
-            });
-
-            mTracker.send(new HitBuilders.EventBuilder()
-                    .setCategory("Action")
-                    .setAction("New Birthday")
-                    .build());
-        }
-
-        try {
-            saveBirthdays();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    // We only use this method to delete data from Birthday array and pass a reference to the cancel alarm method.
-    public void deleteFromArray(final int position) {
-
-        // Cancel the notification PendingIntent
-        cancelAlarm(birthdaysList.get(position));
-
-        // Notify adapter
-        mContext.runOnUiThread(new Runnable() {
-            public void run() {
-
-                final Birthday birthdayToDelete = birthdaysList.get(position);
-
-                birthdaysList.remove(position);
-
-                RecyclerListFragment.mAdapter.notifyItemRemoved(position);
-                RecyclerListFragment.showEmptyMessageIfRequired();
-
-                if (floatingActionButton != null && floatingActionButton.getVisibility() == View.INVISIBLE) {
-                    floatingActionButton.show();
-                }
-                try {
-                    saveBirthdays();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                Snackbar.make(floatingActionButton, getApplicationContext().getString(R.string.deleted) + " "
-                        + birthdayToDelete.getName(), Snackbar.LENGTH_LONG).setAction(R.string.undo,
-                        new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                birthdaysList.add(birthdayToDelete);
-                                // Notify adapter
-                                mContext.runOnUiThread(new Runnable() {
-                                    public void run() {
-
-                                        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
-                                        // Get users sort preference
-                                        if (Integer.valueOf(sharedPref.getString(getApplicationContext().getString(R.string.pref_sort_by_key), "0")) == 1) {
-                                            BirthdayViewAdapter.sortBirthdaysByName();
-                                        } else {
-                                            BirthdayViewAdapter.sortBirthdaysByDate();
-                                        }
-
-                                        RecyclerListFragment.mAdapter.notifyItemInserted(birthdaysList.indexOf(birthdayToDelete));
-                                        RecyclerListFragment.showEmptyMessageIfRequired();
-                                    }
-                                });
-                                try {
-                                    saveBirthdays();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }).show();
-            }
-        });
+        itemOptionsFragment.show(getSupportFragmentManager(), "ItemOptionsBirthdayFragment");
     }
 
     @Override
@@ -820,18 +528,8 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
         if (id == R.id.action_sign_out) {
             signOutGoogle();
             return true;
-        } else if (id == R.id.action_firebase) {
-            performFirebaseAction();
-            return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void performFirebaseAction() {
-        DatabaseReference dbr = BirthdayReminder.getInstance().getDatabaseReference();
-        for (int i = 0; i < birthdaysList.size(); i++) {
-            dbr.child("" + i).setValue(birthdaysList.get(i).getName());
-        }
     }
 
     private void signOutGoogle() {
@@ -845,6 +543,7 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
                 });
     }
 
+    // todo - unlink Google
     private void revokeAccessGoogle() {
         Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(
                 new ResultCallback<Status>() {
@@ -855,31 +554,24 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
                 });
     }
 
-    // Call this method from Adapter so reference can be kept here in BirthdayListActivity
-    public void launchLoadBirthdaysTask() {
-        loadBirthdaysTask = new LoadBirthdaysTask();
-        loadBirthdaysTask.execute();
-    }
-
-    // Check if Async task is currently running, to prevent errors when exiting
-    private boolean isTaskRunning() {
-        return (loadBirthdaysTask != null) && (loadBirthdaysTask.getStatus() == AsyncTask.Status.RUNNING);
-    }
-
     // Set theme based on users preference
-    // todo - refactor
     public void setTheme() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
+        String pref;
         if (prefs.getString(getResources().getString(R.string.pref_theme_key), "0").equals("0")) {
             setTheme(R.style.BlueTheme);
+            pref = "0";
         } else if (prefs.getString(getResources().getString(R.string.pref_theme_key), "0").equals("1")) {
             setTheme(R.style.PinkTheme);
+            pref = "1";
         } else if (prefs.getString(getResources().getString(R.string.pref_theme_key), "0").equals("2")) {
             setTheme(R.style.GreenTheme);
+            pref = "2";
         } else {
             setTheme(R.style.PinkTheme);
+            pref = "1";
         }
+        themePref = pref;
     }
 
     @Override
@@ -894,22 +586,6 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
                 signIn();
                 break;
         }
-    }
-
-    @Subscribe
-    public void onMessageEvent(BirthdaysLoadedEvent event) {
-        birthdaysList = event.getBirthdays();
-        RecyclerListFragment.showEmptyMessageIfRequired();
-    }
-
-    @Subscribe
-    public void onAlarmToggle(BirthdayAlarmToggleEvent event) {
-        alarmToggled(event.getCurrentPosition());
-    }
-
-    @Subscribe
-    public void onBirthdayClicked(BirthdayItemClickEvent event) {
-        showItemOptionsFragment(event.getCurrentPosition());
     }
 
     private void signIn() {
@@ -929,9 +605,10 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
      * - onItemDelete: Delete selected birthday from array
      */
     @Override
-    public void onItemEdit(ItemOptionsFragment dialog, int position) {
+    public void onItemEdit(ItemOptionsFragment dialog, Birthday birthday) {
         itemOptionsFragment.dismiss();
-        showAddEditBirthdayFragment(AddEditFragment.MODE_EDIT, position);
+
+        showAddBirthdayFragment(birthday);
 
         mTracker.send(new HitBuilders.EventBuilder()
                 .setCategory("Action")
@@ -940,61 +617,18 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
     }
 
     @Override
-    public void onItemDelete(ItemOptionsFragment dialog, int position) {
+    public void onItemDelete(ItemOptionsFragment dialog, Birthday birthday) {
         itemOptionsFragment.dismiss();
-        deleteFromArray(position);
-
-        mTracker.send(new HitBuilders.EventBuilder()
-                .setCategory("Action")
-                .setAction("Delete")
-                .build());
+        FirebaseHelper.saveBirthdayChange(birthday, FirebaseHelper.FirebaseUpdate.DELETE);
+        AlarmsHelper.cancelAlarm(this, birthday.hashCode());
     }
 
     @Override
-    public void onItemToggleAlarm(ItemOptionsFragment dialog, int position) {
+    public void onItemToggleAlarm(ItemOptionsFragment dialog, Birthday birthday) {
+        birthday.toggleReminder();
+        FirebaseHelper.saveBirthdayChange(birthday, FirebaseHelper.FirebaseUpdate.UPDATE);
+        SnackBarHelper.alarmToggle(navigationView, birthday);
         itemOptionsFragment.dismiss();
-        // Change birthdays remind bool
-        birthdaysList.get(position).toggleReminder();
-        alarmToggled(position);
-
-        mTracker.send(new HitBuilders.EventBuilder()
-                .setCategory("Action")
-                .setAction("Toggle Alarm OPTION")
-                .build());
-    }
-
-    // This is in a separate method so it can be called from different classes
-    public void alarmToggled(int position) {
-
-        // Use position parameter to get Birthday reference
-        Birthday birthday = birthdaysList.get(position);
-
-        // Cancel the previously set alarm, without re-calling service
-        cancelAlarm(birthday);
-
-        // Notify adapter of change, so that UI is updated
-        dataChangedUiThread();
-
-        // Notify user of change. If birthday is today, let user know alarm is set for next year
-        if (birthday.getDaysBetween() == 0 && birthday.getRemind()) {
-            Snackbar.make(floatingActionButton, getApplicationContext().getString(R.string.reminder_for) + birthday.getName() + " " +
-                    birthday.getReminderString() + getApplicationContext().getString(R.string.for_next_year), Snackbar.LENGTH_LONG).show();
-        } else {
-            Snackbar.make(floatingActionButton, getApplicationContext().getString(R.string.reminder_for) + birthday.getName() + " " +
-                    birthday.getReminderString(), Snackbar.LENGTH_LONG).show();
-        }
-
-        // Attempt to save updated Birthday data
-        try {
-            saveBirthdays();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        mTracker.send(new HitBuilders.EventBuilder()
-                .setCategory("Action")
-                .setAction("Toggle Alarm")
-                .build());
     }
 
     public void checkContactPermissionAndLaunchImportActivity() {
@@ -1035,6 +669,30 @@ public class BirthdayListActivity extends BaseActivity implements AddEditFragmen
 
     public void launchImportContactActivity() {
         Intent intent = new Intent(this, ImportContactsActivity.class);
+        Bundle bundle = new Bundle();
+
+        ArrayList<String> birthdayNames = new ArrayList<>();
+        for (Birthday b : birthdaysList) {
+            birthdayNames.add(b.getName());
+        }
+        bundle.putStringArrayList(ImportContactsActivity.BIRTHDAYS_ARRAY_KEY, birthdayNames);
+        intent.putExtras(bundle);
         startActivity(intent);
+    }
+
+    @Subscribe
+    public void onBirthdayClicked(BirthdayItemClickEvent event) {
+        showItemOptionsFragment(event.getBirthday());
+    }
+
+    // Birthdays array required to prevent importing duplicate contacts //todo - reduce to string names
+    @Subscribe
+    public void onBirthdaysLoaded(BirthdaysLoadedEvent event) {
+        birthdaysList = event.getBirthdays();
+    }
+
+    enum NavHeaderState {
+        LOGGED_OUT,
+        SIGNED_IN
     }
 }

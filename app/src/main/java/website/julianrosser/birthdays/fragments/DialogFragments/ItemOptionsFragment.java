@@ -59,13 +59,13 @@ public class ItemOptionsFragment extends DialogFragment {
         void onItemToggleAlarm(ItemOptionsFragment dialog, Birthday birthday);
     }
 
-    // We override the Fragment.onAttach() method to instantiate NoticeDialogListener and read bundle data
+    // We override the Fragment.onAttach() method to instantiate ItemOptionListener and read bundle data
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         // Verify that the host activity implements the callback interface
         try {
-            // Instantiate the NoticeDialogListener so we can send events to the host
+            // Instantiate the ItemOptionListener so we can send events to the host
             mListener = (ItemOptionsListener) activity;
         } catch (ClassCastException e) {
             // The activity doesn't implement the interface, throw exception
