@@ -87,7 +87,6 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
         recyclerView.setHasFixedSize(true);
         mAdapter = new BirthdayViewAdapter();
         recyclerView.setAdapter(mAdapter);
-        setUpBirthdayListener();
 
         return view;
     }

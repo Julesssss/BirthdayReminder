@@ -1,5 +1,8 @@
 package website.julianrosser.birthdays.adapter;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import website.julianrosser.birthdays.BirthdayReminder;
 import website.julianrosser.birthdays.R;
 import website.julianrosser.birthdays.model.Birthday;
 import website.julianrosser.birthdays.views.viewholder.BirthdayViewHolder;
@@ -53,41 +57,23 @@ public class BirthdayViewAdapter extends RecyclerView.Adapter<BirthdayViewHolder
 
     public void setData(ArrayList<Birthday> birthdays) {
         this.birthdays = birthdays;
+
+        Context context = BirthdayReminder.getInstance();
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+
+        // Get users sort preference
+        if (Integer.valueOf(sharedPref.getString(context.getString(R.string.pref_sort_by_key), "0")) == 1) {
+            sortBirthdaysByName();
+        } else {
+            sortBirthdaysByDate();
+        }
+
         notifyDataSetChanged();
     }
 
-    // use this method to find out whether edit will change order of birthdays
-    public boolean willChangeDateOrder(Birthday b) {
-        ArrayList<Birthday> originalOrder = birthdays;
-
-        int originalPos = originalOrder.indexOf(b);
-        //Sorting
-        Collections.sort(originalOrder, new Comparator<Birthday>() {
-            @Override
-            public int compare(Birthday b1, Birthday b2) {
-                return b1.getDate().compareTo(b2.getDate());
-            }
-        });
-        return originalPos != originalOrder.indexOf(b);
-    }
-
-    // use this method to find out whether edit will change order of birthdays
-    public boolean willChangeNameOrder(Birthday b) {
-        ArrayList<Birthday> originalOrder = birthdays;
-
-        int originalPos = originalOrder.indexOf(b);
-        //Sorting
-        Collections.sort(originalOrder, new Comparator<Birthday>() {
-            @Override
-            public int compare(Birthday b1, Birthday b2) {
-                return b1.getName().compareTo(b2.getName());
-            }
-        });
-        return originalPos != originalOrder.indexOf(b);
-    }
-
     // Sort Birthday array by closest date
-    public void sortBirthdaysByDate() {
+    private void sortBirthdaysByDate() {
         for (Birthday b : birthdays) {
             b.setYearOfDate(Birthday.getYearOfNextBirthday(b.getDate()));
         }
@@ -101,7 +87,7 @@ public class BirthdayViewAdapter extends RecyclerView.Adapter<BirthdayViewHolder
     }
 
     // Sort Birthday array by first name
-    public void sortBirthdaysByName() {
+    private void sortBirthdaysByName() {
         Collections.sort(birthdays, new Comparator<Birthday>() {
             @Override
             public int compare(Birthday b1, Birthday b2) {

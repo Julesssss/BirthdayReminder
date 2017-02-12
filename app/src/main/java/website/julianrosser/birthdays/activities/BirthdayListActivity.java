@@ -111,27 +111,6 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
 
     private String themePref = "";
 
-//    // Force UI thread to ensure mAdapter updates RecyclerView list
-//    public void dataChangedUiThread() {
-//
-//        // Reorder ArrayList to sort by desired method
-//        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-//
-//        // Get users sort preference // todo - necexssary?
-//        if (Integer.valueOf(sharedPref.getString(getApplicationContext().getString(R.string.pref_sort_by_key), "0")) == 1) {
-//            recyclerListFragment.mAdapter.sortBirthdaysByName();
-//        } else {
-//            recyclerListFragment.mAdapter.sortBirthdaysByDate();
-//        }
-//
-//        if (floatingActionButton != null && floatingActionButton.getVisibility() == View.INVISIBLE) {
-//            floatingActionButton.show();
-//        }
-//
-//        recyclerListFragment.mAdapter.notifyDataSetChanged();
-
-//    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme();
@@ -414,7 +393,6 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
     @Override
     protected void onResume() {
         super.onResume();
-        recyclerListFragment.loadBirthdays();
 
         if (navigationView != null) {
             navigationView.setCheckedItem(R.id.menu_birthdays);
