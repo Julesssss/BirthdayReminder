@@ -28,6 +28,7 @@ import android.widget.Toast;
 import java.util.Calendar;
 import java.util.Date;
 
+import website.julianrosser.birthdays.AlarmsHelper;
 import website.julianrosser.birthdays.Constants;
 import website.julianrosser.birthdays.R;
 import website.julianrosser.birthdays.Utils;
@@ -59,7 +60,6 @@ public class AddEditFragment extends DialogFragment {
     private View view;
 
     // Use this instance of the interface to deliver action events
-    private NoticeDialogListener mListener;
     private CheckBox checkYearToggle;
 
     public AddEditFragment() {
@@ -71,25 +71,9 @@ public class AddEditFragment extends DialogFragment {
         return new AddEditFragment();
     }
 
-    /* BirthdayListActivity implements this interface in order to receive event callbacks. Passes the
-    DialogFragment in case the host needs to query it. */
-    public interface NoticeDialogListener {
-        void onDialogPositiveClick(AddEditFragment dialog, String name, int date, int month, int year, boolean includeYear, int AddEditMode, int position);
-    }
-
-    // We override the Fragment.onAttach() method to instantiate NoticeDialogListener and read bundle data
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        // Verify that the host activity implements the callback interface
-        try {
-            // Instantiate the NoticeDialogListener so we can send events to the host
-            mListener = (NoticeDialogListener) activity;
-        } catch (ClassCastException e) {
-            // The activity doesn't implement the interface, throw exception
-            throw new ClassCastException(activity.toString()
-                    + " must implement NoticeDialogListener");
-        }
 
         // Detect which state mode Dialog should be in
         bundle = this.getArguments();
@@ -261,6 +245,7 @@ public class AddEditFragment extends DialogFragment {
                         if (ADD_OR_EDIT_MODE == MODE_EDIT) {
                             String key = bundle.getString(UID_KEY);
                             if (! Utils.isStringEmpty(key)) birthday.setUID(key);
+                            AlarmsHelper.cancelAlarm(getActivity(), birthday.hashCode());
                             FirebaseHelper.saveBirthdayChange(birthday, FirebaseHelper.FirebaseUpdate.UPDATE);
                         } else if (ADD_OR_EDIT_MODE == MODE_ADD) {
                             FirebaseHelper.saveBirthdayChange(birthday, FirebaseHelper.FirebaseUpdate.CREATE);
