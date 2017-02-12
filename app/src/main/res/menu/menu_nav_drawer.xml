@@ -22,5 +22,8 @@
         <item
             android:id="@+id/menu_help"
             android:title="@string/action_help" />
+        <item
+            android:id="@+id/menu_privacy"
+            android:title="@string/title_privacy_policy" />
     </group>
 </menu>

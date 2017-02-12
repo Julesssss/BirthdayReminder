@@ -167,6 +167,8 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
                     case R.id.menu_settings:
                         startActivityForResult(new Intent(getApplicationContext(), SettingsActivity.class), RC_SETTINGS);
                         return true;
+                    case R.id.menu_privacy:
+                        startActivity(new Intent(getApplicationContext(), PrivacyPolicyActivity.class));
                     default:
                         return true;
                 }
