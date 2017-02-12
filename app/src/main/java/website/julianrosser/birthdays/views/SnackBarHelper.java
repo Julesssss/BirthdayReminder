@@ -19,4 +19,9 @@ public class SnackBarHelper {
         }
     }
 
+    public static void birthdayDeleted(View view, Birthday birthday) {
+        Snackbar.make(view, birthday.getName() + " " + view.getContext().getString(R.string.deleted)
+                , Snackbar.LENGTH_LONG).show();
+    }
+
 }

@@ -621,6 +621,7 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
         itemOptionsFragment.dismiss();
         FirebaseHelper.saveBirthdayChange(birthday, FirebaseHelper.FirebaseUpdate.DELETE);
         AlarmsHelper.cancelAlarm(this, birthday.hashCode());
+        SnackBarHelper.birthdayDeleted(navigationView, birthday);
     }
 
     @Override
