@@ -12,6 +12,7 @@ import website.julianrosser.birthdays.R;
 import website.julianrosser.birthdays.database.FirebaseHelper;
 import website.julianrosser.birthdays.model.Birthday;
 import website.julianrosser.birthdays.model.events.BirthdayItemClickEvent;
+import website.julianrosser.birthdays.views.SnackBarHelper;
 
 /**
  * ViewHolder class to hold view references to be used in recyclerview.
@@ -89,14 +90,15 @@ public class BirthdayViewHolder extends RecyclerView.ViewHolder implements View.
     }
 
     @Override
-    public void onClick(View v) {
-        Birthday birthday = (Birthday) v.getTag();
+    public void onClick(View view) {
+        Birthday birthday = (Birthday) view.getTag();
 
-        int id = v.getId();
+        int id = view.getId();
 
         if (id == R.id.alarmImage) {
             birthday.toggleReminder();
             FirebaseHelper.saveBirthdayChange(birthday, FirebaseHelper.FirebaseUpdate.UPDATE);
+            SnackBarHelper.alarmToggle(view, birthday);
         } else {
             // Callback
             EventBus.getDefault().post(new BirthdayItemClickEvent(birthday));
