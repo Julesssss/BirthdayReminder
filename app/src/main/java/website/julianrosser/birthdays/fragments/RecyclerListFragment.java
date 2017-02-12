@@ -3,7 +3,6 @@ package website.julianrosser.birthdays.fragments;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -156,9 +155,6 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
     public void onBirthdaysLoaded(BirthdaysLoadedEvent event) {
         mAdapter.setData(event.getBirthdays());
         showEmptyMessageIfRequired(event.getBirthdays());
-        Snackbar.make(emptyView, "Birthdays Loaded!", Snackbar.LENGTH_SHORT).show();
-        Log.i(getClass().getSimpleName(), "setting birthday data!");
-
     }
 
     // Show or hide the 'no birthdays found' message depending on size of birthday Array
