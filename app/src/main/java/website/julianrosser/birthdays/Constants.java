@@ -8,6 +8,8 @@ public class Constants {
     public static final String FILENAME = "birthdays.json";
 
     public static int DEFAULT_YEAR_OF_BIRTH = 1990;
+    public static long DAY_IN_MILLIS = 86400000L; // / 86,400,000 milliseconds in a day
+    public static long HOUR_IN_MILLIS = 3600000L; // Amount of milliseconds in an hour
 
     public static int INTENT_FROM_NOTIFICATION = 30;
     public static int CONTACT_PERMISSION_CODE = 3;

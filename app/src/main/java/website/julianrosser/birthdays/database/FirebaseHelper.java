@@ -9,20 +9,23 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.ArrayList;
 
+import website.julianrosser.birthdays.AlarmsHelper;
 import website.julianrosser.birthdays.BirthdayReminder;
 import website.julianrosser.birthdays.Constants;
 import website.julianrosser.birthdays.Utils;
 import website.julianrosser.birthdays.model.Birthday;
 import website.julianrosser.birthdays.model.FirebaseBirthday;
-import website.julianrosser.birthdays.model.events.BirthdaysLoadedEvent;
 
 public class FirebaseHelper {
 
-    public static void loadBirthdaysOnce() {
+    public interface BirthdaysLoadedListener {
+        void onBirthdaysReturned(ArrayList<Birthday> birthdays);
+        void onCancelled(String errorMessage);
+    }
+
+    public static void loadFirebaseBirthdays(final BirthdaysLoadedListener birthdaysLoadedListener) {
         FirebaseUser user = BirthdayReminder.getInstance().getCurrentUser();
         if (null == user) {
             Log.i(FirebaseHelper.class.getSimpleName(), "User not loaded yet");
@@ -31,7 +34,7 @@ public class FirebaseHelper {
         // load birthdays from FB
         final DatabaseReference databaseReference = BirthdayReminder.getInstance().getDatabaseReference().child(user.getUid()).child(Constants.TABLE_BIRTHDAYS);
         if (databaseReference == null) {
-            Log.i(FirebaseHelper.class.getSimpleName(), "Database not loaded yet");
+            Log.i(FirebaseHelper.class.getSimpleName(), "Database not initialised yet");
             return;
         }
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -43,13 +46,13 @@ public class FirebaseHelper {
                     Birthday birthday = Birthday.fromFB(firebaseBirthday);
                     birthdays.add(birthday);
                 }
-                EventBus.getDefault().post(new BirthdaysLoadedEvent(birthdays));
+                birthdaysLoadedListener.onBirthdaysReturned(birthdays);
                 databaseReference.removeEventListener(this);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.i(FirebaseHelper.class.getSimpleName(), databaseError.getMessage());
+                birthdaysLoadedListener.onCancelled(databaseError.getMessage());
                 databaseReference.removeEventListener(this);
             }
         });
@@ -79,6 +82,7 @@ public class FirebaseHelper {
                 break;
         }
         setLastUpdatedTime();
+        AlarmsHelper.setAllNotificationAlarms(BirthdayReminder.getInstance());
     }
 
     private static void setLastUpdatedTime() {

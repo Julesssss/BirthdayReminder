@@ -1,6 +1,5 @@
 package website.julianrosser.birthdays.activities;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,9 +11,9 @@ import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
+import website.julianrosser.birthdays.AlarmsHelper;
 import website.julianrosser.birthdays.R;
 import website.julianrosser.birthdays.fragments.SettingsFragment;
-import website.julianrosser.birthdays.services.SetAlarmsService;
 
 public class SettingsActivity extends BaseActivity {
 
@@ -89,8 +88,7 @@ public class SettingsActivity extends BaseActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        Intent serviceIntent = new Intent(this, SetAlarmsService.class);
-        startService(serviceIntent);
+        AlarmsHelper.setAllNotificationAlarms(this);
     }
 
 }
