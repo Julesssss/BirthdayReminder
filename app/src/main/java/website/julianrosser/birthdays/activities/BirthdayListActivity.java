@@ -601,14 +601,14 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
         itemOptionsFragment.dismiss();
         FirebaseHelper.saveBirthdayChange(birthday, FirebaseHelper.FirebaseUpdate.DELETE);
         AlarmsHelper.cancelAlarm(this, birthday.hashCode());
-        SnackBarHelper.birthdayDeleted(navigationView, birthday);
+        SnackBarHelper.birthdayDeleted(floatingActionButton, birthday);
     }
 
     @Override
     public void onItemToggleAlarm(ItemOptionsFragment dialog, Birthday birthday) {
         birthday.toggleReminder();
         FirebaseHelper.saveBirthdayChange(birthday, FirebaseHelper.FirebaseUpdate.UPDATE);
-        SnackBarHelper.alarmToggle(navigationView, birthday);
+        SnackBarHelper.alarmToggle(floatingActionButton, birthday);
         itemOptionsFragment.dismiss();
     }
 
