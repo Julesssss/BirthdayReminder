@@ -18,6 +18,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             lintOptions { disable "MissingTranslation" }
         }
+        buildTypes.each {
+            it.buildConfigField 'String', 'GOOGLE_SIGN_IN_KEY', GOOGLE_SIGN_IN_KEY
+        }
     }
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'

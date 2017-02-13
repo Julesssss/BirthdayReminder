@@ -56,6 +56,7 @@ import java.util.ArrayList;
 
 import website.julianrosser.birthdays.AlarmsHelper;
 import website.julianrosser.birthdays.BirthdayReminder;
+import website.julianrosser.birthdays.BuildConfig;
 import website.julianrosser.birthdays.Constants;
 import website.julianrosser.birthdays.R;
 import website.julianrosser.birthdays.database.FirebaseHelper;
@@ -336,7 +337,7 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(Constants.GOOGLE_SIGN_IN_KEY)
+                .requestIdToken(BuildConfig.GOOGLE_SIGN_IN_KEY)
                 .requestEmail()
                 .build();
 
