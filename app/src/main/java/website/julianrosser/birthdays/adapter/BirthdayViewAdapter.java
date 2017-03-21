@@ -101,4 +101,7 @@ public class BirthdayViewAdapter extends RecyclerView.Adapter<BirthdayViewHolder
         return birthdays.size();
     }
 
+    public ArrayList<Birthday> getData() {
+        return birthdays;
+    }
 }

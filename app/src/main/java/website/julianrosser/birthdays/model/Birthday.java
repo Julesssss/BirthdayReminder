@@ -29,6 +29,7 @@ public class Birthday {
     private static final String JSON_DATE = "date";
     private static final String JSON_YEAR = "year";
     private static final String JSON_REMIND = "remind";
+    private static final String JSON_UID = "uid";
     private static final String JSON_SHOW_YEAR = "show_year";
 
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
@@ -82,6 +83,12 @@ public class Birthday {
         } else {
             yearOfBirth = Constants.DEFAULT_YEAR_OF_BIRTH;
         }
+
+        // UID
+        if (json.has(JSON_UID)) {
+            uID = json.getString(JSON_UID);
+        }
+
         // Should use age?
         showYear = json.has(JSON_SHOW_YEAR) && json.getBoolean(JSON_SHOW_YEAR);
     }
@@ -95,6 +102,7 @@ public class Birthday {
         json.put(JSON_DATE, this.getDate().getTime());
         json.put(JSON_YEAR, this.getYear());
         json.put(JSON_REMIND, this.getRemind());
+        json.put(JSON_UID, this.getUID());
         json.put(JSON_SHOW_YEAR, this.shouldIncludeYear());
         return json;
     }

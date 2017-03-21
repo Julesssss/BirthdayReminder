@@ -19,14 +19,23 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONTokener;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import website.julianrosser.birthdays.BirthdayReminder;
 import website.julianrosser.birthdays.Constants;
+import website.julianrosser.birthdays.Preferences;
 import website.julianrosser.birthdays.R;
 import website.julianrosser.birthdays.adapter.BirthdayViewAdapter;
-import website.julianrosser.birthdays.database.FirebaseHelper;
+import website.julianrosser.birthdays.database.DatabaseHelper;
 import website.julianrosser.birthdays.model.Birthday;
 import website.julianrosser.birthdays.model.FirebaseBirthday;
 import website.julianrosser.birthdays.model.events.BirthdaysLoadedEvent;
@@ -101,30 +110,42 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
-        databaseReference.removeEventListener(loadBirthdaysEventListener);
-        loadBirthdaysEventListener = null;
+        if (loadBirthdaysEventListener != null) {
+            databaseReference.removeEventListener(loadBirthdaysEventListener);
+            loadBirthdaysEventListener = null;
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        loadBirthdays();
+        if (Preferences.isUsingFirebase(getActivity())) {
+            loadBirthdays();
+        }
     }
 
     public void loadBirthdays() {
-        setUpBirthdayListener();
+        if (Preferences.isUsingFirebase(getActivity())) {
+            setUpBirthdayListener();
+        } else {
+            try {
+                loadJSONData();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void setUpBirthdayListener() {
         FirebaseUser user = BirthdayReminder.getInstance().getCurrentUser();
         if (null == user) {
-            Log.i(FirebaseHelper.class.getSimpleName(), "User not loaded yet");
+            Log.i(DatabaseHelper.class.getSimpleName(), "User not loaded yet");
             return;
         }
         // load birthdays from FB
         databaseReference = BirthdayReminder.getInstance().getDatabaseReference().child(user.getUid()).child(Constants.TABLE_BIRTHDAYS);
         if (databaseReference == null) {
-            Log.i(FirebaseHelper.class.getSimpleName(), "Database not loaded yet");
+            Log.i(DatabaseHelper.class.getSimpleName(), "Database not loaded yet");
             return;
         }
         if (loadBirthdaysEventListener == null) {
@@ -150,6 +171,40 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
         databaseReference.addValueEventListener(loadBirthdaysEventListener);
     }
 
+    private void loadJSONData() throws IOException { // todo - refactor
+        ArrayList<Birthday> birthdays = new ArrayList<>();
+        // Load birthdays
+        BufferedReader reader = null;
+        try {
+            // Open and read the file into a StringBuilder
+            InputStream in = getContext().openFileInput(Constants.FILENAME);
+            reader = new BufferedReader(new InputStreamReader(in));
+            StringBuilder jsonString = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                // Line breaks are omitted and irrelevant
+                jsonString.append(line);
+            }
+            // Parse the JSON using JSONTokener
+            JSONArray array = (JSONArray) new JSONTokener(jsonString.toString())
+                    .nextValue();
+
+            // Build the array of birthdays from JSONObjects
+            for (int i = 0; i < array.length(); i++) {
+                birthdays.add(new Birthday(array.getJSONObject(i)));
+            }
+        } catch (FileNotFoundException e) {
+            // Ignore this one; it happens when starting fresh
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } finally {
+            if (reader != null) reader.close();
+        }
+        mAdapter.setData(birthdays);
+        showEmptyMessageIfRequired(birthdays);
+
+    }
+
     @Subscribe
     public void onBirthdaysLoaded(BirthdaysLoadedEvent event) {
         mAdapter.setData(event.getBirthdays());
@@ -163,5 +218,9 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
         } else {
             emptyView.setVisibility(View.INVISIBLE);
         }
+    }
+
+    public BirthdayViewAdapter getAdapter() {
+        return mAdapter;
     }
 }

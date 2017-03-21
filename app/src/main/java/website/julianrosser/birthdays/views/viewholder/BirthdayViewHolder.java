@@ -9,7 +9,7 @@ import android.widget.TextView;
 import org.greenrobot.eventbus.EventBus;
 
 import website.julianrosser.birthdays.R;
-import website.julianrosser.birthdays.database.FirebaseHelper;
+import website.julianrosser.birthdays.database.DatabaseHelper;
 import website.julianrosser.birthdays.model.Birthday;
 import website.julianrosser.birthdays.model.events.BirthdayItemClickEvent;
 import website.julianrosser.birthdays.views.SnackBarHelper;
@@ -97,7 +97,7 @@ public class BirthdayViewHolder extends RecyclerView.ViewHolder implements View.
 
         if (id == R.id.alarmImage) {
             birthday.toggleReminder();
-            FirebaseHelper.saveBirthdayChange(birthday, FirebaseHelper.FirebaseUpdate.UPDATE);
+            DatabaseHelper.saveBirthdayChange(birthday, DatabaseHelper.Update.UPDATE);
             SnackBarHelper.alarmToggle(view, birthday);
         } else {
             // Callback

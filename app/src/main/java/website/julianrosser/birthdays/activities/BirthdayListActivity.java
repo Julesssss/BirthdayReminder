@@ -58,8 +58,9 @@ import website.julianrosser.birthdays.AlarmsHelper;
 import website.julianrosser.birthdays.BirthdayReminder;
 import website.julianrosser.birthdays.BuildConfig;
 import website.julianrosser.birthdays.Constants;
+import website.julianrosser.birthdays.Preferences;
 import website.julianrosser.birthdays.R;
-import website.julianrosser.birthdays.database.FirebaseHelper;
+import website.julianrosser.birthdays.database.DatabaseHelper;
 import website.julianrosser.birthdays.fragments.DialogFragments.AddEditFragment;
 import website.julianrosser.birthdays.fragments.DialogFragments.ItemOptionsFragment;
 import website.julianrosser.birthdays.fragments.RecyclerListFragment;
@@ -509,6 +510,10 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
         if (id == R.id.action_sign_out) {
             signOutGoogle();
             return true;
+        } else if (id == R.id.action_firebase) {
+            boolean bool = Preferences.isUsingFirebase(this);
+            Preferences.setIsUsingFirebase(this, ! bool);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -600,7 +605,7 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
     @Override
     public void onItemDelete(ItemOptionsFragment dialog, Birthday birthday) {
         itemOptionsFragment.dismiss();
-        FirebaseHelper.saveBirthdayChange(birthday, FirebaseHelper.FirebaseUpdate.DELETE);
+        DatabaseHelper.saveBirthdayChange(birthday, DatabaseHelper.Update.DELETE);
         AlarmsHelper.cancelAlarm(this, birthday.hashCode());
         SnackBarHelper.birthdayDeleted(floatingActionButton, birthday);
     }
@@ -608,7 +613,7 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
     @Override
     public void onItemToggleAlarm(ItemOptionsFragment dialog, Birthday birthday) {
         birthday.toggleReminder();
-        FirebaseHelper.saveBirthdayChange(birthday, FirebaseHelper.FirebaseUpdate.UPDATE);
+        DatabaseHelper.saveBirthdayChange(birthday, DatabaseHelper.Update.UPDATE);
         SnackBarHelper.alarmToggle(floatingActionButton, birthday);
         itemOptionsFragment.dismiss();
     }
@@ -653,8 +658,10 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
         Intent intent = new Intent(this, ImportContactsActivity.class);
         Bundle bundle = new Bundle();
 
+        ArrayList<Birthday> bdays = recyclerListFragment.getAdapter().getData();
+
         ArrayList<String> birthdayNames = new ArrayList<>();
-        for (Birthday b : birthdaysList) {
+        for (Birthday b : bdays) {
             birthdayNames.add(b.getName());
         }
         bundle.putStringArrayList(ImportContactsActivity.BIRTHDAYS_ARRAY_KEY, birthdayNames);

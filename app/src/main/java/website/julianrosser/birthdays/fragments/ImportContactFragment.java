@@ -23,7 +23,7 @@ import website.julianrosser.birthdays.model.events.ContactsLoadedEvent;
 import website.julianrosser.birthdays.model.tasks.LoadContactsTask;
 
 /**
- * Main view. Fragment which
+ * Fragment which displays contacts and enables users to import
  */
 public class ImportContactFragment extends android.support.v4.app.Fragment {
 

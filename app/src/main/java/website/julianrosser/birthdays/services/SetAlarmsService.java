@@ -1,7 +1,6 @@
 package website.julianrosser.birthdays.services;
 
 import android.app.AlarmManager;
-import android.app.Application;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
@@ -24,10 +23,10 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
 
-import website.julianrosser.birthdays.BirthdayReminder;
 import website.julianrosser.birthdays.Constants;
+import website.julianrosser.birthdays.Preferences;
 import website.julianrosser.birthdays.R;
-import website.julianrosser.birthdays.database.FirebaseHelper;
+import website.julianrosser.birthdays.database.DatabaseHelper;
 import website.julianrosser.birthdays.model.Birthday;
 import website.julianrosser.birthdays.recievers.NotificationBuilderReceiver;
 
@@ -37,7 +36,6 @@ import website.julianrosser.birthdays.recievers.NotificationBuilderReceiver;
 public class SetAlarmsService extends Service {
 
     private AlarmManager mAlarmManager;
-    private Application mContext;
 
     @Nullable
     @Override
@@ -49,9 +47,7 @@ public class SetAlarmsService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        mContext = BirthdayReminder.getInstance();
-
-        if (true) { // todo 3.0 - switch JSON / FB
+        if (Preferences.isUsingFirebase(this)) {
             loadBirthdaysFromFirebase();
         } else {
             try {
@@ -81,12 +77,11 @@ public class SetAlarmsService extends Service {
             }
         }
         // Service has to control its own life cycles, so call stopSelf here
-        mContext = null;
         stopSelf();
     }
 
     private void loadBirthdaysFromFirebase() {
-        FirebaseHelper.loadFirebaseBirthdays(new FirebaseHelper.BirthdaysLoadedListener() {
+        DatabaseHelper.loadFirebaseBirthdays(new DatabaseHelper.BirthdaysLoadedListener() {
             @Override
             public void onBirthdaysReturned(ArrayList<Birthday> birthdays) {
                 onBirthdaysLoaded(birthdays);
@@ -94,9 +89,8 @@ public class SetAlarmsService extends Service {
 
             @Override
             public void onCancelled(String errorMessage) {
-                Toast.makeText(mContext, errorMessage, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
                 Log.i(getClass().getSimpleName(), errorMessage);
-                mContext = null;
                 stopSelf();
             }
         });
@@ -109,7 +103,7 @@ public class SetAlarmsService extends Service {
         BufferedReader reader = null;
         try {
             // Open and read the file into a StringBuilder
-            InputStream in = mContext.openFileInput(Constants.FILENAME);
+            InputStream in = openFileInput(Constants.FILENAME);
             reader = new BufferedReader(new InputStreamReader(in));
             StringBuilder jsonString = new StringBuilder();
             String line;
@@ -169,19 +163,19 @@ public class SetAlarmsService extends Service {
             int id = birthday.getName().hashCode();
 
             // CreateIntent to start the AlarmNotificationReceiver
-            Intent mNotificationReceiverIntent = new Intent(mContext,
+            Intent mNotificationReceiverIntent = new Intent(this,
                     NotificationBuilderReceiver.class);
 
             // Build message String
-            String messageString = "" + birthday.getName() + "'s " + mContext.getResources().getString(R.string.birthday)
-                    + " " + mContext.getResources().getString(R.string.date_is) + " " +
-                    Birthday.getFormattedStringDay(birthday, mContext);
+            String messageString = "" + birthday.getName() + "'s " + getResources().getString(R.string.birthday)
+                    + " " + getResources().getString(R.string.date_is) + " " +
+                    Birthday.getFormattedStringDay(birthday, this);
 
             mNotificationReceiverIntent.putExtra(NotificationBuilderReceiver.STRING_MESSAGE_KEY, messageString);
 
             // Create pending Intent using Intent we just built
             PendingIntent mNotificationReceiverPendingIntent = PendingIntent
-                    .getBroadcast(mContext, id,
+                    .getBroadcast(this, id,
                             mNotificationReceiverIntent,
                             PendingIntent.FLAG_UPDATE_CURRENT);
 

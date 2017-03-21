@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import website.julianrosser.birthdays.R;
-import website.julianrosser.birthdays.database.FirebaseHelper;
+import website.julianrosser.birthdays.database.DatabaseHelper;
 import website.julianrosser.birthdays.model.Birthday;
 import website.julianrosser.birthdays.model.Contact;
 import website.julianrosser.birthdays.views.viewholder.ContactViewHolder;
@@ -64,6 +64,6 @@ public class ContactAdapter
     @Override
     public void addContact(Contact contact) {
         Birthday contactBirthday = new Birthday(contact.getName(), contact.getBirthday(), true, contact.hasYear());
-        FirebaseHelper.saveBirthdayChange(contactBirthday, FirebaseHelper.FirebaseUpdate.CREATE);
+        DatabaseHelper.saveBirthdayChange(contactBirthday, DatabaseHelper.Update.CREATE);
     }
 }

@@ -32,7 +32,7 @@ import website.julianrosser.birthdays.AlarmsHelper;
 import website.julianrosser.birthdays.Constants;
 import website.julianrosser.birthdays.R;
 import website.julianrosser.birthdays.Utils;
-import website.julianrosser.birthdays.database.FirebaseHelper;
+import website.julianrosser.birthdays.database.DatabaseHelper;
 import website.julianrosser.birthdays.model.Birthday;
 
 public class AddEditFragment extends DialogFragment {
@@ -246,9 +246,10 @@ public class AddEditFragment extends DialogFragment {
                             String key = bundle.getString(UID_KEY);
                             if (! Utils.isStringEmpty(key)) birthday.setUID(key);
                             AlarmsHelper.cancelAlarm(getActivity(), birthday.hashCode());
-                            FirebaseHelper.saveBirthdayChange(birthday, FirebaseHelper.FirebaseUpdate.UPDATE);
+                            DatabaseHelper.saveBirthdayChange(birthday, DatabaseHelper.Update.UPDATE);
                         } else if (ADD_OR_EDIT_MODE == MODE_ADD) {
-                            FirebaseHelper.saveBirthdayChange(birthday, FirebaseHelper.FirebaseUpdate.CREATE);
+                            DatabaseHelper.saveBirthdayChange(birthday, DatabaseHelper.Update.CREATE);
+
                         }
                         // Finally close the dialog, and breath a sign of relief
                         dialog.dismiss();
