@@ -35,4 +35,11 @@
         android:layout_height="6dp"
         android:background="@drawable/toolbar_dropshadow" />
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 </RelativeLayout>

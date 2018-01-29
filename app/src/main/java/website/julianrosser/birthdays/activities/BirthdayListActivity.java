@@ -258,7 +258,7 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
         } else if (requestCode == RC_SETTINGS) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             String newTheme = prefs.getString(getString(R.string.pref_theme_key), "0");
-            if (! newTheme.equals(themePref)) {
+            if (!newTheme.equals(themePref)) {
                 recreate();
                 themePref = newTheme;
             }
@@ -295,6 +295,7 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
                             Toast.makeText(BirthdayListActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
+                        recyclerListFragment.loadBirthdays();
                     }
                 });
     }
@@ -513,31 +514,21 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
             return true;
         } else if (id == R.id.action_firebase) {
             boolean bool = Preferences.isUsingFirebase(this);
-            Preferences.setIsUsingFirebase(this, ! bool);
-            Toast.makeText(this, "DB mode: " +( !bool ? "Firebase" : "JSON"), Toast.LENGTH_SHORT).show();
+            Preferences.setIsUsingFirebase(this, !bool);
+            Snackbar.make(floatingActionButton, "DB mode: " + (!bool ? "Firebase" : "JSON"), Snackbar.LENGTH_SHORT).show();
+            recyclerListFragment.getAdapter().clearBirthdays();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
     private void signOutGoogle() {
-        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(Status status) {
-                        setNavHeaderUserState(NavHeaderState.LOGGED_OUT);
-                        Snackbar.make(floatingActionButton, "signOutGoogle: " + status.getStatusMessage(), Snackbar.LENGTH_SHORT).show();
-                    }
-                });
-    }
-
-    // todo - unlink Google
-    private void revokeAccessGoogle() {
+        FirebaseAuth.getInstance().signOut();
         Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(
                 new ResultCallback<Status>() {
                     @Override
                     public void onResult(Status status) {
-                        Snackbar.make(floatingActionButton, "revokeAccessGoogle: " + status.getStatusMessage(), Snackbar.LENGTH_SHORT).show();
+                        finish();
                     }
                 });
     }

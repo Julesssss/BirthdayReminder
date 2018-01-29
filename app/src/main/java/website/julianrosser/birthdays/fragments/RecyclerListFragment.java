@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseUser;
@@ -50,6 +51,7 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
 
     // Reference to view which shows when list empty.
     private View emptyView;
+    private ProgressBar progressBar;
     private ValueEventListener loadBirthdaysEventListener;
     private DatabaseReference databaseReference;
 
@@ -74,6 +76,7 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
 
         // Reference empty TextView
         emptyView = view.findViewById(R.id.empty_view);
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
 
         // hide drop shadow if running lollipop or higher
         if (Build.VERSION.SDK_INT >= 21) {
@@ -125,6 +128,7 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
     }
 
     public void loadBirthdays() {
+        progressBar.setVisibility(View.VISIBLE);
         if (Preferences.isUsingFirebase(getActivity())) {
             setUpBirthdayListener();
         } else {
@@ -194,13 +198,16 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
                 birthdays.add(new Birthday(array.getJSONObject(i)));
             }
         } catch (FileNotFoundException e) {
+            progressBar.setVisibility(View.GONE);
             // Ignore this one; it happens when starting fresh
         } catch (JSONException e) {
+            progressBar.setVisibility(View.GONE);
             e.printStackTrace();
         } finally {
             if (reader != null) reader.close();
         }
         mAdapter.setData(birthdays);
+        progressBar.setVisibility(View.GONE);
         showEmptyMessageIfRequired(birthdays);
 
     }
@@ -208,6 +215,7 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
     @Subscribe
     public void onBirthdaysLoaded(BirthdaysLoadedEvent event) {
         mAdapter.setData(event.getBirthdays());
+        progressBar.setVisibility(View.GONE);
         showEmptyMessageIfRequired(event.getBirthdays());
     }
 
