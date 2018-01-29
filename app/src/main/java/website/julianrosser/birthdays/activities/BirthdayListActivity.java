@@ -17,6 +17,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -513,6 +514,7 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
         } else if (id == R.id.action_firebase) {
             boolean bool = Preferences.isUsingFirebase(this);
             Preferences.setIsUsingFirebase(this, ! bool);
+            Toast.makeText(this, "DB mode: " +( !bool ? "Firebase" : "JSON"), Toast.LENGTH_SHORT).show();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -575,6 +577,7 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
     }
 
     private void signIn() {
+        mDrawerLayout.closeDrawer(Gravity.START);
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }

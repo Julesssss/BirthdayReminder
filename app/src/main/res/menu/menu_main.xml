@@ -10,6 +10,6 @@
     <item
         android:id="@+id/action_firebase"
         android:orderInCategory="999"
-        android:title="Firebase test" />
+        android:title="SWITCH DB MODE" />
 
 </menu>
