@@ -42,3 +42,5 @@ Thumbs.db
 .gradle
 build/
 *.iml
+
+app/google-services\.json
