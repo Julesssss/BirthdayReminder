@@ -144,11 +144,13 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
         FirebaseUser user = BirthdayReminder.getInstance().getCurrentUser();
         if (null == user) {
             Log.i(DatabaseHelper.class.getSimpleName(), "User not loaded yet");
+            handleError();
             return;
         }
         // load birthdays from FB
         databaseReference = BirthdayReminder.getInstance().getDatabaseReference().child(user.getUid()).child(Constants.TABLE_BIRTHDAYS);
         if (databaseReference == null) {
+            handleError();
             Log.i(DatabaseHelper.class.getSimpleName(), "Database not loaded yet");
             return;
         }
@@ -169,6 +171,7 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                     Toast.makeText(BirthdayReminder.getInstance(), databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                    handleError();
                 }
             };
         }
@@ -219,8 +222,13 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
         showEmptyMessageIfRequired(event.getBirthdays());
     }
 
+    public void handleError() {
+        progressBar.setVisibility(View.GONE);
+        emptyView.setVisibility(View.VISIBLE);
+    }
+
     // Show or hide the 'no birthdays found' message depending on size of birthday Array
-    private void showEmptyMessageIfRequired(ArrayList<Birthday> birthdays) {
+    public void showEmptyMessageIfRequired(ArrayList<Birthday> birthdays) {
         if (birthdays.isEmpty()) {
             emptyView.setVisibility(View.VISIBLE);
         } else {
