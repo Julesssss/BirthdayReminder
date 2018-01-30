@@ -21,9 +21,6 @@
     <string name="button_positive">Save</string>
     <string name="button_negative">Cancel</string>
 
-    <!-- Information & help Text -->
-    <string name="empty_list_message">Tap the Birthday cake icon to start adding birthdays!</string>
-
     <string name="birthday">birthday</string>
     <string name="date_is">is</string>
     <string name="date_today">today</string>
@@ -158,6 +155,11 @@
     <!-- TODO - Translate-->
     <!-- 3.0 Update -->
     <string name="sign_out">Sign out</string>
+    <string name="sign_in_title">Sign In</string>
+
+    <!-- Information & help Text -->
+    <string name="empty_list_title">No Birthdays</string>
+    <string name="empty_list_message">Tap the Birthday cake icon to add your first birthday, or sign in to your Google account to retrieve them!</string>
 
 
 </resources>
