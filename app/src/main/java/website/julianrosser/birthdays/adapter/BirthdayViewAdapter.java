@@ -55,6 +55,11 @@ public class BirthdayViewAdapter extends RecyclerView.Adapter<BirthdayViewHolder
         super.onViewRecycled(holder);
     }
 
+    public void clearBirthdays() {
+        birthdays.clear();
+        notifyDataSetChanged();
+    }
+
     public void setData(ArrayList<Birthday> birthdays) {
         this.birthdays = birthdays;
 
@@ -68,7 +73,6 @@ public class BirthdayViewAdapter extends RecyclerView.Adapter<BirthdayViewHolder
         } else {
             sortBirthdaysByDate();
         }
-
         notifyDataSetChanged();
     }
 

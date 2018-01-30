@@ -67,7 +67,6 @@ import website.julianrosser.birthdays.fragments.DialogFragments.ItemOptionsFragm
 import website.julianrosser.birthdays.fragments.RecyclerListFragment;
 import website.julianrosser.birthdays.model.Birthday;
 import website.julianrosser.birthdays.model.events.BirthdayItemClickEvent;
-import website.julianrosser.birthdays.model.events.BirthdaysLoadedEvent;
 import website.julianrosser.birthdays.views.CircleTransform;
 import website.julianrosser.birthdays.views.SnackBarHelper;
 
@@ -76,8 +75,6 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
 
     private static final int RC_SIGN_IN = 6006; /// todo - refactor
     public static final int RC_SETTINGS = 5311;
-
-    private ArrayList<Birthday> birthdaysList = new ArrayList<>();
 
     // Keys for orientation change reference
     final String ADD_EDIT_INSTANCE_KEY = "fragment_add_edit";
@@ -516,7 +513,7 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
             boolean bool = Preferences.isUsingFirebase(this);
             Preferences.setIsUsingFirebase(this, !bool);
             Snackbar.make(floatingActionButton, "DB mode: " + (!bool ? "Firebase" : "JSON"), Snackbar.LENGTH_SHORT).show();
-            recyclerListFragment.getAdapter().clearBirthdays();
+            clearBirthdays();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -528,9 +525,15 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
                 new ResultCallback<Status>() {
                     @Override
                     public void onResult(Status status) {
-                        finish();
+                        setNavHeaderUserState(NavHeaderState.LOGGED_OUT);
+                        clearBirthdays();
                     }
                 });
+    }
+
+    public void clearBirthdays() {
+        recyclerListFragment.getAdapter().clearBirthdays();
+        recyclerListFragment.showEmptyMessageIfRequired(new ArrayList<Birthday>());
     }
 
     // Set theme based on users preference
@@ -666,12 +669,6 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
     @Subscribe
     public void onBirthdayClicked(BirthdayItemClickEvent event) {
         showItemOptionsFragment(event.getBirthday());
-    }
-
-    // Birthdays array required to prevent importing duplicate contacts //todo - reduce to string names
-    @Subscribe
-    public void onBirthdaysLoaded(BirthdaysLoadedEvent event) {
-        birthdaysList = event.getBirthdays();
     }
 
     enum NavHeaderState {
