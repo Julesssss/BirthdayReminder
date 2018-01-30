@@ -527,6 +527,8 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
                     public void onResult(Status status) {
                         setNavHeaderUserState(NavHeaderState.LOGGED_OUT);
                         clearBirthdays();
+                        BirthdayReminder.getInstance().setUser(null);
+
                     }
                 });
     }
