@@ -122,9 +122,7 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (Preferences.isUsingFirebase(getActivity())) {
-            loadBirthdays();
-        }
+        loadBirthdays();
     }
 
     public void loadBirthdays() {
