@@ -29,8 +29,6 @@ public class ItemOptionsFragment extends DialogFragment {
 
     protected Birthday sBirthday;
 
-    final int DIALOG_WIDTH_SIZE = 220;
-
     // Use this instance of the interface to deliver action events
     static ItemOptionsListener mListener;
 
