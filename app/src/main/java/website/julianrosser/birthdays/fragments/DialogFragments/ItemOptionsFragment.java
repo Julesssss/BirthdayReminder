@@ -27,7 +27,7 @@ import website.julianrosser.birthdays.model.Birthday;
 
 public class ItemOptionsFragment extends DialogFragment {
 
-    private static Birthday sBirthday;
+    protected Birthday sBirthday;
 
     final int DIALOG_WIDTH_SIZE = 220;
 
@@ -38,13 +38,15 @@ public class ItemOptionsFragment extends DialogFragment {
         // Required empty public constructor
     }
 
+    private void setBirthday(Birthday birthday) {
+        this.sBirthday = birthday;
+    }
+
     // New instance is preferable as we have option to initialize here instead of using passed in params.
     public static ItemOptionsFragment newInstance(Birthday birthday) {
 
         ItemOptionsFragment itemOptionsFragment = new ItemOptionsFragment();
-
-        // Get selected birthday's title
-        sBirthday = birthday;
+        itemOptionsFragment.setBirthday(birthday);
 
         return itemOptionsFragment;
     }
