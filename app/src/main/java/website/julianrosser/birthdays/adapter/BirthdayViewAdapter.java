@@ -60,6 +60,10 @@ public class BirthdayViewAdapter extends RecyclerView.Adapter<BirthdayViewHolder
         notifyDataSetChanged();
     }
 
+    public ArrayList<Birthday> getBirthdays() {
+        return birthdays;
+    }
+
     public void setData(ArrayList<Birthday> birthdays) {
         this.birthdays = birthdays;
 

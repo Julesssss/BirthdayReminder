@@ -5,6 +5,9 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
+import java.util.ArrayList;
+
+import website.julianrosser.birthdays.model.Birthday;
 import website.julianrosser.birthdays.recievers.NotificationBuilderReceiver;
 import website.julianrosser.birthdays.services.SetAlarmsService;
 
@@ -15,6 +18,12 @@ public class AlarmsHelper {
         context.startService(serviceIntent);
     }
 
+    public static void cancelAllAlarms(Context context, ArrayList<Birthday> birthdays) {
+        for (Birthday b: birthdays) {
+            cancelAlarm(context, b.getName().hashCode());
+        }
+    }
+
     // This builds an identical PendingIntent to the alarm and cancels when
     public static void cancelAlarm(Context context, int id) {
 
@@ -22,7 +31,7 @@ public class AlarmsHelper {
         Intent mNotificationReceiverIntent = new Intent(context,
                 NotificationBuilderReceiver.class);
 
-        // Create pending Intent using Intent we just built
+        // Create pending Intent exactly as it was set previously
         PendingIntent mNotificationReceiverPendingIntent = PendingIntent
                 .getBroadcast(context.getApplicationContext(),
                         id,
@@ -31,7 +40,9 @@ public class AlarmsHelper {
 
         // Cancel alarm
         AlarmManager mAlarmManager = (AlarmManager) context.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-        mAlarmManager.cancel(mNotificationReceiverPendingIntent);
+        if (mAlarmManager != null) {
+            mAlarmManager.cancel(mNotificationReceiverPendingIntent);
+        }
     }
 
 }
