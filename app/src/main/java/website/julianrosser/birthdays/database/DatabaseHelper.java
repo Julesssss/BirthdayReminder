@@ -77,7 +77,7 @@ public class DatabaseHelper {
 
     public static void saveBirthdayChange(Birthday birthday, Update state) {
         if (Preferences.isUsingFirebase(BirthdayReminder.getInstance())) {
-            saveFirebaseChange(birthday, state);
+            saveFirebaseChangeAndSetAlarms(birthday, state);
         } else {
             try {
                 saveJSONChange(birthday, state);
@@ -88,7 +88,7 @@ public class DatabaseHelper {
         }
     }
 
-    private static void saveFirebaseChange(Birthday birthday, Update state) {
+    private static void saveFirebaseChangeAndSetAlarms(Birthday birthday, Update state) {
         FirebaseUser user = BirthdayReminder.getInstance().getCurrentUser();
         if (user == null || Utils.isStringEmpty(user.getUid())) {
             return;
