@@ -50,7 +50,7 @@ public class Birthday {
      *
      */
     public Birthday(String name, Date dateOfBirthday, boolean notifyUserOfBirthday, boolean includeYear) {
-        this.name = WordUtils.capitalize(name);;
+        this.name = WordUtils.capitalize(name);
         this.remind = notifyUserOfBirthday;
         this.date = dateOfBirthday;
         this.yearOfBirth = dateOfBirthday.getYear();
