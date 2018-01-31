@@ -160,6 +160,9 @@
     <!-- Information & help Text -->
     <string name="empty_list_title">No Birthdays</string>
     <string name="empty_list_message">Tap the Birthday cake icon to add your first birthday, or sign in to your Google account to retrieve them!</string>
+    <string name="dialog_sign_out_title">Sign Out</string>
+    <string name="dialog_sign_out_message">Are you sure you want to sign out? You will only see your birthdays after signing back in.</string>
+    <string name="message_signed_out">Signed Out</string>
 
 
 </resources>

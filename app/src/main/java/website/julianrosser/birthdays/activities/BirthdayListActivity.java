@@ -64,6 +64,7 @@ import website.julianrosser.birthdays.R;
 import website.julianrosser.birthdays.database.DatabaseHelper;
 import website.julianrosser.birthdays.fragments.DialogFragments.AddEditFragment;
 import website.julianrosser.birthdays.fragments.DialogFragments.ItemOptionsFragment;
+import website.julianrosser.birthdays.fragments.DialogFragments.SignOutDialog;
 import website.julianrosser.birthdays.fragments.RecyclerListFragment;
 import website.julianrosser.birthdays.model.Birthday;
 import website.julianrosser.birthdays.model.events.BirthdayItemClickEvent;
@@ -268,6 +269,7 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount account = result.getSignInAccount();
             firebaseAuthWithGoogle(account);
+            AlarmsHelper.setAllNotificationAlarms(this.getApplicationContext());
         } else {
             setNavHeaderUserState(NavHeaderState.LOGGED_OUT);
             Snackbar.make(floatingActionButton, "Error while logging in", Snackbar.LENGTH_SHORT).show(); // todo - translate
@@ -316,7 +318,6 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
                 } else {
                     // User is signed out
                     setNavHeaderUserState(NavHeaderState.LOGGED_OUT);
-                    Snackbar.make(floatingActionButton, "Signed OUT", Snackbar.LENGTH_SHORT).show();
                     Log.d("Auth", "onAuthStateChanged:signed_out");
                 }
             }
@@ -520,17 +521,23 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
     }
 
     private void signOutGoogle() {
-        FirebaseAuth.getInstance().signOut();
-        Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(Status status) {
-                        setNavHeaderUserState(NavHeaderState.LOGGED_OUT);
-                        clearBirthdays();
-                        BirthdayReminder.getInstance().setUser(null);
-
-                    }
-                });
+        SignOutDialog.newInstance(new SignOutDialog.SignOutCallback() {
+            @Override
+            public void onClicked() {
+                FirebaseAuth.getInstance().signOut();
+                Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(
+                        new ResultCallback<Status>() {
+                            @Override
+                            public void onResult(Status status) {
+                                setNavHeaderUserState(NavHeaderState.LOGGED_OUT);
+                                AlarmsHelper.cancelAllAlarms(BirthdayListActivity.this.getApplicationContext(), recyclerListFragment.getAdapter().getBirthdays());
+                                clearBirthdays();
+                                BirthdayReminder.getInstance().setUser(null);
+                                Snackbar.make(floatingActionButton, R.string.message_signed_out, Snackbar.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+        }).show(getSupportFragmentManager(), SignOutDialog.class.getSimpleName());
     }
 
     public void clearBirthdays() {
@@ -605,7 +612,7 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
     public void onItemDelete(ItemOptionsFragment dialog, Birthday birthday) {
         itemOptionsFragment.dismiss();
         DatabaseHelper.saveBirthdayChange(birthday, DatabaseHelper.Update.DELETE);
-        AlarmsHelper.cancelAlarm(this, birthday.hashCode());
+        AlarmsHelper.cancelAlarm(this, birthday.getName().hashCode());
         SnackBarHelper.birthdayDeleted(floatingActionButton, birthday);
     }
 
