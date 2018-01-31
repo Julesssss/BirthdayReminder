@@ -245,7 +245,7 @@ public class AddEditFragment extends DialogFragment {
                         if (ADD_OR_EDIT_MODE == MODE_EDIT) {
                             String key = bundle.getString(UID_KEY);
                             if (! Utils.isStringEmpty(key)) birthday.setUID(key);
-                            AlarmsHelper.cancelAlarm(getActivity(), birthday.hashCode());
+                            AlarmsHelper.cancelAlarm(getActivity(), birthday.getName().hashCode());
                             DatabaseHelper.saveBirthdayChange(birthday, DatabaseHelper.Update.UPDATE);
                         } else if (ADD_OR_EDIT_MODE == MODE_ADD) {
                             DatabaseHelper.saveBirthdayChange(birthday, DatabaseHelper.Update.CREATE);
