@@ -148,7 +148,10 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
                         startActivityForResult(new Intent(getApplicationContext(), SettingsActivity.class), RC_SETTINGS);
                         return true;
                     case R.id.menu_privacy:
-                        startActivity(new Intent(getApplicationContext(), PrivacyPolicyActivity.class));
+                        startActivityForResult(new Intent(getApplicationContext(), SettingsActivity.class), RC_SETTINGS);
+                        return true;
+                    case R.id.menu_logout:
+                        signOutGoogle();
                     default:
                         return true;
                 }
@@ -507,10 +510,7 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == R.id.action_sign_out) {
-            signOutGoogle();
-            return true;
-        } else if (id == R.id.action_firebase) {
+    if (id == R.id.action_firebase) {
             boolean bool = Preferences.isUsingFirebase(this);
             Preferences.setIsUsingFirebase(this, !bool);
             Snackbar.make(floatingActionButton, "DB mode: " + (!bool ? "Firebase" : "JSON"), Snackbar.LENGTH_SHORT).show();

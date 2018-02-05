@@ -25,5 +25,8 @@
         <item
             android:id="@+id/menu_privacy"
             android:title="@string/title_privacy_policy" />
+        <item
+            android:id="@+id/menu_logout"
+            android:title="@string/title_log_out" />
     </group>
 </menu>
