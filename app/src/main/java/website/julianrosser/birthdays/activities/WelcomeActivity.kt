@@ -3,12 +3,12 @@ package website.julianrosser.birthdays.activities
 import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.support.v7.app.AppCompatActivity
-import com.google.android.gms.common.SignInButton
+import android.support.design.widget.Snackbar
+import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_welcome.*
 import website.julianrosser.birthdays.R
 
-class WelcomeActivity : AppCompatActivity() {
+class WelcomeActivity : GoogleSignInActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,12 +16,24 @@ class WelcomeActivity : AppCompatActivity() {
         setTheme()
         setContentView(R.layout.activity_welcome)
 
-        welcomeButtonGoogleSignIn.setOnClickListener { onGoogleSignInClicked() }
+        setUpSignInButton()
         welcomeButtonJson.setOnClickListener { onContinueClicked() }
     }
 
-    private fun onGoogleSignInClicked() {
+    private fun setUpSignInButton() {
+        setUpGoogleSignInButton(welcomeButtonGoogleSignIn, object : GoogleSignInListener {
+            override fun onLogin(firebaseUser: FirebaseUser) {
+                Snackbar.make(welcomeButtonGoogleSignIn, "Already signed in, GOTO main activity", Snackbar.LENGTH_SHORT).show()
+            }
 
+            override fun onGoogleFailure(message: String) {
+                Snackbar.make(welcomeButtonGoogleSignIn, "onGoogleFailure: $message", Snackbar.LENGTH_SHORT).show()
+            }
+
+            override fun onFirebaseFailure(message: String) {
+                Snackbar.make(welcomeButtonGoogleSignIn, "Not signed in, new or signed out user: $message", Snackbar.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun onContinueClicked() {

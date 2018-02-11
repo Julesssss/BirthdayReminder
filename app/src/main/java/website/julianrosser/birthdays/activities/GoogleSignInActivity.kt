@@ -27,7 +27,8 @@ abstract class GoogleSignInActivity : BaseActivity(), GoogleApiClient.OnConnecti
 
     interface GoogleSignInListener {
         fun onLogin(firebaseUser: FirebaseUser)
-        fun onFailure(message: String)
+        fun onGoogleFailure(message: String)
+        fun onFirebaseFailure(message: String)
     }
 
     interface GoogleSignOutListener {
@@ -57,7 +58,7 @@ abstract class GoogleSignInActivity : BaseActivity(), GoogleApiClient.OnConnecti
                 listener.onLogin(it)
                 return@AuthStateListener
             }
-            listener.onFailure("User returned null")
+            listener.onFirebaseFailure("User returned null")
         }
     }
 
@@ -108,7 +109,7 @@ abstract class GoogleSignInActivity : BaseActivity(), GoogleApiClient.OnConnecti
             firebaseAuthWithGoogle(account!!)
             AlarmsHelper.setAllNotificationAlarms(this.applicationContext)
         } else {
-            listener.onFailure("Google sign in failed")
+            listener.onGoogleFailure("Google sign in failed")
             Snackbar.make(signInButton, getString(R.string.error_google_login), Snackbar.LENGTH_SHORT).show()
         }
     }

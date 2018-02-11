@@ -135,6 +135,7 @@ public class BirthdayListActivity extends GoogleSignInActivity implements ItemOp
                                 setNavHeaderUserState(LOGGED_OUT);
                                 AlarmsHelper.cancelAllAlarms(getApplicationContext(), recyclerListFragment.getAdapter().getBirthdays());
                                 clearBirthdays();
+                                startActivity(new Intent(BirthdayListActivity.this, WelcomeActivity.class));
                             }
                         });
                     default:
@@ -241,7 +242,11 @@ public class BirthdayListActivity extends GoogleSignInActivity implements ItemOp
                 handleUserAuthenticated(firebaseUser);
             }
 
-            @Override public void onFailure(@NotNull String message) {
+            @Override public void onGoogleFailure(@NotNull String message) {
+                setNavHeaderUserState(LOGGED_OUT);
+            }
+
+            @Override public void onFirebaseFailure(@NotNull String message) {
                 setNavHeaderUserState(LOGGED_OUT);
             }
         });
