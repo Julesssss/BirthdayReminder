@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -16,7 +15,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,7 +22,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
@@ -32,49 +29,36 @@ import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
 import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
 import website.julianrosser.birthdays.AlarmsHelper;
 import website.julianrosser.birthdays.BirthdayReminder;
-import website.julianrosser.birthdays.BuildConfig;
 import website.julianrosser.birthdays.Constants;
 import website.julianrosser.birthdays.Preferences;
 import website.julianrosser.birthdays.R;
 import website.julianrosser.birthdays.database.DatabaseHelper;
 import website.julianrosser.birthdays.fragments.DialogFragments.AddEditFragment;
 import website.julianrosser.birthdays.fragments.DialogFragments.ItemOptionsFragment;
-import website.julianrosser.birthdays.fragments.DialogFragments.SignOutDialog;
 import website.julianrosser.birthdays.fragments.RecyclerListFragment;
 import website.julianrosser.birthdays.model.Birthday;
 import website.julianrosser.birthdays.model.events.BirthdayItemClickEvent;
 import website.julianrosser.birthdays.views.CircleTransform;
 import website.julianrosser.birthdays.views.SnackBarHelper;
 
-@SuppressWarnings("deprecation")
-public class BirthdayListActivity extends BaseActivity implements ItemOptionsFragment.ItemOptionsListener, View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
+import static website.julianrosser.birthdays.activities.BirthdayListActivity.NavHeaderState.LOGGED_OUT;
 
-    private static final int RC_SIGN_IN = 6006; /// todo - refactor
+@SuppressWarnings("deprecation")
+public class BirthdayListActivity extends GoogleSignInActivity implements ItemOptionsFragment.ItemOptionsListener, View.OnClickListener {
+
     public static final int RC_SETTINGS = 5311;
 
     // Keys for orientation change reference
@@ -98,11 +82,6 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private NavigationView navigationView;
-
-    // Sign In
-    private GoogleApiClient mGoogleApiClient;
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
 
     private LinearLayout userDetailLayout;
     private SignInButton signInButton;
@@ -151,7 +130,13 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
                         startActivityForResult(new Intent(getApplicationContext(), SettingsActivity.class), RC_SETTINGS);
                         return true;
                     case R.id.menu_logout:
-                        signOutGoogle();
+                        signOutGoogle(new GoogleSignOutListener() {
+                            @Override public void onComplete() {
+                                setNavHeaderUserState(LOGGED_OUT);
+                                AlarmsHelper.cancelAllAlarms(getApplicationContext(), recyclerListFragment.getAdapter().getBirthdays());
+                                clearBirthdays();
+                            }
+                        });
                     default:
                         return true;
                 }
@@ -168,8 +153,6 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
         textNavHeaderUserName = (TextView) headerView.findViewById(R.id.navHeaderUserName);
         textNavHeaderEmail = (TextView) headerView.findViewById(R.id.navHeaderUserEmail);
         imageNavHeaderProfile = (ImageView) headerView.findViewById(R.id.profile_image);
-
-        setUpGoogleSignInButton(headerView);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
@@ -194,6 +177,9 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
 
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        signInButton = (SignInButton) headerView.findViewById(R.id.sign_in_button);
+        setUpGoogleSignIn(signInButton);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
@@ -247,16 +233,25 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
         }
     }
 
+    private void setUpGoogleSignIn(SignInButton signInButton) {
+        mDrawerLayout.closeDrawer(Gravity.START);
+
+        setUpGoogleSignInButton(signInButton, new GoogleSignInListener() {
+            @Override public void onLogin(@NotNull FirebaseUser firebaseUser) {
+                handleUserAuthenticated(firebaseUser);
+            }
+
+            @Override public void onFailure(@NotNull String message) {
+                setNavHeaderUserState(LOGGED_OUT);
+            }
+        });
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            handleSignInResult(result);
-
-        } else if (requestCode == RC_SETTINGS) {
+        if (requestCode == RC_SETTINGS) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             String newTheme = prefs.getString(getString(R.string.pref_theme_key), "0");
             if (!newTheme.equals(themePref)) {
@@ -264,67 +259,6 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
                 themePref = newTheme;
             }
         }
-    }
-
-    private void handleSignInResult(GoogleSignInResult result) {
-        Log.d("SIGN IN", "handleSignInResult:" + result.isSuccess());
-        if (result.isSuccess()) {
-            // Signed in successfully, show authenticated UI.
-            GoogleSignInAccount account = result.getSignInAccount();
-            firebaseAuthWithGoogle(account);
-            AlarmsHelper.setAllNotificationAlarms(this.getApplicationContext());
-        } else {
-            setNavHeaderUserState(NavHeaderState.LOGGED_OUT);
-            Snackbar.make(floatingActionButton, "Error while logging in", Snackbar.LENGTH_SHORT).show(); // todo - translate
-        }
-    }
-
-    public void firebaseAuthWithGoogle(GoogleSignInAccount account) {
-        Log.d("Auth", "firebaseAuthWithGoogle: " + account.getId());
-
-        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d("Auth", "signInWithCredential:onComplete:" + task.isSuccessful());
-
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-                            Log.w("Auth", "signInWithCredential", task.getException());
-                            Toast.makeText(BirthdayListActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                        recyclerListFragment.loadBirthdays();
-                    }
-                });
-    }
-
-    private void setUpGoogleSignInButton(View headerView) {
-        GoogleSignInOptions gso = setUpGoogleSignInOptions();
-        signInButton = (SignInButton) headerView.findViewById(R.id.sign_in_button);
-        signInButton.setSize(SignInButton.SIZE_WIDE);
-        signInButton.setScopes(gso.getScopeArray());
-        signInButton.setOnClickListener(this);
-
-        mAuth = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser(); // todo - move to HERE
-                if (user != null) {
-                    // User is signed in
-                    handleUserAuthenticated(user);
-                    Log.d("Auth", "onAuthStateChanged:signed_in:" + user.getUid());
-                } else {
-                    // User is signed out
-                    setNavHeaderUserState(NavHeaderState.LOGGED_OUT);
-                    Log.d("Auth", "onAuthStateChanged:signed_out");
-                }
-            }
-        };
     }
 
     private void handleUserAuthenticated(FirebaseUser user) {
@@ -335,23 +269,6 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
         Snackbar.make(floatingActionButton, user.getDisplayName() + " signed in", Snackbar.LENGTH_SHORT).show();
         BirthdayReminder.getInstance().setUser(user);
         recyclerListFragment.loadBirthdays();
-    }
-
-    private GoogleSignInOptions setUpGoogleSignInOptions() {
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(BuildConfig.GOOGLE_SIGN_IN_KEY)
-                .requestEmail()
-                .build();
-
-        // Build a GoogleApiClient with access to the Google Sign-In API and the
-        // options specified by gso.
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-        return gso;
     }
 
     public void setNavHeaderUserState(NavHeaderState state) {
@@ -367,11 +284,6 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
                 imageNavHeaderProfile.setVisibility(View.VISIBLE);
                 break;
         }
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Snackbar.make(navigationView, "Sign in failed", Snackbar.LENGTH_SHORT).show();
     }
 
     public Action getAction() {
@@ -391,7 +303,6 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
     public void onStart() {
         super.onStart();
         mClient.connect();
-        mAuth.addAuthStateListener(mAuthListener);
         AppIndex.AppIndexApi.start(mClient, getAction());
     }
 
@@ -418,9 +329,6 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
 
     @Override
     protected void onStop() {
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
         AppIndex.AppIndexApi.end(mClient, getAction());
         mClient.disconnect();
         super.onStop();
@@ -510,7 +418,7 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-    if (id == R.id.action_firebase) {
+        if (id == R.id.action_firebase) {
             boolean bool = Preferences.isUsingFirebase(this);
             Preferences.setIsUsingFirebase(this, !bool);
             Snackbar.make(floatingActionButton, "DB mode: " + (!bool ? "Firebase" : "JSON"), Snackbar.LENGTH_SHORT).show();
@@ -518,26 +426,6 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void signOutGoogle() {
-        SignOutDialog.newInstance(new SignOutDialog.SignOutCallback() {
-            @Override
-            public void onClicked() {
-                FirebaseAuth.getInstance().signOut();
-                Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(
-                        new ResultCallback<Status>() {
-                            @Override
-                            public void onResult(Status status) {
-                                setNavHeaderUserState(NavHeaderState.LOGGED_OUT);
-                                AlarmsHelper.cancelAllAlarms(BirthdayListActivity.this.getApplicationContext(), recyclerListFragment.getAdapter().getBirthdays());
-                                clearBirthdays();
-                                BirthdayReminder.getInstance().setUser(null);
-                                Snackbar.make(floatingActionButton, R.string.message_signed_out, Snackbar.LENGTH_SHORT).show();
-                            }
-                        });
-            }
-        }).show(getSupportFragmentManager(), SignOutDialog.class.getSimpleName());
     }
 
     public void clearBirthdays() {
@@ -574,15 +462,9 @@ public class BirthdayListActivity extends BaseActivity implements ItemOptionsFra
                 Snackbar.make(v, "Change user display", Snackbar.LENGTH_SHORT).show();
                 break;
             case R.id.sign_in_button:
-                signIn();
+                mDrawerLayout.closeDrawer(Gravity.START);
                 break;
         }
-    }
-
-    private void signIn() {
-        mDrawerLayout.closeDrawer(Gravity.START);
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
     @Override
