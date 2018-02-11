@@ -12,6 +12,7 @@
         android:gravity="center_horizontal"
         android:padding="8dp"
         android:text="@string/app_name"
+        android:textStyle="bold"
         android:textSize="30sp" />
 
     <TextView
@@ -20,24 +21,25 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/welcomeTextTitle"
         android:layout_marginTop="16dp"
-        android:text="Welcome to Birthday Reminder app. Birthday reminder has been updated! You can now sign into your Google account to backup your birthdays." />
+        android:text="@string/welcome_text_message" />
 
-    <Button
+    <com.google.android.gms.common.SignInButton
         android:id="@+id/welcomeButtonGoogleSignIn"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textAlignment="center"
         android:layout_below="@id/welcomeTextMessage"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
         android:text="Google Sign In" />
 
     <Button
         android:id="@+id/welcomeButtonJson"
-        android:layout_width="wrap_content"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/welcomeButtonGoogleSignIn"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:text="No thanks" />
+        android:text="Continue without backup" />
 
 </RelativeLayout>

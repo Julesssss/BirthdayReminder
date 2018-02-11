@@ -165,7 +165,7 @@
     <string name="message_signed_out">Signed Out</string>
 
     <string name="title_log_out">Log Out</string>
-
+    <string name="welcome_text_message">Welcome to Birthday Reminder app. Birthday reminder has been updated! You can now sign into your Google account to backup your birthdays. You can still use the app offline!!!!!</string>
 
 
 </resources>

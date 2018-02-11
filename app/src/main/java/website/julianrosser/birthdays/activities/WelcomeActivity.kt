@@ -1,8 +1,11 @@
 package website.julianrosser.birthdays.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v7.app.AppCompatActivity
+import com.google.android.gms.common.SignInButton
+import kotlinx.android.synthetic.main.activity_welcome.*
 import website.julianrosser.birthdays.R
 
 class WelcomeActivity : AppCompatActivity() {
@@ -12,6 +15,17 @@ class WelcomeActivity : AppCompatActivity() {
 
         setTheme()
         setContentView(R.layout.activity_welcome)
+
+        welcomeButtonGoogleSignIn.setOnClickListener { onGoogleSignInClicked() }
+        welcomeButtonJson.setOnClickListener { onContinueClicked() }
+    }
+
+    private fun onGoogleSignInClicked() {
+
+    }
+
+    private fun onContinueClicked() {
+        startActivity(Intent(this, BirthdayListActivity::class.java))
     }
 
     private fun setTheme() {
