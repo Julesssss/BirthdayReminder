@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".activities.BirthdayListActivity">
-    
+
     <item
         android:id="@+id/action_firebase"
         android:orderInCategory="999"
