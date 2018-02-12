@@ -452,8 +452,8 @@ public class BirthdayListActivity extends GoogleSignInActivity implements ItemOp
             setTheme(R.style.GreenTheme);
             pref = "2";
         } else {
-            setTheme(R.style.PinkTheme);
-            pref = "1";
+            setTheme(R.style.BlueTheme);
+            pref = "0";
         }
         themePref = pref;
     }

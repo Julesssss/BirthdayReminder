@@ -46,7 +46,7 @@ class WelcomeActivity : GoogleSignInActivity() {
             "0" -> R.style.BlueTheme
             "1" -> R.style.PinkTheme
             "2" -> R.style.GreenTheme
-            else -> R.style.PinkTheme
+            else -> R.style.BlueTheme
         })
     }
 }
