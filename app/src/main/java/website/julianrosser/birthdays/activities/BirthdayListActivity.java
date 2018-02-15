@@ -133,11 +133,19 @@ public class BirthdayListActivity extends GoogleSignInActivity implements ItemOp
                         signOutGoogle(new GoogleSignOutListener() {
                             @Override public void onComplete() {
                                 setNavHeaderUserState(LOGGED_OUT);
+                                MenuItem item = navigationView.getMenu().findItem(R.id.menu_logout);
+                                if (item != null) {
+                                    item.setVisible(true);
+                                    invalidateOptionsMenu();
+                                }
                                 AlarmsHelper.cancelAllAlarms(getApplicationContext(), recyclerListFragment.getAdapter().getBirthdays());
                                 clearBirthdays();
+                                navigationView.setCheckedItem(R.id.menu_birthdays);
                                 startActivity(new Intent(BirthdayListActivity.this, WelcomeActivity.class));
+                                finish();
                             }
                         });
+                        return false;
                     default:
                         return true;
                 }
@@ -267,6 +275,12 @@ public class BirthdayListActivity extends GoogleSignInActivity implements ItemOp
     }
 
     private void handleUserAuthenticated(FirebaseUser user) {
+        MenuItem item = navigationView.getMenu().findItem(R.id.menu_logout);
+        if (item != null) {
+            item.setVisible(true);
+            this.invalidateOptionsMenu();
+        }
+
         textNavHeaderUserName.setText(user.getDisplayName());
         textNavHeaderEmail.setText(user.getEmail());
         Picasso.with(getApplicationContext()).load(user.getPhotoUrl()).transform(new CircleTransform()).into(imageNavHeaderProfile);
