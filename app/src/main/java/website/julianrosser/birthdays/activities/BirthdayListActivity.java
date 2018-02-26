@@ -290,7 +290,7 @@ public class BirthdayListActivity extends GoogleSignInActivity implements ItemOp
         setNavHeaderUserState(NavHeaderState.SIGNED_IN);
         BirthdayReminder.getInstance().setUser(user);
         recyclerListFragment.getAdapter().clearBirthdays();
-        recyclerListFragment.showLoadingSpinner();
+        clearBirthdays();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -430,32 +430,6 @@ public class BirthdayListActivity extends GoogleSignInActivity implements ItemOp
         itemOptionsFragment = ItemOptionsFragment.newInstance(birthday);
         itemOptionsFragment.setRetainInstance(true);
         itemOptionsFragment.show(getSupportFragmentManager(), "ItemOptionsBirthdayFragment");
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        if (id == R.id.action_firebase) {
-            Snackbar.make(floatingActionButton, "Current DB mode: : " + Preferences.isUsingFirebase(this), Snackbar.LENGTH_SHORT).show();
-
-//            boolean bool = Preferences.isUsingFirebase(this);
-//            Preferences.setIsUsingFirebase(this, !bool);
-//            Snackbar.make(floatingActionButton, "DB mode: " + (!bool ? "Firebase" : "JSON"), Snackbar.LENGTH_SHORT).show();
-//            clearBirthdays();
-//            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     public void clearBirthdays() {
