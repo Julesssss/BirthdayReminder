@@ -33,7 +33,7 @@ abstract class GoogleSignInActivity : BaseActivity(), GoogleApiClient.OnConnecti
     }
 
     private lateinit var signInButton: SignInButton
-    private lateinit var mAuth: FirebaseAuth
+    private var mAuth: FirebaseAuth? = null
     private lateinit var mAuthListener: FirebaseAuth.AuthStateListener
     private lateinit var mGoogleApiClient: GoogleApiClient
     private lateinit var listener: GoogleSignInListener
@@ -61,12 +61,12 @@ abstract class GoogleSignInActivity : BaseActivity(), GoogleApiClient.OnConnecti
 
     override fun onStart() {
         super.onStart()
-        mAuth.addAuthStateListener(mAuthListener)
+        mAuth?.addAuthStateListener(mAuthListener)
     }
 
     override fun onStop() {
         super.onStop()
-        mAuth.removeAuthStateListener(mAuthListener)
+        mAuth?.removeAuthStateListener(mAuthListener)
     }
 
     private fun setUpGoogleSignInOptions(): GoogleSignInOptions {
@@ -116,8 +116,8 @@ abstract class GoogleSignInActivity : BaseActivity(), GoogleApiClient.OnConnecti
         Log.d("Auth", "firebaseAuthWithGoogle: " + account.id!!)
 
         val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this) { task ->
+        mAuth?.signInWithCredential(credential)
+                ?.addOnCompleteListener(this) { task ->
                     Log.d("Auth", "signInWithCredential:onComplete:" + task.isSuccessful)
 
                     // If sign in fails, display a message to the user. If sign in succeeds

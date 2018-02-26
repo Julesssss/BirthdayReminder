@@ -47,7 +47,7 @@ public class SetAlarmsService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        if (Preferences.isUsingFirebase(this)) {
+        if (Preferences.isUsingFirebase(this.getApplicationContext())) {
             loadBirthdaysFromFirebase();
         } else {
             try {

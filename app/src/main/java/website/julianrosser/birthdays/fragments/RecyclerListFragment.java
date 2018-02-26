@@ -129,7 +129,10 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
 
     public void loadBirthdays() {
         progressBar.setVisibility(View.VISIBLE);
-        if (Preferences.isUsingFirebase(getActivity())) {
+
+        if (BirthdayReminder.getInstance() == null) return;
+
+        if (Preferences.isUsingFirebase(BirthdayReminder.getInstance())) {
             setUpBirthdayListener();
         } else {
             try {
