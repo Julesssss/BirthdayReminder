@@ -19,13 +19,20 @@ class WelcomeActivity : GoogleSignInActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setTheme()
-        setContentView(R.layout.activity_welcome)
+        if (Preferences.shouldShowWelcomeScreen(this)) {
 
-        setUpSignInButton()
-        welcomeButtonJson.setOnClickListener { onContinueClicked() }
+            setTheme()
+            setContentView(R.layout.activity_welcome)
 
-        mTracker = getDefaultTracker()
+            setUpSignInButton()
+            welcomeButtonJson.setOnClickListener { onContinueClicked() }
+
+            mTracker = getDefaultTracker()
+
+        } else {
+            startActivity(Intent(applicationContext, BirthdayListActivity::class.java))
+            finish()
+        }
     }
 
     private fun setUpSignInButton() {
