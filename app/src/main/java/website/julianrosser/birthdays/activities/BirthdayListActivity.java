@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -139,7 +140,6 @@ public class BirthdayListActivity extends GoogleSignInActivity implements ItemOp
                                     invalidateOptionsMenu();
                                 }
                                 AlarmsHelper.cancelAllAlarms(getApplicationContext(), recyclerListFragment.getAdapter().getBirthdays());
-                                clearBirthdays();
                                 navigationView.setCheckedItem(R.id.menu_birthdays);
                                 startActivity(new Intent(BirthdayListActivity.this, WelcomeActivity.class));
                                 finish();
@@ -248,14 +248,17 @@ public class BirthdayListActivity extends GoogleSignInActivity implements ItemOp
         setUpGoogleSignInButton(signInButton, new GoogleSignInListener() {
             @Override public void onLogin(@NotNull FirebaseUser firebaseUser) {
                 handleUserAuthenticated(firebaseUser);
+                Preferences.setIsUsingFirebase(BirthdayListActivity.this, true);
             }
 
             @Override public void onGoogleFailure(@NotNull String message) {
                 setNavHeaderUserState(LOGGED_OUT);
+                Preferences.setIsUsingFirebase(BirthdayListActivity.this, false);
             }
 
             @Override public void onFirebaseFailure(@NotNull String message) {
                 setNavHeaderUserState(LOGGED_OUT);
+                Preferences.setIsUsingFirebase(BirthdayListActivity.this, false);
             }
         });
     }
@@ -285,9 +288,15 @@ public class BirthdayListActivity extends GoogleSignInActivity implements ItemOp
         textNavHeaderEmail.setText(user.getEmail());
         Picasso.with(getApplicationContext()).load(user.getPhotoUrl()).transform(new CircleTransform()).into(imageNavHeaderProfile);
         setNavHeaderUserState(NavHeaderState.SIGNED_IN);
-        Snackbar.make(floatingActionButton, user.getDisplayName() + " signed in", Snackbar.LENGTH_SHORT).show();
         BirthdayReminder.getInstance().setUser(user);
-        recyclerListFragment.loadBirthdays();
+        recyclerListFragment.getAdapter().clearBirthdays();
+        recyclerListFragment.showLoadingSpinner();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                recyclerListFragment.loadBirthdays();
+            }
+        }, 2000);
     }
 
     public void setNavHeaderUserState(NavHeaderState state) {

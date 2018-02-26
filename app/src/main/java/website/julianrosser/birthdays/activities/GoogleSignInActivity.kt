@@ -13,10 +13,7 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
-import website.julianrosser.birthdays.AlarmsHelper
-import website.julianrosser.birthdays.BirthdayReminder
-import website.julianrosser.birthdays.BuildConfig
-import website.julianrosser.birthdays.R
+import website.julianrosser.birthdays.*
 import website.julianrosser.birthdays.fragments.DialogFragments.SignOutDialog
 
 abstract class GoogleSignInActivity : BaseActivity(), GoogleApiClient.OnConnectionFailedListener {
@@ -109,6 +106,7 @@ abstract class GoogleSignInActivity : BaseActivity(), GoogleApiClient.OnConnecti
             firebaseAuthWithGoogle(account!!)
             AlarmsHelper.setAllNotificationAlarms(this.applicationContext)
         } else {
+            Preferences.setIsUsingFirebase(this, false)
             listener.onGoogleFailure("Google sign in failed")
             Snackbar.make(signInButton, getString(R.string.error_google_login), Snackbar.LENGTH_SHORT).show()
         }
@@ -126,8 +124,11 @@ abstract class GoogleSignInActivity : BaseActivity(), GoogleApiClient.OnConnecti
                     // the auth state listener will be notified and logic to handle the
                     // signed in user can be handled in the listener.
                     if (!task.isSuccessful) {
+                        Preferences.setIsUsingFirebase(this, false)
                         Log.w("Auth", "signInWithCredential", task.exception)
                         Snackbar.make(signInButton, "Authentication failed", Snackbar.LENGTH_SHORT).show()
+                    } else {
+                        Preferences.setIsUsingFirebase(this, true)
                     }
                 }
     }
@@ -141,6 +142,7 @@ abstract class GoogleSignInActivity : BaseActivity(), GoogleApiClient.OnConnecti
             FirebaseAuth.getInstance().signOut()
             Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback {
                 listener.onComplete()
+                Preferences.setIsUsingFirebase(this, false)
                 BirthdayReminder.getInstance().setUser(null)
                 Snackbar.make(signInButton, R.string.message_signed_out, Snackbar.LENGTH_SHORT).show()
             }
