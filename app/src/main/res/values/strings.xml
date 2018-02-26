@@ -167,6 +167,7 @@
     <string name="title_log_out">Log Out</string>
     <string name="welcome_text_message">You can now sign into your Google account. This will automatically backup your birthdays and allow you to see your birthdays on any other device after signing in.\n\nIf you want to continue using the app without backing up your birthdays, click continue.</string>
     <string name="error_google_login">Error while logging in</string>
+    <string name="error_no_json_birthdays">No JSON birthdays found!</string>
 
 
 </resources>

@@ -30,6 +30,7 @@ import website.julianrosser.birthdays.AlarmsHelper;
 import website.julianrosser.birthdays.BirthdayReminder;
 import website.julianrosser.birthdays.Constants;
 import website.julianrosser.birthdays.Preferences;
+import website.julianrosser.birthdays.R;
 import website.julianrosser.birthdays.Utils;
 import website.julianrosser.birthdays.model.Birthday;
 import website.julianrosser.birthdays.model.FirebaseBirthday;
@@ -121,6 +122,93 @@ public class DatabaseHelper {
             dbr.child("lastUpdated").setValue(ServerValue.TIMESTAMP);
             dbr.child("email").setValue(user.getEmail()); // todo refactor
         }
+    }
+
+    public interface MigrateUsersCallback {
+        void onSuccess(int migratedCount);
+        void onFailure(String message);
+    }
+
+    public void migrateJsonToFirebase(Context context, FirebaseUser user, MigrateUsersCallback callback) {
+        Log.i("Migration", "starting migration");
+
+        if (user == null || Utils.isStringEmpty(user.getUid())) {
+            Log.i("Migration", "User null or empty");
+            return;
+        }
+
+        ArrayList<Birthday> jsonbirthdays = new ArrayList();
+        try {
+            jsonbirthdays = loadJSONData(context);
+        } catch (FileNotFoundException e) {
+            // Ignore this one; it happens when starting fresh
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+            callback.onFailure(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            callback.onFailure(e.getMessage());
+        }
+
+        Log.i("Migration", "Past execption checks");
+
+        if (jsonbirthdays.size() > 0) {
+            Log.i("Migration", "Found JSON birthdays!");
+
+            // Get Firebase Database reference
+            DatabaseReference databaseReference;
+            for (Birthday jsonBirthday : jsonbirthdays) {
+
+                Log.i("Migration", "for birthday: " + jsonBirthday.getName());
+
+                // Update database ref
+                databaseReference = BirthdayReminder.getInstance().getDatabaseReference().child(user.getUid()).child(Constants.TABLE_BIRTHDAYS)
+                        .child(String.valueOf(jsonBirthday.getUID()));
+
+                // Convert to Firebase birthday
+                FirebaseBirthday firebaseBirthday = FirebaseBirthday.convertToFirebaseBirthday(jsonBirthday);
+
+                // Save to Firebase
+                databaseReference.setValue(firebaseBirthday);
+                Log.i("Migration", "Saved to FIREBASE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            }
+
+            setLastUpdatedTime();
+            callback.onSuccess(jsonbirthdays.size());
+
+        } else {
+            callback.onFailure(context.getString(R.string.error_no_json_birthdays));
+        }
+    }
+
+    private ArrayList<Birthday> loadJSONData(Context context) throws Exception {
+        ArrayList<Birthday> birthdays = new ArrayList<>();
+        // Load birthdays
+        BufferedReader reader = null;
+        try {
+            // Open and read the file into a StringBuilder
+            InputStream in = context.openFileInput(Constants.FILENAME);
+            reader = new BufferedReader(new InputStreamReader(in));
+            StringBuilder jsonString = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                // Line breaks are omitted and irrelevant
+                jsonString.append(line);
+            }
+            // Parse the JSON using JSONTokener
+            JSONArray array = (JSONArray) new JSONTokener(jsonString.toString())
+                    .nextValue();
+
+            // Build the array of birthdays from JSONObjects
+            for (int i = 0; i < array.length(); i++) {
+                birthdays.add(new Birthday(array.getJSONObject(i)));
+            }
+        } finally {
+            if (reader != null) reader.close();
+        }
+        return birthdays;
     }
 
     private static void saveJSONChange(Birthday birthday, Update state) throws IOException {
