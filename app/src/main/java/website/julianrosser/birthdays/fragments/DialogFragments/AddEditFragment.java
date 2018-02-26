@@ -93,7 +93,7 @@ public class AddEditFragment extends DialogFragment {
 
         // Build the dialog and get LayoutInflater
         AlertDialog.Builder builder = new AlertDialog.Builder(
-                new ContextThemeWrapper(getActivity().getApplicationContext(), R.style.DialogFragmentTheme));
+                new ContextThemeWrapper(getActivity(), R.style.DialogFragmentTheme));
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         // Inflate the brilliantly designed layout, passing null as the parent view because its
