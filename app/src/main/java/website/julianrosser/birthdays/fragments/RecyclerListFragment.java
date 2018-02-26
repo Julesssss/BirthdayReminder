@@ -46,6 +46,8 @@ import website.julianrosser.birthdays.model.events.BirthdaysLoadedEvent;
  */
 public class RecyclerListFragment extends android.support.v4.app.Fragment {
 
+    private static String TAG = RecyclerListFragment.class.getSimpleName();
+
     // Reference to mAdapter
     private BirthdayViewAdapter mAdapter;
 
@@ -168,7 +170,7 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-                    Toast.makeText(BirthdayReminder.getInstance(), databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.i(TAG, "databaseError: " + databaseError.getMessage());
                     handleError();
                 }
             };
@@ -236,5 +238,9 @@ public class RecyclerListFragment extends android.support.v4.app.Fragment {
 
     public BirthdayViewAdapter getAdapter() {
         return mAdapter;
+    }
+
+    public void showLoadingSpinner() {
+        progressBar.setVisibility(View.VISIBLE);
     }
 }

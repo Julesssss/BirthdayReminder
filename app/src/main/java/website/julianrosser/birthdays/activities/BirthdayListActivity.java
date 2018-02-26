@@ -447,11 +447,13 @@ public class BirthdayListActivity extends GoogleSignInActivity implements ItemOp
         int id = item.getItemId();
 
         if (id == R.id.action_firebase) {
-            boolean bool = Preferences.isUsingFirebase(this);
-            Preferences.setIsUsingFirebase(this, !bool);
-            Snackbar.make(floatingActionButton, "DB mode: " + (!bool ? "Firebase" : "JSON"), Snackbar.LENGTH_SHORT).show();
-            clearBirthdays();
-            return true;
+            Snackbar.make(floatingActionButton, "Current DB mode: : " + Preferences.isUsingFirebase(this), Snackbar.LENGTH_SHORT).show();
+
+//            boolean bool = Preferences.isUsingFirebase(this);
+//            Preferences.setIsUsingFirebase(this, !bool);
+//            Snackbar.make(floatingActionButton, "DB mode: " + (!bool ? "Firebase" : "JSON"), Snackbar.LENGTH_SHORT).show();
+//            clearBirthdays();
+//            return true;
         }
         return super.onOptionsItemSelected(item);
     }

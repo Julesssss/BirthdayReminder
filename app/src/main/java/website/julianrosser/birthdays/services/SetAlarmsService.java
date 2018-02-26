@@ -89,7 +89,6 @@ public class SetAlarmsService extends Service {
 
             @Override
             public void onCancelled(String errorMessage) {
-                Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
                 Log.i(getClass().getSimpleName(), errorMessage);
                 stopSelf();
             }
