@@ -4,11 +4,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.design.widget.Snackbar
+import com.google.android.gms.analytics.GoogleAnalytics
+import com.google.android.gms.analytics.HitBuilders
+import com.google.android.gms.analytics.Tracker
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_welcome.*
 import website.julianrosser.birthdays.R
 
 class WelcomeActivity : GoogleSignInActivity() {
+
+    private var mTracker: Tracker? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,6 +23,8 @@ class WelcomeActivity : GoogleSignInActivity() {
 
         setUpSignInButton()
         welcomeButtonJson.setOnClickListener { onContinueClicked() }
+
+        mTracker = getDefaultTracker()
     }
 
     private fun setUpSignInButton() {
@@ -26,6 +33,10 @@ class WelcomeActivity : GoogleSignInActivity() {
             override fun onLogin(firebaseUser: FirebaseUser) {
                 Snackbar.make(welcomeButtonGoogleSignIn, "Already signed in, GOTO main activity", Snackbar.LENGTH_SHORT).show()
                 startActivity(Intent(applicationContext, BirthdayListActivity::class.java))
+                mTracker?.send(HitBuilders.EventBuilder()
+                        .setCategory("Action")
+                        .setAction("Welcome--Logged In")
+                        .build())
                 finish()
             }
 
@@ -42,6 +53,11 @@ class WelcomeActivity : GoogleSignInActivity() {
     private fun onContinueClicked() {
         startActivity(Intent(this, BirthdayListActivity::class.java))
         finish()
+
+        mTracker?.send(HitBuilders.EventBuilder()
+                .setCategory("Action")
+                .setAction("Welcome--Continue")
+                .build())
     }
 
     private fun setTheme() {
@@ -52,5 +68,14 @@ class WelcomeActivity : GoogleSignInActivity() {
             "2" -> R.style.GreenTheme
             else -> R.style.BlueTheme
         })
+    }
+
+    @Synchronized
+    fun getDefaultTracker(): Tracker? {
+        if (mTracker == null) {
+            val analytics = GoogleAnalytics.getInstance(this)
+            mTracker = analytics.newTracker(R.xml.global_tracker)
+        }
+        return mTracker
     }
 }
