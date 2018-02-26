@@ -9,6 +9,7 @@ import com.google.android.gms.analytics.HitBuilders
 import com.google.android.gms.analytics.Tracker
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_welcome.*
+import website.julianrosser.birthdays.Preferences
 import website.julianrosser.birthdays.R
 
 class WelcomeActivity : GoogleSignInActivity() {
@@ -37,6 +38,7 @@ class WelcomeActivity : GoogleSignInActivity() {
                         .setCategory("Action")
                         .setAction("Welcome--Logged In")
                         .build())
+                Preferences.setShouldShowWelcomeScreen(applicationContext, false)
                 finish()
             }
 
@@ -52,12 +54,13 @@ class WelcomeActivity : GoogleSignInActivity() {
 
     private fun onContinueClicked() {
         startActivity(Intent(this, BirthdayListActivity::class.java))
-        finish()
+        Preferences.setShouldShowWelcomeScreen(this, false)
 
         mTracker?.send(HitBuilders.EventBuilder()
                 .setCategory("Action")
                 .setAction("Welcome--Continue")
                 .build())
+        finish()
     }
 
     private fun setTheme() {

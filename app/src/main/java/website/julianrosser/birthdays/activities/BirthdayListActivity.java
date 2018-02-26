@@ -141,6 +141,7 @@ public class BirthdayListActivity extends GoogleSignInActivity implements ItemOp
                                 }
                                 AlarmsHelper.cancelAllAlarms(getApplicationContext(), recyclerListFragment.getAdapter().getBirthdays());
                                 navigationView.setCheckedItem(R.id.menu_birthdays);
+                                Preferences.setShouldShowWelcomeScreen(BirthdayListActivity.this, false);
                                 startActivity(new Intent(BirthdayListActivity.this, WelcomeActivity.class));
                                 finish();
                             }
