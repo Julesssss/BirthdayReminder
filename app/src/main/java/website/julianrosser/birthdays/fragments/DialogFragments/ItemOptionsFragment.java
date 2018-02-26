@@ -149,16 +149,14 @@ public class ItemOptionsFragment extends DialogFragment {
     public class OptionListAdapter extends BaseAdapter {
 
         String[] result;
-        Context context;
         int[] imageIcons = {R.drawable.ic_edit_white_24dp,
                 R.drawable.ic_delete_white_24dp, R.drawable.ic_alarm_on_white_24dp, R.drawable.ic_alarm_off_white_24dp};
 
         private LayoutInflater inflater = null;
 
-        public OptionListAdapter(Context birthdayListActivity, String[] stringArray) {
+        public OptionListAdapter(Context context, String[] stringArray) {
 
             result = stringArray;
-            context = birthdayListActivity;
             inflater = (LayoutInflater) context.
                     getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
