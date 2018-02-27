@@ -65,6 +65,7 @@ class WelcomeActivity : GoogleSignInActivity() {
             override fun onSuccess(migratedCount: Int) {
                 Snackbar.make(welcomeButtonGoogleSignIn, "Migrated $migratedCount users!", Snackbar.LENGTH_SHORT).show()
                 handleLogin()
+                Preferences.setHasMigratedjsonData(applicationContext, true)
             }
 
             override fun onFailure(message: String?) {

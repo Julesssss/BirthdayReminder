@@ -557,6 +557,7 @@ public class BirthdayListActivity extends GoogleSignInActivity implements ItemOp
         new DatabaseHelper().migrateJsonToFirebase(this.getApplicationContext(), firebaseUser, new DatabaseHelper.MigrateUsersCallback() {
 
             @Override public void onSuccess(int migratedCount) {
+                Preferences.setIsUsingFirebase(BirthdayListActivity.this, true);
                 handleUserAuthenticated(firebaseUser);
             }
 
