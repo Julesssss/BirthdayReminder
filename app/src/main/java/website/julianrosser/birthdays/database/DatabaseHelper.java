@@ -25,6 +25,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import website.julianrosser.birthdays.AlarmsHelper;
 import website.julianrosser.birthdays.BirthdayReminder;
@@ -161,7 +162,11 @@ public class DatabaseHelper {
             DatabaseReference databaseReference;
             for (Birthday jsonBirthday : jsonbirthdays) {
 
-                Log.i("Migration", "for birthday: " + jsonBirthday.getName());
+                if (jsonBirthday.getUID() == null || jsonBirthday.getUID().isEmpty()) {
+                    jsonBirthday.setUID(UUID.randomUUID().toString());
+                }
+
+                Log.i("Migration", "for birthday: " + jsonBirthday.getName() + "  // uid:" + jsonBirthday.getUID());
 
                 // Update database ref
                 databaseReference = BirthdayReminder.getInstance().getDatabaseReference().child(user.getUid()).child(Constants.TABLE_BIRTHDAYS)

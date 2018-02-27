@@ -131,6 +131,11 @@ public class Birthday {
     }
 
     public String getUID() {
+        String uid = this.uID;
+        if (uid == null ||uid.isEmpty()) {
+            uid = UUID.randomUUID().toString();
+            setUID(uid);
+        }
         return uID;
     }
 
