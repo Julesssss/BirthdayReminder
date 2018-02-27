@@ -248,8 +248,13 @@ public class BirthdayListActivity extends GoogleSignInActivity implements ItemOp
 
         setUpGoogleSignInButton(signInButton, new GoogleSignInListener() {
             @Override public void onLogin(@NotNull FirebaseUser firebaseUser) {
-                handleUserAuthenticated(firebaseUser);
-                Preferences.setIsUsingFirebase(BirthdayListActivity.this, true);
+
+                if (! Preferences.hasMigratedjsonData(BirthdayListActivity.this)) {
+                    migratejsonBirthdays(firebaseUser);
+                } else {
+                    handleUserAuthenticated(firebaseUser);
+                    Preferences.setIsUsingFirebase(BirthdayListActivity.this, true);
+                }
             }
 
             @Override public void onGoogleFailure(@NotNull String message) {
@@ -292,12 +297,13 @@ public class BirthdayListActivity extends GoogleSignInActivity implements ItemOp
         BirthdayReminder.getInstance().setUser(user);
         recyclerListFragment.getAdapter().clearBirthdays();
         clearBirthdays();
+        Preferences.setHasMigratedjsonData(this, true);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 recyclerListFragment.loadBirthdays();
             }
-        }, 2000);
+        }, 1500);
     }
 
     public void setNavHeaderUserState(NavHeaderState state) {
@@ -545,6 +551,19 @@ public class BirthdayListActivity extends GoogleSignInActivity implements ItemOp
                 Snackbar.make(floatingActionButton, R.string.contact_permission_denied_message, Snackbar.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private void migratejsonBirthdays(final FirebaseUser firebaseUser) {
+        new DatabaseHelper().migrateJsonToFirebase(this.getApplicationContext(), firebaseUser, new DatabaseHelper.MigrateUsersCallback() {
+
+            @Override public void onSuccess(int migratedCount) {
+                handleUserAuthenticated(firebaseUser);
+            }
+
+            @Override public void onFailure(String message) {
+                Snackbar.make(floatingActionButton, "Error migrating: $message", Snackbar.LENGTH_LONG).show();
+            }
+        });
     }
 
     public void launchImportContactActivity() {

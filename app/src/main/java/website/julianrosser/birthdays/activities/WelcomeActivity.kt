@@ -22,7 +22,7 @@ class WelcomeActivity : GoogleSignInActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        if (Preferences.shouldShowWelcomeScreen(this)) {
+        if (Preferences.shouldShowWelcomeScreen(this)) {
 
             setTheme()
             setContentView(R.layout.activity_welcome)
@@ -32,10 +32,10 @@ class WelcomeActivity : GoogleSignInActivity() {
 
             mTracker = getDefaultTracker()
 
-//        } else {
-//            startActivity(Intent(applicationContext, BirthdayListActivity::class.java))
-//            finish()
-//        }
+        } else {
+            startActivity(Intent(applicationContext, BirthdayListActivity::class.java))
+            finish()
+        }
     }
 
     private fun setUpSignInButton() {
@@ -43,8 +43,7 @@ class WelcomeActivity : GoogleSignInActivity() {
 
             override fun onLogin(firebaseUser: FirebaseUser) {
 
-                // TODO: JSON data exists ONLY ONCE!!!!!!!!!
-                if (true) {
+                if (Preferences.hasMigratedjsonData(applicationContext).not()) {
                     migratejsonBirthdays(firebaseUser)
                 } else {
                     handleLogin()
