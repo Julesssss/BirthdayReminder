@@ -96,7 +96,6 @@
     <string name="no_contacts_message">กรุณาเพิ่มข้อมูลวันเกิดให้กับผู้ติดต่อของคุณสำหรับพวกเขาที่จะแสดงที่นี่</string>
     <string name="contact_permission_denied_message">ได้รับอนุญาตที่จำเป็นในการโหลดรายชื่อผู้ติดต่อ</string>
     <string name="contact_already_added">ได้รับการเพิ่มแล้ว</string>
-    <string name="not_available" translatable="false">N/A</string>
     <string name="added">ที่เพิ่ม</string>
     <string name="title_privacy_policy">นโยบายความเป็นส่วนตัว</string>
     <string name="error_try_again">ข้อผิดพลาดโปรดลองอีกครั้ง &#8230;</string>
