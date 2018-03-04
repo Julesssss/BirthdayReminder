@@ -1,16 +1,11 @@
 package website.julianrosser.birthdays.fragments;
 
 
-import android.content.ContentResolver;
-import android.database.Cursor;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,38 +15,32 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
-import website.julianrosser.birthdays.activities.BirthdayListActivity;
-import website.julianrosser.birthdays.model.Birthday;
-import website.julianrosser.birthdays.model.Contact;
-import website.julianrosser.birthdays.adapter.ContactAdapter;
 import website.julianrosser.birthdays.R;
+import website.julianrosser.birthdays.adapter.ContactAdapter;
+import website.julianrosser.birthdays.model.Contact;
 import website.julianrosser.birthdays.model.events.ContactsLoadedEvent;
+import website.julianrosser.birthdays.model.tasks.LoadContactsTask;
 
 /**
- * Main view. Fragment which
+ * Fragment which displays contacts and enables users to import
  */
 public class ImportContactFragment extends android.support.v4.app.Fragment {
 
-    // Reference to mAdapter
-    public static ContactAdapter mAdapter;
-
-    // Reference to recyclerView
-    public static RecyclerView recyclerView;
-
-    // Reference to view which shows when list empty.
-    static View emptyView;
-
-    public ArrayList<Contact> contacts;
+    // Views
+    private ContactAdapter mAdapter;
+    private View emptyView;
     private ProgressBar progressBar;
+
+    // Data
+    private ArrayList<Contact> contacts;
+    private ArrayList<String> birthdayNames;
+
+    // Processes
     private LoadContactsTask loadContactsTask;
 
-    // Required empty constructor
     public ImportContactFragment() {
     }
-
 
     /* Use newInstance in case in the future we want to add construction parameters or initialisation here */
     public static ImportContactFragment newInstance() {
@@ -62,7 +51,7 @@ public class ImportContactFragment extends android.support.v4.app.Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
-        loadContactsTask = new LoadContactsTask();
+        loadContactsTask = new LoadContactsTask(getActivity(), birthdayNames);
         loadContactsTask.execute();
     }
 
@@ -81,31 +70,26 @@ public class ImportContactFragment extends android.support.v4.app.Fragment {
         // Inflate view
         View view = inflater.inflate(R.layout.fragment_import_contacts, container, false);
 
-        // Initialise important reference to the main view: RecyclerView
-        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-
-        // Reference empty TextView
+        // Initialise view references
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         emptyView = view.findViewById(R.id.empty_view);
-
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
 
-        // hide drop shadow if running lollipop or higher
+        // hide drop shadow if running lollipop or higher // todo - refactor to base
         if (Build.VERSION.SDK_INT >= 21) {
             view.findViewById(R.id.drop_shadow).setVisibility(View.GONE);
         }
 
-        // Set layout properties
-        LinearLayoutManager llm = new LinearLayoutManager(BirthdayListActivity.getAppContext());
+        // Setup Contacts RecyclerView
+        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
-
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
             }
         });
-
         // Can use this to optimize performance as RecyclerView will NOT change size.
         recyclerView.setHasFixedSize(true);
 
@@ -118,39 +102,6 @@ public class ImportContactFragment extends android.support.v4.app.Fragment {
         return view;
     }
 
-    private ArrayList<Contact> loadContacts() {
-        ArrayList<Contact> contactsList = new ArrayList<>();
-        ContentResolver cr = getActivity().getContentResolver();
-        Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
-                null, null, null, null);
-        if (cur != null && cur.getCount() > 0) {
-            while (cur.moveToNext()) {
-                String id = cur.getString(
-                        cur.getColumnIndex(ContactsContract.Contacts._ID));
-                String name = cur.getString(
-                        cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-                ContentResolver bd = getActivity().getContentResolver();
-                Cursor bdc = bd.query(android.provider.ContactsContract.Data.CONTENT_URI,
-                        new String[] { ContactsContract.CommonDataKinds.Event.DATA },
-                        android.provider.ContactsContract.Data.CONTACT_ID+" = "+id+" AND "+ ContactsContract.Contacts.Data.MIMETYPE+" = '"+ ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE+"' AND "+ ContactsContract.CommonDataKinds.Event.TYPE+" = "+ ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY, null, android.provider.ContactsContract.Data.DISPLAY_NAME);
-                if (bdc != null && bdc.getCount() > 0) {
-                    while (bdc.moveToNext()) {
-                        String birthday = bdc.getString(0);
-                        Log.i(getClass().getSimpleName(), "Name: " + name + "  //  Birth: " + birthday);
-                        // now "id" is the user's unique ID, "name" is his full name and "birthday" is the date and time of his birth
-                        Contact con = new Contact(name, birthday);
-                        contactsList.add(con);
-                    }
-                }
-                if (bdc != null) {
-                    bdc.close();
-                }
-            }
-            cur.close();
-        }
-        return contactsList;
-    }
-
     private void setContacts(ArrayList<Contact> contacts) {
         this.contacts = contacts;
         if (mAdapter != null) {
@@ -160,36 +111,24 @@ public class ImportContactFragment extends android.support.v4.app.Fragment {
         }
     }
 
-    /** Detect whether contacts were found, and display empty message if necessary. */
+    /**
+     * Detect whether contacts were found, and display empty message if necessary.
+     */
     public void showEmptyMessageIfRequired() {
-        if (contacts.size() == 0){
+        if (contacts.size() == 0) {
             emptyView.setVisibility(View.VISIBLE);
         } else {
-            emptyView.setVisibility(View.INVISIBLE);
-        }
-    }
-
-    private class LoadContactsTask extends AsyncTask<Void, Integer, ArrayList<Contact>> {
-
-        @Override
-        protected ArrayList<Contact> doInBackground(Void... params) {
-            contacts = loadContacts();
-            Collections.sort(contacts, new Comparator<Contact>() {
-                @Override
-                public int compare(Contact b1, Contact b2) {
-                    return b1.getName().compareTo(b2.getName());
-                }
-            });
-            return contacts;
-        }
-
-        protected void onPostExecute(ArrayList<Contact> result) {
-            EventBus.getDefault().post(new ContactsLoadedEvent(result));
+            emptyView.setVisibility(View.GONE);
         }
     }
 
     @Subscribe
     public void onMessageEvent(ContactsLoadedEvent event) {
         setContacts(event.getContacts());
+    }
+
+    // todo - why does this require it's own method? use constructor?!!
+    public void setBirthdayNames(ArrayList<String> birthdayNames) {
+        this.birthdayNames = birthdayNames;
     }
 }

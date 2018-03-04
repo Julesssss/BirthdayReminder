@@ -3,12 +3,12 @@ package website.julianrosser.birthdays.services;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -24,27 +24,18 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import website.julianrosser.birthdays.Constants;
-import website.julianrosser.birthdays.recievers.NotificationBuilderReceiver;
+import website.julianrosser.birthdays.Preferences;
 import website.julianrosser.birthdays.R;
-import website.julianrosser.birthdays.activities.BirthdayListActivity;
+import website.julianrosser.birthdays.database.DatabaseHelper;
 import website.julianrosser.birthdays.model.Birthday;
+import website.julianrosser.birthdays.recievers.NotificationBuilderReceiver;
 
 /**
  * This service sets notifications alarms for each birthday.
  */
 public class SetAlarmsService extends Service {
 
-    ArrayList<Birthday> mBirthdayList = new ArrayList<>();
-
-    long dayInMillis = 86400000l; // / 86,400,000 milliseconds in a day
-    long hourInMillis = 3600000l; // Amount of milliseconds in an hour
-
-    long fullDaysBetweenInMillis, millisExtraAlarmHour, millisRemainingInDay,
-            dayOfReminderMillis, alarmDelayInMillis;
-
     private AlarmManager mAlarmManager;
-
-    static Context mContext;
 
     @Nullable
     @Override
@@ -56,24 +47,28 @@ public class SetAlarmsService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        mContext = getApplicationContext();
-
-        try {
-            mBirthdayList = loadBirthdays();
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(getApplicationContext(), "Birthdays - IO Error",
-                    Toast.LENGTH_LONG).show();
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Toast.makeText(getApplicationContext(), "Birthdays - JSON Error",
-                    Toast.LENGTH_LONG).show();
+        if (Preferences.isUsingFirebase(this.getApplicationContext())) {
+            loadBirthdaysFromFirebase();
+        } else {
+            try {
+                loadBirthdaysFromJSON();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(getApplicationContext(), "Birthdays - IO Error",
+                        Toast.LENGTH_LONG).show();
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Toast.makeText(getApplicationContext(), "Birthdays - JSON Error",
+                        Toast.LENGTH_LONG).show();
+            }
         }
+    }
 
+    private void onBirthdaysLoaded(ArrayList<Birthday> birthdays) {
         // If user wants notifications, set alarms
         if (getNotificationAllowedPref()) {
-            for (int i = 0; i < mBirthdayList.size(); i++) {
-                Birthday b = mBirthdayList.get(i);
+            for (int i = 0; i < birthdays.size(); i++) {
+                Birthday b = birthdays.get(i);
 
                 // If reminder not toggled off, set alarm
                 if (b.getRemind()) {
@@ -82,18 +77,32 @@ public class SetAlarmsService extends Service {
             }
         }
         // Service has to control its own life cycles, so call stopSelf here
-        mContext = null;
         stopSelf();
     }
 
+    private void loadBirthdaysFromFirebase() {
+        DatabaseHelper.loadFirebaseBirthdays(new DatabaseHelper.BirthdaysLoadedListener() {
+            @Override
+            public void onBirthdaysReturned(ArrayList<Birthday> birthdays) {
+                onBirthdaysLoaded(birthdays);
+            }
+
+            @Override
+            public void onCancelled(String errorMessage) {
+                Log.i(getClass().getSimpleName(), errorMessage);
+                stopSelf();
+            }
+        });
+    }
+
     // Function which loads Birthdays from JSON
-    public static ArrayList<Birthday> loadBirthdays() throws IOException,
+    private void loadBirthdaysFromJSON() throws IOException,
             JSONException {
         ArrayList<Birthday> birthdays = new ArrayList<>();
         BufferedReader reader = null;
         try {
             // Open and read the file into a StringBuilder
-            InputStream in = mContext.openFileInput(Constants.FILENAME);
+            InputStream in = openFileInput(Constants.FILENAME);
             reader = new BufferedReader(new InputStreamReader(in));
             StringBuilder jsonString = new StringBuilder();
             String line;
@@ -112,10 +121,9 @@ public class SetAlarmsService extends Service {
         } catch (FileNotFoundException e) {
             // Ignore this one; it happens when starting fresh
         } finally {
-            if (reader != null)
-                reader.close();
+            if (reader != null) reader.close();
         }
-        return birthdays;
+        onBirthdaysLoaded(birthdays);
     }
 
     @SuppressWarnings("deprecation")
@@ -125,22 +133,22 @@ public class SetAlarmsService extends Service {
         int remHour = 23 - currentTimeDate.getHours(); // extra hour
         int remMinute = 60 - currentTimeDate.getMinutes();
 
-        millisRemainingInDay = (remHour * hourInMillis)
+        long millisRemainingInDay = (remHour * Constants.HOUR_IN_MILLIS)
                 + (remMinute * 60 * 1000);
 
         // Get days between in milliseconds
-        fullDaysBetweenInMillis = ((birthday.getDaysBetween() - 1) * dayInMillis);
+        long fullDaysBetweenInMillis = ((birthday.getDaysBetween() - 1) * Constants.DAY_IN_MILLIS);
 
         // Alarm time in milliseconds
         int hourOfAlarm = getTimeOfReminderPref();
-        millisExtraAlarmHour = hourOfAlarm * hourInMillis; // Set alarm to 12th hour of day
+        long millisExtraAlarmHour = hourOfAlarm * Constants.HOUR_IN_MILLIS;
 
         // For each extra day before notification, add the amount of millis in day
-        dayOfReminderMillis = dayInMillis * getDaysBeforeReminderPref();
+        long dayOfReminderMillis = Constants.DAY_IN_MILLIS * getDaysBeforeReminderPref();
 
         // //////// millisTotalAlarmDelay
-        alarmDelayInMillis = fullDaysBetweenInMillis + millisExtraAlarmHour
-                + millisRemainingInDay - dayOfReminderMillis; // + days
+        long alarmDelayInMillis = fullDaysBetweenInMillis + millisExtraAlarmHour
+                + millisRemainingInDay - dayOfReminderMillis;
 
         // Get alarm manager if needed
         if (null == mAlarmManager) {
@@ -154,19 +162,19 @@ public class SetAlarmsService extends Service {
             int id = birthday.getName().hashCode();
 
             // CreateIntent to start the AlarmNotificationReceiver
-            Intent mNotificationReceiverIntent = new Intent(mContext,
+            Intent mNotificationReceiverIntent = new Intent(this,
                     NotificationBuilderReceiver.class);
 
             // Build message String
-            String messageString = "" + birthday.getName() + "'s " + mContext.getResources().getString(R.string.birthday)
-                    + " " + mContext.getResources().getString(R.string.date_is) + " " +
-                    Birthday.getFormattedStringDay(birthday, mContext);
+            String messageString = "" + birthday.getName() + "'s " + getResources().getString(R.string.birthday)
+                    + " " + getResources().getString(R.string.date_is) + " " +
+                    Birthday.getFormattedStringDay(birthday, this);
 
             mNotificationReceiverIntent.putExtra(NotificationBuilderReceiver.STRING_MESSAGE_KEY, messageString);
 
             // Create pending Intent using Intent we just built
             PendingIntent mNotificationReceiverPendingIntent = PendingIntent
-                    .getBroadcast(mContext, id,
+                    .getBroadcast(this, id,
                             mNotificationReceiverIntent,
                             PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -174,6 +182,8 @@ public class SetAlarmsService extends Service {
             mAlarmManager.set(AlarmManager.RTC_WAKEUP,
                     System.currentTimeMillis() + alarmDelayInMillis,
                     mNotificationReceiverPendingIntent);
+
+            Log.i(getClass().getSimpleName(), "Set alarm for " + birthday.getName());
         }
     }
 

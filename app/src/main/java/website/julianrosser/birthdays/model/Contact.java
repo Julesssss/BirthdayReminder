@@ -1,20 +1,40 @@
 package website.julianrosser.birthdays.model;
 
+import java.util.Date;
+
+import website.julianrosser.birthdays.Utils;
+
 public class Contact {
 
-    String name;
-    String birthday;
+    private String name;
+    private Date birthday;
+    private boolean alreadyAdded;
+    private boolean hasYear;
 
-    public Contact(String name, String birthday) {
+    public Contact(String name, String birthdayString, boolean alreadyAdded) {
         this.name = name;
-        this.birthday = birthday;
+        this.birthday = Utils.stringToDate(birthdayString);
+        this.alreadyAdded = alreadyAdded;
+        this.hasYear = Utils.hasYearOfBirth(birthdayString);
     }
 
     public String getName() {
         return name;
     }
 
-    public String getBirthday() {
+    public Date getBirthday() {
         return birthday;
+    }
+
+    public boolean isAlreadyAdded() {
+        return alreadyAdded;
+    }
+
+    public void setAlreadyAdded(boolean alreadyAdded) {
+        this.alreadyAdded = alreadyAdded;
+    }
+
+    public boolean hasYear() {
+        return hasYear;
     }
 }

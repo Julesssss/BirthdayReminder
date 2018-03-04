@@ -2,7 +2,9 @@ package website.julianrosser.birthdays;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.preference.PreferenceManager;
+import android.util.TypedValue;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,12 +15,20 @@ public class Utils {
         Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         try {
+            if (birthdayString.startsWith("-")) {
+                birthdayString = birthdayString.replaceFirst("-", "1990");
+            }
             date = format.parse(birthdayString);
+            date.setYear(date.getYear() + 1900);
             System.out.println(date);
         } catch (java.text.ParseException e) {
             e.printStackTrace();
         }
         return date;
+    }
+
+    public static boolean hasYearOfBirth(String birthdayString) {
+        return ! birthdayString.startsWith("-");
     }
 
     public static String getDateSuffix(int date) {
@@ -47,5 +57,15 @@ public class Utils {
         } else {
             return R.color.blue_accent_400;
         }
+    }
+
+    public static boolean isStringEmpty(String s) {
+        return s == null || s.equals("");
+    }
+
+    // Helper method for getting exact pixel size for device from density independent pixels
+    public static int getPixelsFromDP(Context context, int px) {
+        Resources r = context.getResources();
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, px, r.getDisplayMetrics());
     }
 }

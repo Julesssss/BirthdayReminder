@@ -97,6 +97,7 @@
     <string name="contact_already_added">уже была добавлена</string>
     <string name="added">добавленный</string>
     <string name="title_privacy_policy">политика конфиденциальности</string>
+    <string name="error_try_again">Ошибка, попробуйте еще раз&#8230;</string>
 
 
 </resources>

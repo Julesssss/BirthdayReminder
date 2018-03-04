@@ -1,18 +1,18 @@
-package website.julianrosser.birthdays.viewholder;
+package website.julianrosser.birthdays.views.viewholder;
 
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.analytics.HitBuilders;
+import org.greenrobot.eventbus.EventBus;
 
 import website.julianrosser.birthdays.R;
-import website.julianrosser.birthdays.activities.BirthdayListActivity;
-import website.julianrosser.birthdays.fragments.RecyclerListFragment;
+import website.julianrosser.birthdays.database.DatabaseHelper;
 import website.julianrosser.birthdays.model.Birthday;
+import website.julianrosser.birthdays.model.events.BirthdayItemClickEvent;
+import website.julianrosser.birthdays.views.SnackBarHelper;
 
 /**
  * ViewHolder class to hold view references to be used in recyclerview.
@@ -27,7 +27,6 @@ public class BirthdayViewHolder extends RecyclerView.ViewHolder implements View.
     private TextView textDaysRemaining;
     private ImageView imageAlarm;
     private View container;
-    private Typeface typeLight;
 
     public BirthdayViewHolder(View itemView) {
         super(itemView);
@@ -40,7 +39,7 @@ public class BirthdayViewHolder extends RecyclerView.ViewHolder implements View.
         textDateDay = (TextView) itemView.findViewById(R.id.dateDay);
         textDateMonth = (TextView) itemView.findViewById(R.id.dateMonth);
         imageAlarm = (ImageView) itemView.findViewById(R.id.alarmImage);
-        typeLight = Typeface.createFromAsset(BirthdayListActivity.getAppContext().getResources().getAssets(), "Roboto-Light.ttf");
+        setImageClickListener();
     }
 
     public void setTag(Birthday birthday) {
@@ -91,30 +90,18 @@ public class BirthdayViewHolder extends RecyclerView.ViewHolder implements View.
     }
 
     @Override
-    public void onClick(View v) {
-        Birthday birthday = (Birthday) v.getTag();
+    public void onClick(View view) {
+        Birthday birthday = (Birthday) view.getTag();
 
-        int id = v.getId();
+        int id = view.getId();
+
         if (id == R.id.alarmImage) {
             birthday.toggleReminder();
-
-            // Get correct position, as deleted views may have altered pos int
-            int currentPosition = RecyclerListFragment.recyclerView.getChildAdapterPosition(itemView);
-
-            BirthdayListActivity.mTracker.send(new HitBuilders.EventBuilder()
-                    .setCategory("Action")
-                    .setAction("Toggle Alarm ICON")
-                    .build());
-
-            // Callback to BirthdayListActivity.
-            BirthdayListActivity.getContext().alarmToggled(currentPosition);
-
+            DatabaseHelper.saveBirthdayChange(birthday, DatabaseHelper.Update.UPDATE);
+            SnackBarHelper.alarmToggle(view, birthday);
         } else {
-            // Get actual position, accounting for deletion
-            int currentPosition = RecyclerListFragment.recyclerView.getChildAdapterPosition(itemView);
-
-            // Open ItemOption menu for selected birthday
-            BirthdayListActivity.getContext().showItemOptionsFragment(currentPosition);
+            // Callback
+            EventBus.getDefault().post(new BirthdayItemClickEvent(birthday));
         }
     }
 }

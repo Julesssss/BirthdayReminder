@@ -7,18 +7,20 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-import website.julianrosser.birthdays.model.Contact;
-import website.julianrosser.birthdays.viewholder.ContactViewHolder;
 import website.julianrosser.birthdays.R;
+import website.julianrosser.birthdays.database.DatabaseHelper;
+import website.julianrosser.birthdays.model.Birthday;
+import website.julianrosser.birthdays.model.Contact;
+import website.julianrosser.birthdays.views.viewholder.ContactViewHolder;
 
 public class ContactAdapter
         extends RecyclerView.Adapter
-        <ContactViewHolder> {
+        <ContactViewHolder> implements ContactViewHolder.ContactCallback {
 
-    ArrayList<Contact> allContacts;
+    private ArrayList<Contact> allContacts;
 
     public ContactAdapter() {
-        allContacts = new ArrayList<>();
+        this.allContacts = new ArrayList<>();
     }
 
     @Override
@@ -26,8 +28,7 @@ public class ContactAdapter
         View itemView = LayoutInflater.
                 from(viewGroup.getContext()).
                 inflate(R.layout.contact_list_view, viewGroup, false);
-
-        return new ContactViewHolder(itemView);
+        return new ContactViewHolder(itemView, this);
     }
 
     @Override
@@ -36,12 +37,11 @@ public class ContactAdapter
         if (allContacts.size() <= position) {
             return;
         }
-
         Contact contact = allContacts.get(position);
         viewHolder.setTag(contact);
         viewHolder.setName(contact.getName());
         viewHolder.setDate(contact.getBirthday());
-        viewHolder.setImageIcon(contact.getName());
+        viewHolder.setImageIcon(contact.isAlreadyAdded());
     }
 
     @Override
@@ -58,5 +58,12 @@ public class ContactAdapter
     public void setData(ArrayList<Contact> contactsList) {
         allContacts = contactsList;
         notifyDataSetChanged();
+    }
+
+    // Callback from ViewHolder
+    @Override
+    public void addContact(Contact contact) {
+        Birthday contactBirthday = new Birthday(contact.getName(), contact.getBirthday(), true, contact.hasYear());
+        DatabaseHelper.saveBirthdayChange(contactBirthday, DatabaseHelper.Update.CREATE);
     }
 }

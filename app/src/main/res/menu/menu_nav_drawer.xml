@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/nav_group_1"
+        android:checkableBehavior="all">
+        <item
+            android:id="@+id/menu_birthdays"
+            android:checked="true"
+            android:icon="@drawable/ic_cake_white_24dp"
+            android:title="@string/app_name" />
+        <item
+            android:id="@+id/menu_import_contacts"
+            android:icon="@drawable/ic_done_white_24dp"
+            android:title="@string/import_contacts" />
+    </group>
+    <group
+        android:id="@+id/nav_group_2"
+        android:checkableBehavior="all">
+        <item
+            android:id="@+id/menu_settings"
+            android:title="@string/action_settings" />
+        <item
+            android:id="@+id/menu_help"
+            android:title="@string/action_help" />
+        <item
+            android:id="@+id/menu_privacy"
+            android:title="@string/title_privacy_policy" />
+        <item
+            android:id="@+id/menu_logout"
+            android:visible="false"
+            android:title="@string/title_log_out" />
+    </group>
+</menu>

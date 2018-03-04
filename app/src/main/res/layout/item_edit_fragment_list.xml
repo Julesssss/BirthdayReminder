@@ -2,7 +2,8 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
         android:id="@+id/imageView"
@@ -10,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="24dp"
+        tools:src="@drawable/ic_edit_white_24dp"
         android:layout_marginStart="24dp" />
 
     <TextView
@@ -19,6 +21,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:padding="12dp"
+        tools:text="@string/birthday"
         android:textColor="#fff"
         android:textSize="16sp" />
 

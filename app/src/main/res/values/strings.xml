@@ -21,9 +21,6 @@
     <string name="button_positive">Save</string>
     <string name="button_negative">Cancel</string>
 
-    <!-- Information & help Text -->
-    <string name="empty_list_message">Tap the Birthday cake icon to start adding birthdays!</string>
-
     <string name="birthday">birthday</string>
     <string name="date_is">is</string>
     <string name="date_today">today</string>
@@ -153,5 +150,24 @@
     <string name="not_available" translatable="false">N/A</string>
     <string name="added">added</string>
     <string name="title_privacy_policy">Privacy Policy</string>
+    <string name="error_try_again">Error, please try again &#8230;</string>
+
+    <!-- TODO - Translate-->
+    <!-- 3.0 Update -->
+    <string name="sign_out">Sign out</string>
+    <string name="sign_in_title">Sign In</string>
+
+    <!-- Information & help Text -->
+    <string name="empty_list_title">No Birthdays</string>
+    <string name="empty_list_message">Tap the Birthday cake icon to add your first birthday, or sign in to your Google account to retrieve them!</string>
+    <string name="dialog_sign_out_title">Sign Out</string>
+    <string name="dialog_sign_out_message">Are you sure you want to sign out? You will loose these birthday reminders until you sign back in.</string>
+    <string name="message_signed_out">Signed Out</string>
+
+    <string name="title_log_out">Log Out</string>
+    <string name="welcome_text_message">You can now sign into your Google account. This will automatically backup your birthdays and allow you to see your birthdays on any other device after signing in.\n\nIf you want to continue using the app without backing up your birthdays, click continue.</string>
+    <string name="error_google_login">Error while logging in</string>
+    <string name="error_no_json_birthdays">No JSON birthdays found!</string>
+
 
 </resources>

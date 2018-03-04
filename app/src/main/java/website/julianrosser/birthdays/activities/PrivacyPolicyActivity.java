@@ -78,7 +78,7 @@ public class PrivacyPolicyActivity extends BaseActivity {
         } else if (prefs.getString(getResources().getString(R.string.pref_theme_key), "0").equals("2")) {
             setTheme(R.style.GreenTheme);
         } else {
-            setTheme(R.style.PinkTheme);
+            setTheme(R.style.BlueTheme);
         }
     }
 

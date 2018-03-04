@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/theme_colour"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/welcomeTextTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:padding="8dp"
+        android:text="@string/app_name"
+        android:textColor="@android:color/white"
+        android:textSize="34sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/welcomeTextMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/welcomeTextTitle"
+        android:layout_marginTop="18dp"
+        android:textSize="18sp"
+        android:textColor="@android:color/white"
+        android:text="@string/welcome_text_message" />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/welcomeButtonGoogleSignIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/welcomeTextMessage"
+        android:layout_marginTop="32dp"
+        android:text="Google Sign In"
+        android:textAlignment="center" />
+
+    <Button
+        android:id="@+id/welcomeButtonJson"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/welcomeButtonGoogleSignIn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="Continue without backup" />
+
+</RelativeLayout>

@@ -11,11 +11,9 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.view.ContextThemeWrapper;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,12 +26,15 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.Date;
 
+import website.julianrosser.birthdays.AlarmsHelper;
+import website.julianrosser.birthdays.Constants;
 import website.julianrosser.birthdays.R;
+import website.julianrosser.birthdays.Utils;
+import website.julianrosser.birthdays.database.DatabaseHelper;
+import website.julianrosser.birthdays.model.Birthday;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class AddEditFragment extends DialogFragment {
 
     // Keys for passing birthday information to Dialog
@@ -42,24 +43,23 @@ public class AddEditFragment extends DialogFragment {
     public final static String MONTH_KEY = "key_month";
     public final static String SHOW_YEAR_KEY = "key_show_year";
     public final static String YEAR_KEY = "key_year";
-    public final static String POS_KEY = "key_pos";
+    public final static String UID_KEY = "key_uid";
     public final static String NAME_KEY = "key_position";
 
     // To check if we are in new birthday mode or editing birthday mode.
-    int ADD_OR_EDIT_MODE;
+    private int ADD_OR_EDIT_MODE;
     public final static int MODE_ADD = 0;
     public final static int MODE_EDIT = 1;
 
-    final int DIALOG_WIDTH_SIZE = 280;
+    private final int DIALOG_WIDTH_SIZE = 220;
 
     // Reference to passed bundle when in edit mode
-    Bundle bundle;
+    private Bundle bundle;
 
     // Needed as we inflate in onCreate, but access in onStart. Due to Overriding dialog button, onStart is needed.
-    View view;
+    private View view;
 
     // Use this instance of the interface to deliver action events
-    NoticeDialogListener mListener;
     private CheckBox checkYearToggle;
 
     public AddEditFragment() {
@@ -71,25 +71,9 @@ public class AddEditFragment extends DialogFragment {
         return new AddEditFragment();
     }
 
-    /* BirthdayListActivity implements this interface in order to receive event callbacks. Passes the
-    DialogFragment in case the host needs to query it. */
-    public interface NoticeDialogListener {
-        void onDialogPositiveClick(AddEditFragment dialog, String name, int date, int month, int year, boolean includeYear, int AddEditMode, int position);
-    }
-
-    // We override the Fragment.onAttach() method to instantiate NoticeDialogListener and read bundle data
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        // Verify that the host activity implements the callback interface
-        try {
-            // Instantiate the NoticeDialogListener so we can send events to the host
-            mListener = (NoticeDialogListener) activity;
-        } catch (ClassCastException e) {
-            // The activity doesn't implement the interface, throw exception
-            throw new ClassCastException(activity.toString()
-                    + " must implement NoticeDialogListener");
-        }
 
         // Detect which state mode Dialog should be in
         bundle = this.getArguments();
@@ -160,7 +144,7 @@ public class AddEditFragment extends DialogFragment {
     private void setUpDatePicker(final DatePicker datePicker) {
         Calendar today = Calendar.getInstance();
         setYearFieldVisibility(false, datePicker);
-        datePicker.init(2000, today.get(Calendar.MONTH), today.get(Calendar.DATE), new DatePicker.OnDateChangedListener() {
+        datePicker.init(Constants.DEFAULT_YEAR_OF_BIRTH, today.get(Calendar.MONTH), today.get(Calendar.DATE), new DatePicker.OnDateChangedListener() {
             @Override
             public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -182,7 +166,7 @@ public class AddEditFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        getDialog().getWindow().setLayout(getPixelsFromDP(DIALOG_WIDTH_SIZE), ViewGroup.LayoutParams.WRAP_CONTENT);
+//        getDialog().getWindow().setLayout(Utils.getPixelsFromDP(getActivity(), DIALOG_WIDTH_SIZE), ViewGroup.LayoutParams.WRAP_CONTENT);
 
         setRetainInstance(true);
         return super.onCreateView(inflater, container, savedInstanceState);
@@ -194,12 +178,6 @@ public class AddEditFragment extends DialogFragment {
         if (getDialog() != null && getRetainInstance())
             getDialog().setDismissMessage(null);
         super.onDestroyView();
-    }
-
-    // Helper method for getting exact pixel size for device from density independent pixels
-    public int getPixelsFromDP(int px) {
-        Resources r = getResources();
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, px, r.getDisplayMetrics());
     }
 
     /**
@@ -238,10 +216,8 @@ public class AddEditFragment extends DialogFragment {
             ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.blue_accent_700));
             ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.blue_accent_700));
         }
-
         // Null check
         if (dialog != null) {
-
             // This is it! The done button listener which we override onStart to use.
             final Button positiveButton = dialog.getButton(Dialog.BUTTON_POSITIVE);
             positiveButton.setOnClickListener(new View.OnClickListener() {
@@ -257,11 +233,24 @@ public class AddEditFragment extends DialogFragment {
                         int year = datePicker.getYear();
                         boolean includeYear = checkYearToggle.isChecked();
 
-                        // Send the positive button event back to BirthdayListActivity
-                        mListener.onDialogPositiveClick(AddEditFragment.this, editText.getText().toString(),
-                                dateOfMonth, month, year, includeYear,
-                                ADD_OR_EDIT_MODE, bundle.getInt(POS_KEY));
+                        // Build date object which will be used by new Birthday
+                        Date dateOfBirth = new Date();
+                        dateOfBirth.setYear(year);
+                        dateOfBirth.setMonth(month);
+                        dateOfBirth.setDate(dateOfMonth);
 
+                        // Send the positive button event back to BirthdayListActivity
+                        Birthday birthday = new Birthday(editText.getText().toString(), dateOfBirth, true, includeYear);
+
+                        if (ADD_OR_EDIT_MODE == MODE_EDIT) {
+                            String key = bundle.getString(UID_KEY);
+                            if (! Utils.isStringEmpty(key)) birthday.setUID(key);
+                            AlarmsHelper.cancelAlarm(getActivity(), birthday.getName().hashCode());
+                            DatabaseHelper.saveBirthdayChange(birthday, DatabaseHelper.Update.UPDATE);
+                        } else if (ADD_OR_EDIT_MODE == MODE_ADD) {
+                            DatabaseHelper.saveBirthdayChange(birthday, DatabaseHelper.Update.CREATE);
+
+                        }
                         // Finally close the dialog, and breath a sign of relief
                         dialog.dismiss();
 
