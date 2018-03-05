@@ -174,7 +174,10 @@ public class DatabaseHelper {
                 databaseReference.setValue(firebaseBirthday);
             }
 
-            setLastUpdatedTime();
+            databaseReference = BirthdayReminder.getInstance().getDatabaseReference().child(user.getUid());
+            databaseReference.child("lastUpdated").setValue(ServerValue.TIMESTAMP);
+            databaseReference.child("email").setValue(user.getEmail()); // todo refactor
+
             Preferences.setHasMigratedjsonData(context, true);
             callback.onSuccess(jsonbirthdays.size());
 

@@ -55,10 +55,12 @@ class WelcomeActivity : GoogleSignInActivity() {
             }
 
             override fun onGoogleFailure(message: String) {
+                setIsLoading(false)
                 Log.i(javaClass.simpleName, "onGoogleFailure: $message")
             }
 
             override fun onFirebaseFailure(message: String) {
+                setIsLoading(false)
                 Log.i(javaClass.simpleName, "New or signed out user: $message")
             }
         })
@@ -90,6 +92,7 @@ class WelcomeActivity : GoogleSignInActivity() {
                 .setCategory("Action")
                 .setAction("Welcome--Logged In")
                 .build())
+        setIsLoading(false)
         Preferences.setShouldShowWelcomeScreen(applicationContext, false)
         finish()
     }
