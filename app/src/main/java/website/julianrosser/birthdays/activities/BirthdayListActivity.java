@@ -244,9 +244,13 @@ public class BirthdayListActivity extends GoogleSignInActivity implements ItemOp
     }
 
     private void setUpGoogleSignIn(SignInButton signInButton) {
-        mDrawerLayout.closeDrawer(Gravity.START);
-
         setUpGoogleSignInButton(signInButton, new GoogleSignInListener() {
+            @Override
+            public void showLoading() {
+                recyclerListFragment.showLoadingSpinner();
+                mDrawerLayout.closeDrawer(Gravity.START);
+            }
+
             @Override public void onLogin(@NotNull FirebaseUser firebaseUser) {
 
                 if (! Preferences.hasMigratedjsonData(BirthdayListActivity.this)) {
@@ -297,7 +301,6 @@ public class BirthdayListActivity extends GoogleSignInActivity implements ItemOp
         BirthdayReminder.getInstance().setUser(user);
         recyclerListFragment.getAdapter().clearBirthdays();
         clearBirthdays();
-        Preferences.setHasMigratedjsonData(this, true);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

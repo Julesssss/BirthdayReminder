@@ -175,6 +175,7 @@ public class DatabaseHelper {
             }
 
             setLastUpdatedTime();
+            Preferences.setHasMigratedjsonData(context, true);
             callback.onSuccess(jsonbirthdays.size());
 
         } else {

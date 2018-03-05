@@ -6,6 +6,7 @@ import android.os.Handler
 import android.preference.PreferenceManager
 import android.support.design.widget.Snackbar
 import android.util.Log
+import android.view.View
 import com.google.android.gms.analytics.GoogleAnalytics
 import com.google.android.gms.analytics.HitBuilders
 import com.google.android.gms.analytics.Tracker
@@ -40,6 +41,9 @@ class WelcomeActivity : GoogleSignInActivity() {
 
     private fun setUpSignInButton() {
         setUpGoogleSignInButton(welcomeButtonGoogleSignIn, object : GoogleSignInListener {
+            override fun showLoading() {
+                setIsLoading(true)
+            }
 
             override fun onLogin(firebaseUser: FirebaseUser) {
 
@@ -60,12 +64,17 @@ class WelcomeActivity : GoogleSignInActivity() {
         })
     }
 
+    fun setIsLoading(loading: Boolean) {
+        progressBar.visibility = if (loading) View.VISIBLE else View.GONE
+        welcomeButtonJson.isEnabled = ! loading
+        welcomeButtonGoogleSignIn.isEnabled = ! loading
+    }
+
     private fun migratejsonBirthdays(firebaseUser: FirebaseUser) {
         DatabaseHelper().migrateJsonToFirebase(applicationContext, firebaseUser, object : DatabaseHelper.MigrateUsersCallback {
             override fun onSuccess(migratedCount: Int) {
                 Snackbar.make(welcomeButtonGoogleSignIn, "Migrated $migratedCount users!", Snackbar.LENGTH_SHORT).show()
                 handleLogin()
-                Preferences.setHasMigratedjsonData(applicationContext, true)
             }
 
             override fun onFailure(message: String?) {

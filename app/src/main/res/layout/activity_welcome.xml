@@ -44,4 +44,12 @@
         android:layout_marginTop="16dp"
         android:text="@string/button_continue_without_backup" />
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:elevation="20dp"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 </RelativeLayout>
