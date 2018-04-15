@@ -581,7 +581,7 @@ public class BirthdayListActivity extends GoogleSignInActivity implements ItemOp
         for (Birthday b : bdays) {
             birthdayNames.add(b.getName());
         }
-        bundle.putStringArrayList(ImportContactsActivity.BIRTHDAYS_ARRAY_KEY, birthdayNames);
+        bundle.putStringArrayList(ImportContactsActivity.Companion.getBIRTHDAYS_ARRAY_KEY(), birthdayNames);
         intent.putExtras(bundle);
         startActivity(intent);
     }

@@ -73,7 +73,6 @@ class HelpActivity : BaseActivity() {
         )
     }
 
-
     private fun emailMe() {
         val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:" + "julianross" + "er91@gma" + "il.com"))
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Birthday Reminder")
