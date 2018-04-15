@@ -1,6 +1,8 @@
 # Birthday Reminder 3.0
+ 
 Birthday reminder is a simple Material Design Android app which notifies users of upcoming birthdays. Released in 2015, it has had many design and feature update since then, many coming from user requests. Recent additions include Firebase auth and realtime database for data backup. As I built this when I was quite inexperienced, it doesn't follow any of the common Android architecture patterns, so I wouldn't recommend using this structure elsewhere.
-
+ 
+ 
 ![](http://i.imgur.com/zcF2X4Z.png)![](http://i.imgur.com/PaiXGEV.png)
 ![](http://i.imgur.com/VXJWF8g.png)![](http://i.imgur.com/yC20tDa.png)
 
@@ -35,9 +37,18 @@ Once this is resolved, you should see the following error:
 ```
 File google-services.json is missing. The Google Services Plugin cannot function without it. 
 ```
+ 
 This is because the app depends on Firebase for auhentication and data persistance. You will need to set up your own Firebase account and project here: https://firebase.google.com/
 
 Once you have an app environemt set up, you should be prompted to download a google-services.json file (you can also find it later on the project settings page). Drop this file under the 'app' module and you should now be able to build the app to a device. 
 
-One futher note, you may need to enable Google auth on the firebase console.
+You will also need to enable Google auth on the firebase console, and setup a google sign in key: https://developers.google.com/identity/sign-in/android/. Add the key to the project level gradle.properties file like so: 
+``` groovy
+...
+ 
 
+GOOGLE_SIGN_IN_KEY = "3716492804734-3v8qb0386kmfsas4eu44amna8a3b8c13.apps.googleusercontent.com";
+
+```
+ 
+Now you should be able to build the project locally, sign in with google and save data to Firebase.
