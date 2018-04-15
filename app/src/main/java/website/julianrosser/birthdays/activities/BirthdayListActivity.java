@@ -52,7 +52,7 @@ import website.julianrosser.birthdays.fragments.DialogFragments.AddEditFragment;
 import website.julianrosser.birthdays.fragments.DialogFragments.ItemOptionsFragment;
 import website.julianrosser.birthdays.fragments.RecyclerListFragment;
 import website.julianrosser.birthdays.model.Birthday;
-import website.julianrosser.birthdays.model.events.BirthdayItemClickEvent;
+import website.julianrosser.birthdays.model.BirthdayItemClickEvent;
 import website.julianrosser.birthdays.views.CircleTransform;
 import website.julianrosser.birthdays.views.SnackBarHelper;
 

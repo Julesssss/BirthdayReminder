@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import website.julianrosser.birthdays.R;
 import website.julianrosser.birthdays.adapter.ContactAdapter;
 import website.julianrosser.birthdays.model.Contact;
-import website.julianrosser.birthdays.model.events.ContactsLoadedEvent;
+import website.julianrosser.birthdays.model.ContactsLoadedEvent;
 import website.julianrosser.birthdays.model.tasks.LoadContactsTask;
 
 /**

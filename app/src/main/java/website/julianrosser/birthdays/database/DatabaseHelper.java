@@ -35,7 +35,7 @@ import website.julianrosser.birthdays.R;
 import website.julianrosser.birthdays.Utils;
 import website.julianrosser.birthdays.model.Birthday;
 import website.julianrosser.birthdays.model.FirebaseBirthday;
-import website.julianrosser.birthdays.model.events.BirthdaysLoadedEvent;
+import website.julianrosser.birthdays.model.BirthdaysLoadedEvent;
 
 public class DatabaseHelper {
 

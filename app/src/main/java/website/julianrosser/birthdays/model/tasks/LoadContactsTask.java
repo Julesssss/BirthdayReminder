@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import website.julianrosser.birthdays.model.Contact;
-import website.julianrosser.birthdays.model.events.ContactsLoadedEvent;
+import website.julianrosser.birthdays.model.ContactsLoadedEvent;
 
 public class LoadContactsTask extends AsyncTask<Void, Integer, ArrayList<Contact>> {
 

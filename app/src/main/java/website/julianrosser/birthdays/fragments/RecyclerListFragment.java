@@ -39,7 +39,7 @@ import website.julianrosser.birthdays.adapter.BirthdayViewAdapter;
 import website.julianrosser.birthdays.database.DatabaseHelper;
 import website.julianrosser.birthdays.model.Birthday;
 import website.julianrosser.birthdays.model.FirebaseBirthday;
-import website.julianrosser.birthdays.model.events.BirthdaysLoadedEvent;
+import website.julianrosser.birthdays.model.BirthdaysLoadedEvent;
 
 /**
  * Main view. Fragment which holds the RecyclerView.
