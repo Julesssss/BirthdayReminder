@@ -3,6 +3,8 @@
 buildscript {
     ext {
         kotlin_version = '1.2.30'
+        firebaseVersion = '15.0.0'
+        googleServicesVersion = '15.0.0'
     }
 
     repositories {
