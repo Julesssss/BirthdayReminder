@@ -101,7 +101,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
             launchTestNotification();
         }
 
-        ((SettingsActivity)getActivity()).mTracker.send(new HitBuilders.EventBuilder()
+        ((SettingsActivity) getActivity()).getMTracker().send(new HitBuilders.EventBuilder()
                 .setCategory("Preference")
                 .setAction("Pref click")
                 .setLabel(preference.getKey())
