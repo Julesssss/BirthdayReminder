@@ -99,5 +99,12 @@
     <string name="title_privacy_policy">политика конфиденциальности</string>
     <string name="error_try_again">Ошибка, попробуйте еще раз&#8230;</string>
 
+    <!-- 3.0 Update -->
+    <string name="title_log_in">Выйти</string>
+    <string name="title_log_out">Авторизоваться</string>
+    <string name="welcome_text_message">Теперь вы можете войти в свою учетную запись Google для резервного копирования ваших дней рождения и позволить вам видеть дни рождения на любом другом устройстве.\n\nЧтобы продолжить, не создавая резервные копии дней своего рождения, нажмите «Продолжить».</string>
+    <string name="error_google_login">Ошибка при входе в систему</string>
+    <string name="error_no_json_birthdays">Не найдено ни одного дня рождения!</string>
+    <string name="button_continue_without_backup">Продолжить без резервного копирования</string>
 
 </resources>

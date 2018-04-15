@@ -24,6 +24,7 @@ abstract class GoogleSignInActivity : BaseActivity(), GoogleApiClient.OnConnecti
 
     interface GoogleSignInListener {
         fun onLogin(firebaseUser: FirebaseUser)
+        fun showLoading()
         fun onGoogleFailure(message: String)
         fun onFirebaseFailure(message: String)
     }
@@ -46,6 +47,8 @@ abstract class GoogleSignInActivity : BaseActivity(), GoogleApiClient.OnConnecti
         signInButton.setSize(SignInButton.SIZE_WIDE)
         signInButton.setScopes(gso.scopeArray)
         signInButton.setOnClickListener {
+            googleSignInListener.showLoading()
+
             val signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient)
             startActivityForResult(signInIntent, GoogleSignInActivity.GOOGLE_SIGN_IN)
         }

@@ -6,6 +6,7 @@ import android.os.Handler
 import android.preference.PreferenceManager
 import android.support.design.widget.Snackbar
 import android.util.Log
+import android.view.View
 import com.google.android.gms.analytics.GoogleAnalytics
 import com.google.android.gms.analytics.HitBuilders
 import com.google.android.gms.analytics.Tracker
@@ -22,7 +23,7 @@ class WelcomeActivity : GoogleSignInActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        if (Preferences.shouldShowWelcomeScreen(this)) {
+        if (Preferences.shouldShowWelcomeScreen(this)) {
 
             setTheme()
             setContentView(R.layout.activity_welcome)
@@ -32,19 +33,21 @@ class WelcomeActivity : GoogleSignInActivity() {
 
             mTracker = getDefaultTracker()
 
-//        } else {
-//            startActivity(Intent(applicationContext, BirthdayListActivity::class.java))
-//            finish()
-//        }
+        } else {
+            startActivity(Intent(applicationContext, BirthdayListActivity::class.java))
+            finish()
+        }
     }
 
     private fun setUpSignInButton() {
         setUpGoogleSignInButton(welcomeButtonGoogleSignIn, object : GoogleSignInListener {
+            override fun showLoading() {
+                setIsLoading(true)
+            }
 
             override fun onLogin(firebaseUser: FirebaseUser) {
 
-                // TODO: JSON data exists ONLY ONCE!!!!!!!!!
-                if (true) {
+                if (Preferences.hasMigratedjsonData(applicationContext).not()) {
                     migratejsonBirthdays(firebaseUser)
                 } else {
                     handleLogin()
@@ -52,13 +55,21 @@ class WelcomeActivity : GoogleSignInActivity() {
             }
 
             override fun onGoogleFailure(message: String) {
+                setIsLoading(false)
                 Log.i(javaClass.simpleName, "onGoogleFailure: $message")
             }
 
             override fun onFirebaseFailure(message: String) {
+                setIsLoading(false)
                 Log.i(javaClass.simpleName, "New or signed out user: $message")
             }
         })
+    }
+
+    fun setIsLoading(loading: Boolean) {
+        progressBar.visibility = if (loading) View.VISIBLE else View.GONE
+        welcomeButtonJson.isEnabled = ! loading
+        welcomeButtonGoogleSignIn.isEnabled = ! loading
     }
 
     private fun migratejsonBirthdays(firebaseUser: FirebaseUser) {
@@ -81,6 +92,7 @@ class WelcomeActivity : GoogleSignInActivity() {
                 .setCategory("Action")
                 .setAction("Welcome--Logged In")
                 .build())
+        setIsLoading(false)
         Preferences.setShouldShowWelcomeScreen(applicationContext, false)
         finish()
     }

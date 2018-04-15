@@ -98,5 +98,12 @@
     <string name="title_privacy_policy">Politique de confidentialité</string>
     <string name="error_try_again">Erreur, s\'il vous plaît essayer à nouveau&#8230;</string>
 
+    <!-- 3.0 Update -->
+    <string name="title_log_in">Se connecter</string>
+    <string name="title_log_out">Déconnexion</string>
+    <string name="welcome_text_message">Vous pouvez maintenant vous connecter à votre compte Google pour sauvegarder vos anniversaires et vous permettre de voir les anniversaires sur n\'importe quel autre appareil.\n\nPour continuer sans sauvegarder vos anniversaires, cliquez sur continuer.</string>
+    <string name="error_google_login">Erreur lors de la connexion</string>
+    <string name="error_no_json_birthdays">Aucun anniversaire trouvé!</string>
+    <string name="button_continue_without_backup">Continuer sans sauvegarde</string>
 
 </resources>

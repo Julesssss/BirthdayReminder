@@ -98,5 +98,12 @@
     <string name="title_privacy_policy">Politica de confidentialitate</string>
     <string name="error_try_again">Eroare, vă rugăm să încercați din nou&#8230;</string>
 
+    <!-- 3.0 Update -->
+    <string name="title_log_in">Entrar</string>
+    <string name="title_log_out">Sair</string>
+    <string name="welcome_text_message">Acum puteți să vă conectați la contul dvs. Google pentru a salva zilele de naștere și pentru a vă permite să vedeți zile de naștere pe orice alt dispozitiv.\n\nPentru a continua fără a crea copii de rezervă pentru aniversările dvs., faceți clic pe Continuați.</string>
+    <string name="error_google_login">Erro ao iniciar sessão</string>
+    <string name="error_no_json_birthdays">Nenhum aniversário encontrado!</string>
+    <string name="button_continue_without_backup">Continuați fără backup</string>
 
 </resources>
