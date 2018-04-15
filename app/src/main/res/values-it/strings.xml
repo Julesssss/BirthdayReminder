@@ -98,5 +98,12 @@
     <string name="title_privacy_policy">politica sulla riservatezza</string>
     <string name="error_try_again">Errore, riprova&#8230;</string>
 
+    <!-- 3.0 Update -->
+    <string name="title_log_in">Accesso</string>
+    <string name="title_log_out">Disconnettersi</string>
+    <string name="welcome_text_message">Ora puoi accedere al tuo account Google per eseguire il backup dei tuoi compleanni e consentirti di vedere i compleanni su qualsiasi altro dispositivo.\n\nPer continuare senza eseguire il backup dei compleanni, fare clic su Continua.</string>
+    <string name="error_google_login">Errore durante l\'accesso</string>
+    <string name="error_no_json_birthdays">Nessun compleanno trovato!</string>
+    <string name="button_continue_without_backup">Continua senza backup</string>
 
 </resources>

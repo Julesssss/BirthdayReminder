@@ -131,7 +131,6 @@ public class DatabaseHelper {
     }
 
     public void migrateJsonToFirebase(Context context, FirebaseUser user, MigrateUsersCallback callback) {
-        Log.i("Migration", "starting migration");
 
         if (user == null || Utils.isStringEmpty(user.getUid())) {
             Log.i("Migration", "User null or empty");
@@ -153,8 +152,6 @@ public class DatabaseHelper {
             callback.onFailure(e.getMessage());
         }
 
-        Log.i("Migration", "Past execption checks");
-
         if (jsonbirthdays.size() > 0) {
             Log.i("Migration", "Found JSON birthdays!");
 
@@ -166,8 +163,6 @@ public class DatabaseHelper {
                     jsonBirthday.setUID(UUID.randomUUID().toString());
                 }
 
-                Log.i("Migration", "for birthday: " + jsonBirthday.getName() + "  // uid:" + jsonBirthday.getUID());
-
                 // Update database ref
                 databaseReference = BirthdayReminder.getInstance().getDatabaseReference().child(user.getUid()).child(Constants.TABLE_BIRTHDAYS)
                         .child(String.valueOf(jsonBirthday.getUID()));
@@ -177,10 +172,13 @@ public class DatabaseHelper {
 
                 // Save to Firebase
                 databaseReference.setValue(firebaseBirthday);
-                Log.i("Migration", "Saved to FIREBASE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             }
 
-            setLastUpdatedTime();
+            databaseReference = BirthdayReminder.getInstance().getDatabaseReference().child(user.getUid());
+            databaseReference.child("lastUpdated").setValue(ServerValue.TIMESTAMP);
+            databaseReference.child("email").setValue(user.getEmail()); // todo refactor
+
+            Preferences.setHasMigratedjsonData(context, true);
             callback.onSuccess(jsonbirthdays.size());
 
         } else {

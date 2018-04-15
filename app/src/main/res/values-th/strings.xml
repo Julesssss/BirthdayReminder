@@ -96,9 +96,16 @@
     <string name="no_contacts_message">กรุณาเพิ่มข้อมูลวันเกิดให้กับผู้ติดต่อของคุณสำหรับพวกเขาที่จะแสดงที่นี่</string>
     <string name="contact_permission_denied_message">ได้รับอนุญาตที่จำเป็นในการโหลดรายชื่อผู้ติดต่อ</string>
     <string name="contact_already_added">ได้รับการเพิ่มแล้ว</string>
-    <string name="not_available" translatable="false">N/A</string>
     <string name="added">ที่เพิ่ม</string>
     <string name="title_privacy_policy">นโยบายความเป็นส่วนตัว</string>
     <string name="error_try_again">ข้อผิดพลาดโปรดลองอีกครั้ง &#8230;</string>
+
+    <!-- 3.0 Update -->
+    <string name="title_log_in">เข้าสู่ระบบ</string>
+    <string name="title_log_out">ออกจากระบบ</string>
+    <string name="welcome_text_message">ขณะนี้คุณสามารถลงชื่อเข้าใช้บัญชี Google เพื่อสำรองข้อมูลวันเกิดและอนุญาตให้คุณดูวันเกิดบนอุปกรณ์อื่นได้.\n\nหากต้องการดำเนินการต่อโดยไม่ต้องสำรองข้อมูลวันเกิดของคุณให้คลิกดำเนินการต่อ.</string>
+    <string name="error_google_login">เกิดข้อผิดพลาดขณะเข้าสู่ระบบ</string>
+    <string name="error_no_json_birthdays">ไม่พบวันเกิด!</string>
+    <string name="button_continue_without_backup">ต่อ</string>
 
 </resources>

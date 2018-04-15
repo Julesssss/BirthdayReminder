@@ -98,5 +98,14 @@
     <string name="title_privacy_policy"> Política de privacidad</string>
     <string name="error_try_again">Error, por favor, inténtelo de nuevo&#8230;</string>
 
+    <!-- 3.0 Update -->
+    <string name="title_log_in">Iniciar sesión</string>
+    <string name="title_log_out">Cerrar sesión</string>
+    <string name="welcome_text_message">Ahora puede iniciar sesión en su cuenta de Google para hacer una copia de seguridad de sus cumpleaños y permitirle ver los cumpleaños en cualquier otro dispositivo.\n\nPara continuar sin hacer una copia de seguridad de tus cumpleaños, haz clic en continuar.</string>
+    <string name="error_google_login">Error al iniciar sesión</string>
+    <string name="error_no_json_birthdays">No se encontraron cumpleaños!</string>
+    <string name="button_continue_without_backup">Continuar sin respaldo</string>
+
+
 
 </resources>

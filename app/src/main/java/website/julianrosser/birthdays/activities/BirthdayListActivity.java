@@ -16,6 +16,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -244,12 +245,21 @@ public class BirthdayListActivity extends GoogleSignInActivity implements ItemOp
     }
 
     private void setUpGoogleSignIn(SignInButton signInButton) {
-        mDrawerLayout.closeDrawer(Gravity.START);
-
         setUpGoogleSignInButton(signInButton, new GoogleSignInListener() {
+            @Override
+            public void showLoading() {
+                recyclerListFragment.showLoadingSpinner();
+                mDrawerLayout.closeDrawer(Gravity.START);
+            }
+
             @Override public void onLogin(@NotNull FirebaseUser firebaseUser) {
-                handleUserAuthenticated(firebaseUser);
-                Preferences.setIsUsingFirebase(BirthdayListActivity.this, true);
+
+                if (! Preferences.hasMigratedjsonData(BirthdayListActivity.this)) {
+                    migratejsonBirthdays(firebaseUser);
+                } else {
+                    handleUserAuthenticated(firebaseUser);
+                    Preferences.setIsUsingFirebase(BirthdayListActivity.this, true);
+                }
             }
 
             @Override public void onGoogleFailure(@NotNull String message) {
@@ -297,7 +307,7 @@ public class BirthdayListActivity extends GoogleSignInActivity implements ItemOp
             public void run() {
                 recyclerListFragment.loadBirthdays();
             }
-        }, 2000);
+        }, 1500);
     }
 
     public void setNavHeaderUserState(NavHeaderState state) {
@@ -545,6 +555,20 @@ public class BirthdayListActivity extends GoogleSignInActivity implements ItemOp
                 Snackbar.make(floatingActionButton, R.string.contact_permission_denied_message, Snackbar.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private void migratejsonBirthdays(final FirebaseUser firebaseUser) {
+        new DatabaseHelper().migrateJsonToFirebase(this.getApplicationContext(), firebaseUser, new DatabaseHelper.MigrateUsersCallback() {
+
+            @Override public void onSuccess(int migratedCount) {
+                Preferences.setIsUsingFirebase(BirthdayListActivity.this, true);
+                handleUserAuthenticated(firebaseUser);
+            }
+
+            @Override public void onFailure(String message) {
+                Log.i("Migration", "Error migrating: $message");
+            }
+        });
     }
 
     public void launchImportContactActivity() {

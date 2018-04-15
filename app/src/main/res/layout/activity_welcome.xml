@@ -32,7 +32,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/welcomeTextMessage"
         android:layout_marginTop="32dp"
-        android:text="Google Sign In"
         android:textAlignment="center" />
 
     <Button
@@ -43,6 +42,14 @@
         android:layout_below="@id/welcomeButtonGoogleSignIn"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:text="Continue without backup" />
+        android:text="@string/button_continue_without_backup" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:elevation="20dp"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </RelativeLayout>
