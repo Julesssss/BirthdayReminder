@@ -44,3 +44,5 @@ build/
 *.iml
 
 app/google-services\.json
+
+gradle.properties
