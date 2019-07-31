@@ -122,7 +122,7 @@ class WelcomeActivity : GoogleSignInActivity() {
     fun getDefaultTracker(): Tracker? {
         if (mTracker == null) {
             val analytics = GoogleAnalytics.getInstance(this)
-            mTracker = analytics.newTracker(R.xml.global_tracker)
+         //   mTracker = analytics.newTracker(R.xml.global_tracker)
         }
         return mTracker
     }

@@ -80,7 +80,7 @@ public class SettingsActivity extends BaseActivity {
         if (mTracker == null) {
             GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
             // To enable debug logging use: adb shell set prop log.tag.GAv4 DEBUG
-            mTracker = analytics.newTracker(R.xml.global_tracker);
+          //  mTracker = analytics.newTracker(R.xml.global_tracker);
         }
         return mTracker;
     }
