@@ -65,7 +65,7 @@ public class HelpActivity extends BaseActivity {
     synchronized public Tracker getDefaultTracker() {
         if (mTracker == null) {
             GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
-            mTracker = analytics.newTracker(R.xml.global_tracker);
+           // mTracker = analytics.newTracker(R.xml.global_tracker);
         }
         return mTracker;
     }

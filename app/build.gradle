@@ -9,7 +9,7 @@ android {
         applicationId "website.julianrosser.birthdays"
         minSdkVersion 14
         targetSdkVersion 27
-        versionCode 301
+        versionCode 1
         versionName "3.0.1"
     }
 
@@ -20,7 +20,7 @@ android {
             lintOptions { disable "MissingTranslation" }
         }
         buildTypes.each {
-            it.buildConfigField 'String', 'GOOGLE_SIGN_IN_KEY', GOOGLE_SIGN_IN_KEY
+//            it.buildConfigField 'String', 'GOOGLE_SIGN_IN_KEY', GOOGLE_SIGN_IN_KEY
         }
     }
     packagingOptions {

@@ -96,13 +96,13 @@ public class NotificationBuilderReceiver extends WakefulBroadcastReceiver {
 
         // Obtain the shared Tracker instance.
         GoogleAnalytics analytics = GoogleAnalytics.getInstance(context);
-        Tracker mTracker = analytics.newTracker(R.xml.global_tracker);
+    //    Tracker mTracker = analytics.newTracker(R.xml.global_tracker);
 
-        mTracker.send(new HitBuilders.EventBuilder()
+       /* mTracker.send(new HitBuilders.EventBuilder()
                 .setCategory("Action")
                 .setAction("Reminder!")
                 .build());
-
+*/
         wakeLock.release();
 
     }

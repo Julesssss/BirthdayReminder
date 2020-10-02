@@ -76,7 +76,7 @@ abstract class GoogleSignInActivity : BaseActivity(), GoogleApiClient.OnConnecti
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(BuildConfig.GOOGLE_SIGN_IN_KEY)
+            //    .requestIdToken(BuildConfig.GOOGLE_SIGN_IN_KEY)
                 .requestEmail()
                 .build()
 
