@@ -27,7 +27,7 @@ In order to build the project you will need to follow the steps below:
 
 First, ensure that you have the following minimum requirements:
 ```
-Android Studio 3.1.1
+Android Studio 3.1.1 or latest version
 Android SDK Platform 23
 Gradle 4.4
 Gradle plugin 3.1.1
